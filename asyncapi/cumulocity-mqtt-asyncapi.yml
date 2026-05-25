@@ -1,0 +1,104 @@
+asyncapi: 2.6.0
+info:
+  title: Cumulocity MQTT and SmartREST API
+  version: 10.20.0
+  description: |
+    Constrained-device MQTT broker fronting the Cumulocity REST API with a CSV-based SmartREST 2.0 payload
+    format that saves up to 80% of mobile traffic versus JSON. Supports static templates for common
+    operations (s/us topic family) and tenant-defined custom templates.
+  contact:
+    name: Cumulocity
+    url: https://cumulocity.com
+servers:
+  production-tls:
+    url: '{tenant}.cumulocity.com:8883'
+    protocol: mqtts
+    description: TLS-secured MQTT 3.1.1/5.0 endpoint (recommended). 16 KiB max payload.
+    variables:
+      tenant:
+        default: example
+    security:
+    - basicAuth: []
+  production-plain:
+    url: '{tenant}.cumulocity.com:1883'
+    protocol: mqtt
+    description: Plain MQTT endpoint (not recommended for production).
+    variables:
+      tenant:
+        default: example
+    security:
+    - basicAuth: []
+defaultContentType: text/plain
+channels:
+  s/us:
+    description: SmartREST 2.0 static templates - device-to-cloud upstream messages (measurements, events, alarms,
+      device identity, child device registration, software/firmware/configuration reporting).
+    publish:
+      operationId: publishSmartRestStatic
+      summary: Publish a SmartREST 2.0 static-template message.
+      message:
+        $ref: '#/components/messages/SmartRestMessage'
+  s/ds:
+    description: SmartREST 2.0 static templates - cloud-to-device downstream messages (operations such as restart,
+      firmware update, software update, configuration, shell command).
+    subscribe:
+      operationId: subscribeSmartRestStatic
+      summary: Subscribe to operations delivered as SmartREST 2.0 static-template messages.
+      message:
+        $ref: '#/components/messages/SmartRestMessage'
+  s/uc/{templateXId}:
+    description: SmartREST 2.0 custom templates - device-to-cloud upstream messages using a tenant-defined template
+      identified by X-ID.
+    parameters:
+      templateXId:
+        schema: {type: string}
+        description: Custom template X-ID.
+    publish:
+      operationId: publishSmartRestCustom
+      summary: Publish a SmartREST 2.0 custom-template message.
+      message:
+        $ref: '#/components/messages/SmartRestMessage'
+  s/dc/{templateXId}:
+    description: SmartREST 2.0 custom templates - cloud-to-device downstream messages.
+    parameters:
+      templateXId:
+        schema: {type: string}
+    subscribe:
+      operationId: subscribeSmartRestCustom
+      summary: Subscribe to custom-template operations.
+      message:
+        $ref: '#/components/messages/SmartRestMessage'
+  s/e:
+    description: Error channel — devices subscribe to receive parse errors and operation rejection notifications.
+    subscribe:
+      operationId: subscribeErrors
+      summary: Subscribe to error notifications.
+      message:
+        $ref: '#/components/messages/ErrorMessage'
+components:
+  messages:
+    SmartRestMessage:
+      name: smartRestMessage
+      title: SmartREST 2.0 Message
+      contentType: text/plain
+      summary: A SmartREST 2.0 line — comma-separated values prefixed with a numeric template ID.
+      payload:
+        type: string
+        examples:
+        - '100,my-device-001,c8y_MQTTDevice'
+        - '200,c8y_Temperature,T,21.5,C'
+        - '301,c8y_Alarm,Door open,CRITICAL'
+    ErrorMessage:
+      name: errorMessage
+      title: SmartREST Error
+      contentType: text/plain
+      payload:
+        type: string
+        examples:
+        - '40,200,Invalid message format'
+  securitySchemes:
+    basicAuth:
+      type: userPassword
+      description: |
+        Username in the form `{tenant}/{username}` with the user's password. The MQTT ClientId
+        becomes the external ID under which the device is auto-registered.

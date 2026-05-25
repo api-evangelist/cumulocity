@@ -1,0 +1,13 @@
+{
+  "time": "2026-05-25T14:30:00.000Z",
+  "type": "c8y_LocationUpdate",
+  "text": "Vehicle changed location",
+  "source": {
+    "id": "12345"
+  },
+  "c8y_Position": {
+    "lat": 51.107883,
+    "lng": 17.038538,
+    "alt": 119
+  }
+}

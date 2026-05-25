@@ -1,0 +1,58 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Cumulocity MQTT and SmartREST 2.0
+  description: Connect a constrained device to Cumulocity via MQTT using CSV-based SmartREST 2.0 static or custom templates.
+  tags: [Cumulocity, MQTT, SmartREST]
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    C8Y_MQTT_HOST: C8Y_MQTT_HOST
+    C8Y_MQTT_PORT: C8Y_MQTT_PORT
+    C8Y_TENANT: C8Y_TENANT
+    C8Y_DEVICE_USER: C8Y_DEVICE_USER
+    C8Y_DEVICE_PASSWORD: C8Y_DEVICE_PASSWORD
+capability:
+  consumes:
+  - type: mqtt
+    namespace: cumulocity-mqtt
+    description: Cumulocity MQTT 3.1.1/5.0 broker with SmartREST 2.0 CSV templates.
+    broker: 'mqtts://{{env.C8Y_MQTT_HOST}}:{{env.C8Y_MQTT_PORT}}'
+    clientId: '{{env.C8Y_DEVICE_USER}}'
+    topics:
+    - name: smartrest-static-upstream
+      pattern: s/us
+      description: SmartREST 2.0 static template upstream channel (device-to-cloud).
+      direction: publish
+    - name: smartrest-static-downstream
+      pattern: s/ds
+      description: SmartREST 2.0 static template downstream channel (cloud-to-device operations).
+      direction: subscribe
+    - name: smartrest-custom-upstream
+      pattern: 's/uc/{templateXId}'
+      description: SmartREST 2.0 custom template upstream channel.
+      direction: publish
+    - name: smartrest-custom-downstream
+      pattern: 's/dc/{templateXId}'
+      description: SmartREST 2.0 custom template downstream channel.
+      direction: subscribe
+    - name: smartrest-errors
+      pattern: s/e
+      description: Error notifications from the broker.
+      direction: subscribe
+    authentication:
+      type: basic
+      username: '{{env.C8Y_TENANT}}/{{env.C8Y_DEVICE_USER}}'
+      password: '{{env.C8Y_DEVICE_PASSWORD}}'
+  exposes:
+  - type: mcp
+    namespace: mqtt-smartrest-mcp
+    port: 9090
+    transport: http
+    tools:
+    - name: cumulocity-mqtt-publish-smartrest
+      description: Publish a SmartREST 2.0 line on the Cumulocity static-template upstream channel.
+      hints: {readOnly: false, destructive: false, idempotent: false}
+      call: cumulocity-mqtt.publish
+      with: {topic: 's/us', payload: tools.payload}

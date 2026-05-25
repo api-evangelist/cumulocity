@@ -1,0 +1,40 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Cumulocity User API — Roles
+  description: List the global roles available in Cumulocity for assignment to users and groups.
+  tags: [Cumulocity, Roles, RBAC]
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    C8Y_BASE_URL: C8Y_BASE_URL
+    C8Y_USER: C8Y_USER
+    C8Y_PASSWORD: C8Y_PASSWORD
+capability:
+  consumes:
+  - type: http
+    namespace: user-roles
+    baseUri: '{{env.C8Y_BASE_URL}}'
+    resources:
+    - name: roles
+      path: /user/roles
+      operations:
+      - name: listroles
+        method: GET
+        description: List Global Roles
+    authentication:
+      type: basic
+      username: '{{env.C8Y_USER}}'
+      password: '{{env.C8Y_PASSWORD}}'
+  exposes:
+  - type: mcp
+    namespace: user-roles-mcp
+    port: 9090
+    transport: http
+    tools:
+    - name: cumulocity-list-roles
+      description: List Cumulocity global roles available for assignment.
+      hints: {readOnly: true, destructive: false, idempotent: true}
+      call: user-roles.listroles
+      with: {}

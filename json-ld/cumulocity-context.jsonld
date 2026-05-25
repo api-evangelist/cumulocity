@@ -1,0 +1,107 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "schema": "https://schema.org/",
+    "c8y": "https://cumulocity.com/vocab#",
+    "saref": "https://saref.etsi.org/core/",
+    "ssn": "http://www.w3.org/ns/ssn/",
+    "sosa": "http://www.w3.org/ns/sosa/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+
+    "ManagedObject": {
+      "@id": "c8y:ManagedObject",
+      "@type": "@id"
+    },
+    "Device": {
+      "@id": "saref:Device",
+      "@type": "@id"
+    },
+    "Sensor": {
+      "@id": "sosa:Sensor",
+      "@type": "@id"
+    },
+    "Actuator": {
+      "@id": "sosa:Actuator",
+      "@type": "@id"
+    },
+    "Measurement": {
+      "@id": "sosa:Observation",
+      "@type": "@id"
+    },
+    "Event": {
+      "@id": "c8y:Event",
+      "@type": "@id"
+    },
+    "Alarm": {
+      "@id": "c8y:Alarm",
+      "@type": "@id"
+    },
+    "Operation": {
+      "@id": "c8y:Operation",
+      "@type": "@id"
+    },
+    "AssetModel": {
+      "@id": "c8y:AssetModel",
+      "@type": "@id"
+    },
+    "AssetInstance": {
+      "@id": "c8y:AssetInstance",
+      "@type": "@id"
+    },
+
+    "id": "@id",
+    "self": {"@id": "schema:url", "@type": "xsd:anyURI"},
+    "name": "schema:name",
+    "type": "@type",
+    "description": "schema:description",
+    "owner": "c8y:owner",
+
+    "creationTime": {"@id": "schema:dateCreated", "@type": "xsd:dateTime"},
+    "lastUpdated": {"@id": "schema:dateModified", "@type": "xsd:dateTime"},
+    "time": {"@id": "sosa:resultTime", "@type": "xsd:dateTime"},
+    "firstOccurrenceTime": {"@id": "c8y:firstOccurrenceTime", "@type": "xsd:dateTime"},
+
+    "source": {"@id": "sosa:madeBySensor", "@type": "@id"},
+    "text": "schema:description",
+
+    "severity": {
+      "@id": "c8y:severity",
+      "@type": "@vocab",
+      "@context": {
+        "CRITICAL": "c8y:Critical",
+        "MAJOR": "c8y:Major",
+        "MINOR": "c8y:Minor",
+        "WARNING": "c8y:Warning"
+      }
+    },
+    "status": {
+      "@id": "c8y:status",
+      "@type": "@vocab",
+      "@context": {
+        "ACTIVE": "c8y:Active",
+        "ACKNOWLEDGED": "c8y:Acknowledged",
+        "CLEARED": "c8y:Cleared",
+        "PENDING": "c8y:Pending",
+        "EXECUTING": "c8y:Executing",
+        "SUCCESSFUL": "c8y:Successful",
+        "FAILED": "c8y:Failed"
+      }
+    },
+
+    "childDevices": {"@id": "ssn:hasSubSystem", "@container": "@set"},
+    "childAssets": {"@id": "c8y:hasChildAsset", "@container": "@set"},
+    "deviceParents": {"@id": "c8y:hasDeviceParent", "@container": "@set"},
+    "assetParents": {"@id": "c8y:hasAssetParent", "@container": "@set"},
+
+    "c8y_Hardware": "c8y:hardware",
+    "c8y_Firmware": "c8y:firmware",
+    "c8y_Mobile": "c8y:mobile",
+    "c8y_Position": "c8y:position",
+    "c8y_Availability": "c8y:availability",
+    "c8y_RequiredAvailability": "c8y:requiredAvailability",
+    "c8y_SupportedOperations": "c8y:supportedOperations",
+    "c8y_SupportedMeasurements": "c8y:supportedMeasurements",
+    "c8y_IsDevice": "c8y:isDevice",
+    "c8y_IsDeviceGroup": "c8y:isDeviceGroup"
+  }
+}

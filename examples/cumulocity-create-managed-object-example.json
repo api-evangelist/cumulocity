@@ -1,0 +1,21 @@
+{
+  "name": "Sensor Gateway 001",
+  "type": "c8y_MQTTDevice",
+  "c8y_IsDevice": {},
+  "c8y_Hardware": {
+    "model": "SG-1000",
+    "revision": "rev-2026",
+    "serialNumber": "SG10000001"
+  },
+  "c8y_Firmware": {
+    "name": "gateway-firmware",
+    "version": "3.4.1",
+    "url": "https://firmware.example.com/sg-1000/3.4.1.bin"
+  },
+  "c8y_SupportedOperations": [
+    "c8y_Restart",
+    "c8y_Firmware",
+    "c8y_Configuration",
+    "c8y_Command"
+  ]
+}

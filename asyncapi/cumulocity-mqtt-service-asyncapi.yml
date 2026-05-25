@@ -1,0 +1,52 @@
+asyncapi: 2.6.0
+info:
+  title: Cumulocity MQTT Service
+  version: 2025.1
+  description: |
+    Standards-compliant, multi-tenant MQTT broker for application-level messaging that does not need
+    Cumulocity's domain model. Topics are tenant-scoped, persistent, and bridgeable to the Cumulocity
+    domain model via the Dynamic Mapper.
+servers:
+  production:
+    url: 'mqtt.{tenant}.cumulocity.com:8883'
+    protocol: mqtts
+    description: TLS-secured multi-tenant MQTT 5.0 broker.
+    variables:
+      tenant:
+        default: example
+    security:
+    - basicAuth: []
+defaultContentType: application/json
+channels:
+  '{tenantId}/{topic}':
+    description: Tenant-scoped topic hierarchy for arbitrary application messages. Topics are isolated per tenant
+      and persisted; subscribers receive missed messages on reconnect when using MQTT 5.0 session expiry.
+    parameters:
+      tenantId:
+        schema: {type: string}
+      topic:
+        schema: {type: string}
+    publish:
+      operationId: publishGeneric
+      summary: Publish to a tenant-scoped MQTT topic.
+      message:
+        $ref: '#/components/messages/GenericMessage'
+    subscribe:
+      operationId: subscribeGeneric
+      summary: Subscribe to a tenant-scoped MQTT topic.
+      message:
+        $ref: '#/components/messages/GenericMessage'
+components:
+  messages:
+    GenericMessage:
+      name: genericMessage
+      title: Generic MQTT Message
+      summary: Arbitrary application payload published on a tenant-scoped topic.
+      payload:
+        oneOf:
+        - type: object
+          additionalProperties: true
+        - type: string
+  securitySchemes:
+    basicAuth:
+      type: userPassword

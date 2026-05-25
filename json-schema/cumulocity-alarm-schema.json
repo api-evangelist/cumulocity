@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/cumulocity/main/json-schema/cumulocity-alarm-schema.json",
+  "title": "Cumulocity Alarm",
+  "description": "A condition raised against a Cumulocity device or asset. Cumulocity auto-deduplicates alarms by (source, type) so repeated raises increment count rather than creating duplicates.",
+  "type": "object",
+  "required": ["time", "type", "text", "source", "severity", "status"],
+  "properties": {
+    "id": {"type": "string", "readOnly": true},
+    "self": {"type": "string", "format": "uri", "readOnly": true},
+    "time": {"type": "string", "format": "date-time"},
+    "creationTime": {"type": "string", "format": "date-time", "readOnly": true},
+    "type": {"type": "string"},
+    "text": {"type": "string"},
+    "severity": {
+      "type": "string",
+      "enum": ["CRITICAL", "MAJOR", "MINOR", "WARNING"]
+    },
+    "status": {
+      "type": "string",
+      "enum": ["ACTIVE", "ACKNOWLEDGED", "CLEARED"]
+    },
+    "count": {"type": "integer", "readOnly": true},
+    "firstOccurrenceTime": {"type": "string", "format": "date-time", "readOnly": true},
+    "source": {
+      "type": "object",
+      "required": ["id"],
+      "properties": {
+        "id": {"type": "string"},
+        "self": {"type": "string", "format": "uri"}
+      }
+    },
+    "history": {
+      "type": "object",
+      "properties": {
+        "auditRecords": {"type": "array", "items": {"type": "object"}}
+      }
+    }
+  },
+  "additionalProperties": true
+}

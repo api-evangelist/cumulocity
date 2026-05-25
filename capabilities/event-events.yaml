@@ -1,0 +1,75 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Cumulocity Event API — Events
+  description: Create, query, update, and delete events emitted by Cumulocity devices and applications.
+  tags: [Cumulocity, Events]
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    C8Y_BASE_URL: C8Y_BASE_URL
+    C8Y_USER: C8Y_USER
+    C8Y_PASSWORD: C8Y_PASSWORD
+capability:
+  consumes:
+  - type: http
+    namespace: event-events
+    baseUri: '{{env.C8Y_BASE_URL}}'
+    resources:
+    - name: events
+      path: /event/events
+      operations:
+      - name: listevents
+        method: GET
+        description: List Events
+        inputParameters:
+        - {name: source, in: query, type: string}
+        - {name: type, in: query, type: string}
+        - {name: dateFrom, in: query, type: string}
+        - {name: dateTo, in: query, type: string}
+        - {name: revert, in: query, type: boolean}
+      - name: createevent
+        method: POST
+        description: Create An Event
+        inputParameters:
+        - {name: body, in: body, type: object, required: true}
+    - name: event
+      path: /event/events/{id}
+      operations:
+      - name: getevent
+        method: GET
+        description: Retrieve An Event
+        inputParameters:
+        - {name: id, in: path, type: string, required: true}
+      - name: updateevent
+        method: PUT
+        description: Update An Event
+        inputParameters:
+        - {name: id, in: path, type: string, required: true}
+        - {name: body, in: body, type: object, required: true}
+      - name: deleteevent
+        method: DELETE
+        description: Delete An Event
+        inputParameters:
+        - {name: id, in: path, type: string, required: true}
+    authentication:
+      type: basic
+      username: '{{env.C8Y_USER}}'
+      password: '{{env.C8Y_PASSWORD}}'
+  exposes:
+  - type: mcp
+    namespace: event-events-mcp
+    port: 9090
+    transport: http
+    tools:
+    - name: cumulocity-list-events
+      description: List Cumulocity events filtered by source, type, and time range.
+      hints: {readOnly: true, destructive: false, idempotent: true}
+      call: event-events.listevents
+      with: {source: tools.source, type: tools.type, dateFrom: tools.dateFrom, dateTo: tools.dateTo}
+    - name: cumulocity-create-event
+      description: Create a Cumulocity event.
+      hints: {readOnly: false, destructive: false, idempotent: false}
+      call: event-events.createevent
+      with: {body: tools.body}

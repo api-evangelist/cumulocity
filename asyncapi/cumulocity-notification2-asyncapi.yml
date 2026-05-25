@@ -1,0 +1,82 @@
+asyncapi: 2.6.0
+info:
+  title: Cumulocity Notification 2.0 WebSocket
+  version: 10.20.0
+  description: |
+    WebSocket consumer endpoint for Notification 2.0. After creating a Subscription and exchanging it for
+    a short-lived JWT token via POST /notification2/token, connect to this WebSocket to consume ordered,
+    persistent, per-subscriber notifications.
+servers:
+  production:
+    url: '{tenant}.cumulocity.com'
+    protocol: wss
+    description: Tenant-specific WSS endpoint.
+    variables:
+      tenant:
+        default: example
+defaultContentType: application/json
+channels:
+  /notification2/consumer:
+    description: WebSocket consumer. Connection URL is `wss://{tenant}.cumulocity.com/notification2/consumer/?token={jwt}`.
+      Server pushes notifications as JSON frames; consumer ACKs by message id.
+    subscribe:
+      operationId: consumeNotifications
+      summary: Receive notifications for the subscriptions associated with the JWT token.
+      message:
+        oneOf:
+        - $ref: '#/components/messages/ManagedObjectNotification'
+        - $ref: '#/components/messages/MeasurementNotification'
+        - $ref: '#/components/messages/EventNotification'
+        - $ref: '#/components/messages/AlarmNotification'
+        - $ref: '#/components/messages/OperationNotification'
+    publish:
+      operationId: ackNotification
+      summary: Acknowledge a notification by its message id so the server can advance the per-subscriber cursor.
+      message:
+        $ref: '#/components/messages/Ack'
+components:
+  messages:
+    ManagedObjectNotification:
+      name: managedObjectNotification
+      title: Managed Object Notification
+      payload:
+        $ref: '#/components/schemas/Notification'
+    MeasurementNotification:
+      name: measurementNotification
+      title: Measurement Notification
+      payload:
+        $ref: '#/components/schemas/Notification'
+    EventNotification:
+      name: eventNotification
+      title: Event Notification
+      payload:
+        $ref: '#/components/schemas/Notification'
+    AlarmNotification:
+      name: alarmNotification
+      title: Alarm Notification
+      payload:
+        $ref: '#/components/schemas/Notification'
+    OperationNotification:
+      name: operationNotification
+      title: Operation Notification
+      payload:
+        $ref: '#/components/schemas/Notification'
+    Ack:
+      name: ack
+      title: Notification Acknowledgement
+      payload:
+        type: string
+        description: The message id (returned by the server in the X-Message-Id header) to acknowledge.
+  schemas:
+    Notification:
+      type: object
+      properties:
+        api:
+          type: string
+          enum: [managedobjects, measurements, events, alarms, operations]
+        action:
+          type: string
+          enum: [CREATE, UPDATE, DELETE]
+        body:
+          type: object
+          additionalProperties: true

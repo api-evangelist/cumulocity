@@ -1,0 +1,43 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Cumulocity Tenant API — Statistics
+  description: Retrieve per-day Cumulocity tenant usage statistics (storage, requests, devices) for billing and capacity planning.
+  tags: [Cumulocity, Statistics, Billing, Usage]
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    C8Y_BASE_URL: C8Y_BASE_URL
+    C8Y_USER: C8Y_USER
+    C8Y_PASSWORD: C8Y_PASSWORD
+capability:
+  consumes:
+  - type: http
+    namespace: tenant-statistics
+    baseUri: '{{env.C8Y_BASE_URL}}'
+    resources:
+    - name: statistics
+      path: /tenant/statistics
+      operations:
+      - name: liststatistics
+        method: GET
+        description: List Tenant Usage Statistics
+        inputParameters:
+        - {name: dateFrom, in: query, type: string}
+        - {name: dateTo, in: query, type: string}
+    authentication:
+      type: basic
+      username: '{{env.C8Y_USER}}'
+      password: '{{env.C8Y_PASSWORD}}'
+  exposes:
+  - type: mcp
+    namespace: tenant-statistics-mcp
+    port: 9090
+    transport: http
+    tools:
+    - name: cumulocity-tenant-usage
+      description: Retrieve Cumulocity per-day usage statistics for billing and capacity planning.
+      hints: {readOnly: true, destructive: false, idempotent: true}
+      call: tenant-statistics.liststatistics
+      with: {dateFrom: tools.dateFrom, dateTo: tools.dateTo}

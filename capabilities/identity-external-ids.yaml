@@ -1,0 +1,73 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Cumulocity Identity API — External IDs
+  description: Translate external device identifiers (IMEI, serial number, MAC, ICCID) to Cumulocity managed object IDs and vice versa.
+  tags: [Cumulocity, Identity, External IDs]
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    C8Y_BASE_URL: C8Y_BASE_URL
+    C8Y_USER: C8Y_USER
+    C8Y_PASSWORD: C8Y_PASSWORD
+capability:
+  consumes:
+  - type: http
+    namespace: identity-external-ids
+    baseUri: '{{env.C8Y_BASE_URL}}'
+    resources:
+    - name: external-id
+      path: /identity/externalIds/{type}/{externalId}
+      operations:
+      - name: getexternalid
+        method: GET
+        description: Retrieve An External ID
+        inputParameters:
+        - {name: type, in: path, type: string, required: true}
+        - {name: externalId, in: path, type: string, required: true}
+      - name: deleteexternalid
+        method: DELETE
+        description: Delete An External ID
+        inputParameters:
+        - {name: type, in: path, type: string, required: true}
+        - {name: externalId, in: path, type: string, required: true}
+    - name: global-id-external-ids
+      path: /identity/globalIds/{id}/externalIds
+      operations:
+      - name: listexternalidsforglobalid
+        method: GET
+        description: List External IDs For A Global ID
+        inputParameters:
+        - {name: id, in: path, type: string, required: true}
+      - name: createexternalid
+        method: POST
+        description: Create An External ID
+        inputParameters:
+        - {name: id, in: path, type: string, required: true}
+        - {name: body, in: body, type: object, required: true}
+    authentication:
+      type: basic
+      username: '{{env.C8Y_USER}}'
+      password: '{{env.C8Y_PASSWORD}}'
+  exposes:
+  - type: mcp
+    namespace: identity-external-ids-mcp
+    port: 9090
+    transport: http
+    tools:
+    - name: cumulocity-resolve-external-id
+      description: Look up a Cumulocity managed object by its external ID (e.g. IMEI, serial, MAC).
+      hints: {readOnly: true, destructive: false, idempotent: true}
+      call: identity-external-ids.getexternalid
+      with: {type: tools.type, externalId: tools.externalId}
+    - name: cumulocity-list-external-ids
+      description: List all external IDs registered for a Cumulocity managed object.
+      hints: {readOnly: true, destructive: false, idempotent: true}
+      call: identity-external-ids.listexternalidsforglobalid
+      with: {id: tools.id}
+    - name: cumulocity-create-external-id
+      description: Bind a new external ID to a Cumulocity managed object.
+      hints: {readOnly: false, destructive: false, idempotent: false}
+      call: identity-external-ids.createexternalid
+      with: {id: tools.id, body: tools.body}

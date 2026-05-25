@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/cumulocity/main/json-schema/cumulocity-managed-object-schema.json",
+  "title": "Cumulocity Managed Object",
+  "description": "A Cumulocity managed object representing any IoT-relevant asset (device, group, asset, digital twin). Managed objects are fragment-extensible — arbitrary keys prefixed with `c8y_` carry typed extensions.",
+  "type": "object",
+  "required": ["type", "name"],
+  "properties": {
+    "id": {"type": "string", "description": "Cumulocity-assigned managed object ID.", "readOnly": true},
+    "self": {"type": "string", "format": "uri", "readOnly": true},
+    "type": {"type": "string", "description": "Managed object type (e.g. c8y_MQTTDevice, c8y_DeviceGroup, my_AssetType)."},
+    "name": {"type": "string"},
+    "owner": {"type": "string", "readOnly": true},
+    "creationTime": {"type": "string", "format": "date-time", "readOnly": true},
+    "lastUpdated": {"type": "string", "format": "date-time", "readOnly": true},
+    "c8y_IsDevice": {"type": "object", "description": "Marker fragment indicating the managed object is a device."},
+    "c8y_IsDeviceGroup": {"type": "object", "description": "Marker fragment indicating the managed object is a group."},
+    "c8y_Hardware": {
+      "type": "object",
+      "properties": {
+        "model": {"type": "string"},
+        "revision": {"type": "string"},
+        "serialNumber": {"type": "string"}
+      }
+    },
+    "c8y_Firmware": {
+      "type": "object",
+      "properties": {
+        "name": {"type": "string"},
+        "version": {"type": "string"},
+        "url": {"type": "string", "format": "uri"}
+      }
+    },
+    "c8y_Mobile": {
+      "type": "object",
+      "properties": {
+        "imei": {"type": "string"},
+        "iccid": {"type": "string"},
+        "imsi": {"type": "string"},
+        "cellId": {"type": "string"},
+        "mcc": {"type": "string"},
+        "mnc": {"type": "string"}
+      }
+    },
+    "c8y_Position": {
+      "type": "object",
+      "properties": {
+        "lat": {"type": "number"},
+        "lng": {"type": "number"},
+        "alt": {"type": "number"},
+        "accuracy": {"type": "number"}
+      }
+    },
+    "c8y_RequiredAvailability": {
+      "type": "object",
+      "properties": {
+        "responseInterval": {"type": "integer", "description": "Expected response interval in minutes."}
+      }
+    },
+    "c8y_Availability": {
+      "type": "object",
+      "properties": {
+        "status": {"type": "string", "enum": ["AVAILABLE", "UNAVAILABLE", "MAINTENANCE"]},
+        "lastMessage": {"type": "string", "format": "date-time"}
+      }
+    },
+    "c8y_SupportedOperations": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "c8y_SupportedMeasurements": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "childDevices": {"type": "object"},
+    "childAssets": {"type": "object"},
+    "childAdditions": {"type": "object"},
+    "deviceParents": {"type": "object"},
+    "assetParents": {"type": "object"}
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,74 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Cumulocity Device Control API — Operations
+  description: Send and track operations (commands) to Cumulocity devices including restart, firmware, software, configuration, and shell commands.
+  tags: [Cumulocity, Operations, Device Control]
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    C8Y_BASE_URL: C8Y_BASE_URL
+    C8Y_USER: C8Y_USER
+    C8Y_PASSWORD: C8Y_PASSWORD
+capability:
+  consumes:
+  - type: http
+    namespace: device-control-operations
+    baseUri: '{{env.C8Y_BASE_URL}}'
+    resources:
+    - name: operations
+      path: /devicecontrol/operations
+      operations:
+      - name: listoperations
+        method: GET
+        description: List Operations
+        inputParameters:
+        - {name: deviceId, in: query, type: string}
+        - {name: status, in: query, type: string}
+        - {name: dateFrom, in: query, type: string}
+        - {name: dateTo, in: query, type: string}
+      - name: createoperation
+        method: POST
+        description: Create An Operation
+        inputParameters:
+        - {name: body, in: body, type: object, required: true}
+    - name: operation
+      path: /devicecontrol/operations/{id}
+      operations:
+      - name: getoperation
+        method: GET
+        description: Retrieve An Operation
+        inputParameters:
+        - {name: id, in: path, type: string, required: true}
+      - name: updateoperation
+        method: PUT
+        description: Update An Operation
+        inputParameters:
+        - {name: id, in: path, type: string, required: true}
+        - {name: body, in: body, type: object, required: true}
+    authentication:
+      type: basic
+      username: '{{env.C8Y_USER}}'
+      password: '{{env.C8Y_PASSWORD}}'
+  exposes:
+  - type: mcp
+    namespace: device-control-operations-mcp
+    port: 9090
+    transport: http
+    tools:
+    - name: cumulocity-list-operations
+      description: List operations sent to Cumulocity devices.
+      hints: {readOnly: true, destructive: false, idempotent: true}
+      call: device-control-operations.listoperations
+      with: {deviceId: tools.deviceId, status: tools.status, dateFrom: tools.dateFrom, dateTo: tools.dateTo}
+    - name: cumulocity-send-operation
+      description: Send an operation (command) to a Cumulocity device (e.g. c8y_Restart, c8y_Firmware, c8y_Command).
+      hints: {readOnly: false, destructive: false, idempotent: false}
+      call: device-control-operations.createoperation
+      with: {body: tools.body}
+    - name: cumulocity-update-operation-status
+      description: Update the status of an operation (e.g. mark EXECUTING -> SUCCESSFUL).
+      hints: {readOnly: false, destructive: false, idempotent: true}
+      call: device-control-operations.updateoperation
+      with: {id: tools.id, body: tools.body}

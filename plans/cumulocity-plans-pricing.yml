@@ -1,0 +1,175 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: Cumulocity
+providerId: cumulocity
+created: '2026-05-25'
+modified: '2026-05-25'
+reconciled: true
+tags:
+  - IoT
+  - AIoT
+  - Industrial IoT
+  - Device Management
+description: 'Reconciled plans and pricing for the Cumulocity AIoT platform across Cloud (Starter, Business, Enterprise) and Edge (Connected, Air-Gapped) offerings. Source: cumulocity.com/pricing and product documentation.'
+sources:
+  - https://cumulocity.com/pricing/
+  - https://cumulocity.com/docs/
+plans:
+  - id: cumulocity-free-trial
+    name: Free Trial
+    type: free
+    description: 30-day full-platform trial with up to 10 devices and access to all standard features.
+    entries:
+      - label: Trial users
+        name: trial
+        type: included
+        metric: tenant
+        limit: 1
+        unit: 1
+        price: '0'
+        timeFrame: trial
+        geo: global
+        userMultiplied: false
+        description: Up to 10 connected devices for 30 days.
+  - id: cumulocity-starter
+    name: Starter
+    type: subscription
+    description: Fixed-price entry tier for proof-of-concepts and small deployments.
+    entries:
+      - label: Monthly subscription
+        name: subscription
+        type: recurring
+        metric: tenant
+        limit: 1
+        unit: 1
+        price: '215'
+        currency: EUR
+        timeFrame: month
+        geo: global
+        userMultiplied: false
+        description: Billed annually. Up to 2.5M platform messages per month.
+      - label: Platform messages
+        name: messages
+        type: included
+        metric: messages
+        limit: 2500000
+        unit: 1
+        price: '0'
+        timeFrame: month
+        geo: global
+        userMultiplied: false
+      - label: SLA
+        name: sla
+        type: included
+        metric: uptime
+        limit: 95
+        unit: percent
+        price: '0'
+        timeFrame: month
+        description: 95% uptime guarantee.
+      - label: Data retention
+        name: retention
+        type: included
+        metric: days
+        limit: 30
+        unit: 1
+        price: '0'
+        timeFrame: month
+        description: 30-day data retention.
+  - id: cumulocity-business
+    name: Business
+    type: contract
+    description: Production tier for mid-market deployments with multi-region tenant placement and 24/7 crisis support.
+    entries:
+      - label: Subscription
+        name: subscription
+        type: recurring
+        metric: contract
+        limit: -1
+        unit: 1
+        price: 'Contact Sales'
+        timeFrame: year
+        geo: global
+        userMultiplied: false
+      - label: Platform messages
+        name: messages
+        type: metered
+        metric: messages
+        limit: 250000000
+        unit: 1
+        price: 'Contact Sales'
+        timeFrame: month
+        description: Up to 250M platform messages per month.
+      - label: SLA
+        name: sla
+        type: included
+        metric: uptime
+        limit: 99
+        unit: percent
+        price: '0'
+        timeFrame: month
+        description: 99.0% uptime guarantee with 24/7 crisis phone support.
+  - id: cumulocity-enterprise
+    name: Enterprise
+    type: contract
+    description: Largest tier with unlimited messages, isolated infrastructure, 24/7 all-incident support, and fully customizable platform.
+    entries:
+      - label: Subscription
+        name: subscription
+        type: recurring
+        metric: contract
+        limit: -1
+        unit: 1
+        price: 'Contact Sales'
+        timeFrame: year
+        geo: global
+        userMultiplied: false
+      - label: Platform messages
+        name: messages
+        type: metered
+        metric: messages
+        limit: -1
+        unit: 1
+        price: 'Contact Sales'
+        timeFrame: month
+        description: Unlimited messages with isolated infrastructure.
+      - label: SLA
+        name: sla
+        type: included
+        metric: uptime
+        limit: 99.9
+        unit: percent
+        price: '0'
+        timeFrame: month
+        description: 99.9% uptime guarantee with 24/7 all-incident support.
+  - id: cumulocity-edge-connected
+    name: Edge — Connected
+    type: contract
+    description: Single-node on-premises deployment with selective cloud-tenant sync.
+    entries:
+      - label: Subscription
+        name: subscription
+        type: recurring
+        metric: node
+        limit: 1
+        unit: 1
+        price: 'Contact Sales'
+        timeFrame: year
+        geo: global
+        userMultiplied: false
+  - id: cumulocity-edge-airgapped
+    name: Edge — Air-Gapped
+    type: contract
+    description: Fully offline single-node on-premises deployment for regulated and isolated networks.
+    entries:
+      - label: Subscription
+        name: subscription
+        type: recurring
+        metric: node
+        limit: 1
+        unit: 1
+        price: 'Contact Sales'
+        timeFrame: year
+        geo: global
+        userMultiplied: false

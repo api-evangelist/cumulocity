@@ -1,0 +1,74 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Cumulocity Retention API — Rules
+  description: Define and update retention rules that automatically delete old measurements, events, alarms, audit records, and operations.
+  tags: [Cumulocity, Retention, Data Lifecycle]
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    C8Y_BASE_URL: C8Y_BASE_URL
+    C8Y_USER: C8Y_USER
+    C8Y_PASSWORD: C8Y_PASSWORD
+capability:
+  consumes:
+  - type: http
+    namespace: retention-rules
+    baseUri: '{{env.C8Y_BASE_URL}}'
+    resources:
+    - name: retentions
+      path: /retention/retentions
+      operations:
+      - name: listretentionrules
+        method: GET
+        description: List Retention Rules
+      - name: createretentionrule
+        method: POST
+        description: Create A Retention Rule
+        inputParameters:
+        - {name: body, in: body, type: object, required: true}
+    - name: retention
+      path: /retention/retentions/{id}
+      operations:
+      - name: getretentionrule
+        method: GET
+        description: Retrieve A Retention Rule
+        inputParameters:
+        - {name: id, in: path, type: string, required: true}
+      - name: updateretentionrule
+        method: PUT
+        description: Update A Retention Rule
+        inputParameters:
+        - {name: id, in: path, type: string, required: true}
+        - {name: body, in: body, type: object, required: true}
+      - name: deleteretentionrule
+        method: DELETE
+        description: Delete A Retention Rule
+        inputParameters:
+        - {name: id, in: path, type: string, required: true}
+    authentication:
+      type: basic
+      username: '{{env.C8Y_USER}}'
+      password: '{{env.C8Y_PASSWORD}}'
+  exposes:
+  - type: mcp
+    namespace: retention-rules-mcp
+    port: 9090
+    transport: http
+    tools:
+    - name: cumulocity-list-retention-rules
+      description: List configured Cumulocity retention rules.
+      hints: {readOnly: true, destructive: false, idempotent: true}
+      call: retention-rules.listretentionrules
+      with: {}
+    - name: cumulocity-create-retention-rule
+      description: Create a retention rule that automatically deletes old data of a chosen type.
+      hints: {readOnly: false, destructive: false, idempotent: false}
+      call: retention-rules.createretentionrule
+      with: {body: tools.body}
+    - name: cumulocity-delete-retention-rule
+      description: Delete a Cumulocity retention rule.
+      hints: {readOnly: false, destructive: true, idempotent: true}
+      call: retention-rules.deleteretentionrule
+      with: {id: tools.id}

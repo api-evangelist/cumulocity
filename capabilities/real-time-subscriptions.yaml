@@ -1,0 +1,42 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Cumulocity Real-Time Notifications — Bayeux
+  description: Subscribe to Cumulocity managed-object, measurement, event, alarm, and operation channels via the Bayeux/CometD long-poll protocol.
+  tags: [Cumulocity, Real-Time, Bayeux, CometD]
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    C8Y_BASE_URL: C8Y_BASE_URL
+    C8Y_USER: C8Y_USER
+    C8Y_PASSWORD: C8Y_PASSWORD
+capability:
+  consumes:
+  - type: http
+    namespace: real-time-subscriptions
+    baseUri: '{{env.C8Y_BASE_URL}}'
+    resources:
+    - name: realtime
+      path: /notification/realtime
+      operations:
+      - name: bayeux
+        method: POST
+        description: Bayeux Handshake / Connect / Subscribe / Disconnect
+        inputParameters:
+        - {name: body, in: body, type: object, required: true}
+    authentication:
+      type: basic
+      username: '{{env.C8Y_USER}}'
+      password: '{{env.C8Y_PASSWORD}}'
+  exposes:
+  - type: mcp
+    namespace: real-time-subscriptions-mcp
+    port: 9090
+    transport: http
+    tools:
+    - name: cumulocity-bayeux-call
+      description: Send a Bayeux/CometD message (handshake/connect/subscribe/unsubscribe/disconnect) to the Cumulocity real-time endpoint.
+      hints: {readOnly: false, destructive: false, idempotent: false}
+      call: real-time-subscriptions.bayeux
+      with: {body: tools.body}

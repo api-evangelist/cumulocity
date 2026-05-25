@@ -1,0 +1,115 @@
+specification: API Commons Vocabulary
+specificationVersion: '0.1'
+provider: Cumulocity
+providerId: cumulocity
+created: '2026-05-25'
+modified: '2026-05-25'
+description: Domain vocabulary for the Cumulocity AIoT platform, covering its REST domain model (inventory, measurements, events, alarms, operations), device-integration constructs (MQTT, SmartREST, bootstrap, identity), platform constructs (tenants, applications, audit, retention), and analytics surfaces (DataHub, DTM, Streaming Analytics, Edge).
+tags:
+  - IoT
+  - AIoT
+  - Vocabulary
+  - Taxonomy
+operationalConcepts:
+  - term: Managed Object
+    description: The universal Cumulocity resource representing any device, asset, group, or digital twin.
+    aliases: [mo, managedObject]
+  - term: Fragment
+    description: A typed key on a managed object, measurement, event, alarm, or operation. Names usually prefixed with c8y_ for built-in fragments.
+  - term: Measurement
+    description: A time-stamped data point reported by a Cumulocity device.
+  - term: Event
+    description: A discrete happening emitted by a device or application.
+  - term: Alarm
+    description: A monitored condition with severity (CRITICAL/MAJOR/MINOR/WARNING) and status (ACTIVE/ACKNOWLEDGED/CLEARED). Auto-deduplicated on (source, type).
+  - term: Operation
+    description: A command targeting a device. Transitions PENDING -> EXECUTING -> SUCCESSFUL or FAILED.
+  - term: Bulk Operation
+    description: A single request that applies the same operation prototype to every device in a group.
+  - term: External ID
+    description: A device identifier from outside Cumulocity (IMEI, serial, MAC, ICCID) bound to a managed object via the Identity API.
+deviceIntegration:
+  - term: Bootstrap User
+    description: Shared user a factory-fresh device uses to authenticate to the Cumulocity bootstrap endpoint.
+  - term: Registration Request
+    description: A pending acceptance entry in /devicecontrol/newDeviceRequests that, when accepted, unlocks the device's tenant-scoped credentials.
+  - term: SmartREST 2.0
+    description: CSV-based MQTT payload format with static and custom templates. Saves up to 80% mobile traffic vs JSON.
+  - term: Static Template
+    description: Built-in SmartREST template numbered 100-999 covering common operations like device identity, measurements, events, alarms.
+  - term: Custom Template
+    description: Tenant-defined SmartREST template addressed by X-ID on the s/uc and s/dc topics.
+  - term: Cloud Remote Access
+    description: SSH/VNC/Telnet to a device routed through the Cumulocity cloud.
+  - term: thin-edge.io
+    description: Upstream open-source edge agent maintained by the Cumulocity community.
+platformConcepts:
+  - term: Tenant
+    description: An isolated Cumulocity environment. Tenants are subdomains of the platform host.
+  - term: Management Tenant
+    description: The top-level tenant in an Enterprise hierarchy with rights to create sub-tenants.
+  - term: Enterprise Tenant
+    description: A tenant licensed for sub-tenant management, brandable UI, and infrastructure isolation.
+  - term: Sub-Tenant
+    description: A tenant nested below a management or enterprise tenant.
+  - term: Tenant Option
+    description: A key-value (optionally encrypted) configuration entry scoped to a tenant.
+  - term: Application
+    description: A Cumulocity application — microservice, hosted web app, or external.
+  - term: Microservice
+    description: A Cumulocity-hosted containerized application running on the platform's managed runtime.
+  - term: Bootstrap User (Microservice)
+    description: Auto-generated credential a microservice uses to authenticate to the platform.
+  - term: Audit Record
+    description: An immutable log entry capturing a user, application, or device action.
+  - term: Retention Rule
+    description: An age-based deletion policy applied to measurements, events, alarms, audit records, or operations.
+realTimeConcepts:
+  - term: Real-Time Notifications (legacy)
+    description: Bayeux/CometD long-poll protocol exposed at /notification/realtime.
+  - term: Notification 2.0
+    description: Persistent, ordered, WebSocket-based notification streaming exposed at /notification2.
+  - term: Subscription
+    description: A typed Notification 2.0 declaration (mo / measurements / events / alarms / operations) at tenant or managed-object scope.
+  - term: Subscription Token
+    description: Short-lived JWT exchanged from a Notification 2.0 subscription, used to connect the WebSocket consumer.
+analyticsConcepts:
+  - term: DataHub
+    description: Parquet-backed data-lake offload of the Cumulocity operational MongoDB, queryable via Dremio SQL.
+  - term: Offload Configuration
+    description: A DataHub pipeline definition that specifies source, filter, schedule, and target dataset.
+  - term: Digital Twin Manager (DTM)
+    description: Asset-modeling system overlaying typed asset models, instances, properties, and smart functions on top of managed objects.
+  - term: Asset Model
+    description: A DTM type with typed properties, allowed subtypes, and smart-function expressions.
+  - term: Asset Instance
+    description: A DTM resource referencing an underlying managed object.
+  - term: Smart Function
+    description: A DTM computed-value expression evaluated against an asset instance's data.
+  - term: Streaming Analytics
+    description: Apama-powered real-time analytics with EPL Apps and the Analytics Builder low-code block editor.
+  - term: Analytics Builder Block
+    description: A reusable low-code processing unit composed in the Analytics Builder UI.
+  - term: EPL App
+    description: A piece of Apama Event Processing Language code deployed to Streaming Analytics.
+edgeConcepts:
+  - term: Edge (Connected)
+    description: Single-node on-prem Cumulocity that mirrors a subset of data to a cloud tenant.
+  - term: Edge (Air-Gapped)
+    description: Single-node on-prem Cumulocity with no cloud connectivity.
+  - term: Cloud Sync
+    description: Edge configuration determining which data types and rates are pushed to the cloud tenant.
+identitiesAndAccess:
+  - term: Global Role
+    description: Tenant-wide role granting access to API surfaces.
+  - term: Inventory Role
+    description: Per-managed-object-subtree role granting permissions over a particular slice of the inventory.
+  - term: Device Permission
+    description: A user permission scoped to a specific device or device group.
+  - term: User Group
+    description: A grouping of users with shared global roles and device permissions.
+fragmentNamespaces:
+  - prefix: c8y_
+    description: Built-in Cumulocity fragment namespace.
+  - prefix: tenant-defined
+    description: Custom fragments authored by integrators using any non-c8y_ prefix.

@@ -1,0 +1,9 @@
+{
+  "subscription": "alarms-and-measurements",
+  "context": "tenant",
+  "subscriptionFilter": {
+    "apis": ["alarms", "measurements"],
+    "typeFilter": "c8y_Temperature|c8y_DoorOpenAlarm"
+  },
+  "nonPersistent": false
+}

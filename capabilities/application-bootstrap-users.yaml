@@ -1,0 +1,42 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Cumulocity Application API — Bootstrap Users
+  description: Retrieve the bootstrap user credentials a Cumulocity microservice uses to authenticate to the platform.
+  tags: [Cumulocity, Microservices, Bootstrap Users]
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    C8Y_BASE_URL: C8Y_BASE_URL
+    C8Y_USER: C8Y_USER
+    C8Y_PASSWORD: C8Y_PASSWORD
+capability:
+  consumes:
+  - type: http
+    namespace: application-bootstrap-users
+    baseUri: '{{env.C8Y_BASE_URL}}'
+    resources:
+    - name: bootstrap-user
+      path: /application/applications/{id}/bootstrapUser
+      operations:
+      - name: getbootstrapuser
+        method: GET
+        description: Retrieve The Bootstrap User Of A Microservice Application
+        inputParameters:
+        - {name: id, in: path, type: string, required: true}
+    authentication:
+      type: basic
+      username: '{{env.C8Y_USER}}'
+      password: '{{env.C8Y_PASSWORD}}'
+  exposes:
+  - type: mcp
+    namespace: application-bootstrap-users-mcp
+    port: 9090
+    transport: http
+    tools:
+    - name: cumulocity-get-bootstrap-user
+      description: Get the bootstrap user credentials for a Cumulocity microservice application.
+      hints: {readOnly: true, destructive: false, idempotent: true}
+      call: application-bootstrap-users.getbootstrapuser
+      with: {id: tools.id}

@@ -1,0 +1,75 @@
+openapi: 3.0.3
+info:
+  title: Cumulocity Real-Time Notifications API
+  version: 10.20.0
+  description: |
+    Bayeux/CometD-based long-poll subscription protocol for receiving live updates of measurements, events,
+    alarms, operations, and inventory changes. Predates Notification 2.0 but remains the default for the Web
+    SDK and legacy integrations.
+servers:
+- url: https://{tenant}.cumulocity.com
+  variables:
+    tenant:
+      default: example
+security:
+- basicAuth: []
+- bearerAuth: []
+tags:
+- name: Bayeux Handshake
+- name: Subscription
+paths:
+  /notification/realtime:
+    post:
+      tags: [Bayeux Handshake]
+      summary: Bayeux Channel Endpoint (Handshake, Connect, Subscribe, Disconnect)
+      operationId: bayeuxChannelEndpoint
+      description: |
+        Single endpoint for the Bayeux/CometD protocol. The channel of the message body determines the
+        action — `/meta/handshake`, `/meta/connect`, `/meta/subscribe`, `/meta/unsubscribe`,
+        `/meta/disconnect`. Subscribe to channels such as `/measurements/{deviceId}`,
+        `/events/{deviceId}`, `/alarms/{deviceId}`, `/operations/{deviceId}`, `/managedobjects/{deviceId}`.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BayeuxMessage'
+      responses:
+        '200':
+          description: Bayeux protocol response.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BayeuxMessage'
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    BayeuxMessage:
+      type: object
+      required: [channel]
+      properties:
+        channel: {type: string}
+        clientId: {type: string}
+        id: {type: string}
+        data: {}
+        successful: {type: boolean}
+        subscription: {type: string}
+        ext:
+          type: object
+        advice:
+          type: object
+        supportedConnectionTypes:
+          type: array
+          items: {type: string}
+        connectionType: {type: string}
+        version: {type: string}
+        minimumVersion: {type: string}

@@ -1,0 +1,74 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Cumulocity Tenant API — Tenants
+  description: Manage Cumulocity sub-tenants in enterprise and management hierarchies.
+  tags: [Cumulocity, Tenants, Multi-Tenancy]
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    C8Y_BASE_URL: C8Y_BASE_URL
+    C8Y_USER: C8Y_USER
+    C8Y_PASSWORD: C8Y_PASSWORD
+capability:
+  consumes:
+  - type: http
+    namespace: tenant-tenants
+    baseUri: '{{env.C8Y_BASE_URL}}'
+    resources:
+    - name: tenants
+      path: /tenant/tenants
+      operations:
+      - name: listtenants
+        method: GET
+        description: List Tenants
+      - name: createtenant
+        method: POST
+        description: Create A Tenant
+        inputParameters:
+        - {name: body, in: body, type: object, required: true}
+    - name: tenant
+      path: /tenant/tenants/{tenantId}
+      operations:
+      - name: gettenant
+        method: GET
+        description: Retrieve A Tenant
+        inputParameters:
+        - {name: tenantId, in: path, type: string, required: true}
+      - name: updatetenant
+        method: PUT
+        description: Update A Tenant
+        inputParameters:
+        - {name: tenantId, in: path, type: string, required: true}
+        - {name: body, in: body, type: object, required: true}
+      - name: deletetenant
+        method: DELETE
+        description: Delete A Tenant
+        inputParameters:
+        - {name: tenantId, in: path, type: string, required: true}
+    authentication:
+      type: basic
+      username: '{{env.C8Y_USER}}'
+      password: '{{env.C8Y_PASSWORD}}'
+  exposes:
+  - type: mcp
+    namespace: tenant-tenants-mcp
+    port: 9090
+    transport: http
+    tools:
+    - name: cumulocity-list-tenants
+      description: List Cumulocity sub-tenants.
+      hints: {readOnly: true, destructive: false, idempotent: true}
+      call: tenant-tenants.listtenants
+      with: {}
+    - name: cumulocity-create-tenant
+      description: Create a Cumulocity sub-tenant.
+      hints: {readOnly: false, destructive: false, idempotent: false}
+      call: tenant-tenants.createtenant
+      with: {body: tools.body}
+    - name: cumulocity-delete-tenant
+      description: Delete a Cumulocity sub-tenant.
+      hints: {readOnly: false, destructive: true, idempotent: true}
+      call: tenant-tenants.deletetenant
+      with: {tenantId: tools.tenantId}

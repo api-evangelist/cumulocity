@@ -1,0 +1,67 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Cumulocity Inventory API — Child References
+  description: Manage parent/child references between Cumulocity managed objects (childDevices, childAssets, childAdditions).
+  tags: [Cumulocity, Inventory, Hierarchy]
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    C8Y_BASE_URL: C8Y_BASE_URL
+    C8Y_USER: C8Y_USER
+    C8Y_PASSWORD: C8Y_PASSWORD
+capability:
+  consumes:
+  - type: http
+    namespace: inventory-child-references
+    baseUri: '{{env.C8Y_BASE_URL}}'
+    resources:
+    - name: child-devices
+      path: /inventory/managedObjects/{id}/childDevices
+      operations:
+      - name: listchilddevices
+        method: GET
+        description: List Child Devices
+        inputParameters:
+        - {name: id, in: path, type: string, required: true}
+      - name: addchilddevice
+        method: POST
+        description: Add A Child Device
+        inputParameters:
+        - {name: id, in: path, type: string, required: true}
+        - {name: body, in: body, type: object, required: true}
+    - name: child-assets
+      path: /inventory/managedObjects/{id}/childAssets
+      operations:
+      - name: listchildassets
+        method: GET
+        description: List Child Assets
+        inputParameters:
+        - {name: id, in: path, type: string, required: true}
+      - name: addchildasset
+        method: POST
+        description: Add A Child Asset
+        inputParameters:
+        - {name: id, in: path, type: string, required: true}
+        - {name: body, in: body, type: object, required: true}
+    authentication:
+      type: basic
+      username: '{{env.C8Y_USER}}'
+      password: '{{env.C8Y_PASSWORD}}'
+  exposes:
+  - type: mcp
+    namespace: inventory-child-references-mcp
+    port: 9090
+    transport: http
+    tools:
+    - name: cumulocity-list-child-devices
+      description: List child devices of a Cumulocity managed object.
+      hints: {readOnly: true, destructive: false, idempotent: true}
+      call: inventory-child-references.listchilddevices
+      with: {id: tools.id}
+    - name: cumulocity-add-child-device
+      description: Add a child device reference to a managed object.
+      hints: {readOnly: false, destructive: false, idempotent: false}
+      call: inventory-child-references.addchilddevice
+      with: {id: tools.id, body: tools.body}

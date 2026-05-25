@@ -1,0 +1,64 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Cumulocity Device Control API — Bulk Operations
+  description: Target a Cumulocity device group with a single bulk operation (e.g. roll out a firmware update across a fleet).
+  tags: [Cumulocity, Bulk Operations, Device Control, Fleet]
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    C8Y_BASE_URL: C8Y_BASE_URL
+    C8Y_USER: C8Y_USER
+    C8Y_PASSWORD: C8Y_PASSWORD
+capability:
+  consumes:
+  - type: http
+    namespace: device-control-bulk-operations
+    baseUri: '{{env.C8Y_BASE_URL}}'
+    resources:
+    - name: bulk-operations
+      path: /devicecontrol/bulkoperations
+      operations:
+      - name: listbulkoperations
+        method: GET
+        description: List Bulk Operations
+      - name: createbulkoperation
+        method: POST
+        description: Create A Bulk Operation
+        inputParameters:
+        - {name: body, in: body, type: object, required: true}
+    - name: bulk-operation
+      path: /devicecontrol/bulkoperations/{id}
+      operations:
+      - name: getbulkoperation
+        method: GET
+        description: Retrieve A Bulk Operation
+        inputParameters:
+        - {name: id, in: path, type: string, required: true}
+      - name: updatebulkoperation
+        method: PUT
+        description: Update A Bulk Operation
+        inputParameters:
+        - {name: id, in: path, type: string, required: true}
+        - {name: body, in: body, type: object, required: true}
+    authentication:
+      type: basic
+      username: '{{env.C8Y_USER}}'
+      password: '{{env.C8Y_PASSWORD}}'
+  exposes:
+  - type: mcp
+    namespace: device-control-bulk-operations-mcp
+    port: 9090
+    transport: http
+    tools:
+    - name: cumulocity-create-bulk-operation
+      description: Roll an operation out to every device in a Cumulocity group.
+      hints: {readOnly: false, destructive: false, idempotent: false}
+      call: device-control-bulk-operations.createbulkoperation
+      with: {body: tools.body}
+    - name: cumulocity-get-bulk-operation
+      description: Get the progress of a Cumulocity bulk operation (pending/executing/successful/failed counts).
+      hints: {readOnly: true, destructive: false, idempotent: true}
+      call: device-control-bulk-operations.getbulkoperation
+      with: {id: tools.id}

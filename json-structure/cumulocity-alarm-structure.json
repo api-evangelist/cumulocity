@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-structure.github.io/spec/draft-01/schema",
+  "name": "CumulocityAlarm",
+  "title": "Cumulocity Alarm Structure",
+  "description": "Structural model of a Cumulocity alarm — a monitored condition with severity and status, auto-deduplicated by (source, type).",
+  "type": "Object",
+  "properties": {
+    "id": {"type": "String"},
+    "self": {"type": "String"},
+    "time": {"type": "String", "format": "date-time"},
+    "creationTime": {"type": "String", "format": "date-time"},
+    "type": {"type": "String"},
+    "text": {"type": "String"},
+    "severity": {
+      "type": "Enum",
+      "values": ["CRITICAL", "MAJOR", "MINOR", "WARNING"]
+    },
+    "status": {
+      "type": "Enum",
+      "values": ["ACTIVE", "ACKNOWLEDGED", "CLEARED"]
+    },
+    "count": {"type": "Integer"},
+    "firstOccurrenceTime": {"type": "String", "format": "date-time"},
+    "source": {"type": "Reference", "target": "ManagedObjectReference"},
+    "fragments": {
+      "type": "Map",
+      "valueType": "Object",
+      "description": "Fragment-extensible map of typed c8y_* and tenant-defined extensions."
+    }
+  }
+}

@@ -1,0 +1,114 @@
+specification: FinOps Framework
+specificationVersion: '1.0'
+schema: https://www.finops.org/framework/
+provider: Cumulocity
+providerId: cumulocity
+created: '2026-05-25'
+modified: '2026-05-25'
+reconciled: true
+tags:
+  - FinOps
+  - Cost Management
+  - FOCUS
+  - IoT
+  - Messages
+description: FOCUS-aligned FinOps definition for the Cumulocity AIoT platform. Per-tenant message metering with separate lanes for ingestion (REST/MQTT), Notification 2.0 fan-out, DataHub offload jobs, and microservice container hours.
+sources:
+  - https://cumulocity.com/pricing/
+  - https://cumulocity.com/docs/concepts/tenant-types/
+  - https://cumulocity.com/docs/datahub/datahub-overview/
+alignedWith:
+  framework: FinOps Foundation Framework
+  frameworkUrl: https://www.finops.org/framework/
+  dataSpec: FOCUS
+  dataSpecVersion: '1.3'
+  dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
+publisherName: Cumulocity
+serviceCategory: Internet of Things
+billingModel:
+  pricingCategory: Subscription with Usage Overages
+  billingFrequency: Annual
+  billingCurrency: EUR
+  chargeCategories:
+    - Usage
+    - Purchase
+    - Tax
+    - Credit
+    - Adjustment
+  primaryUnit: message
+  secondaryUnits:
+    - device
+    - container_hour
+    - gb_storage
+    - mtok_dremio_query
+focusColumns:
+  ServiceName: Cumulocity Platform
+  ServiceCategory: Internet of Things
+  ProviderName: Cumulocity
+  PublisherName: Cumulocity
+  InvoiceIssuerName: Cumulocity
+  PricingCategory: Subscription with Usage Overages
+  PricingUnit: 1M messages
+  BillingCurrency: EUR
+meters:
+  - name: platform_messages
+    unit: message
+    aggregation: sum
+    dimensions:
+      - tenant
+      - source_api
+      - protocol
+    description: Every REST request, MQTT publish, and Notification 2.0 push counts as 1+ platform messages per the Cumulocity message-counting rules.
+  - name: connected_devices
+    unit: device
+    aggregation: max-in-period
+    dimensions:
+      - tenant
+  - name: storage_gb
+    unit: gigabyte
+    aggregation: max-in-period
+    dimensions:
+      - tenant
+      - data_type
+  - name: microservice_container_hours
+    unit: container_hour
+    aggregation: sum
+    dimensions:
+      - tenant
+      - application_id
+      - memory_tier
+  - name: datahub_offload_volume_gb
+    unit: gigabyte
+    aggregation: sum
+    dimensions:
+      - tenant
+      - source_table
+  - name: datahub_query_rows_scanned
+    unit: row
+    aggregation: sum
+    dimensions:
+      - tenant
+      - dataset
+costAllocation:
+  primary: tenant
+  secondary:
+    - sub-tenant
+    - application_id
+    - device_group
+  enterpriseRollups:
+    - management tenant
+    - enterprise tenant
+    - sub-tenant
+billingSurfaces:
+  - name: Tenant Statistics API
+    api: /tenant/statistics
+    cadence: daily
+    description: Per-day usage statistics including messages, storage, and devices per tenant.
+  - name: Cumulocity Invoice
+    cadence: monthly-or-annual
+    description: Combined subscription + overage invoice from Cumulocity Billing.
+notes:
+  - Platform-message counting follows Cumulocity's published message-multiplier table — a single REST POST may count as 1 message but a notification fanout can multiply.
+  - DataHub and DTM each carry their own subscription line in Business and Enterprise plans.
+  - Edge is licensed per node, not per message; cloud-sync traffic counts against the connected cloud tenant's message budget.
+  - Sub-tenants in Enterprise hierarchies are billed back to the management tenant via Tenant Statistics rollups.

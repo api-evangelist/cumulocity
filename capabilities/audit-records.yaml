@@ -1,0 +1,61 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Cumulocity Audit API — Records
+  description: Read the immutable Cumulocity audit trail of user, application, and managed-object actions for compliance and forensics.
+  tags: [Cumulocity, Audit, Compliance]
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    C8Y_BASE_URL: C8Y_BASE_URL
+    C8Y_USER: C8Y_USER
+    C8Y_PASSWORD: C8Y_PASSWORD
+capability:
+  consumes:
+  - type: http
+    namespace: audit-records
+    baseUri: '{{env.C8Y_BASE_URL}}'
+    resources:
+    - name: audit-records
+      path: /audit/auditRecords
+      operations:
+      - name: listauditrecords
+        method: GET
+        description: List Audit Records
+        inputParameters:
+        - {name: source, in: query, type: string}
+        - {name: type, in: query, type: string}
+        - {name: user, in: query, type: string}
+        - {name: application, in: query, type: string}
+        - {name: dateFrom, in: query, type: string}
+        - {name: dateTo, in: query, type: string}
+        - {name: revert, in: query, type: boolean}
+      - name: createauditrecord
+        method: POST
+        description: Create An Audit Record
+        inputParameters:
+        - {name: body, in: body, type: object, required: true}
+    - name: audit-record
+      path: /audit/auditRecords/{id}
+      operations:
+      - name: getauditrecord
+        method: GET
+        description: Retrieve An Audit Record
+        inputParameters:
+        - {name: id, in: path, type: string, required: true}
+    authentication:
+      type: basic
+      username: '{{env.C8Y_USER}}'
+      password: '{{env.C8Y_PASSWORD}}'
+  exposes:
+  - type: mcp
+    namespace: audit-records-mcp
+    port: 9090
+    transport: http
+    tools:
+    - name: cumulocity-list-audit-records
+      description: Query the immutable Cumulocity audit log by user, application, source, type, or time range.
+      hints: {readOnly: true, destructive: false, idempotent: true}
+      call: audit-records.listauditrecords
+      with: {source: tools.source, type: tools.type, user: tools.user, application: tools.application, dateFrom: tools.dateFrom, dateTo: tools.dateTo}

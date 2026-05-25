@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/cumulocity/main/json-schema/cumulocity-measurement-schema.json",
+  "title": "Cumulocity Measurement",
+  "description": "A time-stamped data point reported by a Cumulocity-connected device. Measurements are fragment-extensible — custom fragments contain typed series with value+unit pairs.",
+  "type": "object",
+  "required": ["time", "type", "source"],
+  "properties": {
+    "id": {"type": "string", "readOnly": true},
+    "self": {"type": "string", "format": "uri", "readOnly": true},
+    "time": {"type": "string", "format": "date-time"},
+    "type": {"type": "string", "description": "Measurement type, e.g. c8y_Temperature, c8y_SignalStrength."},
+    "source": {
+      "type": "object",
+      "required": ["id"],
+      "properties": {
+        "id": {"type": "string"},
+        "self": {"type": "string", "format": "uri"}
+      }
+    },
+    "c8y_Temperature": {
+      "type": "object",
+      "properties": {
+        "T": {
+          "type": "object",
+          "properties": {
+            "value": {"type": "number"},
+            "unit": {"type": "string", "examples": ["C", "F"]}
+          }
+        }
+      }
+    },
+    "c8y_SignalStrength": {
+      "type": "object",
+      "properties": {
+        "rssi": {
+          "type": "object",
+          "properties": {
+            "value": {"type": "number"},
+            "unit": {"type": "string", "examples": ["dBm"]}
+          }
+        }
+      }
+    }
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,110 @@
+extends:
+- spectral:oas
+rules:
+  cumulocity-operation-summary-title-case:
+    description: Every operation summary should use Title Case.
+    severity: warn
+    given: $.paths[*][get,post,put,delete,patch]
+    then:
+      field: summary
+      function: pattern
+      functionOptions:
+        match: '^[A-Z][A-Za-z0-9]*(\s[A-Z][A-Za-z0-9]*)*$'
+  cumulocity-operation-id-camel-case:
+    description: operationId should be lowerCamelCase.
+    severity: warn
+    given: $.paths[*][get,post,put,delete,patch]
+    then:
+      field: operationId
+      function: pattern
+      functionOptions:
+        match: '^[a-z][a-zA-Z0-9]*$'
+  cumulocity-tag-singular-noun:
+    description: Tags should be human-readable, Title Case nouns describing a resource collection.
+    severity: warn
+    given: $.tags[*]
+    then:
+      field: name
+      function: pattern
+      functionOptions:
+        match: '^[A-Z][A-Za-z0-9 .]+$'
+  cumulocity-collection-paths-end-with-resource:
+    description: Collection paths should reference the resource collection in plural form (managedObjects, measurements, events, alarms, operations, externalIds, users, groups, applications, options).
+    severity: info
+    given: $.paths
+    then:
+      function: truthy
+  cumulocity-content-type-vendor-json:
+    description: Resource responses should use the application/vnd.com.nsn.cumulocity.* content type.
+    severity: info
+    given: $.paths[*][get,post,put].responses[200,201].content
+    then:
+      function: truthy
+  cumulocity-pagination-parameters:
+    description: List operations should accept pageSize, currentPage, and withTotalPages query parameters.
+    severity: info
+    given: $.paths[*].get.parameters
+    then:
+      function: truthy
+  cumulocity-resource-self-link:
+    description: Resource schemas should expose a `self` URI for HATEOAS navigation.
+    severity: info
+    given: $.components.schemas[*].properties
+    then:
+      field: self
+      function: truthy
+  cumulocity-time-fields-iso8601:
+    description: Time fields (time, creationTime, lastUpdated, firstOccurrenceTime, dateFrom, dateTo) should be RFC 3339 date-time strings.
+    severity: warn
+    given: $.components.schemas[*].properties[time,creationTime,lastUpdated,firstOccurrenceTime,dateFrom,dateTo]
+    then:
+      field: format
+      function: pattern
+      functionOptions:
+        match: '^date-time$|^date$'
+  cumulocity-alarm-severity-enum:
+    description: Alarm severity must use the four canonical values.
+    severity: error
+    given: $.components.schemas.Alarm.properties.severity
+    then:
+      field: enum
+      function: schema
+      functionOptions:
+        schema:
+          type: array
+          items:
+            type: string
+            enum: [CRITICAL, MAJOR, MINOR, WARNING]
+  cumulocity-alarm-status-enum:
+    description: Alarm status must use the three canonical values.
+    severity: error
+    given: $.components.schemas.Alarm.properties.status
+    then:
+      field: enum
+      function: schema
+      functionOptions:
+        schema:
+          type: array
+          items:
+            type: string
+            enum: [ACTIVE, ACKNOWLEDGED, CLEARED]
+  cumulocity-operation-status-enum:
+    description: Operation status must use the four canonical values.
+    severity: error
+    given: $.components.schemas.Operation.properties.status
+    then:
+      field: enum
+      function: schema
+      functionOptions:
+        schema:
+          type: array
+          items:
+            type: string
+            enum: [PENDING, EXECUTING, SUCCESSFUL, FAILED]
+  cumulocity-security-defined:
+    description: Every operation must declare security (basicAuth or bearerAuth).
+    severity: error
+    given: $.paths[*][get,post,put,delete,patch]
+    then:
+      field: security
+      function: defined

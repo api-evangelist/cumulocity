@@ -1,0 +1,137 @@
+openapi: 3.0.3
+info:
+  title: Cumulocity Edge API
+  version: 10.18.0
+  description: |
+    Single-node on-premises deployment of Cumulocity that runs the full platform locally (inventory,
+    events, measurements, alarms, streaming analytics, UI) and optionally syncs selected data to a cloud
+    tenant. Targets factory floors, vessels, and regulated/air-gapped environments.
+servers:
+- url: https://edge.local
+- url: https://{edgeHost}
+  variables:
+    edgeHost:
+      default: edge.local
+security:
+- basicAuth: []
+- bearerAuth: []
+tags:
+- name: System
+- name: Cloud Sync
+- name: Software Updates
+paths:
+  /service/edge/system:
+    get:
+      tags: [System]
+      summary: Retrieve Edge System Status
+      operationId: getEdgeSystemStatus
+      responses:
+        '200':
+          description: System status including version, uptime, disk, and service health.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EdgeSystemStatus'
+  /service/edge/system/restart:
+    post:
+      tags: [System]
+      summary: Restart the Edge System
+      operationId: restartEdge
+      responses:
+        '202':
+          description: Restart requested.
+  /service/edge/cloud-sync:
+    get:
+      tags: [Cloud Sync]
+      summary: Retrieve Cloud Sync Configuration
+      operationId: getCloudSyncConfiguration
+      responses:
+        '200':
+          description: Current cloud-sync configuration.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CloudSyncConfiguration'
+    put:
+      tags: [Cloud Sync]
+      summary: Update Cloud Sync Configuration
+      operationId: updateCloudSyncConfiguration
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CloudSyncConfiguration'
+      responses:
+        '200':
+          description: Cloud-sync configuration updated.
+  /service/edge/updates:
+    get:
+      tags: [Software Updates]
+      summary: List Available Edge Updates
+      operationId: listEdgeUpdates
+      responses:
+        '200':
+          description: Available Edge software releases.
+    post:
+      tags: [Software Updates]
+      summary: Install an Edge Update
+      operationId: installEdgeUpdate
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                version: {type: string}
+      responses:
+        '202':
+          description: Update started.
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    EdgeSystemStatus:
+      type: object
+      properties:
+        version: {type: string}
+        edition:
+          type: string
+          enum: [CONNECTED, AIR_GAPPED]
+        uptime: {type: integer, description: Seconds since boot.}
+        services:
+          type: array
+          items:
+            type: object
+            properties:
+              name: {type: string}
+              status:
+                type: string
+                enum: [RUNNING, STOPPED, FAILED]
+        storage:
+          type: object
+          properties:
+            totalBytes: {type: integer}
+            usedBytes: {type: integer}
+    CloudSyncConfiguration:
+      type: object
+      properties:
+        enabled: {type: boolean}
+        targetTenantUrl: {type: string, format: uri}
+        targetTenantId: {type: string}
+        syncedDataTypes:
+          type: array
+          items:
+            type: string
+            enum: [INVENTORY, MEASUREMENTS, EVENTS, ALARMS, OPERATIONS, AUDIT]
+        bandwidthLimitKbps: {type: integer}
+        bufferingPolicy:
+          type: string
+          enum: [BLOCK, DROP_OLDEST]

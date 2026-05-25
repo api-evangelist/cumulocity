@@ -1,0 +1,5 @@
+100,my-device-001,c8y_MQTTDevice
+110,SG-1000,rev-2026,SG10000001
+200,c8y_Temperature,T,21.5,C
+301,c8y_DoorOpenAlarm,Door open,MAJOR
+400,c8y_LocationUpdate,Vehicle changed location

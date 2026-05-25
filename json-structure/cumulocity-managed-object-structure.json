@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-structure.github.io/spec/draft-01/schema",
+  "name": "CumulocityManagedObject",
+  "title": "Cumulocity Managed Object Structure",
+  "description": "Structural model of a Cumulocity managed object — the universal Cumulocity resource representing any device, asset, group, or digital twin.",
+  "type": "Object",
+  "properties": {
+    "id": {"type": "String", "description": "Cumulocity-assigned ID."},
+    "self": {"type": "String", "description": "Hypermedia self-link."},
+    "type": {"type": "String", "description": "Type discriminator (e.g. c8y_MQTTDevice)."},
+    "name": {"type": "String"},
+    "owner": {"type": "String"},
+    "creationTime": {"type": "String", "format": "date-time"},
+    "lastUpdated": {"type": "String", "format": "date-time"},
+    "fragments": {
+      "type": "Map",
+      "valueType": "Object",
+      "description": "Fragment-extensible map of typed c8y_* and tenant-defined extensions."
+    },
+    "childDevices": {"type": "Reference", "target": "ManagedObjectReferenceCollection"},
+    "childAssets": {"type": "Reference", "target": "ManagedObjectReferenceCollection"},
+    "childAdditions": {"type": "Reference", "target": "ManagedObjectReferenceCollection"},
+    "deviceParents": {"type": "Reference", "target": "ManagedObjectReferenceCollection"},
+    "assetParents": {"type": "Reference", "target": "ManagedObjectReferenceCollection"}
+  }
+}

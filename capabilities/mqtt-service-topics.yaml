@@ -1,0 +1,40 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Cumulocity MQTT Service — Topics
+  description: Standards-compliant multi-tenant MQTT 5.0 broker for arbitrary application-level messaging in a Cumulocity tenant.
+  tags: [Cumulocity, MQTT, MQTT Service]
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    C8Y_MQTT_SERVICE_HOST: C8Y_MQTT_SERVICE_HOST
+    C8Y_TENANT: C8Y_TENANT
+    C8Y_USER: C8Y_USER
+    C8Y_PASSWORD: C8Y_PASSWORD
+capability:
+  consumes:
+  - type: mqtt
+    namespace: cumulocity-mqtt-service
+    description: Cumulocity MQTT Service multi-tenant broker.
+    broker: 'mqtts://{{env.C8Y_MQTT_SERVICE_HOST}}:8883'
+    topics:
+    - name: tenant-topic
+      pattern: '{tenantId}/{topic}'
+      description: Tenant-scoped arbitrary topic.
+      direction: bidirectional
+    authentication:
+      type: basic
+      username: '{{env.C8Y_TENANT}}/{{env.C8Y_USER}}'
+      password: '{{env.C8Y_PASSWORD}}'
+  exposes:
+  - type: mcp
+    namespace: mqtt-service-topics-mcp
+    port: 9090
+    transport: http
+    tools:
+    - name: cumulocity-mqtt-service-publish
+      description: Publish to a tenant-scoped Cumulocity MQTT Service topic.
+      hints: {readOnly: false, destructive: false, idempotent: false}
+      call: cumulocity-mqtt-service.publish
+      with: {topic: tools.topic, payload: tools.payload}

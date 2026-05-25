@@ -1,0 +1,106 @@
+openapi: 3.0.3
+info:
+  title: Cumulocity Identity API
+  version: 10.20.0
+  description: |
+    Link external identifiers (IMEI, serial number, MAC, ICCID, c8y_Serial, etc.) to Cumulocity managed
+    object IDs. The Identity API is the primary lookup table used by device bootstrap, MQTT auto-registration,
+    and any integration translating provider-specific IDs to Cumulocity IDs.
+servers:
+- url: https://{tenant}.cumulocity.com
+  variables:
+    tenant:
+      default: example
+security:
+- basicAuth: []
+- bearerAuth: []
+tags:
+- name: External IDs
+paths:
+  /identity/externalIds/{type}/{externalId}:
+    parameters:
+    - name: type
+      in: path
+      required: true
+      schema: {type: string}
+    - name: externalId
+      in: path
+      required: true
+      schema: {type: string}
+    get:
+      tags: [External IDs]
+      summary: Retrieve an External ID
+      operationId: getExternalId
+      responses:
+        '200':
+          description: A single external ID record.
+          content:
+            application/vnd.com.nsn.cumulocity.externalId+json:
+              schema:
+                $ref: '#/components/schemas/ExternalId'
+    delete:
+      tags: [External IDs]
+      summary: Delete an External ID
+      operationId: deleteExternalId
+      responses:
+        '204':
+          description: External ID deleted.
+  /identity/globalIds/{id}/externalIds:
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema: {type: string}
+    get:
+      tags: [External IDs]
+      summary: List External IDs for Global ID
+      operationId: listExternalIdsForGlobalId
+      responses:
+        '200':
+          description: A collection of external IDs.
+          content:
+            application/vnd.com.nsn.cumulocity.externalIdCollection+json:
+              schema:
+                $ref: '#/components/schemas/ExternalIdCollection'
+    post:
+      tags: [External IDs]
+      summary: Create an External ID
+      operationId: createExternalId
+      requestBody:
+        required: true
+        content:
+          application/vnd.com.nsn.cumulocity.externalId+json:
+            schema:
+              $ref: '#/components/schemas/ExternalId'
+      responses:
+        '201':
+          description: External ID created.
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    ExternalId:
+      type: object
+      properties:
+        self: {type: string, format: uri}
+        externalId: {type: string}
+        type: {type: string}
+        managedObject:
+          type: object
+          properties:
+            id: {type: string}
+            self: {type: string, format: uri}
+    ExternalIdCollection:
+      type: object
+      properties:
+        self: {type: string, format: uri}
+        externalIds:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalId'

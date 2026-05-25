@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/cumulocity/main/json-schema/cumulocity-event-schema.json",
+  "title": "Cumulocity Event",
+  "description": "A discrete happening emitted by a Cumulocity-connected device or application. Events carry a type, time, text, source device, and arbitrary custom fragments. Binary attachments are added via events/{id}/binaries.",
+  "type": "object",
+  "required": ["time", "type", "text", "source"],
+  "properties": {
+    "id": {"type": "string", "readOnly": true},
+    "self": {"type": "string", "format": "uri", "readOnly": true},
+    "time": {"type": "string", "format": "date-time"},
+    "creationTime": {"type": "string", "format": "date-time", "readOnly": true},
+    "type": {"type": "string", "description": "Event type, e.g. c8y_LocationUpdate, c8y_DoorOpened."},
+    "text": {"type": "string"},
+    "source": {
+      "type": "object",
+      "required": ["id"],
+      "properties": {
+        "id": {"type": "string"},
+        "self": {"type": "string", "format": "uri"}
+      }
+    },
+    "c8y_Position": {
+      "type": "object",
+      "properties": {
+        "lat": {"type": "number"},
+        "lng": {"type": "number"},
+        "alt": {"type": "number"},
+        "accuracy": {"type": "number"}
+      }
+    }
+  },
+  "additionalProperties": true
+}

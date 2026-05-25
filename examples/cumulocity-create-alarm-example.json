@@ -1,0 +1,10 @@
+{
+  "time": "2026-05-25T14:30:00.000Z",
+  "type": "c8y_DoorOpenAlarm",
+  "text": "Door has been opened outside business hours",
+  "severity": "MAJOR",
+  "status": "ACTIVE",
+  "source": {
+    "id": "12345"
+  }
+}

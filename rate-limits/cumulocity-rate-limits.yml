@@ -1,0 +1,100 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: Cumulocity
+providerId: cumulocity
+created: '2026-05-25'
+modified: '2026-05-25'
+reconciled: true
+tags:
+  - IoT
+  - Rate Limiting
+  - Throughput
+  - MQTT
+description: Reconciled message-throughput, payload, and concurrency limits for the Cumulocity platform across REST, MQTT (SmartREST), Notification 2.0, and microservice tiers. Per-tenant message quotas are negotiated by plan.
+sources:
+  - https://cumulocity.com/pricing/
+  - https://cumulocity.com/docs/device-integration/mqtt/
+  - https://cumulocity.com/docs/concepts/tenant-types/
+  - https://cumulocity.com/docs/reference/general-aspects/
+headers:
+  limit: x-ratelimit-limit
+  remaining: x-ratelimit-remaining
+  reset: x-ratelimit-reset
+  retryAfter: retry-after
+responseCodes:
+  throttled: 429
+  quotaExceeded: 429
+  payloadTooLarge: 413
+algorithm: leaky-bucket
+quotas:
+  - tier: Starter
+    monthlyMessages: 2500000
+    dataRetentionDays: 30
+    uptimePercent: 95
+  - tier: Business
+    monthlyMessages: 250000000
+    dataRetentionDays: configurable
+    uptimePercent: 99
+  - tier: Enterprise
+    monthlyMessages: unlimited
+    dataRetentionDays: configurable
+    uptimePercent: 99.9
+mqttLimits:
+  - constraint: Max payload size
+    value: 16184
+    unit: bytes
+    note: 16 KiB including header and body for all Core MQTT connections.
+  - constraint: Supported protocols
+    value: MQTT 3.1.1 and MQTT 5.0
+  - constraint: TLS port
+    value: 8883
+  - constraint: Plain port
+    value: 1883
+  - constraint: Validated platform throughput
+    value: 1000000
+    unit: messages/second
+notification2Limits:
+  - constraint: JWT token max TTL
+    value: 1440
+    unit: minutes
+    note: 24 hours maximum for Notification 2.0 subscription tokens.
+  - constraint: Buffered messages per subscriber
+    value: tenant-specific
+    note: Persistent buffer survives subscriber outages; sized by plan.
+restLimits:
+  - constraint: Max collection page size
+    value: 2000
+    unit: items
+    note: pageSize query parameter max.
+  - constraint: Default page size
+    value: 5
+    unit: items
+  - constraint: Concurrent requests per user
+    value: tenant-specific
+    note: Subject to fair-use throttling.
+microserviceLimits:
+  - constraint: Memory tier (XS)
+    cpu: 0.25
+    memory: 256
+    unit: MiB
+  - constraint: Memory tier (S)
+    cpu: 0.5
+    memory: 512
+    unit: MiB
+  - constraint: Memory tier (M)
+    cpu: 1
+    memory: 1024
+    unit: MiB
+  - constraint: Memory tier (L)
+    cpu: 2
+    memory: 2048
+    unit: MiB
+  - constraint: Memory tier (XL)
+    cpu: 4
+    memory: 4096
+    unit: MiB
+notes:
+  - Plan quotas are negotiated for Business and Enterprise tiers; Starter is the only fixed-quota tier published.
+  - Storage and retention default per plan but Enterprise tenants can override via Retention Rules API.
+  - MQTT auto-throttles parse-error-heavy connections via the s/e error channel.
