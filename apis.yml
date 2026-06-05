@@ -1,700 +1,671 @@
 aid: cumulocity
 url: https://raw.githubusercontent.com/api-evangelist/cumulocity/refs/heads/main/apis.yml
 apis:
-- aid: cumulocity:cumulocity-inventory-api
-  name: Cumulocity Inventory API
-  tags:
-  - IoT
-  - Inventory
-  - Managed Objects
-  - Devices
-  - Assets
-  humanURL: https://cumulocity.com/api/core/
-  baseURL: https://{tenant}.cumulocity.com/inventory
-  properties:
-  - url: https://cumulocity.com/api/core/
-    type: Documentation
-  - url: https://cumulocity.com/docs/concepts/domain-model/
-    type: Documentation
-  - url: openapi/cumulocity-inventory-api-openapi.yml
-    type: OpenAPI
-  - url: json-schema/cumulocity-managed-object-schema.json
-    type: JSONSchema
-  - url: json-ld/cumulocity-context.jsonld
-    type: JSONLD
-  - type: NaftikoCapability
-    url: capabilities/inventory-managed-objects.yaml
-  - type: NaftikoCapability
-    url: capabilities/inventory-child-references.yaml
-  description: Manage Cumulocity managed objects which represent any IoT-relevant asset including devices, groups,
-    assets, and digital twins. Supports hierarchical parent/child relationships, fragment-based extensibility,
-    full-text search, and bulk operations on the /inventory/managedObjects collection.
-- aid: cumulocity:cumulocity-identity-api
-  name: Cumulocity Identity API
-  tags:
-  - IoT
-  - Identity
-  - External IDs
-  - Devices
-  humanURL: https://cumulocity.com/api/core/
-  baseURL: https://{tenant}.cumulocity.com/identity
-  properties:
-  - url: https://cumulocity.com/api/core/
-    type: Documentation
-  - url: openapi/cumulocity-identity-api-openapi.yml
-    type: OpenAPI
-  - type: NaftikoCapability
-    url: capabilities/identity-external-ids.yaml
-  description: Link external identifiers (IMEI, serial numbers, MAC addresses, ICCID, c8y_Serial, etc.) to Cumulocity
-    managed object IDs. The Identity API is the primary lookup table used by device bootstrap, MQTT auto-registration,
-    and any integration that needs to translate provider-specific IDs to Cumulocity IDs.
-- aid: cumulocity:cumulocity-measurement-api
-  name: Cumulocity Measurement API
-  tags:
-  - IoT
-  - Measurements
-  - Time Series
-  - Telemetry
-  humanURL: https://cumulocity.com/api/core/
-  baseURL: https://{tenant}.cumulocity.com/measurement
-  properties:
-  - url: https://cumulocity.com/api/core/
-    type: Documentation
-  - url: openapi/cumulocity-measurement-api-openapi.yml
-    type: OpenAPI
-  - url: json-schema/cumulocity-measurement-schema.json
-    type: JSONSchema
-  - type: NaftikoCapability
-    url: capabilities/measurement-measurements.yaml
-  - type: NaftikoCapability
-    url: capabilities/measurement-series.yaml
-  description: Ingest, query, and delete device measurements (telemetry data points) including temperature, voltage,
-    location, and arbitrary custom fragments with units. Supports time-range queries, source filters, type filters,
-    series aggregations (hourly/daily), and bulk creation via the /measurement/measurements collection.
-- aid: cumulocity:cumulocity-event-api
-  name: Cumulocity Event API
-  tags:
-  - IoT
-  - Events
-  - Telemetry
-  humanURL: https://cumulocity.com/api/core/
-  baseURL: https://{tenant}.cumulocity.com/event
-  properties:
-  - url: https://cumulocity.com/api/core/
-    type: Documentation
-  - url: openapi/cumulocity-event-api-openapi.yml
-    type: OpenAPI
-  - url: json-schema/cumulocity-event-schema.json
-    type: JSONSchema
-  - type: NaftikoCapability
-    url: capabilities/event-events.yaml
-  - type: NaftikoCapability
-    url: capabilities/event-binaries.yaml
-  description: Create, query, and delete events emitted by devices and applications. Events capture discrete
-    happenings (door opened, geofence crossed, image captured) with a type, time, text, source device, and arbitrary
-    custom fragments. Binary attachments are supported via the events/{id}/binaries sub-resource.
-- aid: cumulocity:cumulocity-alarm-api
-  name: Cumulocity Alarm API
-  tags:
-  - IoT
-  - Alarms
-  - Monitoring
-  humanURL: https://cumulocity.com/api/core/
-  baseURL: https://{tenant}.cumulocity.com/alarm
-  properties:
-  - url: https://cumulocity.com/api/core/
-    type: Documentation
-  - url: openapi/cumulocity-alarm-api-openapi.yml
-    type: OpenAPI
-  - url: json-schema/cumulocity-alarm-schema.json
-    type: JSONSchema
-  - type: NaftikoCapability
-    url: capabilities/alarm-alarms.yaml
-  description: Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL,
-    MAJOR, MINOR, WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms
-    by source + type so repeated raises increment the count rather than creating duplicates.
-- aid: cumulocity:cumulocity-device-control-api
-  name: Cumulocity Device Control API
-  tags:
-  - IoT
-  - Operations
-  - Device Control
-  - Bulk Operations
-  humanURL: https://cumulocity.com/api/core/
-  baseURL: https://{tenant}.cumulocity.com/devicecontrol
-  properties:
-  - url: https://cumulocity.com/api/core/
-    type: Documentation
-  - url: openapi/cumulocity-device-control-api-openapi.yml
-    type: OpenAPI
-  - type: NaftikoCapability
-    url: capabilities/device-control-operations.yaml
-  - type: NaftikoCapability
-    url: capabilities/device-control-bulk-operations.yaml
-  description: Send and track operations (commands) to devices including firmware updates, configuration changes,
-    software installation, shell commands, and restart requests. Operations move through PENDING, EXECUTING,
-    SUCCESSFUL, FAILED status. Bulk operations let you target an entire device group with a single request.
-- aid: cumulocity:cumulocity-device-bootstrap-api
-  name: Cumulocity Device Bootstrap API
-  tags:
-  - IoT
-  - Device Onboarding
-  - Bootstrap
-  - Registration
-  humanURL: https://cumulocity.com/api/core/
-  baseURL: https://{tenant}.cumulocity.com/devicecontrol/deviceCredentials
-  properties:
-  - url: https://cumulocity.com/api/core/
-    type: Documentation
-  - url: https://cumulocity.com/docs/device-integration/device-integration-introduction/
-    type: Documentation
-  - url: openapi/cumulocity-device-bootstrap-api-openapi.yml
-    type: OpenAPI
-  - type: NaftikoCapability
-    url: capabilities/device-bootstrap-credentials.yaml
-  description: Zero-touch device onboarding flow. A factory-bootstrapped device authenticates with a shared bootstrap
-    user, polls /devicecontrol/deviceCredentials with its external ID, and receives back tenant-scoped credentials
-    once an admin accepts the registration request in the Device Management UI.
-- aid: cumulocity:cumulocity-tenant-api
-  name: Cumulocity Tenant API
-  tags:
-  - IoT
-  - Multi-Tenancy
-  - Administration
-  - Tenant Options
-  humanURL: https://cumulocity.com/api/core/
-  baseURL: https://{tenant}.cumulocity.com/tenant
-  properties:
-  - url: https://cumulocity.com/api/core/
-    type: Documentation
-  - url: openapi/cumulocity-tenant-api-openapi.yml
-    type: OpenAPI
-  - type: NaftikoCapability
-    url: capabilities/tenant-tenants.yaml
-  - type: NaftikoCapability
-    url: capabilities/tenant-options.yaml
-  - type: NaftikoCapability
-    url: capabilities/tenant-statistics.yaml
-  description: Manage Cumulocity tenants (sub-tenants in enterprise and management hierarchies), tenant options
-    (key-value config including encrypted secrets), tenant applications, and tenant usage statistics. Enterprise
-    customers use this API to programmatically provision and meter sub-tenants.
-- aid: cumulocity:cumulocity-user-api
-  name: Cumulocity User API
-  tags:
-  - IoT
-  - Users
-  - Roles
-  - Permissions
-  - RBAC
-  humanURL: https://cumulocity.com/api/core/
-  baseURL: https://{tenant}.cumulocity.com/user
-  properties:
-  - url: https://cumulocity.com/api/core/
-    type: Documentation
-  - url: openapi/cumulocity-user-api-openapi.yml
-    type: OpenAPI
-  - type: NaftikoCapability
-    url: capabilities/user-users.yaml
-  - type: NaftikoCapability
-    url: capabilities/user-groups.yaml
-  - type: NaftikoCapability
-    url: capabilities/user-roles.yaml
-  description: Manage users, user groups, global roles, inventory roles, and device permissions. Cumulocity uses
-    an RBAC model where global roles grant API access and inventory roles grant access to specific managed-object
-    subtrees. Supports SSO via SAML/OIDC and SCIM provisioning for enterprise tenants.
-- aid: cumulocity:cumulocity-application-api
-  name: Cumulocity Application API
-  tags:
-  - IoT
-  - Applications
-  - Microservices
-  - Plugins
-  humanURL: https://cumulocity.com/api/core/
-  baseURL: https://{tenant}.cumulocity.com/application
-  properties:
-  - url: https://cumulocity.com/api/core/
-    type: Documentation
-  - url: https://cumulocity.com/docs/microservice-sdk/
-    type: Documentation
-  - url: openapi/cumulocity-application-api-openapi.yml
-    type: OpenAPI
-  - type: NaftikoCapability
-    url: capabilities/application-applications.yaml
-  - type: NaftikoCapability
-    url: capabilities/application-bootstrap-users.yaml
-  description: Register, subscribe, configure, and upload Cumulocity microservices, hosted web applications, and
-    plugins. Microservices run inside Cumulocity's managed container runtime and authenticate via a bootstrap
-    user issued by this API; web applications are uploaded as ZIPs and served from the tenant subdomain.
-- aid: cumulocity:cumulocity-audit-api
-  name: Cumulocity Audit API
-  tags:
-  - IoT
-  - Audit
-  - Compliance
-  - Governance
-  humanURL: https://cumulocity.com/api/core/
-  baseURL: https://{tenant}.cumulocity.com/audit
-  properties:
-  - url: https://cumulocity.com/api/core/
-    type: Documentation
-  - url: openapi/cumulocity-audit-api-openapi.yml
-    type: OpenAPI
-  - type: NaftikoCapability
-    url: capabilities/audit-records.yaml
-  description: Read the immutable audit trail of changes made within a tenant, including user management actions,
-    operations triggered, and managed-object create/update/delete. Critical for compliance, security review, and
-    incident forensics.
-- aid: cumulocity:cumulocity-retention-api
-  name: Cumulocity Retention Rules API
-  tags:
-  - IoT
-  - Retention
-  - Data Lifecycle
-  - Compliance
-  humanURL: https://cumulocity.com/api/core/
-  baseURL: https://{tenant}.cumulocity.com/retention
-  properties:
-  - url: https://cumulocity.com/api/core/
-    type: Documentation
-  - url: openapi/cumulocity-retention-api-openapi.yml
-    type: OpenAPI
-  - type: NaftikoCapability
-    url: capabilities/retention-rules.yaml
-  description: Define retention rules that automatically delete measurements, events, alarms, audit records, and
-    operations older than a configured age. Rules can be scoped by data type, source, and fragment. Default policies
-    apply per-plan; Enterprise tenants can override.
-- aid: cumulocity:cumulocity-real-time-notifications-api
-  name: Cumulocity Real-Time Notifications API
-  tags:
-  - IoT
-  - Real-Time
-  - Bayeux
-  - CometD
-  - Streaming
-  humanURL: https://cumulocity.com/api/core/
-  baseURL: https://{tenant}.cumulocity.com/notification/realtime
-  properties:
-  - url: https://cumulocity.com/api/core/
-    type: Documentation
-  - url: openapi/cumulocity-real-time-api-openapi.yml
-    type: OpenAPI
-  - type: NaftikoCapability
-    url: capabilities/real-time-subscriptions.yaml
-  description: Bayeux/CometD-based long-poll subscription protocol for receiving live updates of measurements,
-    events, alarms, operations, and inventory changes. Predates Notification 2.0 but remains the default for the
-    Web SDK and legacy integrations.
-- aid: cumulocity:cumulocity-notification2-api
-  name: Cumulocity Notification 2.0 API
-  tags:
-  - IoT
-  - Notifications
-  - Streaming
-  - Webhooks
-  - Kafka
-  humanURL: https://cumulocity.com/api/core/
-  baseURL: https://{tenant}.cumulocity.com/notification2
-  properties:
-  - url: https://cumulocity.com/api/core/
-    type: Documentation
-  - url: https://cumulocity.com/docs/reference/notifications/
-    type: Documentation
-  - url: openapi/cumulocity-notification2-api-openapi.yml
-    type: OpenAPI
-  - url: asyncapi/cumulocity-notification2-asyncapi.yml
-    type: AsyncAPI
-  - type: NaftikoCapability
-    url: capabilities/notification2-subscriptions.yaml
-  - type: NaftikoCapability
-    url: capabilities/notification2-tokens.yaml
-  description: High-throughput, persistent, ordered notification streaming designed for production microservices.
-    Subscribers declare typed subscriptions (mo, measurements, events, alarms, operations), exchange them for
-    short-lived JWT tokens, and consume via WebSocket. Survives subscriber outages by buffering messages on the
-    server.
-- aid: cumulocity:cumulocity-mqtt-api
-  name: Cumulocity MQTT and SmartREST API
-  tags:
-  - IoT
-  - MQTT
-  - SmartREST
-  - Device Integration
-  - Telemetry
-  humanURL: https://cumulocity.com/docs/device-integration/mqtt/
-  baseURL: mqtt://{tenant}.cumulocity.com:1883
-  properties:
-  - url: https://cumulocity.com/docs/device-integration/mqtt/
-    type: Documentation
-  - url: https://cumulocity.com/docs/smartrest/smartrest-two/
-    type: Documentation
-  - url: https://cumulocity.com/docs/smartrest/mqtt-static-templates/
-    type: Documentation
-  - url: asyncapi/cumulocity-mqtt-asyncapi.yml
-    type: AsyncAPI
-  - type: NaftikoCapability
-    url: capabilities/mqtt-smartrest.yaml
-  description: Constrained-device MQTT broker fronting the Cumulocity REST API with a CSV-based SmartREST 2.0
-    payload format that saves up to 80% of mobile traffic versus JSON. Supports static templates for common operations
-    (s/us topic family) and tenant-defined custom templates. 16 KiB max payload, MQTT 3.1.1 and 5.0 supported,
-    TLS on port 8883.
-- aid: cumulocity:cumulocity-mqtt-service-api
-  name: Cumulocity MQTT Service API
-  tags:
-  - IoT
-  - MQTT
-  - Streaming
-  - Application Integration
-  humanURL: https://cumulocity.com/docs/device-integration/mqtt-service/
-  baseURL: mqtts://mqtt.{tenant}.cumulocity.com:8883
-  properties:
-  - url: https://cumulocity.com/docs/device-integration/mqtt-service/
-    type: Documentation
-  - url: asyncapi/cumulocity-mqtt-service-asyncapi.yml
-    type: AsyncAPI
-  - type: NaftikoCapability
-    url: capabilities/mqtt-service-topics.yaml
-  description: Standards-compliant, multi-tenant MQTT broker for application-level messaging that does not need
-    Cumulocity's domain model. Topics are tenant-scoped, persistent, and bridgeable to the Cumulocity domain model
-    via the Dynamic Mapper. Use it as a general-purpose MQTT broker inside your Cumulocity tenant.
-- aid: cumulocity:cumulocity-datahub-api
-  name: Cumulocity DataHub API
-  tags:
-  - IoT
-  - Data Lake
-  - Analytics
-  - SQL
-  - Apache Arrow
-  - Dremio
-  humanURL: https://cumulocity.com/api/datahub/
-  baseURL: https://{tenant}.cumulocity.com/service/datahub
-  properties:
-  - url: https://cumulocity.com/api/datahub/
-    type: Documentation
-  - url: https://cumulocity.com/docs/datahub/datahub-overview/
-    type: Documentation
-  - url: openapi/cumulocity-datahub-api-openapi.yml
-    type: OpenAPI
-  - type: NaftikoCapability
-    url: capabilities/datahub-jobs.yaml
-  - type: NaftikoCapability
-    url: capabilities/datahub-queries.yaml
-  description: Offload operational IoT data (measurements, events, alarms, inventory) from the Cumulocity MongoDB
-    operational store into a Parquet-backed data lake queryable with ANSI SQL via Dremio. Configure offload pipelines,
-    run analytics queries, and export results to BI tools (Power BI, Tableau) over JDBC/ODBC/Arrow Flight.
-- aid: cumulocity:cumulocity-dtm-api
-  name: Cumulocity Digital Twin Manager API
-  tags:
-  - IoT
-  - Digital Twin
-  - Asset Modeling
-  - Hierarchies
-  humanURL: https://cumulocity.com/api/dtm/
-  baseURL: https://{tenant}.cumulocity.com/service/dtm
-  properties:
-  - url: https://cumulocity.com/api/dtm/
-    type: Documentation
-  - url: https://cumulocity.com/docs/digital-twin-manager/dtm-overview/
-    type: Documentation
-  - url: openapi/cumulocity-dtm-api-openapi.yml
-    type: OpenAPI
-  - type: NaftikoCapability
-    url: capabilities/dtm-asset-models.yaml
-  - type: NaftikoCapability
-    url: capabilities/dtm-asset-instances.yaml
-  description: Model real-world assets and their hierarchies with strongly-typed asset models, custom properties,
-    and computed smart-function values. Asset instances reference the underlying Cumulocity managed objects so
-    measurements and alarms automatically roll up. Supports inheritance, asset-property widgets, and bulk import
-    via CSV.
-- aid: cumulocity:cumulocity-edge-api
-  name: Cumulocity Edge API
-  tags:
-  - IoT
-  - Edge Computing
-  - On-Premises
-  - Air-Gapped
-  humanURL: https://cumulocity.com/api/edge/
-  baseURL: https://edge.local
-  properties:
-  - url: https://cumulocity.com/api/edge/
-    type: Documentation
-  - url: https://cumulocity.com/docs/edge/edge-overview/
-    type: Documentation
-  - url: openapi/cumulocity-edge-api-openapi.yml
-    type: OpenAPI
-  - type: NaftikoCapability
-    url: capabilities/edge-system.yaml
-  description: Single-node on-premises deployment of Cumulocity that runs the full platform locally (inventory,
-    events, measurements, alarms, streaming analytics, UI) and optionally syncs selected data to a cloud tenant.
-    Targets factory floors, vessels, and regulated/air-gapped environments. Released on a 10.x version cadence.
+  - aid: cumulocity:cumulocity-inventory-api
+    name: Cumulocity Inventory API
+    tags:
+      - IoT
+      - Inventory
+      - Managed Objects
+      - Devices
+      - Assets
+    humanURL: https://cumulocity.com/api/core/
+    baseURL: https://{tenant}.cumulocity.com/inventory
+    properties:
+      - url: https://cumulocity.com/api/core/
+        type: Documentation
+      - url: https://cumulocity.com/docs/concepts/domain-model/
+        type: Documentation
+      - url: openapi/cumulocity-inventory-api-openapi.yml
+        type: OpenAPI
+      - url: json-schema/cumulocity-managed-object-schema.json
+        type: JSONSchema
+      - url: json-ld/cumulocity-context.jsonld
+        type: JSONLD
+    description: >-
+      Manage Cumulocity managed objects which represent any IoT-relevant asset including devices, groups, assets, and
+      digital twins. Supports hierarchical parent/child relationships, fragment-based extensibility, full-text search,
+      and bulk operations on the /inventory/managedObjects collection.
+  - aid: cumulocity:cumulocity-identity-api
+    name: Cumulocity Identity API
+    tags:
+      - IoT
+      - Identity
+      - External IDs
+      - Devices
+    humanURL: https://cumulocity.com/api/core/
+    baseURL: https://{tenant}.cumulocity.com/identity
+    properties:
+      - url: https://cumulocity.com/api/core/
+        type: Documentation
+      - url: openapi/cumulocity-identity-api-openapi.yml
+        type: OpenAPI
+    description: >-
+      Link external identifiers (IMEI, serial numbers, MAC addresses, ICCID, c8y_Serial, etc.) to Cumulocity managed
+      object IDs. The Identity API is the primary lookup table used by device bootstrap, MQTT auto-registration, and any
+      integration that needs to translate provider-specific IDs to Cumulocity IDs.
+  - aid: cumulocity:cumulocity-measurement-api
+    name: Cumulocity Measurement API
+    tags:
+      - IoT
+      - Measurements
+      - Time Series
+      - Telemetry
+    humanURL: https://cumulocity.com/api/core/
+    baseURL: https://{tenant}.cumulocity.com/measurement
+    properties:
+      - url: https://cumulocity.com/api/core/
+        type: Documentation
+      - url: openapi/cumulocity-measurement-api-openapi.yml
+        type: OpenAPI
+      - url: json-schema/cumulocity-measurement-schema.json
+        type: JSONSchema
+    description: >-
+      Ingest, query, and delete device measurements (telemetry data points) including temperature, voltage, location,
+      and arbitrary custom fragments with units. Supports time-range queries, source filters, type filters, series
+      aggregations (hourly/daily), and bulk creation via the /measurement/measurements collection.
+  - aid: cumulocity:cumulocity-event-api
+    name: Cumulocity Event API
+    tags:
+      - IoT
+      - Events
+      - Telemetry
+    humanURL: https://cumulocity.com/api/core/
+    baseURL: https://{tenant}.cumulocity.com/event
+    properties:
+      - url: https://cumulocity.com/api/core/
+        type: Documentation
+      - url: openapi/cumulocity-event-api-openapi.yml
+        type: OpenAPI
+      - url: json-schema/cumulocity-event-schema.json
+        type: JSONSchema
+    description: >-
+      Create, query, and delete events emitted by devices and applications. Events capture discrete happenings (door
+      opened, geofence crossed, image captured) with a type, time, text, source device, and arbitrary custom fragments.
+      Binary attachments are supported via the events/{id}/binaries sub-resource.
+  - aid: cumulocity:cumulocity-alarm-api
+    name: Cumulocity Alarm API
+    tags:
+      - IoT
+      - Alarms
+      - Monitoring
+    humanURL: https://cumulocity.com/api/core/
+    baseURL: https://{tenant}.cumulocity.com/alarm
+    properties:
+      - url: https://cumulocity.com/api/core/
+        type: Documentation
+      - url: openapi/cumulocity-alarm-api-openapi.yml
+        type: OpenAPI
+      - url: json-schema/cumulocity-alarm-schema.json
+        type: JSONSchema
+    description: >-
+      Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL, MAJOR, MINOR,
+      WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms by source + type
+      so repeated raises increment the count rather than creating duplicates.
+  - aid: cumulocity:cumulocity-device-control-api
+    name: Cumulocity Device Control API
+    tags:
+      - IoT
+      - Operations
+      - Device Control
+      - Bulk Operations
+    humanURL: https://cumulocity.com/api/core/
+    baseURL: https://{tenant}.cumulocity.com/devicecontrol
+    properties:
+      - url: https://cumulocity.com/api/core/
+        type: Documentation
+      - url: openapi/cumulocity-device-control-api-openapi.yml
+        type: OpenAPI
+    description: >-
+      Send and track operations (commands) to devices including firmware updates, configuration changes, software
+      installation, shell commands, and restart requests. Operations move through PENDING, EXECUTING, SUCCESSFUL, FAILED
+      status. Bulk operations let you target an entire device group with a single request.
+  - aid: cumulocity:cumulocity-device-bootstrap-api
+    name: Cumulocity Device Bootstrap API
+    tags:
+      - IoT
+      - Device Onboarding
+      - Bootstrap
+      - Registration
+    humanURL: https://cumulocity.com/api/core/
+    baseURL: https://{tenant}.cumulocity.com/devicecontrol/deviceCredentials
+    properties:
+      - url: https://cumulocity.com/api/core/
+        type: Documentation
+      - url: https://cumulocity.com/docs/device-integration/device-integration-introduction/
+        type: Documentation
+      - url: openapi/cumulocity-device-bootstrap-api-openapi.yml
+        type: OpenAPI
+    description: >-
+      Zero-touch device onboarding flow. A factory-bootstrapped device authenticates with a shared bootstrap user, polls
+      /devicecontrol/deviceCredentials with its external ID, and receives back tenant-scoped credentials once an admin
+      accepts the registration request in the Device Management UI.
+  - aid: cumulocity:cumulocity-tenant-api
+    name: Cumulocity Tenant API
+    tags:
+      - IoT
+      - Multi-Tenancy
+      - Administration
+      - Tenant Options
+    humanURL: https://cumulocity.com/api/core/
+    baseURL: https://{tenant}.cumulocity.com/tenant
+    properties:
+      - url: https://cumulocity.com/api/core/
+        type: Documentation
+      - url: openapi/cumulocity-tenant-api-openapi.yml
+        type: OpenAPI
+    description: >-
+      Manage Cumulocity tenants (sub-tenants in enterprise and management hierarchies), tenant options (key-value config
+      including encrypted secrets), tenant applications, and tenant usage statistics. Enterprise customers use this API
+      to programmatically provision and meter sub-tenants.
+  - aid: cumulocity:cumulocity-user-api
+    name: Cumulocity User API
+    tags:
+      - IoT
+      - Users
+      - Roles
+      - Permissions
+      - RBAC
+    humanURL: https://cumulocity.com/api/core/
+    baseURL: https://{tenant}.cumulocity.com/user
+    properties:
+      - url: https://cumulocity.com/api/core/
+        type: Documentation
+      - url: openapi/cumulocity-user-api-openapi.yml
+        type: OpenAPI
+    description: >-
+      Manage users, user groups, global roles, inventory roles, and device permissions. Cumulocity uses an RBAC model
+      where global roles grant API access and inventory roles grant access to specific managed-object subtrees. Supports
+      SSO via SAML/OIDC and SCIM provisioning for enterprise tenants.
+  - aid: cumulocity:cumulocity-application-api
+    name: Cumulocity Application API
+    tags:
+      - IoT
+      - Applications
+      - Microservices
+      - Plugins
+    humanURL: https://cumulocity.com/api/core/
+    baseURL: https://{tenant}.cumulocity.com/application
+    properties:
+      - url: https://cumulocity.com/api/core/
+        type: Documentation
+      - url: https://cumulocity.com/docs/microservice-sdk/
+        type: Documentation
+      - url: openapi/cumulocity-application-api-openapi.yml
+        type: OpenAPI
+    description: >-
+      Register, subscribe, configure, and upload Cumulocity microservices, hosted web applications, and plugins.
+      Microservices run inside Cumulocity's managed container runtime and authenticate via a bootstrap user issued by
+      this API; web applications are uploaded as ZIPs and served from the tenant subdomain.
+  - aid: cumulocity:cumulocity-audit-api
+    name: Cumulocity Audit API
+    tags:
+      - IoT
+      - Audit
+      - Compliance
+      - Governance
+    humanURL: https://cumulocity.com/api/core/
+    baseURL: https://{tenant}.cumulocity.com/audit
+    properties:
+      - url: https://cumulocity.com/api/core/
+        type: Documentation
+      - url: openapi/cumulocity-audit-api-openapi.yml
+        type: OpenAPI
+    description: >-
+      Read the immutable audit trail of changes made within a tenant, including user management actions, operations
+      triggered, and managed-object create/update/delete. Critical for compliance, security review, and incident
+      forensics.
+  - aid: cumulocity:cumulocity-retention-api
+    name: Cumulocity Retention Rules API
+    tags:
+      - IoT
+      - Retention
+      - Data Lifecycle
+      - Compliance
+    humanURL: https://cumulocity.com/api/core/
+    baseURL: https://{tenant}.cumulocity.com/retention
+    properties:
+      - url: https://cumulocity.com/api/core/
+        type: Documentation
+      - url: openapi/cumulocity-retention-api-openapi.yml
+        type: OpenAPI
+    description: >-
+      Define retention rules that automatically delete measurements, events, alarms, audit records, and operations older
+      than a configured age. Rules can be scoped by data type, source, and fragment. Default policies apply per-plan;
+      Enterprise tenants can override.
+  - aid: cumulocity:cumulocity-real-time-notifications-api
+    name: Cumulocity Real-Time Notifications API
+    tags:
+      - IoT
+      - Real-Time
+      - Bayeux
+      - CometD
+      - Streaming
+    humanURL: https://cumulocity.com/api/core/
+    baseURL: https://{tenant}.cumulocity.com/notification/realtime
+    properties:
+      - url: https://cumulocity.com/api/core/
+        type: Documentation
+      - url: openapi/cumulocity-real-time-api-openapi.yml
+        type: OpenAPI
+    description: >-
+      Bayeux/CometD-based long-poll subscription protocol for receiving live updates of measurements, events, alarms,
+      operations, and inventory changes. Predates Notification 2.0 but remains the default for the Web SDK and legacy
+      integrations.
+  - aid: cumulocity:cumulocity-notification2-api
+    name: Cumulocity Notification 2.0 API
+    tags:
+      - IoT
+      - Notifications
+      - Streaming
+      - Webhooks
+      - Kafka
+    humanURL: https://cumulocity.com/api/core/
+    baseURL: https://{tenant}.cumulocity.com/notification2
+    properties:
+      - url: https://cumulocity.com/api/core/
+        type: Documentation
+      - url: https://cumulocity.com/docs/reference/notifications/
+        type: Documentation
+      - url: openapi/cumulocity-notification2-api-openapi.yml
+        type: OpenAPI
+      - url: asyncapi/cumulocity-notification2-asyncapi.yml
+        type: AsyncAPI
+    description: >-
+      High-throughput, persistent, ordered notification streaming designed for production microservices. Subscribers
+      declare typed subscriptions (mo, measurements, events, alarms, operations), exchange them for short-lived JWT
+      tokens, and consume via WebSocket. Survives subscriber outages by buffering messages on the server.
+  - aid: cumulocity:cumulocity-mqtt-api
+    name: Cumulocity MQTT and SmartREST API
+    tags:
+      - IoT
+      - MQTT
+      - SmartREST
+      - Device Integration
+      - Telemetry
+    humanURL: https://cumulocity.com/docs/device-integration/mqtt/
+    baseURL: mqtt://{tenant}.cumulocity.com:1883
+    properties:
+      - url: https://cumulocity.com/docs/device-integration/mqtt/
+        type: Documentation
+      - url: https://cumulocity.com/docs/smartrest/smartrest-two/
+        type: Documentation
+      - url: https://cumulocity.com/docs/smartrest/mqtt-static-templates/
+        type: Documentation
+      - url: asyncapi/cumulocity-mqtt-asyncapi.yml
+        type: AsyncAPI
+    description: >-
+      Constrained-device MQTT broker fronting the Cumulocity REST API with a CSV-based SmartREST 2.0 payload format that
+      saves up to 80% of mobile traffic versus JSON. Supports static templates for common operations (s/us topic family)
+      and tenant-defined custom templates. 16 KiB max payload, MQTT 3.1.1 and 5.0 supported, TLS on port 8883.
+  - aid: cumulocity:cumulocity-mqtt-service-api
+    name: Cumulocity MQTT Service API
+    tags:
+      - IoT
+      - MQTT
+      - Streaming
+      - Application Integration
+    humanURL: https://cumulocity.com/docs/device-integration/mqtt-service/
+    baseURL: mqtts://mqtt.{tenant}.cumulocity.com:8883
+    properties:
+      - url: https://cumulocity.com/docs/device-integration/mqtt-service/
+        type: Documentation
+      - url: asyncapi/cumulocity-mqtt-service-asyncapi.yml
+        type: AsyncAPI
+    description: >-
+      Standards-compliant, multi-tenant MQTT broker for application-level messaging that does not need Cumulocity's
+      domain model. Topics are tenant-scoped, persistent, and bridgeable to the Cumulocity domain model via the Dynamic
+      Mapper. Use it as a general-purpose MQTT broker inside your Cumulocity tenant.
+  - aid: cumulocity:cumulocity-datahub-api
+    name: Cumulocity DataHub API
+    tags:
+      - IoT
+      - Data Lake
+      - Analytics
+      - SQL
+      - Apache Arrow
+      - Dremio
+    humanURL: https://cumulocity.com/api/datahub/
+    baseURL: https://{tenant}.cumulocity.com/service/datahub
+    properties:
+      - url: https://cumulocity.com/api/datahub/
+        type: Documentation
+      - url: https://cumulocity.com/docs/datahub/datahub-overview/
+        type: Documentation
+      - url: openapi/cumulocity-datahub-api-openapi.yml
+        type: OpenAPI
+    description: >-
+      Offload operational IoT data (measurements, events, alarms, inventory) from the Cumulocity MongoDB operational
+      store into a Parquet-backed data lake queryable with ANSI SQL via Dremio. Configure offload pipelines, run
+      analytics queries, and export results to BI tools (Power BI, Tableau) over JDBC/ODBC/Arrow Flight.
+  - aid: cumulocity:cumulocity-dtm-api
+    name: Cumulocity Digital Twin Manager API
+    tags:
+      - IoT
+      - Digital Twin
+      - Asset Modeling
+      - Hierarchies
+    humanURL: https://cumulocity.com/api/dtm/
+    baseURL: https://{tenant}.cumulocity.com/service/dtm
+    properties:
+      - url: https://cumulocity.com/api/dtm/
+        type: Documentation
+      - url: https://cumulocity.com/docs/digital-twin-manager/dtm-overview/
+        type: Documentation
+      - url: openapi/cumulocity-dtm-api-openapi.yml
+        type: OpenAPI
+    description: >-
+      Model real-world assets and their hierarchies with strongly-typed asset models, custom properties, and computed
+      smart-function values. Asset instances reference the underlying Cumulocity managed objects so measurements and
+      alarms automatically roll up. Supports inheritance, asset-property widgets, and bulk import via CSV.
+  - aid: cumulocity:cumulocity-edge-api
+    name: Cumulocity Edge API
+    tags:
+      - IoT
+      - Edge Computing
+      - On-Premises
+      - Air-Gapped
+    humanURL: https://cumulocity.com/api/edge/
+    baseURL: https://edge.local
+    properties:
+      - url: https://cumulocity.com/api/edge/
+        type: Documentation
+      - url: https://cumulocity.com/docs/edge/edge-overview/
+        type: Documentation
+      - url: openapi/cumulocity-edge-api-openapi.yml
+        type: OpenAPI
+    description: >-
+      Single-node on-premises deployment of Cumulocity that runs the full platform locally (inventory, events,
+      measurements, alarms, streaming analytics, UI) and optionally syncs selected data to a cloud tenant. Targets
+      factory floors, vessels, and regulated/air-gapped environments. Released on a 10.x version cadence.
 name: Cumulocity
 tags:
-- IoT
-- Internet of Things
-- Industrial IoT
-- AIoT
-- Device Management
-- Digital Twin
-- MQTT
-- Edge Computing
-- Streaming Analytics
-- Data Lake
+  - IoT
+  - Internet of Things
+  - Industrial IoT
+  - AIoT
+  - Device Management
+  - Digital Twin
+  - MQTT
+  - Edge Computing
+  - Streaming Analytics
+  - Data Lake
 kind: contract
 image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
 access: 3rd-Party
 common:
-- type: Portal
-  url: https://www.cumulocity.com
-- type: Documentation
-  url: https://www.cumulocity.com/docs/
-- url: https://cumulocity.com/api/
-  name: Cumulocity OpenAPI Specifications
-  type: Documentation
-- url: https://cumulocity.com/api/core/
-  name: Core API
-  type: Documentation
-- url: https://cumulocity.com/api/datahub/
-  name: DataHub API
-  type: Documentation
-- url: https://cumulocity.com/api/dtm/
-  name: Digital Twin Manager API
-  type: Documentation
-- url: https://cumulocity.com/api/edge/
-  name: Edge API
-  type: Documentation
-- type: GettingStarted
-  url: https://cumulocity.com/docs/welcome/quickstart/
-- url: https://cumulocity.com/docs/concepts/introduction/
-  name: Platform Introduction
-  type: Documentation
-- url: https://cumulocity.com/docs/concepts/domain-model/
-  name: Domain Model
-  type: Documentation
-- url: https://cumulocity.com/docs/authentication/
-  name: Authentication
-  type: Authentication
-- url: https://cumulocity.com/docs/reference/general-aspects/
-  name: REST API General Aspects
-  type: Documentation
-- url: https://cumulocity.com/docs/reference/rest-conventions/
-  name: REST Conventions
-  type: Documentation
-- url: https://cumulocity.com/docs/reference/notifications/
-  name: Notifications 2.0
-  type: Documentation
-- url: https://cumulocity.com/docs/device-integration/mqtt/
-  name: MQTT Device Integration
-  type: Documentation
-- url: https://cumulocity.com/docs/smartrest/smartrest-two/
-  name: SmartREST 2.0
-  type: Documentation
-- url: https://cumulocity.com/docs/microservice-sdk/
-  name: Microservice SDK
-  type: Documentation
-- url: https://cumulocity.com/docs/web-sdk/
-  name: Web SDK
-  type: Documentation
-- url: https://cumulocity.com/docs/web-sdk/web-sdk-overview/
-  name: Web SDK Overview
-  type: Documentation
-- url: https://cumulocity.com/docs/streaming-analytics/
-  name: Streaming Analytics
-  type: Documentation
-- url: https://cumulocity.com/docs/datahub/datahub-overview/
-  name: DataHub Overview
-  type: Documentation
-- url: https://cumulocity.com/docs/digital-twin-manager/dtm-overview/
-  name: Digital Twin Manager Overview
-  type: Documentation
-- url: https://cumulocity.com/docs/edge/edge-overview/
-  name: Edge Overview
-  type: Documentation
-- url: https://cumulocity.com/docs/release-notes/
-  name: Release Notes
-  type: ChangeLog
-- url: https://status.cumulocity.com
-  name: Cumulocity Status
-  type: StatusPage
-- url: https://community.cumulocity.com
-  name: Tech Community
-  type: Forum
-- url: https://cumulocity.com/contact-support/
-  name: Support
-  type: Support
-- url: https://cumulocity.com/legal/terms/
-  name: Terms of Service
-  type: TermsOfService
-- url: https://cumulocity.com/legal/privacy/
-  name: Privacy Policy
-  type: PrivacyPolicy
-- url: https://cumulocity.com/legal/dpa/
-  name: Data Processing Addendum
-  type: Documentation
-- url: https://cumulocity.com/trust-center/
-  name: Trust Center
-  type: TrustCenter
-- url: https://cumulocity.com/security/
-  name: Security
-  type: Security
-- url: https://cumulocity.com/pricing/
-  name: Pricing
-  type: Pricing
-- url: https://cumulocity.com/free-trial/
-  name: Free Trial
-  type: SignUp
-- url: https://cumulocity.com/blog/
-  name: Blog
-  type: Blog
-- url: https://cumulocity.com/press-releases/
-  name: Press Releases
-  type: Press
-- url: https://cumulocity.com/case-studies/
-  name: Case Studies
-  type: CaseStudies
-- url: https://cumulocity.com/events/
-  name: Events
-  type: Events
-- url: https://www.youtube.com/@CumulocityIoT
-  name: YouTube
-  type: Video
-- url: https://www.linkedin.com/company/cumulocity/
-  name: LinkedIn
-  type: LinkedIn
-- url: https://github.com/Cumulocity-IoT
-  name: Cumulocity IoT GitHub Organization
-  type: GitHubOrganization
-- url: https://github.com/SoftwareAG
-  name: Software AG GitHub Organization (legacy)
-  type: GitHubOrganization
-- url: https://github.com/Cumulocity-IoT/cumulocity-clients-java
-  name: Java Client SDK
-  type: SDK
-- url: https://github.com/Cumulocity-IoT/cumulocity-python-api
-  name: Python SDK
-  type: SDK
-- url: https://github.com/Cumulocity-IoT/cumulocity-sdk-dotnet
-  name: .NET SDK
-  type: SDK
-- url: https://www.npmjs.com/package/@c8y/client
-  name: JavaScript/TypeScript Client (@c8y/client)
-  type: SDK
-- url: https://github.com/Cumulocity-IoT/cumulocity-ui-toolkit
-  name: Cumulocity UI Toolkit
-  type: SDK
-- url: https://github.com/reubenmiller/go-c8y-cli
-  name: go-c8y-cli (community CLI)
-  type: CLI
-- url: https://github.com/reubenmiller/go-c8y
-  name: go-c8y (Go client library)
-  type: SDK
-- url: https://github.com/Cumulocity-IoT/cumulocity-microservice-archetype
-  name: Microservice Maven Archetype
-  type: Tool
-- url: https://github.com/Cumulocity-IoT/cumulocity-examples
-  name: SDK Examples
-  type: CodeExamples
-- url: https://github.com/Cumulocity-IoT/cumulocity-dynamic-mapper
-  name: Dynamic Mapper (any broker -> Cumulocity)
-  type: Tool
-- url: https://github.com/Cumulocity-IoT/cumulocity-lora
-  name: LoRa Framework
-  type: Integration
-- url: https://github.com/Cumulocity-IoT/cumulocity-node-red
-  name: Node-RED Microservice
-  type: Integration
-- url: https://github.com/Cumulocity-IoT/cumulocity-devicemanagement-agent
-  name: Python Reference Device Management Agent
-  type: CodeExamples
-- url: https://github.com/Cumulocity-IoT/cumulocity-mcp-server
-  name: Cumulocity MCP Server (Python)
-  type: Tool
-- url: https://github.com/Cumulocity-IoT/c8y-ai-sandbox
-  name: c8y AI Sandbox (MCP microservice)
-  type: Tool
-- url: https://github.com/Cumulocity-IoT/cumulocity-cypress
-  name: Cypress Test Toolkit
-  type: Tool
-- url: https://github.com/Cumulocity-IoT/cumulocity-subtenant-management
-  name: Subtenant Management Tool
-  type: Tool
-- url: https://github.com/Cumulocity-IoT/apama-analytics-builder-block-sdk
-  name: Apama Analytics Builder Block SDK
-  type: SDK
-- url: https://github.com/Cumulocity-IoT/apama-eplapps-tools
-  name: Apama EPL Apps Tools
-  type: Tool
-- url: https://github.com/Cumulocity-IoT/streaming-analytics-sample-repo-template
-  name: Streaming Analytics Sample Template
-  type: CodeExamples
-- url: https://github.com/Cumulocity-IoT/cumulocity-remote-access-cloud-http-proxy
-  name: Cloud Remote Access HTTP Proxy
-  type: Tool
-- url: https://github.com/Cumulocity-IoT/cumulocity-os-repo-overview
-  name: Open-Source Repository Overview
-  type: Documentation
-- url: https://thin-edge.io/
-  name: thin-edge.io
-  type: Integration
-- url: plans/cumulocity-plans-pricing.yml
-  type: Plans
-- url: rate-limits/cumulocity-rate-limits.yml
-  type: RateLimits
-- url: finops/cumulocity-finops.yml
-  type: FinOps
-- type: Features
-  data:
-  - Core REST API covering inventory, identity, measurements, events, alarms, device control, device bootstrap, tenants, users, applications, audit, retention, and real-time
-  - Notification 2.0 — high-throughput, ordered, persistent WebSocket streaming with JWT-token auth and per-subscriber buffering
-  - Bayeux/CometD legacy real-time channel for measurements/events/alarms/operations/inventory subscriptions
-  - MQTT 3.1.1/5.0 broker with SmartREST 2.0 CSV payload format saving up to 80% mobile traffic vs JSON; 16 KiB max payload
-  - MQTT Service — multi-tenant standards-compliant broker for application-level messaging independent of the Cumulocity domain model
-  - Zero-touch device onboarding via bootstrap user + Identity API external-ID lookup
-  - Microservice SDK with Java/Spring archetype and managed container hosting; bootstrap-user auth model
-  - Web SDK with Angular plugins, hosted application uploads, and per-tenant subdomain serving
-  - DataHub — offload operational data to a Parquet/Dremio data lake; query via SQL/JDBC/ODBC/Arrow Flight to Power BI and Tableau
-  - Digital Twin Manager (DTM) — asset modeling, hierarchies, computed smart functions, custom properties
-  - Streaming Analytics powered by Apama EPL and the Analytics Builder low-code block editor
-  - Cockpit dashboards with per-tenant customization, plugins, and the UI Toolkit monorepo
-  - Edge — single-node on-prem deployment, including air-gapped option, with selective cloud sync
-  - Multi-tenancy with management tenant, enterprise tenants, and sub-tenants for OEMs/MSPs
-  - LoRa framework with built-in connectors for TTN, ChirpStack, Kerlink Wanesy, Loriot, Actility, Objenious, Live Objects, Orbiwan
-  - Dynamic Mapper — zero-code bridge between arbitrary message brokers (Kafka, generic MQTT) and the Cumulocity domain model
-  - Cloud Remote Access — SSH/VNC/Telnet to devices through the Cumulocity cloud
-  - Audit API for immutable compliance trail across user actions, operations, and managed-object changes
-  - Retention rules for per-data-type lifecycle (measurements / events / alarms / audit / operations)
-  - SSO via SAML and OIDC; SCIM provisioning for enterprise tenants; per-managed-object inventory roles
-  - Client SDKs: Java, Python, .NET (C#), JavaScript/TypeScript (@c8y/client), Go (community go-c8y)
-  - go-c8y-cli — community-built feature-complete CLI with SSO (auth-code / device flow), session management, piping, and remote-access support
-  - Python and TypeScript MCP server implementations for Claude / agentic access to Cumulocity tenants
-  - Cypress test toolkit for end-to-end UI testing of Cumulocity-based applications
-  - Sub-tenant management tooling for enterprise/management hierarchies
-  - thin-edge.io upstream open-source agent for constrained edge devices
-  - Validated at 100M devices and 1M messages/second; A+ SSL Labs rating
-  - Five hosted regions: eu-latest, us, emea, apj, cumulocity.com (RoW); Edge for on-prem
-  - Three cloud plans (Starter EUR 215/mo, Business, Enterprise) plus Edge Connected and Edge Air-Gapped
-  - 30-day full-feature free trial with up to 10 devices
-  sources:
-  - https://cumulocity.com/api/
-  - https://cumulocity.com/docs/
-  - https://cumulocity.com/pricing/
-  - https://github.com/Cumulocity-IoT
-  - https://cumulocity.com/docs/device-integration/mqtt/
-  - https://cumulocity.com/docs/smartrest/smartrest-two/
-  - https://cumulocity.com/docs/datahub/datahub-overview/
-  - https://cumulocity.com/docs/digital-twin-manager/dtm-overview/
-  - https://cumulocity.com/docs/edge/edge-overview/
-  - https://status.cumulocity.com
-  updated: '2026-05-25'
+  - type: Portal
+    url: https://www.cumulocity.com
+  - type: Documentation
+    url: https://www.cumulocity.com/docs/
+  - url: https://cumulocity.com/api/
+    name: Cumulocity OpenAPI Specifications
+    type: Documentation
+  - url: https://cumulocity.com/api/core/
+    name: Core API
+    type: Documentation
+  - url: https://cumulocity.com/api/datahub/
+    name: DataHub API
+    type: Documentation
+  - url: https://cumulocity.com/api/dtm/
+    name: Digital Twin Manager API
+    type: Documentation
+  - url: https://cumulocity.com/api/edge/
+    name: Edge API
+    type: Documentation
+  - type: GettingStarted
+    url: https://cumulocity.com/docs/welcome/quickstart/
+  - url: https://cumulocity.com/docs/concepts/introduction/
+    name: Platform Introduction
+    type: Documentation
+  - url: https://cumulocity.com/docs/concepts/domain-model/
+    name: Domain Model
+    type: Documentation
+  - url: https://cumulocity.com/docs/authentication/
+    name: Authentication
+    type: Authentication
+  - url: https://cumulocity.com/docs/reference/general-aspects/
+    name: REST API General Aspects
+    type: Documentation
+  - url: https://cumulocity.com/docs/reference/rest-conventions/
+    name: REST Conventions
+    type: Documentation
+  - url: https://cumulocity.com/docs/reference/notifications/
+    name: Notifications 2.0
+    type: Documentation
+  - url: https://cumulocity.com/docs/device-integration/mqtt/
+    name: MQTT Device Integration
+    type: Documentation
+  - url: https://cumulocity.com/docs/smartrest/smartrest-two/
+    name: SmartREST 2.0
+    type: Documentation
+  - url: https://cumulocity.com/docs/microservice-sdk/
+    name: Microservice SDK
+    type: Documentation
+  - url: https://cumulocity.com/docs/web-sdk/
+    name: Web SDK
+    type: Documentation
+  - url: https://cumulocity.com/docs/web-sdk/web-sdk-overview/
+    name: Web SDK Overview
+    type: Documentation
+  - url: https://cumulocity.com/docs/streaming-analytics/
+    name: Streaming Analytics
+    type: Documentation
+  - url: https://cumulocity.com/docs/datahub/datahub-overview/
+    name: DataHub Overview
+    type: Documentation
+  - url: https://cumulocity.com/docs/digital-twin-manager/dtm-overview/
+    name: Digital Twin Manager Overview
+    type: Documentation
+  - url: https://cumulocity.com/docs/edge/edge-overview/
+    name: Edge Overview
+    type: Documentation
+  - url: https://cumulocity.com/docs/release-notes/
+    name: Release Notes
+    type: ChangeLog
+  - url: https://status.cumulocity.com
+    name: Cumulocity Status
+    type: StatusPage
+  - url: https://community.cumulocity.com
+    name: Tech Community
+    type: Forum
+  - url: https://cumulocity.com/contact-support/
+    name: Support
+    type: Support
+  - url: https://cumulocity.com/legal/terms/
+    name: Terms of Service
+    type: TermsOfService
+  - url: https://cumulocity.com/legal/privacy/
+    name: Privacy Policy
+    type: PrivacyPolicy
+  - url: https://cumulocity.com/legal/dpa/
+    name: Data Processing Addendum
+    type: Documentation
+  - url: https://cumulocity.com/trust-center/
+    name: Trust Center
+    type: TrustCenter
+  - url: https://cumulocity.com/security/
+    name: Security
+    type: Security
+  - url: https://cumulocity.com/pricing/
+    name: Pricing
+    type: Pricing
+  - url: https://cumulocity.com/free-trial/
+    name: Free Trial
+    type: SignUp
+  - url: https://cumulocity.com/blog/
+    name: Blog
+    type: Blog
+  - url: https://cumulocity.com/press-releases/
+    name: Press Releases
+    type: Press
+  - url: https://cumulocity.com/case-studies/
+    name: Case Studies
+    type: CaseStudies
+  - url: https://cumulocity.com/events/
+    name: Events
+    type: Events
+  - url: https://www.youtube.com/@CumulocityIoT
+    name: YouTube
+    type: Video
+  - url: https://www.linkedin.com/company/cumulocity/
+    name: LinkedIn
+    type: LinkedIn
+  - url: https://github.com/Cumulocity-IoT
+    name: Cumulocity IoT GitHub Organization
+    type: GitHubOrganization
+  - url: https://github.com/SoftwareAG
+    name: Software AG GitHub Organization (legacy)
+    type: GitHubOrganization
+  - url: https://github.com/Cumulocity-IoT/cumulocity-clients-java
+    name: Java Client SDK
+    type: SDK
+  - url: https://github.com/Cumulocity-IoT/cumulocity-python-api
+    name: Python SDK
+    type: SDK
+  - url: https://github.com/Cumulocity-IoT/cumulocity-sdk-dotnet
+    name: .NET SDK
+    type: SDK
+  - url: https://www.npmjs.com/package/@c8y/client
+    name: JavaScript/TypeScript Client (@c8y/client)
+    type: SDK
+  - url: https://github.com/Cumulocity-IoT/cumulocity-ui-toolkit
+    name: Cumulocity UI Toolkit
+    type: SDK
+  - url: https://github.com/reubenmiller/go-c8y-cli
+    name: go-c8y-cli (community CLI)
+    type: CLI
+  - url: https://github.com/reubenmiller/go-c8y
+    name: go-c8y (Go client library)
+    type: SDK
+  - url: https://github.com/Cumulocity-IoT/cumulocity-microservice-archetype
+    name: Microservice Maven Archetype
+    type: Tool
+  - url: https://github.com/Cumulocity-IoT/cumulocity-examples
+    name: SDK Examples
+    type: CodeExamples
+  - url: https://github.com/Cumulocity-IoT/cumulocity-dynamic-mapper
+    name: Dynamic Mapper (any broker -> Cumulocity)
+    type: Tool
+  - url: https://github.com/Cumulocity-IoT/cumulocity-lora
+    name: LoRa Framework
+    type: Integration
+  - url: https://github.com/Cumulocity-IoT/cumulocity-node-red
+    name: Node-RED Microservice
+    type: Integration
+  - url: https://github.com/Cumulocity-IoT/cumulocity-devicemanagement-agent
+    name: Python Reference Device Management Agent
+    type: CodeExamples
+  - url: https://github.com/Cumulocity-IoT/cumulocity-mcp-server
+    name: Cumulocity MCP Server (Python)
+    type: Tool
+  - url: https://github.com/Cumulocity-IoT/c8y-ai-sandbox
+    name: c8y AI Sandbox (MCP microservice)
+    type: Tool
+  - url: https://github.com/Cumulocity-IoT/cumulocity-cypress
+    name: Cypress Test Toolkit
+    type: Tool
+  - url: https://github.com/Cumulocity-IoT/cumulocity-subtenant-management
+    name: Subtenant Management Tool
+    type: Tool
+  - url: https://github.com/Cumulocity-IoT/apama-analytics-builder-block-sdk
+    name: Apama Analytics Builder Block SDK
+    type: SDK
+  - url: https://github.com/Cumulocity-IoT/apama-eplapps-tools
+    name: Apama EPL Apps Tools
+    type: Tool
+  - url: https://github.com/Cumulocity-IoT/streaming-analytics-sample-repo-template
+    name: Streaming Analytics Sample Template
+    type: CodeExamples
+  - url: https://github.com/Cumulocity-IoT/cumulocity-remote-access-cloud-http-proxy
+    name: Cloud Remote Access HTTP Proxy
+    type: Tool
+  - url: https://github.com/Cumulocity-IoT/cumulocity-os-repo-overview
+    name: Open-Source Repository Overview
+    type: Documentation
+  - url: https://thin-edge.io/
+    name: thin-edge.io
+    type: Integration
+  - url: plans/cumulocity-plans-pricing.yml
+    type: Plans
+  - url: rate-limits/cumulocity-rate-limits.yml
+    type: RateLimits
+  - url: finops/cumulocity-finops.yml
+    type: FinOps
+  - type: Features
+    data:
+      - >-
+        Core REST API covering inventory, identity, measurements, events, alarms, device control, device bootstrap,
+        tenants, users, applications, audit, retention, and real-time
+      - >-
+        Notification 2.0 — high-throughput, ordered, persistent WebSocket streaming with JWT-token auth and
+        per-subscriber buffering
+      - Bayeux/CometD legacy real-time channel for measurements/events/alarms/operations/inventory subscriptions
+      - >-
+        MQTT 3.1.1/5.0 broker with SmartREST 2.0 CSV payload format saving up to 80% mobile traffic vs JSON; 16 KiB max
+        payload
+      - >-
+        MQTT Service — multi-tenant standards-compliant broker for application-level messaging independent of the
+        Cumulocity domain model
+      - Zero-touch device onboarding via bootstrap user + Identity API external-ID lookup
+      - Microservice SDK with Java/Spring archetype and managed container hosting; bootstrap-user auth model
+      - Web SDK with Angular plugins, hosted application uploads, and per-tenant subdomain serving
+      - >-
+        DataHub — offload operational data to a Parquet/Dremio data lake; query via SQL/JDBC/ODBC/Arrow Flight to Power
+        BI and Tableau
+      - Digital Twin Manager (DTM) — asset modeling, hierarchies, computed smart functions, custom properties
+      - Streaming Analytics powered by Apama EPL and the Analytics Builder low-code block editor
+      - Cockpit dashboards with per-tenant customization, plugins, and the UI Toolkit monorepo
+      - Edge — single-node on-prem deployment, including air-gapped option, with selective cloud sync
+      - Multi-tenancy with management tenant, enterprise tenants, and sub-tenants for OEMs/MSPs
+      - >-
+        LoRa framework with built-in connectors for TTN, ChirpStack, Kerlink Wanesy, Loriot, Actility, Objenious, Live
+        Objects, Orbiwan
+      - >-
+        Dynamic Mapper — zero-code bridge between arbitrary message brokers (Kafka, generic MQTT) and the Cumulocity
+        domain model
+      - Cloud Remote Access — SSH/VNC/Telnet to devices through the Cumulocity cloud
+      - Audit API for immutable compliance trail across user actions, operations, and managed-object changes
+      - Retention rules for per-data-type lifecycle (measurements / events / alarms / audit / operations)
+      - SSO via SAML and OIDC; SCIM provisioning for enterprise tenants; per-managed-object inventory roles
+      - Client SDKs: Java, Python, .NET (C#), JavaScript/TypeScript (@c8y/client), Go (community go-c8y)
+      - >-
+        go-c8y-cli — community-built feature-complete CLI with SSO (auth-code / device flow), session management,
+        piping, and remote-access support
+      - Python and TypeScript MCP server implementations for Claude / agentic access to Cumulocity tenants
+      - Cypress test toolkit for end-to-end UI testing of Cumulocity-based applications
+      - Sub-tenant management tooling for enterprise/management hierarchies
+      - thin-edge.io upstream open-source agent for constrained edge devices
+      - Validated at 100M devices and 1M messages/second; A+ SSL Labs rating
+      - Five hosted regions: eu-latest, us, emea, apj, cumulocity.com (RoW); Edge for on-prem
+      - Three cloud plans (Starter EUR 215/mo, Business, Enterprise) plus Edge Connected and Edge Air-Gapped
+      - 30-day full-feature free trial with up to 10 devices
+    sources:
+      - https://cumulocity.com/api/
+      - https://cumulocity.com/docs/
+      - https://cumulocity.com/pricing/
+      - https://github.com/Cumulocity-IoT
+      - https://cumulocity.com/docs/device-integration/mqtt/
+      - https://cumulocity.com/docs/smartrest/smartrest-two/
+      - https://cumulocity.com/docs/datahub/datahub-overview/
+      - https://cumulocity.com/docs/digital-twin-manager/dtm-overview/
+      - https://cumulocity.com/docs/edge/edge-overview/
+      - https://status.cumulocity.com
+    updated: '2026-05-25'
 created: '2026-05-25T00:00:00.000Z'
 modified: '2026-05-25'
 position: Consuming
-description: Cumulocity is an enterprise AIoT (Artificial Intelligence of Things) platform that connects, manages,
-  and analyzes industrial assets from cloud to edge. Founded inside Software AG and divested via a 2025 management
-  buyout into an independent company (sale announced alongside the IBM acquisition of Software AG's StreamSets
-  and webMethods), Cumulocity provides a full-stack platform — REST and MQTT APIs, device management, digital
-  twin modeling, streaming analytics powered by Apama, DataHub data-lake offload, Cockpit dashboards, and on-prem
-  Edge deployments — validated at 100 million devices and 1 million messages/second across industrial equipment,
-  medical devices, manufacturing, utilities, energy, transport, retail, and telecommunications.
+description: >-
+  Cumulocity is an enterprise AIoT (Artificial Intelligence of Things) platform that connects, manages, and analyzes
+  industrial assets from cloud to edge. Founded inside Software AG and divested via a 2025 management buyout into an
+  independent company (sale announced alongside the IBM acquisition of Software AG's StreamSets and webMethods),
+  Cumulocity provides a full-stack platform — REST and MQTT APIs, device management, digital twin modeling, streaming
+  analytics powered by Apama, DataHub data-lake offload, Cockpit dashboards, and on-prem Edge deployments — validated at
+  100 million devices and 1 million messages/second across industrial equipment, medical devices, manufacturing,
+  utilities, energy, transport, retail, and telecommunications.
 maintainers:
-- FN: Kin Lane
-  email: info@apievangelist.com
-  X: apievangelist
-  url: https://apievangelist.com
+  - FN: Kin Lane
+    email: info@apievangelist.com
+    X: apievangelist
+    url: https://apievangelist.com
 specificationVersion: '0.16'
