@@ -1,0 +1,545 @@
+{
+  "item": [
+    {
+      "id": "6d35998f-420e-4d07-9921-f34ea43b41c7",
+      "name": "External IDs",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "a0f47ac0-f5c3-407e-9492-840e99c86111",
+          "name": "Retrieve an External ID",
+          "request": {
+            "name": "Retrieve an External ID",
+            "description": {},
+            "url": {
+              "path": [
+                "identity",
+                "externalIds",
+                ":type",
+                ":externalId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "type",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "externalId",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{tenant}}",
+                  "key": "tenant"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.com.nsn.cumulocity.externalId+json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "ec08ee13-48a9-43af-8dc9-770425c479dd",
+              "name": "A single external ID record.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "identity",
+                    "externalIds",
+                    ":type",
+                    ":externalId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "type",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "externalId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{tenant}}",
+                      "key": "tenant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.com.nsn.cumulocity.externalId+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.com.nsn.cumulocity.externalId+json"
+                }
+              ],
+              "body": "{\n  \"self\": \"https://WqByuBupkYbyLcLEsLguiIfCXWBR.fydePtXcqy8K096s2KEz\",\n  \"externalId\": \"string\",\n  \"type\": \"string\",\n  \"managedObject\": {\n    \"id\": \"string\",\n    \"self\": \"https://FEovdqigtyYhyAJNhSJ.klahWOk1eEyUPY7aGnFGXZC6e0eJ0ae1-yP1.Q\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e1423159-1479-493a-9390-fb257937dba3",
+          "name": "Delete an External ID",
+          "request": {
+            "name": "Delete an External ID",
+            "description": {},
+            "url": {
+              "path": [
+                "identity",
+                "externalIds",
+                ":type",
+                ":externalId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "type",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "externalId",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{tenant}}",
+                  "key": "tenant"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "ff60cd9f-c091-4e71-b9ba-8660d140eb54",
+              "name": "External ID deleted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "identity",
+                    "externalIds",
+                    ":type",
+                    ":externalId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "type",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "externalId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{tenant}}",
+                      "key": "tenant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5b68d51f-3a3f-457d-b58a-50be3e8c4571",
+          "name": "List External IDs for Global ID",
+          "request": {
+            "name": "List External IDs for Global ID",
+            "description": {},
+            "url": {
+              "path": [
+                "identity",
+                "globalIds",
+                ":id",
+                "externalIds"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{tenant}}",
+                  "key": "tenant"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.com.nsn.cumulocity.externalIdCollection+json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "d7a4377f-29cb-4bd2-aabf-5c2b99041e84",
+              "name": "A collection of external IDs.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "identity",
+                    "globalIds",
+                    ":id",
+                    "externalIds"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{tenant}}",
+                      "key": "tenant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.com.nsn.cumulocity.externalIdCollection+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.com.nsn.cumulocity.externalIdCollection+json"
+                }
+              ],
+              "body": "{\n  \"self\": \"https://sRVSyzLiUzYe.lwG7oYF6eEJ,x\",\n  \"externalIds\": [\n    {\n      \"self\": \"https://OVSsqylqgMwTEgBmiuUy.prNJvwYOxXomVkYkUD1iGR9WoZsy0Rh0RPH3zQ-mEBf9f1YHROvwR\",\n      \"externalId\": \"string\",\n      \"type\": \"string\",\n      \"managedObject\": {\n        \"id\": \"string\",\n        \"self\": \"http://tat.gihJzNKhc2L+UpEaZuc9ANB6pfyoQA7OcmB3iOBllhVLMrGNqKUkLTMhp\"\n      }\n    },\n    {\n      \"self\": \"https://nBFMjwznWIRLAbfolZliWNowet.mxvqu8xYn3xRReO7Z.LVZ0yh-J5Gfo3haA0RFAwT\",\n      \"externalId\": \"string\",\n      \"type\": \"string\",\n      \"managedObject\": {\n        \"id\": \"string\",\n        \"self\": \"http://KHZQJgzAPpoldWwrIIgBalq.ciujWj1RZGQwVrRt-Ty\"\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "83d64d05-fb11-4b47-b638-6a76fb711627",
+          "name": "Create an External ID",
+          "request": {
+            "name": "Create an External ID",
+            "description": {},
+            "url": {
+              "path": [
+                "identity",
+                "globalIds",
+                ":id",
+                "externalIds"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{tenant}}",
+                  "key": "tenant"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/vnd.com.nsn.cumulocity.externalId+json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"self\": \"<uri>\",\n  \"externalId\": \"<string>\",\n  \"type\": \"<string>\",\n  \"managedObject\": {\n    \"id\": \"<string>\",\n    \"self\": \"<uri>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "be43df8b-1320-4515-8f6d-0ff944577bb1",
+              "name": "External ID created.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "identity",
+                    "globalIds",
+                    ":id",
+                    "externalIds"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{tenant}}",
+                      "key": "tenant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"self\": \"<uri>\",\n  \"externalId\": \"<string>\",\n  \"type\": \"<string>\",\n  \"managedObject\": {\n    \"id\": \"<string>\",\n    \"self\": \"<uri>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "example",
+      "key": "tenant"
+    },
+    {
+      "type": "string",
+      "value": "https://{{tenant}}.cumulocity.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "806b9173-03cb-4741-9fae-38ed2de2a8d5",
+    "name": "Cumulocity Identity API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Link external identifiers (IMEI, serial number, MAC, ICCID, c8y_Serial, etc.) to Cumulocity managed\nobject IDs. The Identity API is the primary lookup table used by device bootstrap, MQTT auto-registration,\nand any integration translating provider-specific IDs to Cumulocity IDs.\n",
+      "type": "text/plain"
+    }
+  }
+}

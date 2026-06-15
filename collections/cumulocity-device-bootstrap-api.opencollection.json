@@ -1,0 +1,132 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Cumulocity Device Bootstrap API",
+    "version": "10.20.0"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Device Credentials",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Request Device Credentials",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{tenant}.cumulocity.com/devicecontrol/deviceCredentials",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Called by an unprovisioned device (authenticated as bootstrap user) to poll for credentials."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "New Device Requests",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List New Device Requests",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{tenant}.cumulocity.com/devicecontrol/newDeviceRequests"
+          },
+          "docs": "List New Device Requests"
+        },
+        {
+          "info": {
+            "name": "Create a New Device Request",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{tenant}.cumulocity.com/devicecontrol/newDeviceRequests",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a New Device Request"
+        },
+        {
+          "info": {
+            "name": "Retrieve a New Device Request",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{tenant}.cumulocity.com/devicecontrol/newDeviceRequests/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieve a New Device Request"
+        },
+        {
+          "info": {
+            "name": "Accept or Reject a New Device Request",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{tenant}.cumulocity.com/devicecontrol/newDeviceRequests/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Accept or Reject a New Device Request"
+        },
+        {
+          "info": {
+            "name": "Delete a New Device Request",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{tenant}.cumulocity.com/devicecontrol/newDeviceRequests/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete a New Device Request"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,213 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Cumulocity Measurement API",
+    "version": "10.20.0"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Measurements",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Measurements",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{tenant}.cumulocity.com/measurement/measurements",
+            "params": [
+              {
+                "name": "source",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "valueFragmentType",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "valueFragmentSeries",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "dateFrom",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "dateTo",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "revert",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "currentPage",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List Measurements"
+        },
+        {
+          "info": {
+            "name": "Create a Measurement",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{tenant}.cumulocity.com/measurement/measurements",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a Measurement"
+        },
+        {
+          "info": {
+            "name": "Delete Measurements by Filter",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{tenant}.cumulocity.com/measurement/measurements",
+            "params": [
+              {
+                "name": "source",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "dateFrom",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "dateTo",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Delete Measurements by Filter"
+        },
+        {
+          "info": {
+            "name": "Retrieve a Measurement",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{tenant}.cumulocity.com/measurement/measurements/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieve a Measurement"
+        },
+        {
+          "info": {
+            "name": "Delete a Measurement",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{tenant}.cumulocity.com/measurement/measurements/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete a Measurement"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Series",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve Series Aggregations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{tenant}.cumulocity.com/measurement/measurements/series",
+            "params": [
+              {
+                "name": "source",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "series",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "aggregationType",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "dateFrom",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "dateTo",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieve Series Aggregations"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

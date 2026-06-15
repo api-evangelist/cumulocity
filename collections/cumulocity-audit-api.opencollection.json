@@ -1,0 +1,106 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Cumulocity Audit API",
+    "version": "10.20.0"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Audit Records",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Audit Records",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{tenant}.cumulocity.com/audit/auditRecords",
+            "params": [
+              {
+                "name": "source",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "user",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "application",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "dateFrom",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "dateTo",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "revert",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List Audit Records"
+        },
+        {
+          "info": {
+            "name": "Create an Audit Record",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{tenant}.cumulocity.com/audit/auditRecords",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create an Audit Record"
+        },
+        {
+          "info": {
+            "name": "Retrieve an Audit Record",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{tenant}.cumulocity.com/audit/auditRecords/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieve an Audit Record"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

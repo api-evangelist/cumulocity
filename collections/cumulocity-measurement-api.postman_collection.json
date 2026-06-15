@@ -1,0 +1,854 @@
+{
+  "item": [
+    {
+      "id": "864a57a4-159b-4111-94bf-395b1f069458",
+      "name": "Measurements",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "497820a7-39ad-49ab-987c-2b2672f22519",
+          "name": "List Measurements",
+          "request": {
+            "name": "List Measurements",
+            "description": {},
+            "url": {
+              "path": [
+                "measurement",
+                "measurements"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "source",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "type",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "valueFragmentType",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "valueFragmentSeries",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "dateFrom",
+                  "value": "<dateTime>"
+                },
+                {
+                  "disabled": false,
+                  "key": "dateTo",
+                  "value": "<dateTime>"
+                },
+                {
+                  "disabled": false,
+                  "key": "revert",
+                  "value": "<boolean>"
+                },
+                {
+                  "disabled": false,
+                  "key": "pageSize",
+                  "value": "5"
+                },
+                {
+                  "disabled": false,
+                  "key": "currentPage",
+                  "value": "1"
+                }
+              ],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{tenant}}",
+                  "key": "tenant"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.com.nsn.cumulocity.measurementCollection+json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b90b0baf-4960-48a4-be0e-97da59406fc0",
+              "name": "A collection of measurements.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "measurement",
+                    "measurements"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "source",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "valueFragmentType",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "valueFragmentSeries",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "dateFrom",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "dateTo",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "revert",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "5"
+                    },
+                    {
+                      "key": "currentPage",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{tenant}}",
+                      "key": "tenant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.com.nsn.cumulocity.measurementCollection+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.com.nsn.cumulocity.measurementCollection+json"
+                }
+              ],
+              "body": "{\n  \"self\": \"https://koxPsNrCCelvfe.hvU+3RlnK16JwSnZBWQ9S1MIaG1noIRYXA2j\",\n  \"measurements\": [\n    {\n      \"time\": \"2011-01-30T10:56:50.564Z\",\n      \"type\": \"string\",\n      \"source\": {\n        \"id\": \"string\",\n        \"self\": \"https://eaA.rgXS3vxAuRyMBJX7qL-FR\"\n      },\n      \"id\": \"string\",\n      \"self\": \"https://RFHcQLIuGVB.jqJpyxxuzMPJ-WJeKhE1cfN9xi,cI4t.N9a6vvONHgivO1NUXwxlwwFaxLMyKRQXi\"\n    },\n    {\n      \"time\": \"2018-10-10T23:37:30.634Z\",\n      \"type\": \"string\",\n      \"source\": {\n        \"id\": \"string\",\n        \"self\": \"https://Q.bgdhMyoapxHapwUgs6dWf9fg8GkKu.q5pid6+WJ6X7\"\n      },\n      \"id\": \"string\",\n      \"self\": \"https://pFOZKknYoyWusdxtYMwAlmDySOaYnS.akv0RF7SPy\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ee0c0558-5a3b-4eef-ae56-545573af15ac",
+          "name": "Create a Measurement",
+          "request": {
+            "name": "Create a Measurement",
+            "description": {},
+            "url": {
+              "path": [
+                "measurement",
+                "measurements"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{tenant}}",
+                  "key": "tenant"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/vnd.com.nsn.cumulocity.measurement+json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/vnd.com.nsn.cumulocity.measurement+json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"time\": \"<dateTime>\",\n  \"type\": \"<string>\",\n  \"source\": {\n    \"id\": \"<string>\",\n    \"self\": \"<uri>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "0d2204d5-0405-458b-883a-33304cb44d99",
+              "name": "Measurement created.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "measurement",
+                    "measurements"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{tenant}}",
+                      "key": "tenant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.com.nsn.cumulocity.measurement+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"time\": \"<dateTime>\",\n  \"type\": \"<string>\",\n  \"source\": {\n    \"id\": \"<string>\",\n    \"self\": \"<uri>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.com.nsn.cumulocity.measurement+json"
+                }
+              ],
+              "body": "{\n  \"time\": \"<dateTime>\",\n  \"type\": \"<string>\",\n  \"source\": {\n    \"id\": \"<string>\",\n    \"self\": \"<uri>\"\n  },\n  \"id\": \"string\",\n  \"self\": \"https://WSjTgHFmNETkiVIGPigREbMIkVPmx.yvzpKPNGJ8X9RWEITKtX+1TKhc-fe,Qr8pXoX,kAAiOwMy0wSYtNsX3RJqFzDu.WRBdB\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "75c1977b-8e07-4fad-8824-bc30276f39c9",
+          "name": "Delete Measurements by Filter",
+          "request": {
+            "name": "Delete Measurements by Filter",
+            "description": {},
+            "url": {
+              "path": [
+                "measurement",
+                "measurements"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "source",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "type",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "dateFrom",
+                  "value": "<dateTime>"
+                },
+                {
+                  "disabled": false,
+                  "key": "dateTo",
+                  "value": "<dateTime>"
+                }
+              ],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{tenant}}",
+                  "key": "tenant"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "7d95da86-6f7b-4bbd-9035-c5c88a77a895",
+              "name": "Measurements deleted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "measurement",
+                    "measurements"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "source",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "dateFrom",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "dateTo",
+                      "value": "<dateTime>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{tenant}}",
+                      "key": "tenant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ebf4d197-c781-4dcf-baa4-78c093bdaa39",
+          "name": "Retrieve a Measurement",
+          "request": {
+            "name": "Retrieve a Measurement",
+            "description": {},
+            "url": {
+              "path": [
+                "measurement",
+                "measurements",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{tenant}}",
+                  "key": "tenant"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.com.nsn.cumulocity.measurement+json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "f415ad4a-a86d-4498-9c93-b505d782ebdd",
+              "name": "A single measurement.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "measurement",
+                    "measurements",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{tenant}}",
+                      "key": "tenant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.com.nsn.cumulocity.measurement+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.com.nsn.cumulocity.measurement+json"
+                }
+              ],
+              "body": "{\n  \"time\": \"<dateTime>\",\n  \"type\": \"<string>\",\n  \"source\": {\n    \"id\": \"<string>\",\n    \"self\": \"<uri>\"\n  },\n  \"id\": \"string\",\n  \"self\": \"https://WSjTgHFmNETkiVIGPigREbMIkVPmx.yvzpKPNGJ8X9RWEITKtX+1TKhc-fe,Qr8pXoX,kAAiOwMy0wSYtNsX3RJqFzDu.WRBdB\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0815e39b-bd01-4918-8c00-e851647d3ad4",
+          "name": "Delete a Measurement",
+          "request": {
+            "name": "Delete a Measurement",
+            "description": {},
+            "url": {
+              "path": [
+                "measurement",
+                "measurements",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{tenant}}",
+                  "key": "tenant"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "cedc848a-cbb7-4388-9910-956339b1376d",
+              "name": "Measurement deleted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "measurement",
+                    "measurements",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{tenant}}",
+                      "key": "tenant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "1caedd2c-d017-4e99-9ea6-f9f6ab16d0a0",
+      "name": "Series",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "5f5b9e50-327b-4461-bb45-f8a1256b2a7c",
+          "name": "Retrieve Series Aggregations",
+          "request": {
+            "name": "Retrieve Series Aggregations",
+            "description": {},
+            "url": {
+              "path": [
+                "measurement",
+                "measurements",
+                "series"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "source",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "series",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "series",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "aggregationType",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "dateFrom",
+                  "value": "<dateTime>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "dateTo",
+                  "value": "<dateTime>",
+                  "description": "(Required) "
+                }
+              ],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{tenant}}",
+                  "key": "tenant"
+                }
+              ]
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "fc63dbce-9589-405a-a00b-a60653f65172",
+              "name": "Series aggregation result.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "measurement",
+                    "measurements",
+                    "series"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "source",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "series",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "series",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "aggregationType",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "dateFrom",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "dateTo",
+                      "value": "<dateTime>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{tenant}}",
+                      "key": "tenant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "example",
+      "key": "tenant"
+    },
+    {
+      "type": "string",
+      "value": "https://{{tenant}}.cumulocity.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "305de842-2439-4915-9267-670bb00b0a53",
+    "name": "Cumulocity Measurement API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Ingest, query, and delete device measurements (telemetry data points) including temperature, voltage,\nlocation, and arbitrary custom fragments with units. Supports time-range queries, source/type filters,\nseries aggregations (hourly/daily), and bulk creation.\n",
+      "type": "text/plain"
+    }
+  }
+}

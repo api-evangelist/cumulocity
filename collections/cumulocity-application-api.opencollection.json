@@ -1,0 +1,189 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Cumulocity Application API",
+    "version": "10.20.0"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Applications",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Applications",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{tenant}.cumulocity.com/application/applications"
+          },
+          "docs": "List Applications"
+        },
+        {
+          "info": {
+            "name": "Create an Application",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{tenant}.cumulocity.com/application/applications",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create an Application"
+        },
+        {
+          "info": {
+            "name": "Retrieve an Application",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{tenant}.cumulocity.com/application/applications/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieve an Application"
+        },
+        {
+          "info": {
+            "name": "Update an Application",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{tenant}.cumulocity.com/application/applications/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update an Application"
+        },
+        {
+          "info": {
+            "name": "Delete an Application",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{tenant}.cumulocity.com/application/applications/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete an Application"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Bootstrap Users",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve the Bootstrap User of a Microservice Application",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{tenant}.cumulocity.com/application/applications/:id/bootstrapUser",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieve the Bootstrap User of a Microservice Application"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Application Binaries",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Application Binaries",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{tenant}.cumulocity.com/application/applications/:id/binaries",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "List Application Binaries"
+        },
+        {
+          "info": {
+            "name": "Upload an Application Binary",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{tenant}.cumulocity.com/application/applications/:id/binaries",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "file",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Upload an Application Binary"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

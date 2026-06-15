@@ -1,0 +1,979 @@
+{
+  "item": [
+    {
+      "id": "3f970b9b-bd96-4c04-ac2b-9c434cf6d214",
+      "name": "Applications",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "ac479422-656f-40c2-91d5-f06a3b4eaeaa",
+          "name": "List Applications",
+          "request": {
+            "name": "List Applications",
+            "description": {},
+            "url": {
+              "path": [
+                "application",
+                "applications"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{tenant}}",
+                  "key": "tenant"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.com.nsn.cumulocity.applicationCollection+json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "4933c780-895d-4e21-b280-e33eeba76253",
+              "name": "A collection of applications.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "application",
+                    "applications"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{tenant}}",
+                      "key": "tenant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.com.nsn.cumulocity.applicationCollection+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.com.nsn.cumulocity.applicationCollection+json"
+                }
+              ],
+              "body": "{\n  \"self\": \"https://DKsbLtYHmCtjualLZwA.opsR5kAwyLQIwbPcNKM6fyIilx+BeXNXtqAwPgWBHXlagw6Dl9HR5mFuIGhUy6FVTfmQMaeJAv\",\n  \"applications\": [\n    {\n      \"id\": \"string\",\n      \"self\": \"https://KdfYHdIjQBFJxLCKnKHguhNrgUcGVnyL.wsau3voz-oyZ2.Ds,gOK4OmCo08NB,citiqaVEUjO0YREzCtOTL1tI\",\n      \"name\": \"string\",\n      \"key\": \"string\",\n      \"type\": \"HOSTED\",\n      \"availability\": \"MARKET\",\n      \"contextPath\": \"string\",\n      \"manifest\": {},\n      \"requiredRoles\": [\n        \"string\",\n        \"string\"\n      ],\n      \"owner\": {\n        \"tenant\": {\n          \"id\": \"string\"\n        }\n      },\n      \"resourcesUrl\": \"string\"\n    },\n    {\n      \"id\": \"string\",\n      \"self\": \"http://gEEAgoHi.zusd2LWVkae3ySTUNxy\",\n      \"name\": \"string\",\n      \"key\": \"string\",\n      \"type\": \"MICROSERVICE\",\n      \"availability\": \"PRIVATE\",\n      \"contextPath\": \"string\",\n      \"manifest\": {},\n      \"requiredRoles\": [\n        \"string\",\n        \"string\"\n      ],\n      \"owner\": {\n        \"tenant\": {\n          \"id\": \"string\"\n        }\n      },\n      \"resourcesUrl\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d10d5ecb-d81a-4774-ae5f-49edfad72581",
+          "name": "Create an Application",
+          "request": {
+            "name": "Create an Application",
+            "description": {},
+            "url": {
+              "path": [
+                "application",
+                "applications"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{tenant}}",
+                  "key": "tenant"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/vnd.com.nsn.cumulocity.application+json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"name\": \"<string>\",\n  \"key\": \"<string>\",\n  \"type\": \"<string>\",\n  \"availability\": \"<string>\",\n  \"contextPath\": \"<string>\",\n  \"manifest\": \"<object>\",\n  \"requiredRoles\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"owner\": {\n    \"tenant\": {\n      \"id\": \"<string>\"\n    }\n  },\n  \"resourcesUrl\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "93eb9602-238b-4d5f-bc5b-7cce245f5e38",
+              "name": "Application created.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "application",
+                    "applications"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{tenant}}",
+                      "key": "tenant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"name\": \"<string>\",\n  \"key\": \"<string>\",\n  \"type\": \"<string>\",\n  \"availability\": \"<string>\",\n  \"contextPath\": \"<string>\",\n  \"manifest\": \"<object>\",\n  \"requiredRoles\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"owner\": {\n    \"tenant\": {\n      \"id\": \"<string>\"\n    }\n  },\n  \"resourcesUrl\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a5b63634-3a55-480e-a804-39ad95da18ca",
+          "name": "Retrieve an Application",
+          "request": {
+            "name": "Retrieve an Application",
+            "description": {},
+            "url": {
+              "path": [
+                "application",
+                "applications",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{tenant}}",
+                  "key": "tenant"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.com.nsn.cumulocity.application+json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "1f1b56e2-1fb8-4d41-84ca-6efc4a10c818",
+              "name": "A single application.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "application",
+                    "applications",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{tenant}}",
+                      "key": "tenant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.com.nsn.cumulocity.application+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.com.nsn.cumulocity.application+json"
+                }
+              ],
+              "body": "{\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"name\": \"<string>\",\n  \"key\": \"<string>\",\n  \"type\": \"<string>\",\n  \"availability\": \"<string>\",\n  \"contextPath\": \"<string>\",\n  \"manifest\": \"<object>\",\n  \"requiredRoles\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"owner\": {\n    \"tenant\": {\n      \"id\": \"<string>\"\n    }\n  },\n  \"resourcesUrl\": \"<string>\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "eae82e11-7a60-4619-9901-264e602c604a",
+          "name": "Update an Application",
+          "request": {
+            "name": "Update an Application",
+            "description": {},
+            "url": {
+              "path": [
+                "application",
+                "applications",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{tenant}}",
+                  "key": "tenant"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/vnd.com.nsn.cumulocity.application+json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"name\": \"<string>\",\n  \"key\": \"<string>\",\n  \"type\": \"<string>\",\n  \"availability\": \"<string>\",\n  \"contextPath\": \"<string>\",\n  \"manifest\": \"<object>\",\n  \"requiredRoles\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"owner\": {\n    \"tenant\": {\n      \"id\": \"<string>\"\n    }\n  },\n  \"resourcesUrl\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "ee629218-f3b7-4d06-930e-dad862a8ad90",
+              "name": "Application updated.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "application",
+                    "applications",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{tenant}}",
+                      "key": "tenant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"name\": \"<string>\",\n  \"key\": \"<string>\",\n  \"type\": \"<string>\",\n  \"availability\": \"<string>\",\n  \"contextPath\": \"<string>\",\n  \"manifest\": \"<object>\",\n  \"requiredRoles\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"owner\": {\n    \"tenant\": {\n      \"id\": \"<string>\"\n    }\n  },\n  \"resourcesUrl\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d83219d2-030a-4ace-9586-9494e7bc4d56",
+          "name": "Delete an Application",
+          "request": {
+            "name": "Delete an Application",
+            "description": {},
+            "url": {
+              "path": [
+                "application",
+                "applications",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{tenant}}",
+                  "key": "tenant"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "53b620bf-07e3-49c6-addf-525fa5b5c3bf",
+              "name": "Application deleted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "application",
+                    "applications",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{tenant}}",
+                      "key": "tenant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "47b61fe0-0a5a-4b6a-bfe5-882e451161c0",
+      "name": "Bootstrap Users",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "b93f7690-4cd8-4bad-b911-945d4e73bc43",
+          "name": "Retrieve the Bootstrap User of a Microservice Application",
+          "request": {
+            "name": "Retrieve the Bootstrap User of a Microservice Application",
+            "description": {},
+            "url": {
+              "path": [
+                "application",
+                "applications",
+                ":id",
+                "bootstrapUser"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{tenant}}",
+                  "key": "tenant"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.com.nsn.cumulocity.bootstrapUser+json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "cf1c45e4-a6c3-4f75-bca6-f1926635acf2",
+              "name": "Bootstrap user credentials.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "application",
+                    "applications",
+                    ":id",
+                    "bootstrapUser"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{tenant}}",
+                      "key": "tenant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.com.nsn.cumulocity.bootstrapUser+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.com.nsn.cumulocity.bootstrapUser+json"
+                }
+              ],
+              "body": "{\n  \"tenant\": \"string\",\n  \"name\": \"string\",\n  \"password\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "b8f8b849-22ae-4f92-891e-accfbbc9f649",
+      "name": "Application Binaries",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "8c3792c9-5268-47bc-9864-7b76bf0925a0",
+          "name": "List Application Binaries",
+          "request": {
+            "name": "List Application Binaries",
+            "description": {},
+            "url": {
+              "path": [
+                "application",
+                "applications",
+                ":id",
+                "binaries"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{tenant}}",
+                  "key": "tenant"
+                }
+              ]
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b66e183a-e1c5-4f28-adcf-16115a60032c",
+              "name": "A collection of application binaries.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "application",
+                    "applications",
+                    ":id",
+                    "binaries"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{tenant}}",
+                      "key": "tenant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "fc624648-f038-4e0e-a9b2-92bdcc4b448c",
+          "name": "Upload an Application Binary",
+          "request": {
+            "name": "Upload an Application Binary",
+            "description": {},
+            "url": {
+              "path": [
+                "application",
+                "applications",
+                ":id",
+                "binaries"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{tenant}}",
+                  "key": "tenant"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "description": ""
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "178fb94b-0b76-449e-8030-e22bfa89dcd7",
+              "name": "Binary uploaded.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "application",
+                    "applications",
+                    ":id",
+                    "binaries"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{tenant}}",
+                      "key": "tenant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "file",
+                      "value": "<binary>",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "example",
+      "key": "tenant"
+    },
+    {
+      "type": "string",
+      "value": "https://{{tenant}}.cumulocity.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "2e207852-5641-4069-8dcf-69198b0d61da",
+    "name": "Cumulocity Application API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Register, subscribe, configure, and upload Cumulocity microservices, hosted web applications, and plugins.\nMicroservices run inside Cumulocity's managed container runtime and authenticate via a bootstrap user\nissued by this API; web applications are uploaded as ZIPs and served from the tenant subdomain.\n",
+      "type": "text/plain"
+    }
+  }
+}

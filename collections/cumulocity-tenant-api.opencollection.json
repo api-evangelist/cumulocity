@@ -1,0 +1,247 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Cumulocity Tenant API",
+    "version": "10.20.0"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Tenants",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Tenants",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{tenant}.cumulocity.com/tenant/tenants"
+          },
+          "docs": "List Tenants"
+        },
+        {
+          "info": {
+            "name": "Create a Tenant",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{tenant}.cumulocity.com/tenant/tenants",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a Tenant"
+        },
+        {
+          "info": {
+            "name": "Retrieve a Tenant",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{tenant}.cumulocity.com/tenant/tenants/:tenantId",
+            "params": [
+              {
+                "name": "tenantId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieve a Tenant"
+        },
+        {
+          "info": {
+            "name": "Update a Tenant",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{tenant}.cumulocity.com/tenant/tenants/:tenantId",
+            "params": [
+              {
+                "name": "tenantId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a Tenant"
+        },
+        {
+          "info": {
+            "name": "Delete a Tenant",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{tenant}.cumulocity.com/tenant/tenants/:tenantId",
+            "params": [
+              {
+                "name": "tenantId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete a Tenant"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Tenant Options",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Tenant Options",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{tenant}.cumulocity.com/tenant/options"
+          },
+          "docs": "List Tenant Options"
+        },
+        {
+          "info": {
+            "name": "Create a Tenant Option",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{tenant}.cumulocity.com/tenant/options",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a Tenant Option"
+        },
+        {
+          "info": {
+            "name": "Retrieve a Tenant Option",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{tenant}.cumulocity.com/tenant/options/:category/:key",
+            "params": [
+              {
+                "name": "category",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "key",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieve a Tenant Option"
+        },
+        {
+          "info": {
+            "name": "Update a Tenant Option",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{tenant}.cumulocity.com/tenant/options/:category/:key",
+            "params": [
+              {
+                "name": "category",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "key",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a Tenant Option"
+        },
+        {
+          "info": {
+            "name": "Delete a Tenant Option",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{tenant}.cumulocity.com/tenant/options/:category/:key",
+            "params": [
+              {
+                "name": "category",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "key",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete a Tenant Option"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Tenant Statistics",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Tenant Usage Statistics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{tenant}.cumulocity.com/tenant/statistics",
+            "params": [
+              {
+                "name": "dateFrom",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "dateTo",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List Tenant Usage Statistics"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

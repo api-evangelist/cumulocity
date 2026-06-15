@@ -1,0 +1,208 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Cumulocity Digital Twin Manager API",
+    "version": "2025.1"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Asset Models",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Asset Models",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{tenant}.cumulocity.com/service/dtm/asset-models"
+          },
+          "docs": "List Asset Models"
+        },
+        {
+          "info": {
+            "name": "Create an Asset Model",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{tenant}.cumulocity.com/service/dtm/asset-models",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create an Asset Model"
+        },
+        {
+          "info": {
+            "name": "Retrieve an Asset Model",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{tenant}.cumulocity.com/service/dtm/asset-models/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieve an Asset Model"
+        },
+        {
+          "info": {
+            "name": "Update an Asset Model",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{tenant}.cumulocity.com/service/dtm/asset-models/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update an Asset Model"
+        },
+        {
+          "info": {
+            "name": "Delete an Asset Model",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{tenant}.cumulocity.com/service/dtm/asset-models/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete an Asset Model"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Asset Instances",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Asset Instances",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{tenant}.cumulocity.com/service/dtm/asset-instances",
+            "params": [
+              {
+                "name": "model",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List Asset Instances"
+        },
+        {
+          "info": {
+            "name": "Create an Asset Instance",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{tenant}.cumulocity.com/service/dtm/asset-instances",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create an Asset Instance"
+        },
+        {
+          "info": {
+            "name": "Retrieve an Asset Instance",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{tenant}.cumulocity.com/service/dtm/asset-instances/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieve an Asset Instance"
+        },
+        {
+          "info": {
+            "name": "Update an Asset Instance",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{tenant}.cumulocity.com/service/dtm/asset-instances/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update an Asset Instance"
+        },
+        {
+          "info": {
+            "name": "Delete an Asset Instance",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{tenant}.cumulocity.com/service/dtm/asset-instances/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete an Asset Instance"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

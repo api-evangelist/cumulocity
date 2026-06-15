@@ -1,0 +1,231 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Cumulocity Device Control API",
+    "version": "10.20.0"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Operations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Operations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{tenant}.cumulocity.com/devicecontrol/operations",
+            "params": [
+              {
+                "name": "deviceId",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "agentId",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "fragmentType",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "dateFrom",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "dateTo",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "revert",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List Operations"
+        },
+        {
+          "info": {
+            "name": "Create an Operation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{tenant}.cumulocity.com/devicecontrol/operations",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create an Operation"
+        },
+        {
+          "info": {
+            "name": "Delete Operations by Filter",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{tenant}.cumulocity.com/devicecontrol/operations"
+          },
+          "docs": "Delete Operations by Filter"
+        },
+        {
+          "info": {
+            "name": "Retrieve an Operation",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{tenant}.cumulocity.com/devicecontrol/operations/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieve an Operation"
+        },
+        {
+          "info": {
+            "name": "Update an Operation",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{tenant}.cumulocity.com/devicecontrol/operations/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update an Operation"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Bulk Operations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Bulk Operations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{tenant}.cumulocity.com/devicecontrol/bulkoperations"
+          },
+          "docs": "List Bulk Operations"
+        },
+        {
+          "info": {
+            "name": "Create a Bulk Operation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{tenant}.cumulocity.com/devicecontrol/bulkoperations",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a Bulk Operation"
+        },
+        {
+          "info": {
+            "name": "Retrieve a Bulk Operation",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{tenant}.cumulocity.com/devicecontrol/bulkoperations/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieve a Bulk Operation"
+        },
+        {
+          "info": {
+            "name": "Update a Bulk Operation",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{tenant}.cumulocity.com/devicecontrol/bulkoperations/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a Bulk Operation"
+        },
+        {
+          "info": {
+            "name": "Delete a Bulk Operation",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{tenant}.cumulocity.com/devicecontrol/bulkoperations/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete a Bulk Operation"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,375 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Cumulocity Inventory API",
+    "version": "10.20.0"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Managed Objects",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Managed Objects",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{tenant}.cumulocity.com/inventory/managedObjects",
+            "params": [
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "currentPage",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "withTotalPages",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "fragmentType",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "text",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "ids",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "owner",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List Managed Objects"
+        },
+        {
+          "info": {
+            "name": "Create a Managed Object",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{tenant}.cumulocity.com/inventory/managedObjects",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a Managed Object"
+        },
+        {
+          "info": {
+            "name": "Retrieve a Managed Object",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{tenant}.cumulocity.com/inventory/managedObjects/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "withChildren",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "withParents",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieve a Managed Object"
+        },
+        {
+          "info": {
+            "name": "Update a Managed Object",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{tenant}.cumulocity.com/inventory/managedObjects/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a Managed Object"
+        },
+        {
+          "info": {
+            "name": "Delete a Managed Object",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{tenant}.cumulocity.com/inventory/managedObjects/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "cascade",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Delete a Managed Object"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Child References",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Child Devices",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{tenant}.cumulocity.com/inventory/managedObjects/:id/childDevices",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "List Child Devices"
+        },
+        {
+          "info": {
+            "name": "Add a Child Device",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{tenant}.cumulocity.com/inventory/managedObjects/:id/childDevices",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Add a Child Device"
+        },
+        {
+          "info": {
+            "name": "List Child Assets",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{tenant}.cumulocity.com/inventory/managedObjects/:id/childAssets",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "List Child Assets"
+        },
+        {
+          "info": {
+            "name": "List Child Additions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{tenant}.cumulocity.com/inventory/managedObjects/:id/childAdditions",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "List Child Additions"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Supported Measurements",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Supported Measurements",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{tenant}.cumulocity.com/inventory/managedObjects/:id/supportedMeasurements",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "List Supported Measurements"
+        },
+        {
+          "info": {
+            "name": "List Supported Series",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{tenant}.cumulocity.com/inventory/managedObjects/:id/supportedSeries",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "List Supported Series"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Binaries",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Binaries",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{tenant}.cumulocity.com/inventory/binaries"
+          },
+          "docs": "List Binaries"
+        },
+        {
+          "info": {
+            "name": "Upload a Binary",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{tenant}.cumulocity.com/inventory/binaries",
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "object",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "file",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Upload a Binary"
+        },
+        {
+          "info": {
+            "name": "Retrieve a Binary",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{tenant}.cumulocity.com/inventory/binaries/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieve a Binary"
+        },
+        {
+          "info": {
+            "name": "Delete a Binary",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{tenant}.cumulocity.com/inventory/binaries/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete a Binary"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

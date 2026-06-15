@@ -1,0 +1,1192 @@
+{
+  "item": [
+    {
+      "id": "bed81c77-c930-4891-bf93-abfb139cd069",
+      "name": "Operations",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "4a6ab908-ac19-4106-afeb-9082c3d61a65",
+          "name": "List Operations",
+          "request": {
+            "name": "List Operations",
+            "description": {},
+            "url": {
+              "path": [
+                "devicecontrol",
+                "operations"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "deviceId",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "agentId",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "fragmentType",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "dateFrom",
+                  "value": "<dateTime>"
+                },
+                {
+                  "disabled": false,
+                  "key": "dateTo",
+                  "value": "<dateTime>"
+                },
+                {
+                  "disabled": false,
+                  "key": "revert",
+                  "value": "<boolean>"
+                }
+              ],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{tenant}}",
+                  "key": "tenant"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.com.nsn.cumulocity.operationCollection+json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "0cb3ea36-1dde-46b7-b4a7-5e64837af4bf",
+              "name": "A collection of operations.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "devicecontrol",
+                    "operations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "deviceId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "agentId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "fragmentType",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "dateFrom",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "dateTo",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "revert",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{tenant}}",
+                      "key": "tenant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.com.nsn.cumulocity.operationCollection+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.com.nsn.cumulocity.operationCollection+json"
+                }
+              ],
+              "body": "{\n  \"self\": \"https://YaVbsiwlCa.cjolnI,NcqAuki\",\n  \"operations\": [\n    {\n      \"deviceId\": \"string\",\n      \"id\": \"string\",\n      \"self\": \"http://UUudFsQoNT.imAiyL0GTP\",\n      \"deviceExternalIDs\": {},\n      \"agentId\": \"string\",\n      \"status\": \"PENDING\",\n      \"creationTime\": \"1996-03-28T10:02:32.648Z\",\n      \"failureReason\": \"string\",\n      \"description\": \"string\",\n      \"c8y_Restart\": {},\n      \"c8y_Command\": {\n        \"text\": \"string\",\n        \"result\": \"string\"\n      },\n      \"c8y_Firmware\": {\n        \"name\": \"string\",\n        \"version\": \"string\",\n        \"url\": \"string\"\n      }\n    },\n    {\n      \"deviceId\": \"string\",\n      \"id\": \"string\",\n      \"self\": \"https://iyVKJCEHSsKExsPDAaLqKmOBUamvbq.cjcnz2+ejK1HmjOdd2f1nxVoNW8zZJmxqfTlRWJIvDyYI-smZlvUNX,9dS1oLMfShDWAJH.5rY,\",\n      \"deviceExternalIDs\": {},\n      \"agentId\": \"string\",\n      \"status\": \"PENDING\",\n      \"creationTime\": \"2017-06-09T18:11:05.422Z\",\n      \"failureReason\": \"string\",\n      \"description\": \"string\",\n      \"c8y_Restart\": {},\n      \"c8y_Command\": {\n        \"text\": \"string\",\n        \"result\": \"string\"\n      },\n      \"c8y_Firmware\": {\n        \"name\": \"string\",\n        \"version\": \"string\",\n        \"url\": \"string\"\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "05e09109-ae47-4b68-a0e4-05ead6ae40da",
+          "name": "Create an Operation",
+          "request": {
+            "name": "Create an Operation",
+            "description": {},
+            "url": {
+              "path": [
+                "devicecontrol",
+                "operations"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{tenant}}",
+                  "key": "tenant"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/vnd.com.nsn.cumulocity.operation+json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"deviceId\": \"<string>\",\n  \"deviceExternalIDs\": \"<object>\",\n  \"agentId\": \"<string>\",\n  \"status\": \"<string>\",\n  \"failureReason\": \"<string>\",\n  \"description\": \"<string>\",\n  \"c8y_Restart\": \"<object>\",\n  \"c8y_Command\": {\n    \"text\": \"<string>\",\n    \"result\": \"<string>\"\n  },\n  \"c8y_Firmware\": {\n    \"name\": \"<string>\",\n    \"version\": \"<string>\",\n    \"url\": \"<string>\"\n  },\n  \"c8y_Software\": \"<array>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "b04bdbf5-4cac-494a-bd36-81f276b5af3d",
+              "name": "Operation created.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "devicecontrol",
+                    "operations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{tenant}}",
+                      "key": "tenant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"deviceId\": \"<string>\",\n  \"deviceExternalIDs\": \"<object>\",\n  \"agentId\": \"<string>\",\n  \"status\": \"<string>\",\n  \"failureReason\": \"<string>\",\n  \"description\": \"<string>\",\n  \"c8y_Restart\": \"<object>\",\n  \"c8y_Command\": {\n    \"text\": \"<string>\",\n    \"result\": \"<string>\"\n  },\n  \"c8y_Firmware\": {\n    \"name\": \"<string>\",\n    \"version\": \"<string>\",\n    \"url\": \"<string>\"\n  },\n  \"c8y_Software\": \"<array>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3c2e0242-8c35-4e9d-b214-e0846f088aec",
+          "name": "Delete Operations by Filter",
+          "request": {
+            "name": "Delete Operations by Filter",
+            "description": {},
+            "url": {
+              "path": [
+                "devicecontrol",
+                "operations"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{tenant}}",
+                  "key": "tenant"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "c75255ea-48b6-4cf8-825b-7756c93cc310",
+              "name": "Operations deleted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "devicecontrol",
+                    "operations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{tenant}}",
+                      "key": "tenant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e51a4971-5448-44a9-a11b-d9c9daeba159",
+          "name": "Retrieve an Operation",
+          "request": {
+            "name": "Retrieve an Operation",
+            "description": {},
+            "url": {
+              "path": [
+                "devicecontrol",
+                "operations",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{tenant}}",
+                  "key": "tenant"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.com.nsn.cumulocity.operation+json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "31dd8a8a-2128-494a-949a-f77f4bf8b110",
+              "name": "A single operation.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "devicecontrol",
+                    "operations",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{tenant}}",
+                      "key": "tenant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.com.nsn.cumulocity.operation+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.com.nsn.cumulocity.operation+json"
+                }
+              ],
+              "body": "{\n  \"deviceId\": \"<string>\",\n  \"id\": \"string\",\n  \"self\": \"http://ZpvYCPivWiDRgrU.emuyAP34EABbphemUmXlFqf6bg0vsd5+vZYx4O\",\n  \"deviceExternalIDs\": \"<object>\",\n  \"agentId\": \"<string>\",\n  \"status\": \"<string>\",\n  \"creationTime\": \"1975-06-05T18:45:38.547Z\",\n  \"failureReason\": \"<string>\",\n  \"description\": \"<string>\",\n  \"c8y_Restart\": \"<object>\",\n  \"c8y_Command\": {\n    \"text\": \"<string>\",\n    \"result\": \"<string>\"\n  },\n  \"c8y_Firmware\": {\n    \"name\": \"<string>\",\n    \"version\": \"<string>\",\n    \"url\": \"<string>\"\n  },\n  \"c8y_Software\": \"<array>\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "272105c1-33e0-453d-9dc7-d0edfb9784e4",
+          "name": "Update an Operation",
+          "request": {
+            "name": "Update an Operation",
+            "description": {},
+            "url": {
+              "path": [
+                "devicecontrol",
+                "operations",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{tenant}}",
+                  "key": "tenant"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/vnd.com.nsn.cumulocity.operation+json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"deviceId\": \"<string>\",\n  \"deviceExternalIDs\": \"<object>\",\n  \"agentId\": \"<string>\",\n  \"status\": \"<string>\",\n  \"failureReason\": \"<string>\",\n  \"description\": \"<string>\",\n  \"c8y_Restart\": \"<object>\",\n  \"c8y_Command\": {\n    \"text\": \"<string>\",\n    \"result\": \"<string>\"\n  },\n  \"c8y_Firmware\": {\n    \"name\": \"<string>\",\n    \"version\": \"<string>\",\n    \"url\": \"<string>\"\n  },\n  \"c8y_Software\": \"<array>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "14d10127-df04-4730-ad49-55cfe37cf2c7",
+              "name": "Operation updated.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "devicecontrol",
+                    "operations",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{tenant}}",
+                      "key": "tenant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"deviceId\": \"<string>\",\n  \"deviceExternalIDs\": \"<object>\",\n  \"agentId\": \"<string>\",\n  \"status\": \"<string>\",\n  \"failureReason\": \"<string>\",\n  \"description\": \"<string>\",\n  \"c8y_Restart\": \"<object>\",\n  \"c8y_Command\": {\n    \"text\": \"<string>\",\n    \"result\": \"<string>\"\n  },\n  \"c8y_Firmware\": {\n    \"name\": \"<string>\",\n    \"version\": \"<string>\",\n    \"url\": \"<string>\"\n  },\n  \"c8y_Software\": \"<array>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "8d0813e8-08bb-40e8-a8cb-03b842d1b60a",
+      "name": "Bulk Operations",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "e962741f-46dc-4dcb-ac1c-eaadb5325d05",
+          "name": "List Bulk Operations",
+          "request": {
+            "name": "List Bulk Operations",
+            "description": {},
+            "url": {
+              "path": [
+                "devicecontrol",
+                "bulkoperations"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{tenant}}",
+                  "key": "tenant"
+                }
+              ]
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "919b2d59-190e-43c6-b596-fc77f7888983",
+              "name": "A collection of bulk operations.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "devicecontrol",
+                    "bulkoperations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{tenant}}",
+                      "key": "tenant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "30377bad-c6c8-4c51-a405-4c1d506a1efc",
+          "name": "Create a Bulk Operation",
+          "request": {
+            "name": "Create a Bulk Operation",
+            "description": {},
+            "url": {
+              "path": [
+                "devicecontrol",
+                "bulkoperations"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{tenant}}",
+                  "key": "tenant"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/vnd.com.nsn.cumulocity.bulkOperation+json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"groupId\": \"<string>\",\n  \"failedParentId\": \"<string>\",\n  \"startDate\": \"<dateTime>\",\n  \"creationRamp\": \"<integer>\",\n  \"status\": \"<string>\",\n  \"operationPrototype\": \"<object>\",\n  \"progress\": {\n    \"pending\": \"<integer>\",\n    \"executing\": \"<integer>\",\n    \"successful\": \"<integer>\",\n    \"failed\": \"<integer>\",\n    \"all\": \"<integer>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "0521881a-1b43-41fe-912e-927ce48c62da",
+              "name": "Bulk operation created.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "devicecontrol",
+                    "bulkoperations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{tenant}}",
+                      "key": "tenant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"groupId\": \"<string>\",\n  \"failedParentId\": \"<string>\",\n  \"startDate\": \"<dateTime>\",\n  \"creationRamp\": \"<integer>\",\n  \"status\": \"<string>\",\n  \"operationPrototype\": \"<object>\",\n  \"progress\": {\n    \"pending\": \"<integer>\",\n    \"executing\": \"<integer>\",\n    \"successful\": \"<integer>\",\n    \"failed\": \"<integer>\",\n    \"all\": \"<integer>\"\n  },\n  \"key_0\": 9167\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0f49d8f0-5e56-4c99-a48b-e946244f94de",
+          "name": "Retrieve a Bulk Operation",
+          "request": {
+            "name": "Retrieve a Bulk Operation",
+            "description": {},
+            "url": {
+              "path": [
+                "devicecontrol",
+                "bulkoperations",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{tenant}}",
+                  "key": "tenant"
+                }
+              ]
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "055b5ddb-dd5d-4e0d-9c52-2c75aafeea2a",
+              "name": "A single bulk operation.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "devicecontrol",
+                    "bulkoperations",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{tenant}}",
+                      "key": "tenant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2fc3d9a1-22fb-416f-b17f-5162c9b9d114",
+          "name": "Update a Bulk Operation",
+          "request": {
+            "name": "Update a Bulk Operation",
+            "description": {},
+            "url": {
+              "path": [
+                "devicecontrol",
+                "bulkoperations",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{tenant}}",
+                  "key": "tenant"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/vnd.com.nsn.cumulocity.bulkOperation+json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"groupId\": \"<string>\",\n  \"failedParentId\": \"<string>\",\n  \"startDate\": \"<dateTime>\",\n  \"creationRamp\": \"<integer>\",\n  \"status\": \"<string>\",\n  \"operationPrototype\": \"<object>\",\n  \"progress\": {\n    \"pending\": \"<integer>\",\n    \"executing\": \"<integer>\",\n    \"successful\": \"<integer>\",\n    \"failed\": \"<integer>\",\n    \"all\": \"<integer>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "12b90003-2743-4612-9a7c-73d15c22e70e",
+              "name": "Bulk operation updated.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "devicecontrol",
+                    "bulkoperations",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{tenant}}",
+                      "key": "tenant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"groupId\": \"<string>\",\n  \"failedParentId\": \"<string>\",\n  \"startDate\": \"<dateTime>\",\n  \"creationRamp\": \"<integer>\",\n  \"status\": \"<string>\",\n  \"operationPrototype\": \"<object>\",\n  \"progress\": {\n    \"pending\": \"<integer>\",\n    \"executing\": \"<integer>\",\n    \"successful\": \"<integer>\",\n    \"failed\": \"<integer>\",\n    \"all\": \"<integer>\"\n  },\n  \"key_0\": 9167\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1ce7a696-2a3e-4d8e-8ad4-3bcd9a22aced",
+          "name": "Delete a Bulk Operation",
+          "request": {
+            "name": "Delete a Bulk Operation",
+            "description": {},
+            "url": {
+              "path": [
+                "devicecontrol",
+                "bulkoperations",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{tenant}}",
+                  "key": "tenant"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "99250ab4-3812-4c73-aa97-c4bb6c7d34c7",
+              "name": "Bulk operation deleted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "devicecontrol",
+                    "bulkoperations",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{tenant}}",
+                      "key": "tenant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "example",
+      "key": "tenant"
+    },
+    {
+      "type": "string",
+      "value": "https://{{tenant}}.cumulocity.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "ba10a0f5-6046-439b-8b62-85cee7606849",
+    "name": "Cumulocity Device Control API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Send and track operations (commands) to devices including firmware updates, configuration changes,\nsoftware installation, shell commands, and restart requests. Operations move through PENDING, EXECUTING,\nSUCCESSFUL, FAILED status. Bulk operations let you target an entire device group with a single request.\n",
+      "type": "text/plain"
+    }
+  }
+}

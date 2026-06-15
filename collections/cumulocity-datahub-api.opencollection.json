@@ -1,0 +1,176 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Cumulocity DataHub API",
+    "version": "2025.1"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Offload Configurations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Offload Configurations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{tenant}.cumulocity.com/service/datahub/offload"
+          },
+          "docs": "List Offload Configurations"
+        },
+        {
+          "info": {
+            "name": "Create an Offload Configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{tenant}.cumulocity.com/service/datahub/offload",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create an Offload Configuration"
+        },
+        {
+          "info": {
+            "name": "Retrieve an Offload Configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{tenant}.cumulocity.com/service/datahub/offload/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieve an Offload Configuration"
+        },
+        {
+          "info": {
+            "name": "Update an Offload Configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{tenant}.cumulocity.com/service/datahub/offload/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update an Offload Configuration"
+        },
+        {
+          "info": {
+            "name": "Delete an Offload Configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{tenant}.cumulocity.com/service/datahub/offload/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete an Offload Configuration"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Offload Jobs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Offload Jobs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{tenant}.cumulocity.com/service/datahub/offload/:id/jobs",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "List Offload Jobs"
+        },
+        {
+          "info": {
+            "name": "Start an Offload Job",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{tenant}.cumulocity.com/service/datahub/offload/:id/jobs",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Start an Offload Job"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Queries",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Run an Ad-Hoc SQL Query",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{tenant}.cumulocity.com/service/datahub/query",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Run an Ad-Hoc SQL Query"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

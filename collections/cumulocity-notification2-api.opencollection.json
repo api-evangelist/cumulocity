@@ -1,0 +1,153 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Cumulocity Notification 2.0 API",
+    "version": "10.20.0"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Subscriptions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Notification 2.0 Subscriptions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{tenant}.cumulocity.com/notification2/subscriptions",
+            "params": [
+              {
+                "name": "source",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "context",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "subscription",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List Notification 2.0 Subscriptions"
+        },
+        {
+          "info": {
+            "name": "Create a Subscription",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{tenant}.cumulocity.com/notification2/subscriptions",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a Subscription"
+        },
+        {
+          "info": {
+            "name": "Delete Subscriptions by Filter",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{tenant}.cumulocity.com/notification2/subscriptions"
+          },
+          "docs": "Delete Subscriptions by Filter"
+        },
+        {
+          "info": {
+            "name": "Retrieve a Subscription",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{tenant}.cumulocity.com/notification2/subscriptions/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieve a Subscription"
+        },
+        {
+          "info": {
+            "name": "Delete a Subscription",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{tenant}.cumulocity.com/notification2/subscriptions/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete a Subscription"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Tokens",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create a Subscription Token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{tenant}.cumulocity.com/notification2/token",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a Subscription Token"
+        },
+        {
+          "info": {
+            "name": "Unsubscribe (Invalidate Token)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{tenant}.cumulocity.com/notification2/unsubscribe",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Unsubscribe (Invalidate Token)"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

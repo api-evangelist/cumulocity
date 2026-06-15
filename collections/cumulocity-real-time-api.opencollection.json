@@ -1,0 +1,40 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Cumulocity Real-Time Notifications API",
+    "version": "10.20.0"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Bayeux Handshake",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Bayeux Channel Endpoint (Handshake, Connect, Subscribe, Disconnect)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{tenant}.cumulocity.com/notification/realtime",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Single endpoint for the Bayeux/CometD protocol. The channel of the message body determines the\naction — `/meta/handshake`, `/meta/connect`, `/meta/subscribe`, `/meta/unsubscribe`,\n`/meta/disconnect`. Subscribe to channels such as `/measurements/{deviceId}`,\n`/events/{deviceId}`, `/alarms/{deviceId}`, `/operations/{deviceId}`, `/managedobjects/{deviceId}`.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

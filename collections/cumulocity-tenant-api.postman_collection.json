@@ -1,0 +1,1319 @@
+{
+  "item": [
+    {
+      "id": "97d33128-702a-42e0-8cc5-adf60cb4ec3c",
+      "name": "Tenants",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "e8ccd5f8-92d8-498b-83bc-7292e72875a2",
+          "name": "List Tenants",
+          "request": {
+            "name": "List Tenants",
+            "description": {},
+            "url": {
+              "path": [
+                "tenant",
+                "tenants"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{tenant}}",
+                  "key": "tenant"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.com.nsn.cumulocity.tenantCollection+json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "34cea44e-fab6-48dd-82cf-09c8df79bf0f",
+              "name": "A collection of tenants.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tenant",
+                    "tenants"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{tenant}}",
+                      "key": "tenant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.com.nsn.cumulocity.tenantCollection+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.com.nsn.cumulocity.tenantCollection+json"
+                }
+              ],
+              "body": "{\n  \"self\": \"http://DkbWfCmlsbojMSLXYmO.bzrwKmKf9sTPKqKoEtkx,RMBYk7P0PteiMkUFVD0EXMP4\",\n  \"tenants\": [\n    {\n      \"id\": \"string\",\n      \"self\": \"http://vWpsUWyALiQ.wlsdiU4G2gl-uiAk+AvzkK.DXhNMIi7oSAyXL5B-B3akY1RV\",\n      \"company\": \"string\",\n      \"domain\": \"string\",\n      \"adminName\": \"string\",\n      \"adminEmail\": \"string\",\n      \"contactName\": \"string\",\n      \"contactPhone\": \"string\",\n      \"parent\": \"string\",\n      \"status\": \"ACTIVE\",\n      \"creationTime\": \"1947-12-26T01:07:11.304Z\",\n      \"customProperties\": {},\n      \"allowCreateTenants\": true\n    },\n    {\n      \"id\": \"string\",\n      \"self\": \"http://wtJzMltzIAVMawBDrKfn.wjyCbJu.6ensxKNpIiRxUsTID8w-9zqj\",\n      \"company\": \"string\",\n      \"domain\": \"string\",\n      \"adminName\": \"string\",\n      \"adminEmail\": \"string\",\n      \"contactName\": \"string\",\n      \"contactPhone\": \"string\",\n      \"parent\": \"string\",\n      \"status\": \"SUSPENDED\",\n      \"creationTime\": \"1988-04-07T07:38:01.933Z\",\n      \"customProperties\": {},\n      \"allowCreateTenants\": true\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "cc7c405e-cefc-4c49-8e79-31cf97d73181",
+          "name": "Create a Tenant",
+          "request": {
+            "name": "Create a Tenant",
+            "description": {},
+            "url": {
+              "path": [
+                "tenant",
+                "tenants"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{tenant}}",
+                  "key": "tenant"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/vnd.com.nsn.cumulocity.tenant+json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"company\": \"<string>\",\n  \"domain\": \"<string>\",\n  \"adminName\": \"<string>\",\n  \"adminEmail\": \"<string>\",\n  \"contactName\": \"<string>\",\n  \"contactPhone\": \"<string>\",\n  \"parent\": \"<string>\",\n  \"status\": \"<string>\",\n  \"creationTime\": \"<dateTime>\",\n  \"customProperties\": \"<object>\",\n  \"allowCreateTenants\": \"<boolean>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "63ee6b3c-71f4-48d6-8b72-99c7a66a15d9",
+              "name": "Tenant created.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tenant",
+                    "tenants"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{tenant}}",
+                      "key": "tenant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"company\": \"<string>\",\n  \"domain\": \"<string>\",\n  \"adminName\": \"<string>\",\n  \"adminEmail\": \"<string>\",\n  \"contactName\": \"<string>\",\n  \"contactPhone\": \"<string>\",\n  \"parent\": \"<string>\",\n  \"status\": \"<string>\",\n  \"creationTime\": \"<dateTime>\",\n  \"customProperties\": \"<object>\",\n  \"allowCreateTenants\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e53dad6b-71fc-4599-b871-c53aef8fb44c",
+          "name": "Retrieve a Tenant",
+          "request": {
+            "name": "Retrieve a Tenant",
+            "description": {},
+            "url": {
+              "path": [
+                "tenant",
+                "tenants",
+                ":tenantId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "tenantId",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{tenant}}",
+                  "key": "tenant"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.com.nsn.cumulocity.tenant+json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "f5596796-b8c4-4b18-a7d3-63cdb9435ef3",
+              "name": "A single tenant.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tenant",
+                    "tenants",
+                    ":tenantId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tenantId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{tenant}}",
+                      "key": "tenant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.com.nsn.cumulocity.tenant+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.com.nsn.cumulocity.tenant+json"
+                }
+              ],
+              "body": "{\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"company\": \"<string>\",\n  \"domain\": \"<string>\",\n  \"adminName\": \"<string>\",\n  \"adminEmail\": \"<string>\",\n  \"contactName\": \"<string>\",\n  \"contactPhone\": \"<string>\",\n  \"parent\": \"<string>\",\n  \"status\": \"<string>\",\n  \"creationTime\": \"<dateTime>\",\n  \"customProperties\": \"<object>\",\n  \"allowCreateTenants\": \"<boolean>\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "fa7adb5d-a8be-4ae2-91da-6f2876aba765",
+          "name": "Update a Tenant",
+          "request": {
+            "name": "Update a Tenant",
+            "description": {},
+            "url": {
+              "path": [
+                "tenant",
+                "tenants",
+                ":tenantId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "tenantId",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{tenant}}",
+                  "key": "tenant"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/vnd.com.nsn.cumulocity.tenant+json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"company\": \"<string>\",\n  \"domain\": \"<string>\",\n  \"adminName\": \"<string>\",\n  \"adminEmail\": \"<string>\",\n  \"contactName\": \"<string>\",\n  \"contactPhone\": \"<string>\",\n  \"parent\": \"<string>\",\n  \"status\": \"<string>\",\n  \"creationTime\": \"<dateTime>\",\n  \"customProperties\": \"<object>\",\n  \"allowCreateTenants\": \"<boolean>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "913b316b-3f9a-4429-b2fc-ab8faa9f548e",
+              "name": "Tenant updated.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tenant",
+                    "tenants",
+                    ":tenantId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tenantId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{tenant}}",
+                      "key": "tenant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"company\": \"<string>\",\n  \"domain\": \"<string>\",\n  \"adminName\": \"<string>\",\n  \"adminEmail\": \"<string>\",\n  \"contactName\": \"<string>\",\n  \"contactPhone\": \"<string>\",\n  \"parent\": \"<string>\",\n  \"status\": \"<string>\",\n  \"creationTime\": \"<dateTime>\",\n  \"customProperties\": \"<object>\",\n  \"allowCreateTenants\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3eac2617-5c7f-443c-8059-ca72d0059fbe",
+          "name": "Delete a Tenant",
+          "request": {
+            "name": "Delete a Tenant",
+            "description": {},
+            "url": {
+              "path": [
+                "tenant",
+                "tenants",
+                ":tenantId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "tenantId",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{tenant}}",
+                  "key": "tenant"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "fcd4ba60-bfd0-4709-88f2-3f551a652336",
+              "name": "Tenant deleted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tenant",
+                    "tenants",
+                    ":tenantId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tenantId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{tenant}}",
+                      "key": "tenant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "e76518d8-fc1f-4d75-808b-d593fccdcb99",
+      "name": "Tenant Options",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "b420ca7d-18fa-481e-9a33-f0d962729f40",
+          "name": "List Tenant Options",
+          "request": {
+            "name": "List Tenant Options",
+            "description": {},
+            "url": {
+              "path": [
+                "tenant",
+                "options"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{tenant}}",
+                  "key": "tenant"
+                }
+              ]
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "5e830fd7-9151-4e02-aa4a-71c4b75e827d",
+              "name": "A collection of tenant options.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tenant",
+                    "options"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{tenant}}",
+                      "key": "tenant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "eac90276-1fd3-4974-992a-bf226a0f0379",
+          "name": "Create a Tenant Option",
+          "request": {
+            "name": "Create a Tenant Option",
+            "description": {},
+            "url": {
+              "path": [
+                "tenant",
+                "options"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{tenant}}",
+                  "key": "tenant"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/vnd.com.nsn.cumulocity.option+json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"category\": \"<string>\",\n  \"key\": \"<string>\",\n  \"value\": \"<string>\",\n  \"self\": \"<uri>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "741d2b1d-b7cf-4f00-8466-ec0d1557eb7e",
+              "name": "Tenant option created.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tenant",
+                    "options"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{tenant}}",
+                      "key": "tenant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"category\": \"<string>\",\n  \"key\": \"<string>\",\n  \"value\": \"<string>\",\n  \"self\": \"<uri>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "43d5add6-6aad-4e08-902f-a62122f68766",
+          "name": "Retrieve a Tenant Option",
+          "request": {
+            "name": "Retrieve a Tenant Option",
+            "description": {},
+            "url": {
+              "path": [
+                "tenant",
+                "options",
+                ":category",
+                ":key"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "category",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "key",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{tenant}}",
+                  "key": "tenant"
+                }
+              ]
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "d2c496b9-0b54-4716-a8a6-ad04b9e7edd7",
+              "name": "A single tenant option.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tenant",
+                    "options",
+                    ":category",
+                    ":key"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "category",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "key",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{tenant}}",
+                      "key": "tenant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9cff1dec-79b1-4c70-97f4-8ec40085adf8",
+          "name": "Update a Tenant Option",
+          "request": {
+            "name": "Update a Tenant Option",
+            "description": {},
+            "url": {
+              "path": [
+                "tenant",
+                "options",
+                ":category",
+                ":key"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "category",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "key",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{tenant}}",
+                  "key": "tenant"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/vnd.com.nsn.cumulocity.option+json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"category\": \"<string>\",\n  \"key\": \"<string>\",\n  \"value\": \"<string>\",\n  \"self\": \"<uri>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "3398a7a4-ddaf-4b29-8972-92032d4e5a70",
+              "name": "Tenant option updated.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tenant",
+                    "options",
+                    ":category",
+                    ":key"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "category",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "key",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{tenant}}",
+                      "key": "tenant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"category\": \"<string>\",\n  \"key\": \"<string>\",\n  \"value\": \"<string>\",\n  \"self\": \"<uri>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ec24d8e2-3000-489c-a800-b92acbc8a4d9",
+          "name": "Delete a Tenant Option",
+          "request": {
+            "name": "Delete a Tenant Option",
+            "description": {},
+            "url": {
+              "path": [
+                "tenant",
+                "options",
+                ":category",
+                ":key"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "category",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "key",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{tenant}}",
+                  "key": "tenant"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "abd7eac9-db71-4c04-98a0-5aff2ca632f9",
+              "name": "Tenant option deleted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tenant",
+                    "options",
+                    ":category",
+                    ":key"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "category",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "key",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{tenant}}",
+                      "key": "tenant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "04b44e87-b1de-4900-953e-ee170c062e06",
+      "name": "Tenant Applications",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [],
+      "event": []
+    },
+    {
+      "id": "ed5659d5-e943-4dba-b860-4c51fff6dacc",
+      "name": "Tenant Statistics",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "2e17ae0c-e98a-4784-949c-6c10dcb02937",
+          "name": "List Tenant Usage Statistics",
+          "request": {
+            "name": "List Tenant Usage Statistics",
+            "description": {},
+            "url": {
+              "path": [
+                "tenant",
+                "statistics"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "dateFrom",
+                  "value": "<date>"
+                },
+                {
+                  "disabled": false,
+                  "key": "dateTo",
+                  "value": "<date>"
+                }
+              ],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{tenant}}",
+                  "key": "tenant"
+                }
+              ]
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "ffc08791-fd4c-4bef-858b-6338675a3d64",
+              "name": "Per-day tenant usage statistics.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tenant",
+                    "statistics"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "dateFrom",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "dateTo",
+                      "value": "<date>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{tenant}}",
+                      "key": "tenant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "example",
+      "key": "tenant"
+    },
+    {
+      "type": "string",
+      "value": "https://{{tenant}}.cumulocity.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "345d8d64-7413-4eeb-98c6-091edf0c1ca8",
+    "name": "Cumulocity Tenant API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Manage Cumulocity tenants (sub-tenants in enterprise and management hierarchies), tenant options\n(key-value config including encrypted secrets), tenant applications, and tenant usage statistics.\n",
+      "type": "text/plain"
+    }
+  }
+}

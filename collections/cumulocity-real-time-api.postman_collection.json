@@ -1,0 +1,185 @@
+{
+  "item": [
+    {
+      "id": "5dae2380-f093-4b12-bf7f-aee5ac665f76",
+      "name": "Bayeux Handshake",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "27026222-945f-4b65-b45f-d4f9fb350eff",
+          "name": "Bayeux Channel Endpoint (Handshake, Connect, Subscribe, Disconnect)",
+          "request": {
+            "name": "Bayeux Channel Endpoint (Handshake, Connect, Subscribe, Disconnect)",
+            "description": {
+              "content": "Single endpoint for the Bayeux/CometD protocol. The channel of the message body determines the\naction — `/meta/handshake`, `/meta/connect`, `/meta/subscribe`, `/meta/unsubscribe`,\n`/meta/disconnect`. Subscribe to channels such as `/measurements/{deviceId}`,\n`/events/{deviceId}`, `/alarms/{deviceId}`, `/operations/{deviceId}`, `/managedobjects/{deviceId}`.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "notification",
+                "realtime"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{tenant}}",
+                  "key": "tenant"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"channel\": \"<string>\",\n  \"clientId\": \"<string>\",\n  \"id\": \"<string>\",\n  \"data\": \"\",\n  \"successful\": \"<boolean>\",\n  \"subscription\": \"<string>\",\n  \"ext\": \"<object>\",\n  \"advice\": \"<object>\",\n  \"supportedConnectionTypes\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"connectionType\": \"<string>\",\n  \"version\": \"<string>\",\n  \"minimumVersion\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "80b6d71e-7dcd-4858-b353-e4bf46f60a18",
+              "name": "Bayeux protocol response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "notification",
+                    "realtime"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{tenant}}",
+                      "key": "tenant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"channel\": \"<string>\",\n  \"clientId\": \"<string>\",\n  \"id\": \"<string>\",\n  \"data\": \"\",\n  \"successful\": \"<boolean>\",\n  \"subscription\": \"<string>\",\n  \"ext\": \"<object>\",\n  \"advice\": \"<object>\",\n  \"supportedConnectionTypes\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"connectionType\": \"<string>\",\n  \"version\": \"<string>\",\n  \"minimumVersion\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"channel\": \"<string>\",\n    \"clientId\": \"<string>\",\n    \"id\": \"<string>\",\n    \"data\": \"\",\n    \"successful\": \"<boolean>\",\n    \"subscription\": \"<string>\",\n    \"ext\": \"<object>\",\n    \"advice\": \"<object>\",\n    \"supportedConnectionTypes\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"connectionType\": \"<string>\",\n    \"version\": \"<string>\",\n    \"minimumVersion\": \"<string>\"\n  },\n  {\n    \"channel\": \"<string>\",\n    \"clientId\": \"<string>\",\n    \"id\": \"<string>\",\n    \"data\": \"\",\n    \"successful\": \"<boolean>\",\n    \"subscription\": \"<string>\",\n    \"ext\": \"<object>\",\n    \"advice\": \"<object>\",\n    \"supportedConnectionTypes\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"connectionType\": \"<string>\",\n    \"version\": \"<string>\",\n    \"minimumVersion\": \"<string>\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "ff83e9d7-a109-4977-94ab-e9850e20ee87",
+      "name": "Subscription",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "example",
+      "key": "tenant"
+    },
+    {
+      "type": "string",
+      "value": "https://{{tenant}}.cumulocity.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "4e2f4c8f-dd08-417b-bcc4-29aa70726c95",
+    "name": "Cumulocity Real-Time Notifications API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Bayeux/CometD-based long-poll subscription protocol for receiving live updates of measurements, events,\nalarms, operations, and inventory changes. Predates Notification 2.0 but remains the default for the Web\nSDK and legacy integrations.\n",
+      "type": "text/plain"
+    }
+  }
+}

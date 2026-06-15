@@ -1,0 +1,1619 @@
+{
+  "item": [
+    {
+      "id": "d99a0b4e-6009-4164-abdf-fa867b8aeb60",
+      "name": "Users",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "b3cd3858-6d0e-4274-9b2a-0853f52076e1",
+          "name": "List Users",
+          "request": {
+            "name": "List Users",
+            "description": {},
+            "url": {
+              "path": [
+                "user",
+                ":tenantId",
+                "users"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "tenantId",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{tenant}}",
+                  "key": "tenant"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.com.nsn.cumulocity.userCollection+json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "048fb3aa-c022-49c8-88a4-f094998d22ff",
+              "name": "A collection of users.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "user",
+                    ":tenantId",
+                    "users"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tenantId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{tenant}}",
+                      "key": "tenant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.com.nsn.cumulocity.userCollection+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.com.nsn.cumulocity.userCollection+json"
+                }
+              ],
+              "body": "{\n  \"self\": \"https://DqNfagqNVStibWgQukE.wjoY38wfmKEmoApp,ksXME,B1\",\n  \"users\": [\n    {\n      \"id\": \"<string>\",\n      \"self\": \"<uri>\",\n      \"userName\": \"<string>\",\n      \"email\": \"<string>\",\n      \"firstName\": \"<string>\",\n      \"lastName\": \"<string>\",\n      \"displayName\": \"<string>\",\n      \"phone\": \"<string>\",\n      \"enabled\": \"<boolean>\",\n      \"shouldResetPassword\": \"<boolean>\",\n      \"lastPasswordChange\": \"<dateTime>\",\n      \"twoFactorAuthenticationEnabled\": \"<boolean>\",\n      \"groups\": {\n        \"references\": [\n          \"<object>\",\n          \"<object>\"\n        ]\n      },\n      \"roles\": {\n        \"references\": [\n          \"<object>\",\n          \"<object>\"\n        ]\n      },\n      \"devicePermissions\": \"<object>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"self\": \"<uri>\",\n      \"userName\": \"<string>\",\n      \"email\": \"<string>\",\n      \"firstName\": \"<string>\",\n      \"lastName\": \"<string>\",\n      \"displayName\": \"<string>\",\n      \"phone\": \"<string>\",\n      \"enabled\": \"<boolean>\",\n      \"shouldResetPassword\": \"<boolean>\",\n      \"lastPasswordChange\": \"<dateTime>\",\n      \"twoFactorAuthenticationEnabled\": \"<boolean>\",\n      \"groups\": {\n        \"references\": [\n          \"<object>\",\n          \"<object>\"\n        ]\n      },\n      \"roles\": {\n        \"references\": [\n          \"<object>\",\n          \"<object>\"\n        ]\n      },\n      \"devicePermissions\": \"<object>\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8ae478bc-9ac2-4897-8093-f64f2a9ab2f8",
+          "name": "Create a User",
+          "request": {
+            "name": "Create a User",
+            "description": {},
+            "url": {
+              "path": [
+                "user",
+                ":tenantId",
+                "users"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "tenantId",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{tenant}}",
+                  "key": "tenant"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/vnd.com.nsn.cumulocity.user+json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"userName\": \"<string>\",\n  \"email\": \"<string>\",\n  \"firstName\": \"<string>\",\n  \"lastName\": \"<string>\",\n  \"displayName\": \"<string>\",\n  \"phone\": \"<string>\",\n  \"enabled\": \"<boolean>\",\n  \"password\": \"<string>\",\n  \"shouldResetPassword\": \"<boolean>\",\n  \"lastPasswordChange\": \"<dateTime>\",\n  \"twoFactorAuthenticationEnabled\": \"<boolean>\",\n  \"groups\": {\n    \"references\": [\n      \"<object>\",\n      \"<object>\"\n    ]\n  },\n  \"roles\": {\n    \"references\": [\n      \"<object>\",\n      \"<object>\"\n    ]\n  },\n  \"devicePermissions\": \"<object>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "dc8e15c9-b99f-499e-ba11-4fb8f96ef774",
+              "name": "User created.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "user",
+                    ":tenantId",
+                    "users"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tenantId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{tenant}}",
+                      "key": "tenant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"userName\": \"<string>\",\n  \"email\": \"<string>\",\n  \"firstName\": \"<string>\",\n  \"lastName\": \"<string>\",\n  \"displayName\": \"<string>\",\n  \"phone\": \"<string>\",\n  \"enabled\": \"<boolean>\",\n  \"password\": \"<string>\",\n  \"shouldResetPassword\": \"<boolean>\",\n  \"lastPasswordChange\": \"<dateTime>\",\n  \"twoFactorAuthenticationEnabled\": \"<boolean>\",\n  \"groups\": {\n    \"references\": [\n      \"<object>\",\n      \"<object>\"\n    ]\n  },\n  \"roles\": {\n    \"references\": [\n      \"<object>\",\n      \"<object>\"\n    ]\n  },\n  \"devicePermissions\": \"<object>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f05e2aaa-577a-4458-ae71-33ee2b73c03d",
+          "name": "Retrieve a User",
+          "request": {
+            "name": "Retrieve a User",
+            "description": {},
+            "url": {
+              "path": [
+                "user",
+                ":tenantId",
+                "users",
+                ":userId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "tenantId",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "userId",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{tenant}}",
+                  "key": "tenant"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.com.nsn.cumulocity.user+json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "74478bc3-c367-4dac-ac87-e9839529864e",
+              "name": "A single user.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "user",
+                    ":tenantId",
+                    "users",
+                    ":userId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tenantId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "userId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{tenant}}",
+                      "key": "tenant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.com.nsn.cumulocity.user+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.com.nsn.cumulocity.user+json"
+                }
+              ],
+              "body": "{\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"userName\": \"<string>\",\n  \"email\": \"<string>\",\n  \"firstName\": \"<string>\",\n  \"lastName\": \"<string>\",\n  \"displayName\": \"<string>\",\n  \"phone\": \"<string>\",\n  \"enabled\": \"<boolean>\",\n  \"shouldResetPassword\": \"<boolean>\",\n  \"lastPasswordChange\": \"<dateTime>\",\n  \"twoFactorAuthenticationEnabled\": \"<boolean>\",\n  \"groups\": {\n    \"references\": [\n      \"<object>\",\n      \"<object>\"\n    ]\n  },\n  \"roles\": {\n    \"references\": [\n      \"<object>\",\n      \"<object>\"\n    ]\n  },\n  \"devicePermissions\": \"<object>\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ed23a515-2790-4731-b936-c2e5aac44798",
+          "name": "Update a User",
+          "request": {
+            "name": "Update a User",
+            "description": {},
+            "url": {
+              "path": [
+                "user",
+                ":tenantId",
+                "users",
+                ":userId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "tenantId",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "userId",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{tenant}}",
+                  "key": "tenant"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/vnd.com.nsn.cumulocity.user+json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"userName\": \"<string>\",\n  \"email\": \"<string>\",\n  \"firstName\": \"<string>\",\n  \"lastName\": \"<string>\",\n  \"displayName\": \"<string>\",\n  \"phone\": \"<string>\",\n  \"enabled\": \"<boolean>\",\n  \"password\": \"<string>\",\n  \"shouldResetPassword\": \"<boolean>\",\n  \"lastPasswordChange\": \"<dateTime>\",\n  \"twoFactorAuthenticationEnabled\": \"<boolean>\",\n  \"groups\": {\n    \"references\": [\n      \"<object>\",\n      \"<object>\"\n    ]\n  },\n  \"roles\": {\n    \"references\": [\n      \"<object>\",\n      \"<object>\"\n    ]\n  },\n  \"devicePermissions\": \"<object>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "0326a230-9241-47e4-9fcc-a0afbc61d9c4",
+              "name": "User updated.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "user",
+                    ":tenantId",
+                    "users",
+                    ":userId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tenantId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "userId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{tenant}}",
+                      "key": "tenant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"userName\": \"<string>\",\n  \"email\": \"<string>\",\n  \"firstName\": \"<string>\",\n  \"lastName\": \"<string>\",\n  \"displayName\": \"<string>\",\n  \"phone\": \"<string>\",\n  \"enabled\": \"<boolean>\",\n  \"password\": \"<string>\",\n  \"shouldResetPassword\": \"<boolean>\",\n  \"lastPasswordChange\": \"<dateTime>\",\n  \"twoFactorAuthenticationEnabled\": \"<boolean>\",\n  \"groups\": {\n    \"references\": [\n      \"<object>\",\n      \"<object>\"\n    ]\n  },\n  \"roles\": {\n    \"references\": [\n      \"<object>\",\n      \"<object>\"\n    ]\n  },\n  \"devicePermissions\": \"<object>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3d0a2fab-6b69-40cf-8598-2b6c63ab835e",
+          "name": "Delete a User",
+          "request": {
+            "name": "Delete a User",
+            "description": {},
+            "url": {
+              "path": [
+                "user",
+                ":tenantId",
+                "users",
+                ":userId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "tenantId",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "userId",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{tenant}}",
+                  "key": "tenant"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "9979718d-0523-4b66-ad16-2b8dc9cd0e83",
+              "name": "User deleted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "user",
+                    ":tenantId",
+                    "users",
+                    ":userId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tenantId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "userId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{tenant}}",
+                      "key": "tenant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "1238eb45-e97e-45e7-8e34-fe19950de22d",
+      "name": "Groups",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "5851f184-dadd-464d-8ee5-e50ccff10a4d",
+          "name": "List Groups",
+          "request": {
+            "name": "List Groups",
+            "description": {},
+            "url": {
+              "path": [
+                "user",
+                ":tenantId",
+                "groups"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "tenantId",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{tenant}}",
+                  "key": "tenant"
+                }
+              ]
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "5c67360e-ffe1-4f74-b713-10b0bafd420a",
+              "name": "A collection of groups.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "user",
+                    ":tenantId",
+                    "groups"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tenantId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{tenant}}",
+                      "key": "tenant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a949da0d-dfba-4fe3-9b83-32141b6b482b",
+          "name": "Create a Group",
+          "request": {
+            "name": "Create a Group",
+            "description": {},
+            "url": {
+              "path": [
+                "user",
+                ":tenantId",
+                "groups"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "tenantId",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{tenant}}",
+                  "key": "tenant"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/vnd.com.nsn.cumulocity.group+json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"<integer>\",\n  \"self\": \"<uri>\",\n  \"name\": \"<string>\",\n  \"description\": \"<string>\",\n  \"roles\": \"<object>\",\n  \"users\": \"<object>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "4bf3c1a9-9e8b-4381-9d1e-80b99243dbd5",
+              "name": "Group created.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "user",
+                    ":tenantId",
+                    "groups"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tenantId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{tenant}}",
+                      "key": "tenant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": \"<integer>\",\n  \"self\": \"<uri>\",\n  \"name\": \"<string>\",\n  \"description\": \"<string>\",\n  \"roles\": \"<object>\",\n  \"users\": \"<object>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d73a3b3e-0c99-47e2-86c4-5af48fb3e382",
+          "name": "Retrieve a Group",
+          "request": {
+            "name": "Retrieve a Group",
+            "description": {},
+            "url": {
+              "path": [
+                "user",
+                ":tenantId",
+                "groups",
+                ":groupId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "tenantId",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "groupId",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{tenant}}",
+                  "key": "tenant"
+                }
+              ]
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "2be991fe-7517-49a2-824f-30a3caab81c8",
+              "name": "A single group.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "user",
+                    ":tenantId",
+                    "groups",
+                    ":groupId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tenantId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "groupId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{tenant}}",
+                      "key": "tenant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "42552f00-f27c-4193-9570-15d730215fce",
+          "name": "Update a Group",
+          "request": {
+            "name": "Update a Group",
+            "description": {},
+            "url": {
+              "path": [
+                "user",
+                ":tenantId",
+                "groups",
+                ":groupId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "tenantId",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "groupId",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{tenant}}",
+                  "key": "tenant"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/vnd.com.nsn.cumulocity.group+json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"<integer>\",\n  \"self\": \"<uri>\",\n  \"name\": \"<string>\",\n  \"description\": \"<string>\",\n  \"roles\": \"<object>\",\n  \"users\": \"<object>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "102ac7ef-d4e2-4fb0-bc82-3b99ef9c0190",
+              "name": "Group updated.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "user",
+                    ":tenantId",
+                    "groups",
+                    ":groupId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tenantId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "groupId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{tenant}}",
+                      "key": "tenant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": \"<integer>\",\n  \"self\": \"<uri>\",\n  \"name\": \"<string>\",\n  \"description\": \"<string>\",\n  \"roles\": \"<object>\",\n  \"users\": \"<object>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "17841b5f-4031-46f3-8f19-d023bc6dda20",
+          "name": "Delete a Group",
+          "request": {
+            "name": "Delete a Group",
+            "description": {},
+            "url": {
+              "path": [
+                "user",
+                ":tenantId",
+                "groups",
+                ":groupId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "tenantId",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "groupId",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{tenant}}",
+                  "key": "tenant"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "8211c92b-a111-4bf3-912a-85cb00c4a719",
+              "name": "Group deleted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "user",
+                    ":tenantId",
+                    "groups",
+                    ":groupId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tenantId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "groupId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{tenant}}",
+                      "key": "tenant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "3d856b59-3b99-489c-9468-59dcc8f243c8",
+      "name": "Roles",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "ae8bc936-5221-492c-b5e0-9e15f457002c",
+          "name": "List Global Roles",
+          "request": {
+            "name": "List Global Roles",
+            "description": {},
+            "url": {
+              "path": [
+                "user",
+                "roles"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{tenant}}",
+                  "key": "tenant"
+                }
+              ]
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "4744b6f2-6b56-44ad-8825-8f480890bbad",
+              "name": "A collection of global roles.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "user",
+                    "roles"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{tenant}}",
+                      "key": "tenant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "d4cd6f2e-fc6a-4a9f-a43c-be169102ed71",
+      "name": "Current User",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "5b858006-b49a-4ba3-a26a-85017eb4239b",
+          "name": "Retrieve Current User",
+          "request": {
+            "name": "Retrieve Current User",
+            "description": {},
+            "url": {
+              "path": [
+                "user",
+                "currentUser"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{tenant}}",
+                  "key": "tenant"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.com.nsn.cumulocity.currentUser+json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "cce17405-411e-4c20-89f7-d6aa65c4046a",
+              "name": "The authenticated user.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "user",
+                    "currentUser"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{tenant}}",
+                      "key": "tenant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.com.nsn.cumulocity.currentUser+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.com.nsn.cumulocity.currentUser+json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"self\": \"http://brrimM.mvZo.282wLwtTvVGKhQF0GqQCTrZpMBPV2fYX70e5Vlyi1cuoCNBUvfJFisAsL8E0tml\",\n  \"userName\": \"string\",\n  \"email\": \"string\",\n  \"firstName\": \"string\",\n  \"lastName\": \"string\",\n  \"displayName\": \"string\",\n  \"phone\": \"string\",\n  \"enabled\": false,\n  \"shouldResetPassword\": false,\n  \"lastPasswordChange\": \"1999-08-21T22:05:19.894Z\",\n  \"twoFactorAuthenticationEnabled\": false,\n  \"groups\": {},\n  \"roles\": {},\n  \"devicePermissions\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "21b2a8f9-3cfe-4610-863a-72d51bcbbe5a",
+          "name": "Update Current User",
+          "request": {
+            "name": "Update Current User",
+            "description": {},
+            "url": {
+              "path": [
+                "user",
+                "currentUser"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{tenant}}",
+                  "key": "tenant"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/vnd.com.nsn.cumulocity.currentUser+json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"userName\": \"<string>\",\n  \"email\": \"<string>\",\n  \"firstName\": \"<string>\",\n  \"lastName\": \"<string>\",\n  \"displayName\": \"<string>\",\n  \"phone\": \"<string>\",\n  \"enabled\": \"<boolean>\",\n  \"password\": \"<string>\",\n  \"shouldResetPassword\": \"<boolean>\",\n  \"lastPasswordChange\": \"<dateTime>\",\n  \"twoFactorAuthenticationEnabled\": \"<boolean>\",\n  \"groups\": {\n    \"references\": [\n      \"<object>\",\n      \"<object>\"\n    ]\n  },\n  \"roles\": {\n    \"references\": [\n      \"<object>\",\n      \"<object>\"\n    ]\n  },\n  \"devicePermissions\": \"<object>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "a5bca850-64b9-4d9b-8235-1367838ba83d",
+              "name": "Current user updated.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "user",
+                    "currentUser"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{tenant}}",
+                      "key": "tenant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"userName\": \"<string>\",\n  \"email\": \"<string>\",\n  \"firstName\": \"<string>\",\n  \"lastName\": \"<string>\",\n  \"displayName\": \"<string>\",\n  \"phone\": \"<string>\",\n  \"enabled\": \"<boolean>\",\n  \"password\": \"<string>\",\n  \"shouldResetPassword\": \"<boolean>\",\n  \"lastPasswordChange\": \"<dateTime>\",\n  \"twoFactorAuthenticationEnabled\": \"<boolean>\",\n  \"groups\": {\n    \"references\": [\n      \"<object>\",\n      \"<object>\"\n    ]\n  },\n  \"roles\": {\n    \"references\": [\n      \"<object>\",\n      \"<object>\"\n    ]\n  },\n  \"devicePermissions\": \"<object>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "example",
+      "key": "tenant"
+    },
+    {
+      "type": "string",
+      "value": "https://{{tenant}}.cumulocity.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "5a899215-0a07-4917-8496-136f261bdef0",
+    "name": "Cumulocity User API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Manage users, user groups, global roles, inventory roles, and device permissions. Cumulocity uses an\nRBAC model where global roles grant API access and inventory roles grant access to specific managed-object\nsubtrees. Supports SSO via SAML/OIDC and SCIM provisioning for enterprise tenants.\n",
+      "type": "text/plain"
+    }
+  }
+}

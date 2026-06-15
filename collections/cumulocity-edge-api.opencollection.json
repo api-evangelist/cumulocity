@@ -1,0 +1,115 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Cumulocity Edge API",
+    "version": "10.18.0"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "System",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve Edge System Status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://edge.local/service/edge/system"
+          },
+          "docs": "Retrieve Edge System Status"
+        },
+        {
+          "info": {
+            "name": "Restart the Edge System",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://edge.local/service/edge/system/restart"
+          },
+          "docs": "Restart the Edge System"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Cloud Sync",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve Cloud Sync Configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://edge.local/service/edge/cloud-sync"
+          },
+          "docs": "Retrieve Cloud Sync Configuration"
+        },
+        {
+          "info": {
+            "name": "Update Cloud Sync Configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://edge.local/service/edge/cloud-sync",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update Cloud Sync Configuration"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Software Updates",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Available Edge Updates",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://edge.local/service/edge/updates"
+          },
+          "docs": "List Available Edge Updates"
+        },
+        {
+          "info": {
+            "name": "Install an Edge Update",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://edge.local/service/edge/updates",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Install an Edge Update"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

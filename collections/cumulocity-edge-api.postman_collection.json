@@ -1,0 +1,549 @@
+{
+  "item": [
+    {
+      "id": "9e5fcf4a-8bff-4944-955d-9e838e2c9a19",
+      "name": "System",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "452a1772-5768-449c-b5a6-d54949239229",
+          "name": "Retrieve Edge System Status",
+          "request": {
+            "name": "Retrieve Edge System Status",
+            "description": {},
+            "url": {
+              "path": [
+                "service",
+                "edge",
+                "system"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "0751db35-6606-4132-9be6-9c57299ccc77",
+              "name": "System status including version, uptime, disk, and service health.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "service",
+                    "edge",
+                    "system"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"version\": \"string\",\n  \"edition\": \"CONNECTED\",\n  \"uptime\": 2704,\n  \"services\": [\n    {\n      \"name\": \"string\",\n      \"status\": \"FAILED\"\n    },\n    {\n      \"name\": \"string\",\n      \"status\": \"RUNNING\"\n    }\n  ],\n  \"storage\": {\n    \"totalBytes\": 5922,\n    \"usedBytes\": 1967\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0f318204-5961-4a76-8bac-56dadc82ac37",
+          "name": "Restart the Edge System",
+          "request": {
+            "name": "Restart the Edge System",
+            "description": {},
+            "url": {
+              "path": [
+                "service",
+                "edge",
+                "system",
+                "restart"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "d73df206-cbd0-4ff0-9687-fe4965782cb0",
+              "name": "Restart requested.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "service",
+                    "edge",
+                    "system",
+                    "restart"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "efbf1d66-d023-4f41-ac9c-732540ae4baa",
+      "name": "Cloud Sync",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "01359e57-250c-4a1a-bf8b-f37909fcd88b",
+          "name": "Retrieve Cloud Sync Configuration",
+          "request": {
+            "name": "Retrieve Cloud Sync Configuration",
+            "description": {},
+            "url": {
+              "path": [
+                "service",
+                "edge",
+                "cloud-sync"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "31527761-27b7-41b8-9690-7a7b7dd110a6",
+              "name": "Current cloud-sync configuration.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "service",
+                    "edge",
+                    "cloud-sync"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"enabled\": false,\n  \"targetTenantUrl\": \"https://uYvgFJvncqvv.jqiQ,ajJsqYpPvUnD\",\n  \"targetTenantId\": \"string\",\n  \"syncedDataTypes\": [\n    \"ALARMS\",\n    \"MEASUREMENTS\"\n  ],\n  \"bandwidthLimitKbps\": 1649,\n  \"bufferingPolicy\": \"BLOCK\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "deeaf50e-38e7-4543-bc26-bf61487b5db6",
+          "name": "Update Cloud Sync Configuration",
+          "request": {
+            "name": "Update Cloud Sync Configuration",
+            "description": {},
+            "url": {
+              "path": [
+                "service",
+                "edge",
+                "cloud-sync"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"enabled\": \"<boolean>\",\n  \"targetTenantUrl\": \"<uri>\",\n  \"targetTenantId\": \"<string>\",\n  \"syncedDataTypes\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"bandwidthLimitKbps\": \"<integer>\",\n  \"bufferingPolicy\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "00fab2bb-ffe8-4a8b-9c03-64272548cb7b",
+              "name": "Cloud-sync configuration updated.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "service",
+                    "edge",
+                    "cloud-sync"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"enabled\": \"<boolean>\",\n  \"targetTenantUrl\": \"<uri>\",\n  \"targetTenantId\": \"<string>\",\n  \"syncedDataTypes\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"bandwidthLimitKbps\": \"<integer>\",\n  \"bufferingPolicy\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "a4033383-c145-447e-91be-8c76e55d118c",
+      "name": "Software Updates",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "c4dccc4c-e4de-4d15-8714-008ba0efa2da",
+          "name": "List Available Edge Updates",
+          "request": {
+            "name": "List Available Edge Updates",
+            "description": {},
+            "url": {
+              "path": [
+                "service",
+                "edge",
+                "updates"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "d6eb2aaf-bd2c-436e-a394-2d4f04f90e2b",
+              "name": "Available Edge software releases.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "service",
+                    "edge",
+                    "updates"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0be0c778-6700-48ec-ad9c-1dcef55e3617",
+          "name": "Install an Edge Update",
+          "request": {
+            "name": "Install an Edge Update",
+            "description": {},
+            "url": {
+              "path": [
+                "service",
+                "edge",
+                "updates"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"version\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "7cf0bf30-6a7c-418c-87af-ff1c36baf2e8",
+              "name": "Update started.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "service",
+                    "edge",
+                    "updates"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"version\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://edge.local",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "8b823711-3047-4a3f-939b-42fa937bc1b0",
+    "name": "Cumulocity Edge API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Single-node on-premises deployment of Cumulocity that runs the full platform locally (inventory,\nevents, measurements, alarms, streaming analytics, UI) and optionally syncs selected data to a cloud\ntenant. Targets factory floors, vessels, and regulated/air-gapped environments.\n",
+      "type": "text/plain"
+    }
+  }
+}
