@@ -468,7 +468,7 @@ common:
     type: StatusPage
   - url: https://community.cumulocity.com
     name: Tech Community
-    type: Forum
+    type: Forums
   - url: https://cumulocity.com/contact-support/
     name: Support
     type: Support
@@ -492,7 +492,7 @@ common:
     type: Pricing
   - url: https://cumulocity.com/free-trial/
     name: Free Trial
-    type: SignUp
+    type: Signup
   - url: https://cumulocity.com/blog/
     name: Blog
     type: Blog
@@ -519,73 +519,73 @@ common:
     type: GitHubOrganization
   - url: https://github.com/Cumulocity-IoT/cumulocity-clients-java
     name: Java Client SDK
-    type: SDK
+    type: SDKs
   - url: https://github.com/Cumulocity-IoT/cumulocity-python-api
     name: Python SDK
-    type: SDK
+    type: SDKs
   - url: https://github.com/Cumulocity-IoT/cumulocity-sdk-dotnet
     name: .NET SDK
-    type: SDK
+    type: SDKs
   - url: https://www.npmjs.com/package/@c8y/client
     name: JavaScript/TypeScript Client (@c8y/client)
-    type: SDK
+    type: SDKs
   - url: https://github.com/Cumulocity-IoT/cumulocity-ui-toolkit
     name: Cumulocity UI Toolkit
-    type: SDK
+    type: SDKs
   - url: https://github.com/reubenmiller/go-c8y-cli
     name: go-c8y-cli (community CLI)
     type: CLI
   - url: https://github.com/reubenmiller/go-c8y
     name: go-c8y (Go client library)
-    type: SDK
+    type: SDKs
   - url: https://github.com/Cumulocity-IoT/cumulocity-microservice-archetype
     name: Microservice Maven Archetype
-    type: Tool
+    type: Tools
   - url: https://github.com/Cumulocity-IoT/cumulocity-examples
     name: SDK Examples
     type: CodeExamples
   - url: https://github.com/Cumulocity-IoT/cumulocity-dynamic-mapper
     name: Dynamic Mapper (any broker -> Cumulocity)
-    type: Tool
+    type: Tools
   - url: https://github.com/Cumulocity-IoT/cumulocity-lora
     name: LoRa Framework
-    type: Integration
+    type: Integrations
   - url: https://github.com/Cumulocity-IoT/cumulocity-node-red
     name: Node-RED Microservice
-    type: Integration
+    type: Integrations
   - url: https://github.com/Cumulocity-IoT/cumulocity-devicemanagement-agent
     name: Python Reference Device Management Agent
     type: CodeExamples
   - url: https://github.com/Cumulocity-IoT/cumulocity-mcp-server
     name: Cumulocity MCP Server (Python)
-    type: Tool
+    type: Tools
   - url: https://github.com/Cumulocity-IoT/c8y-ai-sandbox
     name: c8y AI Sandbox (MCP microservice)
-    type: Tool
+    type: Tools
   - url: https://github.com/Cumulocity-IoT/cumulocity-cypress
     name: Cypress Test Toolkit
-    type: Tool
+    type: Tools
   - url: https://github.com/Cumulocity-IoT/cumulocity-subtenant-management
     name: Subtenant Management Tool
-    type: Tool
+    type: Tools
   - url: https://github.com/Cumulocity-IoT/apama-analytics-builder-block-sdk
     name: Apama Analytics Builder Block SDK
-    type: SDK
+    type: SDKs
   - url: https://github.com/Cumulocity-IoT/apama-eplapps-tools
     name: Apama EPL Apps Tools
-    type: Tool
+    type: Tools
   - url: https://github.com/Cumulocity-IoT/streaming-analytics-sample-repo-template
     name: Streaming Analytics Sample Template
     type: CodeExamples
   - url: https://github.com/Cumulocity-IoT/cumulocity-remote-access-cloud-http-proxy
     name: Cloud Remote Access HTTP Proxy
-    type: Tool
+    type: Tools
   - url: https://github.com/Cumulocity-IoT/cumulocity-os-repo-overview
     name: Open-Source Repository Overview
     type: Documentation
   - url: https://thin-edge.io/
     name: thin-edge.io
-    type: Integration
+    type: Integrations
   - url: plans/cumulocity-plans-pricing.yml
     type: Plans
   - url: rate-limits/cumulocity-rate-limits.yml
