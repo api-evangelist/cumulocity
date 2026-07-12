@@ -1,0 +1,54 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/cumulocity-alarm-api-openapi.yml, openapi/cumulocity-application-api-openapi.yml,
+  openapi/cumulocity-audit-api-openapi.yml, openapi/cumulocity-datahub-api-openapi.yml, openapi/cumulocity-device-bootstrap-api-openapi.yml,
+  openapi/cumulocity-device-control-api-openapi.yml, openapi/cumulocity-dtm-api-openapi.yml,
+  openapi/cumulocity-edge-api-openapi.yml, openapi/cumulocity-event-api-openapi.yml, openapi/cumulocity-identity-api-openapi.yml,
+  openapi/cumulocity-inventory-api-openapi.yml, openapi/cumulocity-measurement-api-openapi.yml
+  ...
+summary:
+  types:
+  - http
+schemes:
+- name: basicAuth
+  type: http
+  scheme: basic
+  sources:
+  - openapi/cumulocity-alarm-api-openapi.yml
+  - openapi/cumulocity-application-api-openapi.yml
+  - openapi/cumulocity-audit-api-openapi.yml
+  - openapi/cumulocity-datahub-api-openapi.yml
+  - openapi/cumulocity-device-bootstrap-api-openapi.yml
+  - openapi/cumulocity-device-control-api-openapi.yml
+  - openapi/cumulocity-dtm-api-openapi.yml
+  - openapi/cumulocity-edge-api-openapi.yml
+  - openapi/cumulocity-event-api-openapi.yml
+  - openapi/cumulocity-identity-api-openapi.yml
+  - openapi/cumulocity-inventory-api-openapi.yml
+  - openapi/cumulocity-measurement-api-openapi.yml
+  - openapi/cumulocity-notification2-api-openapi.yml
+  - openapi/cumulocity-real-time-api-openapi.yml
+  - openapi/cumulocity-retention-api-openapi.yml
+  - openapi/cumulocity-tenant-api-openapi.yml
+  - openapi/cumulocity-user-api-openapi.yml
+- name: bearerAuth
+  type: http
+  scheme: bearer
+  bearerFormat: JWT
+  sources:
+  - openapi/cumulocity-alarm-api-openapi.yml
+  - openapi/cumulocity-application-api-openapi.yml
+  - openapi/cumulocity-audit-api-openapi.yml
+  - openapi/cumulocity-datahub-api-openapi.yml
+  - openapi/cumulocity-device-control-api-openapi.yml
+  - openapi/cumulocity-dtm-api-openapi.yml
+  - openapi/cumulocity-edge-api-openapi.yml
+  - openapi/cumulocity-event-api-openapi.yml
+  - openapi/cumulocity-identity-api-openapi.yml
+  - openapi/cumulocity-inventory-api-openapi.yml
+  - openapi/cumulocity-measurement-api-openapi.yml
+  - openapi/cumulocity-notification2-api-openapi.yml
+  - openapi/cumulocity-real-time-api-openapi.yml
+  - openapi/cumulocity-retention-api-openapi.yml
+  - openapi/cumulocity-tenant-api-openapi.yml
+  - openapi/cumulocity-user-api-openapi.yml
