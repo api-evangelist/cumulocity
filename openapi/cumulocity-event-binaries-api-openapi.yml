@@ -1,0 +1,68 @@
+openapi: 3.0.3
+info:
+  title: Cumulocity Alarm Alarms Event Binaries API
+  version: 10.20.0
+  description: 'Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL, MAJOR,
+
+    MINOR, WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms
+
+    by source + type so repeated raises increment the count rather than creating duplicates.
+
+    '
+servers:
+- url: https://{tenant}.cumulocity.com
+  variables:
+    tenant:
+      default: example
+security:
+- basicAuth: []
+- bearerAuth: []
+tags:
+- name: Event Binaries
+paths:
+  /event/events/{id}/binaries:
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      tags:
+      - Event Binaries
+      summary: Retrieve an Event Binary
+      operationId: getEventBinary
+      responses:
+        '200':
+          description: Binary content attached to the event.
+    post:
+      tags:
+      - Event Binaries
+      summary: Attach a Binary to an Event
+      operationId: attachEventBinary
+      requestBody:
+        content:
+          application/octet-stream:
+            schema:
+              type: string
+              format: binary
+      responses:
+        '201':
+          description: Binary attached.
+    delete:
+      tags:
+      - Event Binaries
+      summary: Delete an Event Binary
+      operationId: deleteEventBinary
+      responses:
+        '204':
+          description: Binary deleted.
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

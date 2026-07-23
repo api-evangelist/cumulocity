@@ -1,0 +1,113 @@
+openapi: 3.0.3
+info:
+  title: Cumulocity Alarm Alarms Tenant Options API
+  version: 10.20.0
+  description: 'Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL, MAJOR,
+
+    MINOR, WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms
+
+    by source + type so repeated raises increment the count rather than creating duplicates.
+
+    '
+servers:
+- url: https://{tenant}.cumulocity.com
+  variables:
+    tenant:
+      default: example
+security:
+- basicAuth: []
+- bearerAuth: []
+tags:
+- name: Tenant Options
+paths:
+  /tenant/options:
+    get:
+      tags:
+      - Tenant Options
+      summary: List Tenant Options
+      operationId: listTenantOptions
+      responses:
+        '200':
+          description: A collection of tenant options.
+    post:
+      tags:
+      - Tenant Options
+      summary: Create a Tenant Option
+      operationId: createTenantOption
+      requestBody:
+        required: true
+        content:
+          application/vnd.com.nsn.cumulocity.option+json:
+            schema:
+              $ref: '#/components/schemas/TenantOption'
+      responses:
+        '201':
+          description: Tenant option created.
+  /tenant/options/{category}/{key}:
+    parameters:
+    - name: category
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: key
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      tags:
+      - Tenant Options
+      summary: Retrieve a Tenant Option
+      operationId: getTenantOption
+      responses:
+        '200':
+          description: A single tenant option.
+    put:
+      tags:
+      - Tenant Options
+      summary: Update a Tenant Option
+      operationId: updateTenantOption
+      requestBody:
+        required: true
+        content:
+          application/vnd.com.nsn.cumulocity.option+json:
+            schema:
+              $ref: '#/components/schemas/TenantOption'
+      responses:
+        '200':
+          description: Tenant option updated.
+    delete:
+      tags:
+      - Tenant Options
+      summary: Delete a Tenant Option
+      operationId: deleteTenantOption
+      responses:
+        '204':
+          description: Tenant option deleted.
+components:
+  schemas:
+    TenantOption:
+      type: object
+      required:
+      - category
+      - key
+      - value
+      properties:
+        self:
+          type: string
+          format: uri
+        category:
+          type: string
+        key:
+          type: string
+        value:
+          type: string
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

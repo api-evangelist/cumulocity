@@ -1,0 +1,121 @@
+openapi: 3.0.3
+info:
+  title: Cumulocity Alarm Alarms Child References API
+  version: 10.20.0
+  description: 'Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL, MAJOR,
+
+    MINOR, WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms
+
+    by source + type so repeated raises increment the count rather than creating duplicates.
+
+    '
+servers:
+- url: https://{tenant}.cumulocity.com
+  variables:
+    tenant:
+      default: example
+security:
+- basicAuth: []
+- bearerAuth: []
+tags:
+- name: Child References
+  description: Hierarchical relationships between managed objects.
+paths:
+  /inventory/managedObjects/{id}/childDevices:
+    parameters:
+    - $ref: '#/components/parameters/ManagedObjectId'
+    get:
+      tags:
+      - Child References
+      summary: List Child Devices
+      operationId: listChildDevices
+      responses:
+        '200':
+          description: A collection of child device references.
+          content:
+            application/vnd.com.nsn.cumulocity.managedObjectReferenceCollection+json:
+              schema:
+                $ref: '#/components/schemas/ManagedObjectReferenceCollection'
+    post:
+      tags:
+      - Child References
+      summary: Add a Child Device
+      operationId: addChildDevice
+      requestBody:
+        required: true
+        content:
+          application/vnd.com.nsn.cumulocity.managedObjectReference+json:
+            schema:
+              $ref: '#/components/schemas/ManagedObjectReference'
+      responses:
+        '201':
+          description: Child device reference created.
+  /inventory/managedObjects/{id}/childAssets:
+    parameters:
+    - $ref: '#/components/parameters/ManagedObjectId'
+    get:
+      tags:
+      - Child References
+      summary: List Child Assets
+      operationId: listChildAssets
+      responses:
+        '200':
+          description: A collection of child asset references.
+          content:
+            application/vnd.com.nsn.cumulocity.managedObjectReferenceCollection+json:
+              schema:
+                $ref: '#/components/schemas/ManagedObjectReferenceCollection'
+  /inventory/managedObjects/{id}/childAdditions:
+    parameters:
+    - $ref: '#/components/parameters/ManagedObjectId'
+    get:
+      tags:
+      - Child References
+      summary: List Child Additions
+      operationId: listChildAdditions
+      responses:
+        '200':
+          description: A collection of child addition references.
+components:
+  schemas:
+    ManagedObjectReferenceCollection:
+      type: object
+      properties:
+        self:
+          type: string
+          format: uri
+        references:
+          type: array
+          items:
+            $ref: '#/components/schemas/ManagedObjectReference'
+    ManagedObjectReference:
+      type: object
+      properties:
+        self:
+          type: string
+          format: uri
+        managedObject:
+          type: object
+          properties:
+            id:
+              type: string
+            self:
+              type: string
+              format: uri
+            name:
+              type: string
+  parameters:
+    ManagedObjectId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

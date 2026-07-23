@@ -1,11 +1,14 @@
 openapi: 3.0.3
 info:
-  title: Cumulocity Event API
+  title: Cumulocity Alarm Alarms Events API
   version: 10.20.0
-  description: |
-    Create, query, and delete events emitted by devices and applications. Events capture discrete happenings
-    (door opened, geofence crossed, image captured) with a type, time, text, source device, and arbitrary
-    custom fragments. Binary attachments are supported via the events/{id}/binaries sub-resource.
+  description: 'Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL, MAJOR,
+
+    MINOR, WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms
+
+    by source + type so repeated raises increment the count rather than creating duplicates.
+
+    '
 servers:
 - url: https://{tenant}.cumulocity.com
   variables:
@@ -16,32 +19,40 @@ security:
 - bearerAuth: []
 tags:
 - name: Events
-- name: Event Binaries
 paths:
   /event/events:
     get:
-      tags: [Events]
+      tags:
+      - Events
       summary: List Events
       operationId: listEvents
       parameters:
       - name: source
         in: query
-        schema: {type: string}
+        schema:
+          type: string
       - name: type
         in: query
-        schema: {type: string}
+        schema:
+          type: string
       - name: fragmentType
         in: query
-        schema: {type: string}
+        schema:
+          type: string
       - name: dateFrom
         in: query
-        schema: {type: string, format: date-time}
+        schema:
+          type: string
+          format: date-time
       - name: dateTo
         in: query
-        schema: {type: string, format: date-time}
+        schema:
+          type: string
+          format: date-time
       - name: revert
         in: query
-        schema: {type: boolean}
+        schema:
+          type: boolean
       responses:
         '200':
           description: A collection of events.
@@ -50,7 +61,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/EventCollection'
     post:
-      tags: [Events]
+      tags:
+      - Events
       summary: Create an Event
       operationId: createEvent
       requestBody:
@@ -67,7 +79,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/Event'
     delete:
-      tags: [Events]
+      tags:
+      - Events
       summary: Delete Events by Filter
       operationId: deleteEvents
       responses:
@@ -78,9 +91,11 @@ paths:
     - name: id
       in: path
       required: true
-      schema: {type: string}
+      schema:
+        type: string
     get:
-      tags: [Events]
+      tags:
+      - Events
       summary: Retrieve an Event
       operationId: getEvent
       responses:
@@ -91,7 +106,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/Event'
     put:
-      tags: [Events]
+      tags:
+      - Events
       summary: Update an Event
       operationId: updateEvent
       requestBody:
@@ -104,46 +120,60 @@ paths:
         '200':
           description: Event updated.
     delete:
-      tags: [Events]
+      tags:
+      - Events
       summary: Delete an Event
       operationId: deleteEvent
       responses:
         '204':
           description: Event deleted.
-  /event/events/{id}/binaries:
-    parameters:
-    - name: id
-      in: path
-      required: true
-      schema: {type: string}
-    get:
-      tags: [Event Binaries]
-      summary: Retrieve an Event Binary
-      operationId: getEventBinary
-      responses:
-        '200':
-          description: Binary content attached to the event.
-    post:
-      tags: [Event Binaries]
-      summary: Attach a Binary to an Event
-      operationId: attachEventBinary
-      requestBody:
-        content:
-          application/octet-stream:
-            schema:
-              type: string
-              format: binary
-      responses:
-        '201':
-          description: Binary attached.
-    delete:
-      tags: [Event Binaries]
-      summary: Delete an Event Binary
-      operationId: deleteEventBinary
-      responses:
-        '204':
-          description: Binary deleted.
 components:
+  schemas:
+    EventCollection:
+      type: object
+      properties:
+        self:
+          type: string
+          format: uri
+        events:
+          type: array
+          items:
+            $ref: '#/components/schemas/Event'
+    Event:
+      type: object
+      required:
+      - time
+      - type
+      - text
+      - source
+      properties:
+        id:
+          type: string
+          readOnly: true
+        self:
+          type: string
+          format: uri
+          readOnly: true
+        time:
+          type: string
+          format: date-time
+        creationTime:
+          type: string
+          format: date-time
+          readOnly: true
+        type:
+          type: string
+        text:
+          type: string
+        source:
+          type: object
+          properties:
+            id:
+              type: string
+            self:
+              type: string
+              format: uri
+      additionalProperties: true
   securitySchemes:
     basicAuth:
       type: http
@@ -152,28 +182,3 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
-  schemas:
-    Event:
-      type: object
-      required: [time, type, text, source]
-      properties:
-        id: {type: string, readOnly: true}
-        self: {type: string, format: uri, readOnly: true}
-        time: {type: string, format: date-time}
-        creationTime: {type: string, format: date-time, readOnly: true}
-        type: {type: string}
-        text: {type: string}
-        source:
-          type: object
-          properties:
-            id: {type: string}
-            self: {type: string, format: uri}
-      additionalProperties: true
-    EventCollection:
-      type: object
-      properties:
-        self: {type: string, format: uri}
-        events:
-          type: array
-          items:
-            $ref: '#/components/schemas/Event'

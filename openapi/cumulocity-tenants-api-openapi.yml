@@ -1,0 +1,144 @@
+openapi: 3.0.3
+info:
+  title: Cumulocity Alarm Alarms Tenants API
+  version: 10.20.0
+  description: 'Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL, MAJOR,
+
+    MINOR, WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms
+
+    by source + type so repeated raises increment the count rather than creating duplicates.
+
+    '
+servers:
+- url: https://{tenant}.cumulocity.com
+  variables:
+    tenant:
+      default: example
+security:
+- basicAuth: []
+- bearerAuth: []
+tags:
+- name: Tenants
+paths:
+  /tenant/tenants:
+    get:
+      tags:
+      - Tenants
+      summary: List Tenants
+      operationId: listTenants
+      responses:
+        '200':
+          description: A collection of tenants.
+          content:
+            application/vnd.com.nsn.cumulocity.tenantCollection+json:
+              schema:
+                $ref: '#/components/schemas/TenantCollection'
+    post:
+      tags:
+      - Tenants
+      summary: Create a Tenant
+      operationId: createTenant
+      requestBody:
+        required: true
+        content:
+          application/vnd.com.nsn.cumulocity.tenant+json:
+            schema:
+              $ref: '#/components/schemas/Tenant'
+      responses:
+        '201':
+          description: Tenant created.
+  /tenant/tenants/{tenantId}:
+    parameters:
+    - name: tenantId
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      tags:
+      - Tenants
+      summary: Retrieve a Tenant
+      operationId: getTenant
+      responses:
+        '200':
+          description: A single tenant.
+          content:
+            application/vnd.com.nsn.cumulocity.tenant+json:
+              schema:
+                $ref: '#/components/schemas/Tenant'
+    put:
+      tags:
+      - Tenants
+      summary: Update a Tenant
+      operationId: updateTenant
+      requestBody:
+        required: true
+        content:
+          application/vnd.com.nsn.cumulocity.tenant+json:
+            schema:
+              $ref: '#/components/schemas/Tenant'
+      responses:
+        '200':
+          description: Tenant updated.
+    delete:
+      tags:
+      - Tenants
+      summary: Delete a Tenant
+      operationId: deleteTenant
+      responses:
+        '204':
+          description: Tenant deleted.
+components:
+  schemas:
+    Tenant:
+      type: object
+      properties:
+        id:
+          type: string
+        self:
+          type: string
+          format: uri
+        company:
+          type: string
+        domain:
+          type: string
+        adminName:
+          type: string
+        adminEmail:
+          type: string
+        contactName:
+          type: string
+        contactPhone:
+          type: string
+        parent:
+          type: string
+        status:
+          type: string
+          enum:
+          - ACTIVE
+          - SUSPENDED
+        creationTime:
+          type: string
+          format: date-time
+        customProperties:
+          type: object
+        allowCreateTenants:
+          type: boolean
+    TenantCollection:
+      type: object
+      properties:
+        self:
+          type: string
+          format: uri
+        tenants:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tenant'
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

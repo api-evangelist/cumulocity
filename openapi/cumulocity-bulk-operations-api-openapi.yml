@@ -1,0 +1,130 @@
+openapi: 3.0.3
+info:
+  title: Cumulocity Alarm Alarms Bulk Operations API
+  version: 10.20.0
+  description: 'Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL, MAJOR,
+
+    MINOR, WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms
+
+    by source + type so repeated raises increment the count rather than creating duplicates.
+
+    '
+servers:
+- url: https://{tenant}.cumulocity.com
+  variables:
+    tenant:
+      default: example
+security:
+- basicAuth: []
+- bearerAuth: []
+tags:
+- name: Bulk Operations
+paths:
+  /devicecontrol/bulkoperations:
+    get:
+      tags:
+      - Bulk Operations
+      summary: List Bulk Operations
+      operationId: listBulkOperations
+      responses:
+        '200':
+          description: A collection of bulk operations.
+    post:
+      tags:
+      - Bulk Operations
+      summary: Create a Bulk Operation
+      operationId: createBulkOperation
+      requestBody:
+        required: true
+        content:
+          application/vnd.com.nsn.cumulocity.bulkOperation+json:
+            schema:
+              $ref: '#/components/schemas/BulkOperation'
+      responses:
+        '201':
+          description: Bulk operation created.
+  /devicecontrol/bulkoperations/{id}:
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      tags:
+      - Bulk Operations
+      summary: Retrieve a Bulk Operation
+      operationId: getBulkOperation
+      responses:
+        '200':
+          description: A single bulk operation.
+    put:
+      tags:
+      - Bulk Operations
+      summary: Update a Bulk Operation
+      operationId: updateBulkOperation
+      requestBody:
+        required: true
+        content:
+          application/vnd.com.nsn.cumulocity.bulkOperation+json:
+            schema:
+              $ref: '#/components/schemas/BulkOperation'
+      responses:
+        '200':
+          description: Bulk operation updated.
+    delete:
+      tags:
+      - Bulk Operations
+      summary: Delete a Bulk Operation
+      operationId: deleteBulkOperation
+      responses:
+        '204':
+          description: Bulk operation deleted.
+components:
+  schemas:
+    BulkOperation:
+      type: object
+      properties:
+        id:
+          type: string
+          readOnly: true
+        groupId:
+          type: string
+        failedParentId:
+          type: string
+        startDate:
+          type: string
+          format: date-time
+        creationRamp:
+          type: integer
+        status:
+          type: string
+          enum:
+          - ACTIVE
+          - IN_PROGRESS
+          - COMPLETED
+          - CANCELED
+        operationPrototype:
+          type: object
+        progress:
+          type: object
+          properties:
+            pending:
+              type: integer
+            executing:
+              type: integer
+            successful:
+              type: integer
+            failed:
+              type: integer
+            all:
+              type: integer
+      additionalProperties: true
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

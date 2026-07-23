@@ -1,0 +1,51 @@
+openapi: 3.0.3
+info:
+  title: Cumulocity Alarm Alarms Tenant Statistics API
+  version: 10.20.0
+  description: 'Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL, MAJOR,
+
+    MINOR, WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms
+
+    by source + type so repeated raises increment the count rather than creating duplicates.
+
+    '
+servers:
+- url: https://{tenant}.cumulocity.com
+  variables:
+    tenant:
+      default: example
+security:
+- basicAuth: []
+- bearerAuth: []
+tags:
+- name: Tenant Statistics
+paths:
+  /tenant/statistics:
+    get:
+      tags:
+      - Tenant Statistics
+      summary: List Tenant Usage Statistics
+      operationId: listTenantStatistics
+      parameters:
+      - name: dateFrom
+        in: query
+        schema:
+          type: string
+          format: date
+      - name: dateTo
+        in: query
+        schema:
+          type: string
+          format: date
+      responses:
+        '200':
+          description: Per-day tenant usage statistics.
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

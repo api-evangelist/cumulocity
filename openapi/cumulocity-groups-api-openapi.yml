@@ -1,0 +1,119 @@
+openapi: 3.0.3
+info:
+  title: Cumulocity Alarm Alarms Groups API
+  version: 10.20.0
+  description: 'Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL, MAJOR,
+
+    MINOR, WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms
+
+    by source + type so repeated raises increment the count rather than creating duplicates.
+
+    '
+servers:
+- url: https://{tenant}.cumulocity.com
+  variables:
+    tenant:
+      default: example
+security:
+- basicAuth: []
+- bearerAuth: []
+tags:
+- name: Groups
+paths:
+  /user/{tenantId}/groups:
+    parameters:
+    - name: tenantId
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      tags:
+      - Groups
+      summary: List Groups
+      operationId: listGroups
+      responses:
+        '200':
+          description: A collection of groups.
+    post:
+      tags:
+      - Groups
+      summary: Create a Group
+      operationId: createGroup
+      requestBody:
+        required: true
+        content:
+          application/vnd.com.nsn.cumulocity.group+json:
+            schema:
+              $ref: '#/components/schemas/Group'
+      responses:
+        '201':
+          description: Group created.
+  /user/{tenantId}/groups/{groupId}:
+    parameters:
+    - name: tenantId
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: groupId
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      tags:
+      - Groups
+      summary: Retrieve a Group
+      operationId: getGroup
+      responses:
+        '200':
+          description: A single group.
+    put:
+      tags:
+      - Groups
+      summary: Update a Group
+      operationId: updateGroup
+      requestBody:
+        required: true
+        content:
+          application/vnd.com.nsn.cumulocity.group+json:
+            schema:
+              $ref: '#/components/schemas/Group'
+      responses:
+        '200':
+          description: Group updated.
+    delete:
+      tags:
+      - Groups
+      summary: Delete a Group
+      operationId: deleteGroup
+      responses:
+        '204':
+          description: Group deleted.
+components:
+  schemas:
+    Group:
+      type: object
+      properties:
+        id:
+          type: integer
+        self:
+          type: string
+          format: uri
+        name:
+          type: string
+        description:
+          type: string
+        roles:
+          type: object
+        users:
+          type: object
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

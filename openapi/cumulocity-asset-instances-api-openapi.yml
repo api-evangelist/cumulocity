@@ -1,0 +1,120 @@
+openapi: 3.0.3
+info:
+  title: Cumulocity Alarm Alarms Asset Instances API
+  version: 10.20.0
+  description: 'Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL, MAJOR,
+
+    MINOR, WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms
+
+    by source + type so repeated raises increment the count rather than creating duplicates.
+
+    '
+servers:
+- url: https://{tenant}.cumulocity.com
+  variables:
+    tenant:
+      default: example
+security:
+- basicAuth: []
+- bearerAuth: []
+tags:
+- name: Asset Instances
+paths:
+  /service/dtm/asset-instances:
+    get:
+      tags:
+      - Asset Instances
+      summary: List Asset Instances
+      operationId: listAssetInstances
+      parameters:
+      - name: model
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: A collection of asset instances.
+    post:
+      tags:
+      - Asset Instances
+      summary: Create an Asset Instance
+      operationId: createAssetInstance
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssetInstance'
+      responses:
+        '201':
+          description: Asset instance created.
+  /service/dtm/asset-instances/{id}:
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      tags:
+      - Asset Instances
+      summary: Retrieve an Asset Instance
+      operationId: getAssetInstance
+      responses:
+        '200':
+          description: A single asset instance.
+    put:
+      tags:
+      - Asset Instances
+      summary: Update an Asset Instance
+      operationId: updateAssetInstance
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssetInstance'
+      responses:
+        '200':
+          description: Asset instance updated.
+    delete:
+      tags:
+      - Asset Instances
+      summary: Delete an Asset Instance
+      operationId: deleteAssetInstance
+      responses:
+        '204':
+          description: Asset instance deleted.
+components:
+  schemas:
+    AssetInstance:
+      type: object
+      properties:
+        id:
+          type: string
+        self:
+          type: string
+          format: uri
+        modelId:
+          type: string
+        name:
+          type: string
+        managedObjectId:
+          type: string
+        parent:
+          type: string
+        properties:
+          type: object
+          additionalProperties: true
+        children:
+          type: array
+          items:
+            type: string
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

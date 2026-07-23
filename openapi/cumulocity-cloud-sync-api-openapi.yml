@@ -1,0 +1,87 @@
+openapi: 3.0.3
+info:
+  title: Cumulocity Alarm Alarms Cloud Sync API
+  version: 10.20.0
+  description: 'Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL, MAJOR,
+
+    MINOR, WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms
+
+    by source + type so repeated raises increment the count rather than creating duplicates.
+
+    '
+servers:
+- url: https://{tenant}.cumulocity.com
+  variables:
+    tenant:
+      default: example
+security:
+- basicAuth: []
+- bearerAuth: []
+tags:
+- name: Cloud Sync
+paths:
+  /service/edge/cloud-sync:
+    get:
+      tags:
+      - Cloud Sync
+      summary: Retrieve Cloud Sync Configuration
+      operationId: getCloudSyncConfiguration
+      responses:
+        '200':
+          description: Current cloud-sync configuration.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CloudSyncConfiguration'
+    put:
+      tags:
+      - Cloud Sync
+      summary: Update Cloud Sync Configuration
+      operationId: updateCloudSyncConfiguration
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CloudSyncConfiguration'
+      responses:
+        '200':
+          description: Cloud-sync configuration updated.
+components:
+  schemas:
+    CloudSyncConfiguration:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+        targetTenantUrl:
+          type: string
+          format: uri
+        targetTenantId:
+          type: string
+        syncedDataTypes:
+          type: array
+          items:
+            type: string
+            enum:
+            - INVENTORY
+            - MEASUREMENTS
+            - EVENTS
+            - ALARMS
+            - OPERATIONS
+            - AUDIT
+        bandwidthLimitKbps:
+          type: integer
+        bufferingPolicy:
+          type: string
+          enum:
+          - BLOCK
+          - DROP_OLDEST
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

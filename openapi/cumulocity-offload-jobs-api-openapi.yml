@@ -1,0 +1,54 @@
+openapi: 3.0.3
+info:
+  title: Cumulocity Alarm Alarms Offload Jobs API
+  version: 10.20.0
+  description: 'Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL, MAJOR,
+
+    MINOR, WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms
+
+    by source + type so repeated raises increment the count rather than creating duplicates.
+
+    '
+servers:
+- url: https://{tenant}.cumulocity.com
+  variables:
+    tenant:
+      default: example
+security:
+- basicAuth: []
+- bearerAuth: []
+tags:
+- name: Offload Jobs
+paths:
+  /service/datahub/offload/{id}/jobs:
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      tags:
+      - Offload Jobs
+      summary: List Offload Jobs
+      operationId: listOffloadJobs
+      responses:
+        '200':
+          description: A collection of offload jobs.
+    post:
+      tags:
+      - Offload Jobs
+      summary: Start an Offload Job
+      operationId: startOffloadJob
+      responses:
+        '201':
+          description: Offload job started.
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

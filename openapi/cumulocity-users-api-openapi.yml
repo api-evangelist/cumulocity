@@ -1,0 +1,169 @@
+openapi: 3.0.3
+info:
+  title: Cumulocity Alarm Alarms Users API
+  version: 10.20.0
+  description: 'Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL, MAJOR,
+
+    MINOR, WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms
+
+    by source + type so repeated raises increment the count rather than creating duplicates.
+
+    '
+servers:
+- url: https://{tenant}.cumulocity.com
+  variables:
+    tenant:
+      default: example
+security:
+- basicAuth: []
+- bearerAuth: []
+tags:
+- name: Users
+paths:
+  /user/{tenantId}/users:
+    parameters:
+    - name: tenantId
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      tags:
+      - Users
+      summary: List Users
+      operationId: listUsers
+      responses:
+        '200':
+          description: A collection of users.
+          content:
+            application/vnd.com.nsn.cumulocity.userCollection+json:
+              schema:
+                $ref: '#/components/schemas/UserCollection'
+    post:
+      tags:
+      - Users
+      summary: Create a User
+      operationId: createUser
+      requestBody:
+        required: true
+        content:
+          application/vnd.com.nsn.cumulocity.user+json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: User created.
+  /user/{tenantId}/users/{userId}:
+    parameters:
+    - name: tenantId
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: userId
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      tags:
+      - Users
+      summary: Retrieve a User
+      operationId: getUser
+      responses:
+        '200':
+          description: A single user.
+          content:
+            application/vnd.com.nsn.cumulocity.user+json:
+              schema:
+                $ref: '#/components/schemas/User'
+    put:
+      tags:
+      - Users
+      summary: Update a User
+      operationId: updateUser
+      requestBody:
+        required: true
+        content:
+          application/vnd.com.nsn.cumulocity.user+json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: User updated.
+    delete:
+      tags:
+      - Users
+      summary: Delete a User
+      operationId: deleteUser
+      responses:
+        '204':
+          description: User deleted.
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        self:
+          type: string
+          format: uri
+        userName:
+          type: string
+        email:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        displayName:
+          type: string
+        phone:
+          type: string
+        enabled:
+          type: boolean
+        password:
+          type: string
+          writeOnly: true
+        shouldResetPassword:
+          type: boolean
+        lastPasswordChange:
+          type: string
+          format: date-time
+        twoFactorAuthenticationEnabled:
+          type: boolean
+        groups:
+          type: object
+          properties:
+            references:
+              type: array
+              items:
+                type: object
+        roles:
+          type: object
+          properties:
+            references:
+              type: array
+              items:
+                type: object
+        devicePermissions:
+          type: object
+    UserCollection:
+      type: object
+      properties:
+        self:
+          type: string
+          format: uri
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

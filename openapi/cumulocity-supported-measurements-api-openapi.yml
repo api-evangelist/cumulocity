@@ -1,0 +1,61 @@
+openapi: 3.0.3
+info:
+  title: Cumulocity Alarm Alarms Supported Measurements API
+  version: 10.20.0
+  description: 'Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL, MAJOR,
+
+    MINOR, WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms
+
+    by source + type so repeated raises increment the count rather than creating duplicates.
+
+    '
+servers:
+- url: https://{tenant}.cumulocity.com
+  variables:
+    tenant:
+      default: example
+security:
+- basicAuth: []
+- bearerAuth: []
+tags:
+- name: Supported Measurements
+  description: Discover the measurement types reported against a managed object.
+paths:
+  /inventory/managedObjects/{id}/supportedMeasurements:
+    parameters:
+    - $ref: '#/components/parameters/ManagedObjectId'
+    get:
+      tags:
+      - Supported Measurements
+      summary: List Supported Measurements
+      operationId: listSupportedMeasurements
+      responses:
+        '200':
+          description: List of measurement types reported for this managed object.
+  /inventory/managedObjects/{id}/supportedSeries:
+    parameters:
+    - $ref: '#/components/parameters/ManagedObjectId'
+    get:
+      tags:
+      - Supported Measurements
+      summary: List Supported Series
+      operationId: listSupportedSeries
+      responses:
+        '200':
+          description: List of measurement series reported for this managed object.
+components:
+  parameters:
+    ManagedObjectId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

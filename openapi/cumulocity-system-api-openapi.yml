@@ -1,0 +1,87 @@
+openapi: 3.0.3
+info:
+  title: Cumulocity Alarm Alarms System API
+  version: 10.20.0
+  description: 'Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL, MAJOR,
+
+    MINOR, WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms
+
+    by source + type so repeated raises increment the count rather than creating duplicates.
+
+    '
+servers:
+- url: https://{tenant}.cumulocity.com
+  variables:
+    tenant:
+      default: example
+security:
+- basicAuth: []
+- bearerAuth: []
+tags:
+- name: System
+paths:
+  /service/edge/system:
+    get:
+      tags:
+      - System
+      summary: Retrieve Edge System Status
+      operationId: getEdgeSystemStatus
+      responses:
+        '200':
+          description: System status including version, uptime, disk, and service health.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EdgeSystemStatus'
+  /service/edge/system/restart:
+    post:
+      tags:
+      - System
+      summary: Restart the Edge System
+      operationId: restartEdge
+      responses:
+        '202':
+          description: Restart requested.
+components:
+  schemas:
+    EdgeSystemStatus:
+      type: object
+      properties:
+        version:
+          type: string
+        edition:
+          type: string
+          enum:
+          - CONNECTED
+          - AIR_GAPPED
+        uptime:
+          type: integer
+          description: Seconds since boot.
+        services:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              status:
+                type: string
+                enum:
+                - RUNNING
+                - STOPPED
+                - FAILED
+        storage:
+          type: object
+          properties:
+            totalBytes:
+              type: integer
+            usedBytes:
+              type: integer
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

@@ -1,11 +1,14 @@
 openapi: 3.0.3
 info:
-  title: Cumulocity Measurement API
+  title: Cumulocity Alarm Alarms Measurements API
   version: 10.20.0
-  description: |
-    Ingest, query, and delete device measurements (telemetry data points) including temperature, voltage,
-    location, and arbitrary custom fragments with units. Supports time-range queries, source/type filters,
-    series aggregations (hourly/daily), and bulk creation.
+  description: 'Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL, MAJOR,
+
+    MINOR, WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms
+
+    by source + type so repeated raises increment the count rather than creating duplicates.
+
+    '
 servers:
 - url: https://{tenant}.cumulocity.com
   variables:
@@ -16,35 +19,44 @@ security:
 - bearerAuth: []
 tags:
 - name: Measurements
-- name: Series
 paths:
   /measurement/measurements:
     get:
-      tags: [Measurements]
+      tags:
+      - Measurements
       summary: List Measurements
       operationId: listMeasurements
       parameters:
       - name: source
         in: query
-        schema: {type: string}
+        schema:
+          type: string
       - name: type
         in: query
-        schema: {type: string}
+        schema:
+          type: string
       - name: valueFragmentType
         in: query
-        schema: {type: string}
+        schema:
+          type: string
       - name: valueFragmentSeries
         in: query
-        schema: {type: string}
+        schema:
+          type: string
       - name: dateFrom
         in: query
-        schema: {type: string, format: date-time}
+        schema:
+          type: string
+          format: date-time
       - name: dateTo
         in: query
-        schema: {type: string, format: date-time}
+        schema:
+          type: string
+          format: date-time
       - name: revert
         in: query
-        schema: {type: boolean}
+        schema:
+          type: boolean
       - $ref: '#/components/parameters/PageSize'
       - $ref: '#/components/parameters/CurrentPage'
       responses:
@@ -55,7 +67,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/MeasurementCollection'
     post:
-      tags: [Measurements]
+      tags:
+      - Measurements
       summary: Create a Measurement
       operationId: createMeasurement
       requestBody:
@@ -75,22 +88,29 @@ paths:
               schema:
                 $ref: '#/components/schemas/Measurement'
     delete:
-      tags: [Measurements]
+      tags:
+      - Measurements
       summary: Delete Measurements by Filter
       operationId: deleteMeasurements
       parameters:
       - name: source
         in: query
-        schema: {type: string}
+        schema:
+          type: string
       - name: type
         in: query
-        schema: {type: string}
+        schema:
+          type: string
       - name: dateFrom
         in: query
-        schema: {type: string, format: date-time}
+        schema:
+          type: string
+          format: date-time
       - name: dateTo
         in: query
-        schema: {type: string, format: date-time}
+        schema:
+          type: string
+          format: date-time
       responses:
         '204':
           description: Measurements deleted.
@@ -99,9 +119,11 @@ paths:
     - name: id
       in: path
       required: true
-      schema: {type: string}
+      schema:
+        type: string
     get:
-      tags: [Measurements]
+      tags:
+      - Measurements
       summary: Retrieve a Measurement
       operationId: getMeasurement
       responses:
@@ -112,45 +134,69 @@ paths:
               schema:
                 $ref: '#/components/schemas/Measurement'
     delete:
-      tags: [Measurements]
+      tags:
+      - Measurements
       summary: Delete a Measurement
       operationId: deleteMeasurement
       responses:
         '204':
           description: Measurement deleted.
-  /measurement/measurements/series:
-    get:
-      tags: [Series]
-      summary: Retrieve Series Aggregations
-      operationId: getSeries
-      parameters:
-      - name: source
-        in: query
-        required: true
-        schema: {type: string}
-      - name: series
-        in: query
-        required: true
-        schema: {type: array, items: {type: string}}
-        style: form
-        explode: true
-      - name: aggregationType
-        in: query
-        schema:
-          type: string
-          enum: [MINUTELY, HOURLY, DAILY]
-      - name: dateFrom
-        in: query
-        required: true
-        schema: {type: string, format: date-time}
-      - name: dateTo
-        in: query
-        required: true
-        schema: {type: string, format: date-time}
-      responses:
-        '200':
-          description: Series aggregation result.
 components:
+  schemas:
+    Measurement:
+      type: object
+      required:
+      - time
+      - type
+      - source
+      properties:
+        id:
+          type: string
+          readOnly: true
+        self:
+          type: string
+          format: uri
+          readOnly: true
+        time:
+          type: string
+          format: date-time
+        type:
+          type: string
+        source:
+          type: object
+          properties:
+            id:
+              type: string
+            self:
+              type: string
+              format: uri
+      additionalProperties: true
+    MeasurementCollection:
+      type: object
+      properties:
+        self:
+          type: string
+          format: uri
+        measurements:
+          type: array
+          items:
+            $ref: '#/components/schemas/Measurement'
+  parameters:
+    PageSize:
+      name: pageSize
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 2000
+        default: 5
+    CurrentPage:
+      name: currentPage
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
   securitySchemes:
     basicAuth:
       type: http
@@ -159,35 +205,3 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
-  parameters:
-    PageSize:
-      name: pageSize
-      in: query
-      schema: {type: integer, minimum: 1, maximum: 2000, default: 5}
-    CurrentPage:
-      name: currentPage
-      in: query
-      schema: {type: integer, minimum: 1, default: 1}
-  schemas:
-    Measurement:
-      type: object
-      required: [time, type, source]
-      properties:
-        id: {type: string, readOnly: true}
-        self: {type: string, format: uri, readOnly: true}
-        time: {type: string, format: date-time}
-        type: {type: string}
-        source:
-          type: object
-          properties:
-            id: {type: string}
-            self: {type: string, format: uri}
-      additionalProperties: true
-    MeasurementCollection:
-      type: object
-      properties:
-        self: {type: string, format: uri}
-        measurements:
-          type: array
-          items:
-            $ref: '#/components/schemas/Measurement'

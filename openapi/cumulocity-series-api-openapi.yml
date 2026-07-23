@@ -1,0 +1,75 @@
+openapi: 3.0.3
+info:
+  title: Cumulocity Alarm Alarms Series API
+  version: 10.20.0
+  description: 'Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL, MAJOR,
+
+    MINOR, WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms
+
+    by source + type so repeated raises increment the count rather than creating duplicates.
+
+    '
+servers:
+- url: https://{tenant}.cumulocity.com
+  variables:
+    tenant:
+      default: example
+security:
+- basicAuth: []
+- bearerAuth: []
+tags:
+- name: Series
+paths:
+  /measurement/measurements/series:
+    get:
+      tags:
+      - Series
+      summary: Retrieve Series Aggregations
+      operationId: getSeries
+      parameters:
+      - name: source
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: series
+        in: query
+        required: true
+        schema:
+          type: array
+          items:
+            type: string
+        style: form
+        explode: true
+      - name: aggregationType
+        in: query
+        schema:
+          type: string
+          enum:
+          - MINUTELY
+          - HOURLY
+          - DAILY
+      - name: dateFrom
+        in: query
+        required: true
+        schema:
+          type: string
+          format: date-time
+      - name: dateTo
+        in: query
+        required: true
+        schema:
+          type: string
+          format: date-time
+      responses:
+        '200':
+          description: Series aggregation result.
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

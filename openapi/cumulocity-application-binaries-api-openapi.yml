@@ -1,0 +1,63 @@
+openapi: 3.0.3
+info:
+  title: Cumulocity Alarm Alarms Application Binaries API
+  version: 10.20.0
+  description: 'Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL, MAJOR,
+
+    MINOR, WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms
+
+    by source + type so repeated raises increment the count rather than creating duplicates.
+
+    '
+servers:
+- url: https://{tenant}.cumulocity.com
+  variables:
+    tenant:
+      default: example
+security:
+- basicAuth: []
+- bearerAuth: []
+tags:
+- name: Application Binaries
+paths:
+  /application/applications/{id}/binaries:
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      tags:
+      - Application Binaries
+      summary: List Application Binaries
+      operationId: listApplicationBinaries
+      responses:
+        '200':
+          description: A collection of application binaries.
+    post:
+      tags:
+      - Application Binaries
+      summary: Upload an Application Binary
+      operationId: uploadApplicationBinary
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: Binary uploaded.
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

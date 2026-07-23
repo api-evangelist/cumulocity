@@ -1,0 +1,107 @@
+openapi: 3.0.3
+info:
+  title: Cumulocity Alarm Alarms Current User API
+  version: 10.20.0
+  description: 'Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL, MAJOR,
+
+    MINOR, WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms
+
+    by source + type so repeated raises increment the count rather than creating duplicates.
+
+    '
+servers:
+- url: https://{tenant}.cumulocity.com
+  variables:
+    tenant:
+      default: example
+security:
+- basicAuth: []
+- bearerAuth: []
+tags:
+- name: Current User
+paths:
+  /user/currentUser:
+    get:
+      tags:
+      - Current User
+      summary: Retrieve Current User
+      operationId: getCurrentUser
+      responses:
+        '200':
+          description: The authenticated user.
+          content:
+            application/vnd.com.nsn.cumulocity.currentUser+json:
+              schema:
+                $ref: '#/components/schemas/User'
+    put:
+      tags:
+      - Current User
+      summary: Update Current User
+      operationId: updateCurrentUser
+      requestBody:
+        required: true
+        content:
+          application/vnd.com.nsn.cumulocity.currentUser+json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: Current user updated.
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        self:
+          type: string
+          format: uri
+        userName:
+          type: string
+        email:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        displayName:
+          type: string
+        phone:
+          type: string
+        enabled:
+          type: boolean
+        password:
+          type: string
+          writeOnly: true
+        shouldResetPassword:
+          type: boolean
+        lastPasswordChange:
+          type: string
+          format: date-time
+        twoFactorAuthenticationEnabled:
+          type: boolean
+        groups:
+          type: object
+          properties:
+            references:
+              type: array
+              items:
+                type: object
+        roles:
+          type: object
+          properties:
+            references:
+              type: array
+              items:
+                type: object
+        devicePermissions:
+          type: object
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

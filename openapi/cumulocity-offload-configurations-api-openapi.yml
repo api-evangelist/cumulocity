@@ -1,0 +1,130 @@
+openapi: 3.0.3
+info:
+  title: Cumulocity Alarm Alarms Offload Configurations API
+  version: 10.20.0
+  description: 'Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL, MAJOR,
+
+    MINOR, WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms
+
+    by source + type so repeated raises increment the count rather than creating duplicates.
+
+    '
+servers:
+- url: https://{tenant}.cumulocity.com
+  variables:
+    tenant:
+      default: example
+security:
+- basicAuth: []
+- bearerAuth: []
+tags:
+- name: Offload Configurations
+paths:
+  /service/datahub/offload:
+    get:
+      tags:
+      - Offload Configurations
+      summary: List Offload Configurations
+      operationId: listOffloadConfigurations
+      responses:
+        '200':
+          description: A collection of offload configurations.
+    post:
+      tags:
+      - Offload Configurations
+      summary: Create an Offload Configuration
+      operationId: createOffloadConfiguration
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OffloadConfiguration'
+      responses:
+        '201':
+          description: Offload configuration created.
+  /service/datahub/offload/{id}:
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      tags:
+      - Offload Configurations
+      summary: Retrieve an Offload Configuration
+      operationId: getOffloadConfiguration
+      responses:
+        '200':
+          description: A single offload configuration.
+    put:
+      tags:
+      - Offload Configurations
+      summary: Update an Offload Configuration
+      operationId: updateOffloadConfiguration
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OffloadConfiguration'
+      responses:
+        '200':
+          description: Offload configuration updated.
+    delete:
+      tags:
+      - Offload Configurations
+      summary: Delete an Offload Configuration
+      operationId: deleteOffloadConfiguration
+      responses:
+        '204':
+          description: Offload configuration deleted.
+components:
+  schemas:
+    OffloadConfiguration:
+      type: object
+      properties:
+        id:
+          type: string
+        self:
+          type: string
+          format: uri
+        source:
+          type: string
+          enum:
+          - measurements
+          - events
+          - alarms
+          - inventory
+          - operations
+          - audit
+        filter:
+          type: string
+        offloadType:
+          type: string
+          enum:
+          - INITIAL_PLUS_INCREMENT
+          - INCREMENTAL
+        schedule:
+          type: string
+        status:
+          type: string
+          enum:
+          - ACTIVE
+          - PAUSED
+          - FAILED
+        targetDataset:
+          type: string
+        partitioning:
+          type: array
+          items:
+            type: string
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

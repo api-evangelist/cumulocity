@@ -1,0 +1,60 @@
+openapi: 3.0.3
+info:
+  title: Cumulocity Alarm Alarms Bootstrap Users API
+  version: 10.20.0
+  description: 'Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL, MAJOR,
+
+    MINOR, WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms
+
+    by source + type so repeated raises increment the count rather than creating duplicates.
+
+    '
+servers:
+- url: https://{tenant}.cumulocity.com
+  variables:
+    tenant:
+      default: example
+security:
+- basicAuth: []
+- bearerAuth: []
+tags:
+- name: Bootstrap Users
+paths:
+  /application/applications/{id}/bootstrapUser:
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      tags:
+      - Bootstrap Users
+      summary: Retrieve the Bootstrap User of a Microservice Application
+      operationId: getBootstrapUser
+      responses:
+        '200':
+          description: Bootstrap user credentials.
+          content:
+            application/vnd.com.nsn.cumulocity.bootstrapUser+json:
+              schema:
+                $ref: '#/components/schemas/BootstrapUser'
+components:
+  schemas:
+    BootstrapUser:
+      type: object
+      properties:
+        tenant:
+          type: string
+        name:
+          type: string
+        password:
+          type: string
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

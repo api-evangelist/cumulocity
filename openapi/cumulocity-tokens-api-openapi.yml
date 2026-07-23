@@ -1,0 +1,94 @@
+openapi: 3.0.3
+info:
+  title: Cumulocity Alarm Alarms Tokens API
+  version: 10.20.0
+  description: 'Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL, MAJOR,
+
+    MINOR, WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms
+
+    by source + type so repeated raises increment the count rather than creating duplicates.
+
+    '
+servers:
+- url: https://{tenant}.cumulocity.com
+  variables:
+    tenant:
+      default: example
+security:
+- basicAuth: []
+- bearerAuth: []
+tags:
+- name: Tokens
+paths:
+  /notification2/token:
+    post:
+      tags:
+      - Tokens
+      summary: Create a Subscription Token
+      operationId: createToken
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRequest'
+      responses:
+        '200':
+          description: A short-lived JWT token to use with the WebSocket consumer endpoint.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+  /notification2/unsubscribe:
+    post:
+      tags:
+      - Tokens
+      summary: Unsubscribe (Invalidate Token)
+      operationId: unsubscribeToken
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+      responses:
+        '200':
+          description: Token invalidated.
+components:
+  schemas:
+    TokenResponse:
+      type: object
+      properties:
+        token:
+          type: string
+    TokenRequest:
+      type: object
+      required:
+      - subscriber
+      - subscription
+      properties:
+        subscriber:
+          type: string
+        subscription:
+          type: string
+        expiresInMinutes:
+          type: integer
+          minimum: 1
+          maximum: 1440
+        nonPersistent:
+          type: boolean
+        signed:
+          type: boolean
+        shared:
+          type: boolean
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

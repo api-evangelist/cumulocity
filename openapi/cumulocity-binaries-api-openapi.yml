@@ -1,0 +1,86 @@
+openapi: 3.0.3
+info:
+  title: Cumulocity Alarm Alarms Binaries API
+  version: 10.20.0
+  description: 'Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL, MAJOR,
+
+    MINOR, WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms
+
+    by source + type so repeated raises increment the count rather than creating duplicates.
+
+    '
+servers:
+- url: https://{tenant}.cumulocity.com
+  variables:
+    tenant:
+      default: example
+security:
+- basicAuth: []
+- bearerAuth: []
+tags:
+- name: Binaries
+  description: Binary attachments associated with managed objects.
+paths:
+  /inventory/binaries:
+    get:
+      tags:
+      - Binaries
+      summary: List Binaries
+      operationId: listBinaries
+      responses:
+        '200':
+          description: A collection of binary managed objects.
+    post:
+      tags:
+      - Binaries
+      summary: Upload a Binary
+      operationId: uploadBinary
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                object:
+                  type: string
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: Binary uploaded.
+  /inventory/binaries/{id}:
+    parameters:
+    - $ref: '#/components/parameters/ManagedObjectId'
+    get:
+      tags:
+      - Binaries
+      summary: Retrieve a Binary
+      operationId: getBinary
+      responses:
+        '200':
+          description: Binary content.
+    delete:
+      tags:
+      - Binaries
+      summary: Delete a Binary
+      operationId: deleteBinary
+      responses:
+        '204':
+          description: Binary deleted.
+components:
+  parameters:
+    ManagedObjectId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

@@ -1,11 +1,14 @@
 openapi: 3.0.3
 info:
-  title: Cumulocity Identity API
+  title: Cumulocity Alarm Alarms External IDs API
   version: 10.20.0
-  description: |
-    Link external identifiers (IMEI, serial number, MAC, ICCID, c8y_Serial, etc.) to Cumulocity managed
-    object IDs. The Identity API is the primary lookup table used by device bootstrap, MQTT auto-registration,
-    and any integration translating provider-specific IDs to Cumulocity IDs.
+  description: 'Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL, MAJOR,
+
+    MINOR, WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms
+
+    by source + type so repeated raises increment the count rather than creating duplicates.
+
+    '
 servers:
 - url: https://{tenant}.cumulocity.com
   variables:
@@ -22,13 +25,16 @@ paths:
     - name: type
       in: path
       required: true
-      schema: {type: string}
+      schema:
+        type: string
     - name: externalId
       in: path
       required: true
-      schema: {type: string}
+      schema:
+        type: string
     get:
-      tags: [External IDs]
+      tags:
+      - External IDs
       summary: Retrieve an External ID
       operationId: getExternalId
       responses:
@@ -39,7 +45,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/ExternalId'
     delete:
-      tags: [External IDs]
+      tags:
+      - External IDs
       summary: Delete an External ID
       operationId: deleteExternalId
       responses:
@@ -50,9 +57,11 @@ paths:
     - name: id
       in: path
       required: true
-      schema: {type: string}
+      schema:
+        type: string
     get:
-      tags: [External IDs]
+      tags:
+      - External IDs
       summary: List External IDs for Global ID
       operationId: listExternalIdsForGlobalId
       responses:
@@ -63,7 +72,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/ExternalIdCollection'
     post:
-      tags: [External IDs]
+      tags:
+      - External IDs
       summary: Create an External ID
       operationId: createExternalId
       requestBody:
@@ -76,6 +86,35 @@ paths:
         '201':
           description: External ID created.
 components:
+  schemas:
+    ExternalIdCollection:
+      type: object
+      properties:
+        self:
+          type: string
+          format: uri
+        externalIds:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalId'
+    ExternalId:
+      type: object
+      properties:
+        self:
+          type: string
+          format: uri
+        externalId:
+          type: string
+        type:
+          type: string
+        managedObject:
+          type: object
+          properties:
+            id:
+              type: string
+            self:
+              type: string
+              format: uri
   securitySchemes:
     basicAuth:
       type: http
@@ -84,23 +123,3 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
-  schemas:
-    ExternalId:
-      type: object
-      properties:
-        self: {type: string, format: uri}
-        externalId: {type: string}
-        type: {type: string}
-        managedObject:
-          type: object
-          properties:
-            id: {type: string}
-            self: {type: string, format: uri}
-    ExternalIdCollection:
-      type: object
-      properties:
-        self: {type: string, format: uri}
-        externalIds:
-          type: array
-          items:
-            $ref: '#/components/schemas/ExternalId'
