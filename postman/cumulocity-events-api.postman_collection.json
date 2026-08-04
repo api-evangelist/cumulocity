@@ -1,0 +1,622 @@
+{
+  "info": {
+    "_postman_id": "4d2fe2a0-ba62-47b0-9916-7e6421d3290c",
+    "name": "Cumulocity Alarm Alarms Events API",
+    "description": "Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL, MAJOR,\nMINOR, WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms\nby source + type so repeated raises increment the count rather than creating duplicates.\n",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:28:07.000Z",
+    "updatedAt": "2026-07-28T01:28:07.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-4d2fe2a0-ba62-47b0-9916-7e6421d3290c"
+  },
+  "item": [
+    {
+      "name": "event",
+      "item": [
+        {
+          "name": "events",
+          "item": [
+            {
+              "name": "{id}",
+              "item": [
+                {
+                  "name": "Retrieve an Event",
+                  "id": "b7ebaff2-1b3d-4946-b0ea-7b82197cbd87",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/vnd.com.nsn.cumulocity.event+json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/event/events/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "event",
+                        "events",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "8369a32e-4f11-4c34-afae-b8aab4e929f7",
+                          "key": "id",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "2793a068-8ac2-4a33-a99f-279f24fdb58e",
+                      "name": "A single event.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/vnd.com.nsn.cumulocity.event+json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/event/events/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "event",
+                            "events",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/vnd.com.nsn.cumulocity.event+json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"time\": \"<dateTime>\",\n  \"type\": \"<string>\",\n  \"text\": \"<string>\",\n  \"source\": {\n    \"id\": \"<string>\",\n    \"self\": \"<uri>\"\n  },\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"creationTime\": \"<dateTime>\"\n}",
+                      "createdAt": "2026-07-28T01:28:07.000Z",
+                      "updatedAt": "2026-07-28T01:28:07.000Z",
+                      "uid": "35240-2793a068-8ac2-4a33-a99f-279f24fdb58e"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:28:07.000Z",
+                  "updatedAt": "2026-07-28T01:28:07.000Z",
+                  "uid": "35240-b7ebaff2-1b3d-4946-b0ea-7b82197cbd87"
+                },
+                {
+                  "name": "Update an Event",
+                  "id": "43735379-921a-484c-b501-b9032ac63854",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/vnd.com.nsn.cumulocity.event+json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"time\": \"<dateTime>\",\n  \"type\": \"<string>\",\n  \"text\": \"<string>\",\n  \"source\": {\n    \"id\": \"<string>\",\n    \"self\": \"<uri>\"\n  },\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"creationTime\": \"<dateTime>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/event/events/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "event",
+                        "events",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "9af64cc2-be9e-4139-a106-cc4684a939b6",
+                          "key": "id",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "1d2d8dd2-7096-4de7-a532-3ed3737a1301",
+                      "name": "Event updated.",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/vnd.com.nsn.cumulocity.event+json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"time\": \"<dateTime>\",\n  \"type\": \"<string>\",\n  \"text\": \"<string>\",\n  \"source\": {\n    \"id\": \"<string>\",\n    \"self\": \"<uri>\"\n  },\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"creationTime\": \"<dateTime>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/event/events/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "event",
+                            "events",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T01:28:07.000Z",
+                      "updatedAt": "2026-07-28T01:28:07.000Z",
+                      "uid": "35240-1d2d8dd2-7096-4de7-a532-3ed3737a1301"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:28:07.000Z",
+                  "updatedAt": "2026-07-28T01:28:07.000Z",
+                  "uid": "35240-43735379-921a-484c-b501-b9032ac63854"
+                },
+                {
+                  "name": "Delete an Event",
+                  "id": "4ec75a39-4ae2-49b3-86d5-fa8144fa2a58",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "DELETE",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/event/events/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "event",
+                        "events",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "c6efaf93-32eb-43d6-b2fc-4e3265779249",
+                          "key": "id",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "be5d4418-bde5-4e68-927a-49d12e29622a",
+                      "name": "Event deleted.",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/event/events/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "event",
+                            "events",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "No Content",
+                      "code": 204,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T01:28:07.000Z",
+                      "updatedAt": "2026-07-28T01:28:07.000Z",
+                      "uid": "35240-be5d4418-bde5-4e68-927a-49d12e29622a"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:28:07.000Z",
+                  "updatedAt": "2026-07-28T01:28:07.000Z",
+                  "uid": "35240-4ec75a39-4ae2-49b3-86d5-fa8144fa2a58"
+                }
+              ],
+              "id": "6c27c3f8-dc21-43eb-968f-3f5273145c29",
+              "createdAt": "2026-07-28T01:28:07.000Z",
+              "updatedAt": "2026-07-28T01:28:07.000Z",
+              "uid": "35240-6c27c3f8-dc21-43eb-968f-3f5273145c29"
+            },
+            {
+              "name": "List Events",
+              "id": "afccfbec-4e68-401d-9417-f30f754e73c6",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.com.nsn.cumulocity.eventCollection+json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/event/events?source=<string>&type=<string>&fragmentType=<string>&dateFrom=<dateTime>&dateTo=<dateTime>&revert=<boolean>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "event",
+                    "events"
+                  ],
+                  "query": [
+                    {
+                      "key": "source",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "fragmentType",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "dateFrom",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "dateTo",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "revert",
+                      "value": "<boolean>"
+                    }
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "id": "f89bef78-ecb8-4d1a-8948-85edaa058126",
+                  "name": "A collection of events.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/vnd.com.nsn.cumulocity.eventCollection+json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/event/events?source=<string>&type=<string>&fragmentType=<string>&dateFrom=<dateTime>&dateTo=<dateTime>&revert=<boolean>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "event",
+                        "events"
+                      ],
+                      "query": [
+                        {
+                          "key": "source",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "type",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "fragmentType",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "dateFrom",
+                          "value": "<dateTime>"
+                        },
+                        {
+                          "key": "dateTo",
+                          "value": "<dateTime>"
+                        },
+                        {
+                          "key": "revert",
+                          "value": "<boolean>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/vnd.com.nsn.cumulocity.eventCollection+json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"self\": \"<uri>\",\n  \"events\": [\n    {\n      \"time\": \"<dateTime>\",\n      \"type\": \"<string>\",\n      \"text\": \"<string>\",\n      \"source\": {\n        \"id\": \"<string>\",\n        \"self\": \"<uri>\"\n      },\n      \"id\": \"<string>\",\n      \"self\": \"<uri>\",\n      \"creationTime\": \"<dateTime>\"\n    },\n    {\n      \"time\": \"<dateTime>\",\n      \"type\": \"<string>\",\n      \"text\": \"<string>\",\n      \"source\": {\n        \"id\": \"<string>\",\n        \"self\": \"<uri>\"\n      },\n      \"id\": \"<string>\",\n      \"self\": \"<uri>\",\n      \"creationTime\": \"<dateTime>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T01:28:07.000Z",
+                  "updatedAt": "2026-07-28T01:28:07.000Z",
+                  "uid": "35240-f89bef78-ecb8-4d1a-8948-85edaa058126"
+                }
+              ],
+              "createdAt": "2026-07-28T01:28:07.000Z",
+              "updatedAt": "2026-07-28T01:28:07.000Z",
+              "uid": "35240-afccfbec-4e68-401d-9417-f30f754e73c6"
+            },
+            {
+              "name": "Create an Event",
+              "id": "472e0d63-20cb-4ead-818d-3cb925ab4dfe",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/vnd.com.nsn.cumulocity.event+json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.com.nsn.cumulocity.event+json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"time\": \"<dateTime>\",\n  \"type\": \"<string>\",\n  \"text\": \"<string>\",\n  \"source\": {\n    \"id\": \"<string>\",\n    \"self\": \"<uri>\"\n  },\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"creationTime\": \"<dateTime>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/event/events",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "event",
+                    "events"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "id": "3a524d10-2d4a-4f3e-8960-a991a6661c3c",
+                  "name": "Event created.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/vnd.com.nsn.cumulocity.event+json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/vnd.com.nsn.cumulocity.event+json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"time\": \"<dateTime>\",\n  \"type\": \"<string>\",\n  \"text\": \"<string>\",\n  \"source\": {\n    \"id\": \"<string>\",\n    \"self\": \"<uri>\"\n  },\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"creationTime\": \"<dateTime>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/event/events",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "event",
+                        "events"
+                      ]
+                    }
+                  },
+                  "status": "Created",
+                  "code": 201,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/vnd.com.nsn.cumulocity.event+json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"time\": \"<dateTime>\",\n  \"type\": \"<string>\",\n  \"text\": \"<string>\",\n  \"source\": {\n    \"id\": \"<string>\",\n    \"self\": \"<uri>\"\n  },\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"creationTime\": \"<dateTime>\"\n}",
+                  "createdAt": "2026-07-28T01:28:07.000Z",
+                  "updatedAt": "2026-07-28T01:28:07.000Z",
+                  "uid": "35240-3a524d10-2d4a-4f3e-8960-a991a6661c3c"
+                }
+              ],
+              "createdAt": "2026-07-28T01:28:07.000Z",
+              "updatedAt": "2026-07-28T01:28:07.000Z",
+              "uid": "35240-472e0d63-20cb-4ead-818d-3cb925ab4dfe"
+            },
+            {
+              "name": "Delete Events by Filter",
+              "id": "91e7cb99-f030-4e8e-a2cd-74597368ab7e",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/event/events",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "event",
+                    "events"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "id": "6e16a39b-7487-4a5a-bb15-ca13db786ff8",
+                  "name": "Events deleted.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/event/events",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "event",
+                        "events"
+                      ]
+                    }
+                  },
+                  "status": "No Content",
+                  "code": 204,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T01:28:07.000Z",
+                  "updatedAt": "2026-07-28T01:28:07.000Z",
+                  "uid": "35240-6e16a39b-7487-4a5a-bb15-ca13db786ff8"
+                }
+              ],
+              "createdAt": "2026-07-28T01:28:07.000Z",
+              "updatedAt": "2026-07-28T01:28:07.000Z",
+              "uid": "35240-91e7cb99-f030-4e8e-a2cd-74597368ab7e"
+            }
+          ],
+          "id": "c18e4aff-d4a2-4a50-a810-c22d85c69bc0",
+          "createdAt": "2026-07-28T01:28:07.000Z",
+          "updatedAt": "2026-07-28T01:28:07.000Z",
+          "uid": "35240-c18e4aff-d4a2-4a50-a810-c22d85c69bc0"
+        }
+      ],
+      "id": "20dd7e7a-6193-4080-b4de-580fa57b887c",
+      "createdAt": "2026-07-28T01:28:07.000Z",
+      "updatedAt": "2026-07-28T01:28:07.000Z",
+      "uid": "35240-20dd7e7a-6193-4080-b4de-580fa57b887c"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}",
+        "type": "string"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "tenant",
+      "value": "example"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{tenant}}.cumulocity.com"
+    }
+  ]
+}

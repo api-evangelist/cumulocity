@@ -1,0 +1,166 @@
+{
+  "info": {
+    "_postman_id": "8005464d-55e7-4fbb-921f-9ac377c6c9b9",
+    "name": "Cumulocity Alarm Alarms Bootstrap Users API",
+    "description": "Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL, MAJOR,\nMINOR, WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms\nby source + type so repeated raises increment the count rather than creating duplicates.\n",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:27:39.000Z",
+    "updatedAt": "2026-07-28T01:27:39.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-8005464d-55e7-4fbb-921f-9ac377c6c9b9"
+  },
+  "item": [
+    {
+      "name": "application",
+      "item": [
+        {
+          "name": "applications",
+          "item": [
+            {
+              "name": "{id}",
+              "item": [
+                {
+                  "name": "bootstrapUser",
+                  "item": [
+                    {
+                      "name": "Retrieve the Bootstrap User of a Microservice Application",
+                      "id": "01e23602-ebac-4324-9cfb-f1cc9ca20cdc",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/vnd.com.nsn.cumulocity.bootstrapUser+json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/application/applications/:id/bootstrapUser",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "application",
+                            "applications",
+                            ":id",
+                            "bootstrapUser"
+                          ],
+                          "variable": [
+                            {
+                              "id": "ecfbd0d9-2bbe-4510-9cf1-a768b3fc84ef",
+                              "key": "id",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        }
+                      },
+                      "response": [
+                        {
+                          "id": "86d629b9-2002-43ff-b4f7-05d6d56027bd",
+                          "name": "Bootstrap user credentials.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/vnd.com.nsn.cumulocity.bootstrapUser+json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/application/applications/:id/bootstrapUser",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "application",
+                                "applications",
+                                ":id",
+                                "bootstrapUser"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/vnd.com.nsn.cumulocity.bootstrapUser+json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"tenant\": \"<string>\",\n  \"name\": \"<string>\",\n  \"password\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:27:39.000Z",
+                          "updatedAt": "2026-07-28T01:27:39.000Z",
+                          "uid": "35240-86d629b9-2002-43ff-b4f7-05d6d56027bd"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:27:39.000Z",
+                      "updatedAt": "2026-07-28T01:27:39.000Z",
+                      "uid": "35240-01e23602-ebac-4324-9cfb-f1cc9ca20cdc"
+                    }
+                  ],
+                  "id": "25b88d2c-c171-4a9b-83c5-5301515c6299",
+                  "createdAt": "2026-07-28T01:27:39.000Z",
+                  "updatedAt": "2026-07-28T01:27:39.000Z",
+                  "uid": "35240-25b88d2c-c171-4a9b-83c5-5301515c6299"
+                }
+              ],
+              "id": "ea02fe91-735f-4e4c-af02-0fc894d54c08",
+              "createdAt": "2026-07-28T01:27:39.000Z",
+              "updatedAt": "2026-07-28T01:27:39.000Z",
+              "uid": "35240-ea02fe91-735f-4e4c-af02-0fc894d54c08"
+            }
+          ],
+          "id": "316dc086-b811-42c7-8281-23d59e280447",
+          "createdAt": "2026-07-28T01:27:39.000Z",
+          "updatedAt": "2026-07-28T01:27:39.000Z",
+          "uid": "35240-316dc086-b811-42c7-8281-23d59e280447"
+        }
+      ],
+      "id": "f964b365-e8a6-44b9-8b9a-f7ebc2ad0a49",
+      "createdAt": "2026-07-28T01:27:39.000Z",
+      "updatedAt": "2026-07-28T01:27:39.000Z",
+      "uid": "35240-f964b365-e8a6-44b9-8b9a-f7ebc2ad0a49"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}",
+        "type": "string"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "tenant",
+      "value": "example"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{tenant}}.cumulocity.com"
+    }
+  ]
+}

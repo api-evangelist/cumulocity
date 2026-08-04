@@ -1,0 +1,128 @@
+openapi: 3.0.3
+info:
+  title: Cumulocity Audit API
+  version: 10.20.0
+  description: |
+    Read the immutable audit trail of changes made within a tenant, including user management actions,
+    operations triggered, and managed-object create/update/delete. Critical for compliance, security review,
+    and incident forensics.
+servers:
+- url: https://{tenant}.cumulocity.com
+  variables:
+    tenant:
+      default: example
+security:
+- basicAuth: []
+- bearerAuth: []
+tags:
+- name: Audit Records
+paths:
+  /audit/auditRecords:
+    get:
+      tags: [Audit Records]
+      summary: List Audit Records
+      operationId: listAuditRecords
+      parameters:
+      - name: source
+        in: query
+        schema: {type: string}
+      - name: type
+        in: query
+        schema: {type: string}
+      - name: user
+        in: query
+        schema: {type: string}
+      - name: application
+        in: query
+        schema: {type: string}
+      - name: dateFrom
+        in: query
+        schema: {type: string, format: date-time}
+      - name: dateTo
+        in: query
+        schema: {type: string, format: date-time}
+      - name: revert
+        in: query
+        schema: {type: boolean}
+      responses:
+        '200':
+          description: A collection of audit records.
+          content:
+            application/vnd.com.nsn.cumulocity.auditRecordCollection+json:
+              schema:
+                $ref: '#/components/schemas/AuditRecordCollection'
+    post:
+      tags: [Audit Records]
+      summary: Create an Audit Record
+      operationId: createAuditRecord
+      requestBody:
+        required: true
+        content:
+          application/vnd.com.nsn.cumulocity.auditRecord+json:
+            schema:
+              $ref: '#/components/schemas/AuditRecord'
+      responses:
+        '201':
+          description: Audit record created.
+  /audit/auditRecords/{id}:
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema: {type: string}
+    get:
+      tags: [Audit Records]
+      summary: Retrieve an Audit Record
+      operationId: getAuditRecord
+      responses:
+        '200':
+          description: A single audit record.
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    AuditRecord:
+      type: object
+      properties:
+        id: {type: string, readOnly: true}
+        self: {type: string, format: uri, readOnly: true}
+        activity: {type: string}
+        application: {type: string}
+        severity:
+          type: string
+          enum: [CRITICAL, MAJOR, MINOR, WARNING, INFORMATION]
+        text: {type: string}
+        time: {type: string, format: date-time}
+        type: {type: string}
+        user: {type: string}
+        source:
+          type: object
+          properties:
+            id: {type: string}
+            self: {type: string, format: uri}
+        changes:
+          type: array
+          items:
+            type: object
+            properties:
+              attribute: {type: string}
+              type: {type: string}
+              previousValue: {}
+              newValue: {}
+              changeType:
+                type: string
+                enum: [ADDED, REPLACED, REMOVED]
+    AuditRecordCollection:
+      type: object
+      properties:
+        self: {type: string, format: uri}
+        auditRecords:
+          type: array
+          items:
+            $ref: '#/components/schemas/AuditRecord'

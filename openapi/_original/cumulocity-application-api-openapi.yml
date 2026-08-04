@@ -1,0 +1,178 @@
+openapi: 3.0.3
+info:
+  title: Cumulocity Application API
+  version: 10.20.0
+  description: |
+    Register, subscribe, configure, and upload Cumulocity microservices, hosted web applications, and plugins.
+    Microservices run inside Cumulocity's managed container runtime and authenticate via a bootstrap user
+    issued by this API; web applications are uploaded as ZIPs and served from the tenant subdomain.
+servers:
+- url: https://{tenant}.cumulocity.com
+  variables:
+    tenant:
+      default: example
+security:
+- basicAuth: []
+- bearerAuth: []
+tags:
+- name: Applications
+- name: Bootstrap Users
+- name: Application Binaries
+paths:
+  /application/applications:
+    get:
+      tags: [Applications]
+      summary: List Applications
+      operationId: listApplications
+      responses:
+        '200':
+          description: A collection of applications.
+          content:
+            application/vnd.com.nsn.cumulocity.applicationCollection+json:
+              schema:
+                $ref: '#/components/schemas/ApplicationCollection'
+    post:
+      tags: [Applications]
+      summary: Create an Application
+      operationId: createApplication
+      requestBody:
+        required: true
+        content:
+          application/vnd.com.nsn.cumulocity.application+json:
+            schema:
+              $ref: '#/components/schemas/Application'
+      responses:
+        '201':
+          description: Application created.
+  /application/applications/{id}:
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema: {type: string}
+    get:
+      tags: [Applications]
+      summary: Retrieve an Application
+      operationId: getApplication
+      responses:
+        '200':
+          description: A single application.
+          content:
+            application/vnd.com.nsn.cumulocity.application+json:
+              schema:
+                $ref: '#/components/schemas/Application'
+    put:
+      tags: [Applications]
+      summary: Update an Application
+      operationId: updateApplication
+      requestBody:
+        required: true
+        content:
+          application/vnd.com.nsn.cumulocity.application+json:
+            schema:
+              $ref: '#/components/schemas/Application'
+      responses:
+        '200':
+          description: Application updated.
+    delete:
+      tags: [Applications]
+      summary: Delete an Application
+      operationId: deleteApplication
+      responses:
+        '204':
+          description: Application deleted.
+  /application/applications/{id}/bootstrapUser:
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema: {type: string}
+    get:
+      tags: [Bootstrap Users]
+      summary: Retrieve the Bootstrap User of a Microservice Application
+      operationId: getBootstrapUser
+      responses:
+        '200':
+          description: Bootstrap user credentials.
+          content:
+            application/vnd.com.nsn.cumulocity.bootstrapUser+json:
+              schema:
+                $ref: '#/components/schemas/BootstrapUser'
+  /application/applications/{id}/binaries:
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema: {type: string}
+    get:
+      tags: [Application Binaries]
+      summary: List Application Binaries
+      operationId: listApplicationBinaries
+      responses:
+        '200':
+          description: A collection of application binaries.
+    post:
+      tags: [Application Binaries]
+      summary: Upload an Application Binary
+      operationId: uploadApplicationBinary
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file: {type: string, format: binary}
+      responses:
+        '201':
+          description: Binary uploaded.
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Application:
+      type: object
+      properties:
+        id: {type: string}
+        self: {type: string, format: uri}
+        name: {type: string}
+        key: {type: string}
+        type:
+          type: string
+          enum: [HOSTED, MICROSERVICE, EXTERNAL]
+        availability:
+          type: string
+          enum: [PRIVATE, MARKET]
+        contextPath: {type: string}
+        manifest:
+          type: object
+        requiredRoles:
+          type: array
+          items: {type: string}
+        owner:
+          type: object
+          properties:
+            tenant:
+              type: object
+              properties:
+                id: {type: string}
+        resourcesUrl: {type: string}
+    ApplicationCollection:
+      type: object
+      properties:
+        self: {type: string, format: uri}
+        applications:
+          type: array
+          items:
+            $ref: '#/components/schemas/Application'
+    BootstrapUser:
+      type: object
+      properties:
+        tenant: {type: string}
+        name: {type: string}
+        password: {type: string}

@@ -1,0 +1,500 @@
+{
+  "info": {
+    "_postman_id": "fe2a96b0-7d61-4176-85cd-662db47c308a",
+    "name": "Cumulocity Alarm Alarms Asset Instances API",
+    "description": "Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL, MAJOR,\nMINOR, WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms\nby source + type so repeated raises increment the count rather than creating duplicates.\n",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:27:34.000Z",
+    "updatedAt": "2026-07-28T01:27:35.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-fe2a96b0-7d61-4176-85cd-662db47c308a"
+  },
+  "item": [
+    {
+      "name": "service",
+      "item": [
+        {
+          "name": "dtm",
+          "item": [
+            {
+              "name": "asset-instances",
+              "item": [
+                {
+                  "name": "{id}",
+                  "item": [
+                    {
+                      "name": "Retrieve an Asset Instance",
+                      "id": "5b9e7fc5-3a63-4660-b90a-b199208ff058",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/service/dtm/asset-instances/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "service",
+                            "dtm",
+                            "asset-instances",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "id": "643ce328-3214-48d8-8949-bf2adb16f2e0",
+                              "key": "id",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        }
+                      },
+                      "response": [
+                        {
+                          "id": "29068516-8c40-498b-8aa4-3c6c38c0c855",
+                          "name": "A single asset instance.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/service/dtm/asset-instances/:id",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "service",
+                                "dtm",
+                                "asset-instances",
+                                ":id"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-07-28T01:27:35.000Z",
+                          "updatedAt": "2026-07-28T01:27:35.000Z",
+                          "uid": "35240-29068516-8c40-498b-8aa4-3c6c38c0c855"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:27:35.000Z",
+                      "updatedAt": "2026-07-28T01:27:35.000Z",
+                      "uid": "35240-5b9e7fc5-3a63-4660-b90a-b199208ff058"
+                    },
+                    {
+                      "name": "Update an Asset Instance",
+                      "id": "4d646eb7-2586-4526-b405-17e582b0a3b7",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"modelId\": \"<string>\",\n  \"name\": \"<string>\",\n  \"managedObjectId\": \"<string>\",\n  \"parent\": \"<string>\",\n  \"properties\": {\n    \"et534\": 7607380.653671443,\n    \"ipsum_a\": false,\n    \"ad_c8\": \"dolore Lorem mollit enim\"\n  },\n  \"children\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/service/dtm/asset-instances/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "service",
+                            "dtm",
+                            "asset-instances",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "id": "b797a380-d489-42da-9092-c54a6756c780",
+                              "key": "id",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        }
+                      },
+                      "response": [
+                        {
+                          "id": "4fed5c56-8237-4bdf-9dad-8826047bc025",
+                          "name": "Asset instance updated.",
+                          "originalRequest": {
+                            "method": "PUT",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"modelId\": \"<string>\",\n  \"name\": \"<string>\",\n  \"managedObjectId\": \"<string>\",\n  \"parent\": \"<string>\",\n  \"properties\": {\n    \"et534\": 7607380.653671443,\n    \"ipsum_a\": false,\n    \"ad_c8\": \"dolore Lorem mollit enim\"\n  },\n  \"children\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/service/dtm/asset-instances/:id",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "service",
+                                "dtm",
+                                "asset-instances",
+                                ":id"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-07-28T01:27:35.000Z",
+                          "updatedAt": "2026-07-28T01:27:35.000Z",
+                          "uid": "35240-4fed5c56-8237-4bdf-9dad-8826047bc025"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:27:35.000Z",
+                      "updatedAt": "2026-07-28T01:27:35.000Z",
+                      "uid": "35240-4d646eb7-2586-4526-b405-17e582b0a3b7"
+                    },
+                    {
+                      "name": "Delete an Asset Instance",
+                      "id": "05fc5c87-f3bd-4cc5-bf7c-ebf67173c6bd",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "DELETE",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/service/dtm/asset-instances/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "service",
+                            "dtm",
+                            "asset-instances",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "id": "2d629186-16d9-4d73-b547-e4b5acf4587a",
+                              "key": "id",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        }
+                      },
+                      "response": [
+                        {
+                          "id": "d590e07a-1438-4c38-990f-97c88d123195",
+                          "name": "Asset instance deleted.",
+                          "originalRequest": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/service/dtm/asset-instances/:id",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "service",
+                                "dtm",
+                                "asset-instances",
+                                ":id"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "No Content",
+                          "code": 204,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-07-28T01:27:35.000Z",
+                          "updatedAt": "2026-07-28T01:27:35.000Z",
+                          "uid": "35240-d590e07a-1438-4c38-990f-97c88d123195"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:27:35.000Z",
+                      "updatedAt": "2026-07-28T01:27:35.000Z",
+                      "uid": "35240-05fc5c87-f3bd-4cc5-bf7c-ebf67173c6bd"
+                    }
+                  ],
+                  "id": "7da2c4f3-88c5-4ef0-ab88-322f00b650d2",
+                  "createdAt": "2026-07-28T01:27:35.000Z",
+                  "updatedAt": "2026-07-28T01:27:35.000Z",
+                  "uid": "35240-7da2c4f3-88c5-4ef0-ab88-322f00b650d2"
+                },
+                {
+                  "name": "List Asset Instances",
+                  "id": "bcf3ba9a-ef7c-4f00-b5e4-0f3c74aac74c",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/service/dtm/asset-instances?model=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "service",
+                        "dtm",
+                        "asset-instances"
+                      ],
+                      "query": [
+                        {
+                          "key": "model",
+                          "value": "<string>"
+                        }
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "0dafbd6d-24fe-4f98-ba62-3dcc934318f1",
+                      "name": "A collection of asset instances.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/service/dtm/asset-instances?model=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "service",
+                            "dtm",
+                            "asset-instances"
+                          ],
+                          "query": [
+                            {
+                              "key": "model",
+                              "value": "<string>"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T01:27:35.000Z",
+                      "updatedAt": "2026-07-28T01:27:35.000Z",
+                      "uid": "35240-0dafbd6d-24fe-4f98-ba62-3dcc934318f1"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:27:35.000Z",
+                  "updatedAt": "2026-07-28T01:27:35.000Z",
+                  "uid": "35240-bcf3ba9a-ef7c-4f00-b5e4-0f3c74aac74c"
+                },
+                {
+                  "name": "Create an Asset Instance",
+                  "id": "5bd7787b-7760-470a-a0b1-80cd2685c2bb",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"modelId\": \"<string>\",\n  \"name\": \"<string>\",\n  \"managedObjectId\": \"<string>\",\n  \"parent\": \"<string>\",\n  \"properties\": {\n    \"et534\": 7607380.653671443,\n    \"ipsum_a\": false,\n    \"ad_c8\": \"dolore Lorem mollit enim\"\n  },\n  \"children\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/service/dtm/asset-instances",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "service",
+                        "dtm",
+                        "asset-instances"
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "1a0ade1d-b02b-424f-8956-0dd0be65047c",
+                      "name": "Asset instance created.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"modelId\": \"<string>\",\n  \"name\": \"<string>\",\n  \"managedObjectId\": \"<string>\",\n  \"parent\": \"<string>\",\n  \"properties\": {\n    \"et534\": 7607380.653671443,\n    \"ipsum_a\": false,\n    \"ad_c8\": \"dolore Lorem mollit enim\"\n  },\n  \"children\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/service/dtm/asset-instances",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "service",
+                            "dtm",
+                            "asset-instances"
+                          ]
+                        }
+                      },
+                      "status": "Created",
+                      "code": 201,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T01:27:35.000Z",
+                      "updatedAt": "2026-07-28T01:27:35.000Z",
+                      "uid": "35240-1a0ade1d-b02b-424f-8956-0dd0be65047c"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:27:35.000Z",
+                  "updatedAt": "2026-07-28T01:27:35.000Z",
+                  "uid": "35240-5bd7787b-7760-470a-a0b1-80cd2685c2bb"
+                }
+              ],
+              "id": "58602756-56b9-449c-af6e-082bed343835",
+              "createdAt": "2026-07-28T01:27:35.000Z",
+              "updatedAt": "2026-07-28T01:27:35.000Z",
+              "uid": "35240-58602756-56b9-449c-af6e-082bed343835"
+            }
+          ],
+          "id": "19e6f619-6fc4-4775-a301-f8ca631c3977",
+          "createdAt": "2026-07-28T01:27:35.000Z",
+          "updatedAt": "2026-07-28T01:27:35.000Z",
+          "uid": "35240-19e6f619-6fc4-4775-a301-f8ca631c3977"
+        }
+      ],
+      "id": "10b00a50-22a2-4814-8fb3-98f8ef65aa6c",
+      "createdAt": "2026-07-28T01:27:35.000Z",
+      "updatedAt": "2026-07-28T01:27:35.000Z",
+      "uid": "35240-10b00a50-22a2-4814-8fb3-98f8ef65aa6c"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}",
+        "type": "string"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "tenant",
+      "value": "example"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{tenant}}.cumulocity.com"
+    }
+  ]
+}

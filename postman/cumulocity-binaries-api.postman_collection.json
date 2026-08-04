@@ -1,0 +1,374 @@
+{
+  "info": {
+    "_postman_id": "8a5381d9-cd7c-4a8d-b7dd-6bee97358463",
+    "name": "Cumulocity Alarm Alarms Binaries API",
+    "description": "Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL, MAJOR,\nMINOR, WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms\nby source + type so repeated raises increment the count rather than creating duplicates.\n",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:27:38.000Z",
+    "updatedAt": "2026-07-28T01:27:38.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-8a5381d9-cd7c-4a8d-b7dd-6bee97358463"
+  },
+  "item": [
+    {
+      "name": "inventory",
+      "item": [
+        {
+          "name": "binaries",
+          "item": [
+            {
+              "name": "{id}",
+              "item": [
+                {
+                  "name": "Retrieve a Binary",
+                  "id": "52a052d7-bdea-42f2-a514-1201f88f326f",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/inventory/binaries/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "inventory",
+                        "binaries",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "729f2c69-6dcb-496c-8a04-9c6244bd8f70",
+                          "key": "id",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "7e8b6e68-6387-406b-bc99-44ce0749ffd8",
+                      "name": "Binary content.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/inventory/binaries/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "inventory",
+                            "binaries",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T01:27:38.000Z",
+                      "updatedAt": "2026-07-28T01:27:38.000Z",
+                      "uid": "35240-7e8b6e68-6387-406b-bc99-44ce0749ffd8"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:27:38.000Z",
+                  "updatedAt": "2026-07-28T01:27:38.000Z",
+                  "uid": "35240-52a052d7-bdea-42f2-a514-1201f88f326f"
+                },
+                {
+                  "name": "Delete a Binary",
+                  "id": "07d83ae6-d68b-4b05-944e-c4d097b1ae13",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "DELETE",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/inventory/binaries/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "inventory",
+                        "binaries",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "93ad5baa-6174-4678-8eab-66e00f1871f9",
+                          "key": "id",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "7aeaf7e9-e837-401d-ace8-8165caa387f7",
+                      "name": "Binary deleted.",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/inventory/binaries/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "inventory",
+                            "binaries",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "No Content",
+                      "code": 204,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T01:27:38.000Z",
+                      "updatedAt": "2026-07-28T01:27:38.000Z",
+                      "uid": "35240-7aeaf7e9-e837-401d-ace8-8165caa387f7"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:27:38.000Z",
+                  "updatedAt": "2026-07-28T01:27:38.000Z",
+                  "uid": "35240-07d83ae6-d68b-4b05-944e-c4d097b1ae13"
+                }
+              ],
+              "id": "7f0a88b2-4ee9-4a32-9681-4c86c69ef13a",
+              "createdAt": "2026-07-28T01:27:38.000Z",
+              "updatedAt": "2026-07-28T01:27:38.000Z",
+              "uid": "35240-7f0a88b2-4ee9-4a32-9681-4c86c69ef13a"
+            },
+            {
+              "name": "List Binaries",
+              "id": "87cc14d1-fe7d-410c-bb33-f989338d60f8",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/inventory/binaries",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "inventory",
+                    "binaries"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "id": "1227f071-15cf-4c8f-99c4-15aa19cd0bc9",
+                  "name": "A collection of binary managed objects.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/inventory/binaries",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "inventory",
+                        "binaries"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T01:27:38.000Z",
+                  "updatedAt": "2026-07-28T01:27:38.000Z",
+                  "uid": "35240-1227f071-15cf-4c8f-99c4-15aa19cd0bc9"
+                }
+              ],
+              "createdAt": "2026-07-28T01:27:38.000Z",
+              "updatedAt": "2026-07-28T01:27:38.000Z",
+              "uid": "35240-87cc14d1-fe7d-410c-bb33-f989338d60f8"
+            },
+            {
+              "name": "Upload a Binary",
+              "id": "a8402320-9881-4030-9151-a2eac0c6f804",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "multipart/form-data"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "object",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "key": "file",
+                      "type": "file",
+                      "value": null
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/inventory/binaries",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "inventory",
+                    "binaries"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "id": "2cb55402-1419-4c92-902d-134a5bf47e14",
+                  "name": "Binary uploaded.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "multipart/form-data"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "formdata",
+                      "formdata": [
+                        {
+                          "key": "object",
+                          "value": "<string>",
+                          "type": "text"
+                        },
+                        {
+                          "key": "file",
+                          "type": "file"
+                        }
+                      ]
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/inventory/binaries",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "inventory",
+                        "binaries"
+                      ]
+                    }
+                  },
+                  "status": "Created",
+                  "code": 201,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T01:27:38.000Z",
+                  "updatedAt": "2026-07-28T01:27:38.000Z",
+                  "uid": "35240-2cb55402-1419-4c92-902d-134a5bf47e14"
+                }
+              ],
+              "createdAt": "2026-07-28T01:27:38.000Z",
+              "updatedAt": "2026-07-28T01:27:38.000Z",
+              "uid": "35240-a8402320-9881-4030-9151-a2eac0c6f804"
+            }
+          ],
+          "id": "f2abbae9-c4e3-45b0-97bb-6b703cd52d06",
+          "createdAt": "2026-07-28T01:27:38.000Z",
+          "updatedAt": "2026-07-28T01:27:38.000Z",
+          "uid": "35240-f2abbae9-c4e3-45b0-97bb-6b703cd52d06"
+        }
+      ],
+      "id": "6e8c1aa3-30ec-4bd9-8797-c25e4d2ae110",
+      "createdAt": "2026-07-28T01:27:38.000Z",
+      "updatedAt": "2026-07-28T01:27:38.000Z",
+      "uid": "35240-6e8c1aa3-30ec-4bd9-8797-c25e4d2ae110"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}",
+        "type": "string"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "tenant",
+      "value": "example"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{tenant}}.cumulocity.com"
+    }
+  ]
+}

@@ -1,0 +1,242 @@
+{
+  "info": {
+    "_postman_id": "1c7474a5-9978-49db-a945-16bfba9ea6e2",
+    "name": "Cumulocity Alarm Alarms Offload Jobs API",
+    "description": "Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL, MAJOR,\nMINOR, WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms\nby source + type so repeated raises increment the count rather than creating duplicates.\n",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:28:14.000Z",
+    "updatedAt": "2026-07-28T01:28:14.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-1c7474a5-9978-49db-a945-16bfba9ea6e2"
+  },
+  "item": [
+    {
+      "name": "service",
+      "item": [
+        {
+          "name": "datahub",
+          "item": [
+            {
+              "name": "offload",
+              "item": [
+                {
+                  "name": "{id}",
+                  "item": [
+                    {
+                      "name": "jobs",
+                      "item": [
+                        {
+                          "name": "List Offload Jobs",
+                          "id": "569718df-ec72-42a6-9aba-b20c18dfc57d",
+                          "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                          },
+                          "request": {
+                            "method": "GET",
+                            "header": [],
+                            "url": {
+                              "raw": "{{baseUrl}}/service/datahub/offload/:id/jobs",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "service",
+                                "datahub",
+                                "offload",
+                                ":id",
+                                "jobs"
+                              ],
+                              "variable": [
+                                {
+                                  "id": "65b6d08f-6f6b-4f8b-ba1e-423ae8eed8b2",
+                                  "key": "id",
+                                  "value": "<string>",
+                                  "description": "(Required) "
+                                }
+                              ]
+                            }
+                          },
+                          "response": [
+                            {
+                              "id": "9cf868f3-ebaf-4ed4-8ed3-986ce9e97809",
+                              "name": "A collection of offload jobs.",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "description": "Added as a part of security scheme: basic",
+                                    "key": "Authorization",
+                                    "value": "Basic <credentials>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/service/datahub/offload/:id/jobs",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "service",
+                                    "datahub",
+                                    "offload",
+                                    ":id",
+                                    "jobs"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "id"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "OK",
+                              "code": 200,
+                              "_postman_previewlanguage": "text",
+                              "header": [],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": null,
+                              "createdAt": "2026-07-28T01:28:15.000Z",
+                              "updatedAt": "2026-07-28T01:28:15.000Z",
+                              "uid": "35240-9cf868f3-ebaf-4ed4-8ed3-986ce9e97809"
+                            }
+                          ],
+                          "createdAt": "2026-07-28T01:28:15.000Z",
+                          "updatedAt": "2026-07-28T01:28:15.000Z",
+                          "uid": "35240-569718df-ec72-42a6-9aba-b20c18dfc57d"
+                        },
+                        {
+                          "name": "Start an Offload Job",
+                          "id": "fe5e595d-9bd8-4b9d-b75d-f44aa8f47a84",
+                          "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                          },
+                          "request": {
+                            "method": "POST",
+                            "header": [],
+                            "url": {
+                              "raw": "{{baseUrl}}/service/datahub/offload/:id/jobs",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "service",
+                                "datahub",
+                                "offload",
+                                ":id",
+                                "jobs"
+                              ],
+                              "variable": [
+                                {
+                                  "id": "c65d7bc1-9b77-4149-b27f-a1f3861b5074",
+                                  "key": "id",
+                                  "value": "<string>",
+                                  "description": "(Required) "
+                                }
+                              ]
+                            }
+                          },
+                          "response": [
+                            {
+                              "id": "2c4ce5d5-b5a4-4627-b287-7d7350887cfc",
+                              "name": "Offload job started.",
+                              "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "description": "Added as a part of security scheme: basic",
+                                    "key": "Authorization",
+                                    "value": "Basic <credentials>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/service/datahub/offload/:id/jobs",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "service",
+                                    "datahub",
+                                    "offload",
+                                    ":id",
+                                    "jobs"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "id"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Created",
+                              "code": 201,
+                              "_postman_previewlanguage": "text",
+                              "header": [],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": null,
+                              "createdAt": "2026-07-28T01:28:15.000Z",
+                              "updatedAt": "2026-07-28T01:28:15.000Z",
+                              "uid": "35240-2c4ce5d5-b5a4-4627-b287-7d7350887cfc"
+                            }
+                          ],
+                          "createdAt": "2026-07-28T01:28:15.000Z",
+                          "updatedAt": "2026-07-28T01:28:15.000Z",
+                          "uid": "35240-fe5e595d-9bd8-4b9d-b75d-f44aa8f47a84"
+                        }
+                      ],
+                      "id": "93cbb137-a17a-4f45-94b4-15cf11f85bd9",
+                      "createdAt": "2026-07-28T01:28:15.000Z",
+                      "updatedAt": "2026-07-28T01:28:15.000Z",
+                      "uid": "35240-93cbb137-a17a-4f45-94b4-15cf11f85bd9"
+                    }
+                  ],
+                  "id": "0524c87e-9d01-4374-8526-4e88a1232272",
+                  "createdAt": "2026-07-28T01:28:15.000Z",
+                  "updatedAt": "2026-07-28T01:28:15.000Z",
+                  "uid": "35240-0524c87e-9d01-4374-8526-4e88a1232272"
+                }
+              ],
+              "id": "c959c870-c0ef-4954-b107-a52d110bddb6",
+              "createdAt": "2026-07-28T01:28:15.000Z",
+              "updatedAt": "2026-07-28T01:28:15.000Z",
+              "uid": "35240-c959c870-c0ef-4954-b107-a52d110bddb6"
+            }
+          ],
+          "id": "e088aea4-0cfe-4c93-994e-a16c44e66bb8",
+          "createdAt": "2026-07-28T01:28:15.000Z",
+          "updatedAt": "2026-07-28T01:28:15.000Z",
+          "uid": "35240-e088aea4-0cfe-4c93-994e-a16c44e66bb8"
+        }
+      ],
+      "id": "fdb39b17-9819-478f-b706-9b589eec3b12",
+      "createdAt": "2026-07-28T01:28:15.000Z",
+      "updatedAt": "2026-07-28T01:28:15.000Z",
+      "uid": "35240-fdb39b17-9819-478f-b706-9b589eec3b12"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}",
+        "type": "string"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "tenant",
+      "value": "example"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{tenant}}.cumulocity.com"
+    }
+  ]
+}

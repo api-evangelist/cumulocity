@@ -1,0 +1,469 @@
+{
+  "info": {
+    "_postman_id": "44829148-6e06-49bd-8590-aabf573d0041",
+    "name": "Cumulocity Alarm Alarms Retention Rules API",
+    "description": "Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL, MAJOR,\nMINOR, WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms\nby source + type so repeated raises increment the count rather than creating duplicates.\n",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:28:33.000Z",
+    "updatedAt": "2026-07-28T01:28:34.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-44829148-6e06-49bd-8590-aabf573d0041"
+  },
+  "item": [
+    {
+      "name": "retention",
+      "item": [
+        {
+          "name": "retentions",
+          "item": [
+            {
+              "name": "{id}",
+              "item": [
+                {
+                  "name": "Retrieve a Retention Rule",
+                  "id": "ea63afb4-4298-4b07-945a-6600872c3502",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/retention/retentions/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "retention",
+                        "retentions",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "c77355d9-e28a-40c6-b220-3d0f7b9cb5c3",
+                          "key": "id",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "68f50ce2-9fe6-46f6-adc1-375c2ed0a0b5",
+                      "name": "A single retention rule.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/retention/retentions/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "retention",
+                            "retentions",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T01:28:34.000Z",
+                      "updatedAt": "2026-07-28T01:28:34.000Z",
+                      "uid": "35240-68f50ce2-9fe6-46f6-adc1-375c2ed0a0b5"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:28:34.000Z",
+                  "updatedAt": "2026-07-28T01:28:34.000Z",
+                  "uid": "35240-ea63afb4-4298-4b07-945a-6600872c3502"
+                },
+                {
+                  "name": "Update a Retention Rule",
+                  "id": "664906f0-a908-4b86-bc83-2e31b9c39b71",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/vnd.com.nsn.cumulocity.retentionRule+json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"dataType\": \"EVENT\",\n  \"maximumAge\": \"<integer>\",\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"fragmentType\": \"<string>\",\n  \"type\": \"<string>\",\n  \"source\": \"<string>\",\n  \"editable\": \"<boolean>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/retention/retentions/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "retention",
+                        "retentions",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "2db71f12-801b-40cc-b4c0-178d23c1f3a5",
+                          "key": "id",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "3c30693e-5b4f-4a44-a222-8e72224f98ef",
+                      "name": "Retention rule updated.",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/vnd.com.nsn.cumulocity.retentionRule+json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"dataType\": \"EVENT\",\n  \"maximumAge\": \"<integer>\",\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"fragmentType\": \"<string>\",\n  \"type\": \"<string>\",\n  \"source\": \"<string>\",\n  \"editable\": \"<boolean>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/retention/retentions/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "retention",
+                            "retentions",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T01:28:34.000Z",
+                      "updatedAt": "2026-07-28T01:28:34.000Z",
+                      "uid": "35240-3c30693e-5b4f-4a44-a222-8e72224f98ef"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:28:34.000Z",
+                  "updatedAt": "2026-07-28T01:28:34.000Z",
+                  "uid": "35240-664906f0-a908-4b86-bc83-2e31b9c39b71"
+                },
+                {
+                  "name": "Delete a Retention Rule",
+                  "id": "c677f5d5-8be9-4ca4-ad2e-fcc37b225ea5",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "DELETE",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/retention/retentions/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "retention",
+                        "retentions",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "737c0574-3ebf-43f5-9f24-3500dfb99e14",
+                          "key": "id",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "b3c7b2bf-e7c6-4ec7-b8fc-8b2556e88fa2",
+                      "name": "Retention rule deleted.",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/retention/retentions/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "retention",
+                            "retentions",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "No Content",
+                      "code": 204,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T01:28:34.000Z",
+                      "updatedAt": "2026-07-28T01:28:34.000Z",
+                      "uid": "35240-b3c7b2bf-e7c6-4ec7-b8fc-8b2556e88fa2"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:28:34.000Z",
+                  "updatedAt": "2026-07-28T01:28:34.000Z",
+                  "uid": "35240-c677f5d5-8be9-4ca4-ad2e-fcc37b225ea5"
+                }
+              ],
+              "id": "6b51b9aa-4f5f-45ae-b0c7-19dda30a2a7a",
+              "createdAt": "2026-07-28T01:28:34.000Z",
+              "updatedAt": "2026-07-28T01:28:34.000Z",
+              "uid": "35240-6b51b9aa-4f5f-45ae-b0c7-19dda30a2a7a"
+            },
+            {
+              "name": "List Retention Rules",
+              "id": "4af47967-1606-4d51-9fb8-8f27e25642a9",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/retention/retentions",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "retention",
+                    "retentions"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "id": "6c21e5db-a997-4a73-99e2-7e465716a16e",
+                  "name": "A collection of retention rules.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/retention/retentions",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "retention",
+                        "retentions"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T01:28:34.000Z",
+                  "updatedAt": "2026-07-28T01:28:34.000Z",
+                  "uid": "35240-6c21e5db-a997-4a73-99e2-7e465716a16e"
+                }
+              ],
+              "createdAt": "2026-07-28T01:28:34.000Z",
+              "updatedAt": "2026-07-28T01:28:34.000Z",
+              "uid": "35240-4af47967-1606-4d51-9fb8-8f27e25642a9"
+            },
+            {
+              "name": "Create a Retention Rule",
+              "id": "7f42545d-19a7-4ffc-94b1-108e8ede615a",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/vnd.com.nsn.cumulocity.retentionRule+json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"dataType\": \"EVENT\",\n  \"maximumAge\": \"<integer>\",\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"fragmentType\": \"<string>\",\n  \"type\": \"<string>\",\n  \"source\": \"<string>\",\n  \"editable\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/retention/retentions",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "retention",
+                    "retentions"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "id": "5303ce6c-fb09-4916-a687-f59792e19de0",
+                  "name": "Retention rule created.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/vnd.com.nsn.cumulocity.retentionRule+json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"dataType\": \"EVENT\",\n  \"maximumAge\": \"<integer>\",\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"fragmentType\": \"<string>\",\n  \"type\": \"<string>\",\n  \"source\": \"<string>\",\n  \"editable\": \"<boolean>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/retention/retentions",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "retention",
+                        "retentions"
+                      ]
+                    }
+                  },
+                  "status": "Created",
+                  "code": 201,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T01:28:34.000Z",
+                  "updatedAt": "2026-07-28T01:28:34.000Z",
+                  "uid": "35240-5303ce6c-fb09-4916-a687-f59792e19de0"
+                }
+              ],
+              "createdAt": "2026-07-28T01:28:34.000Z",
+              "updatedAt": "2026-07-28T01:28:34.000Z",
+              "uid": "35240-7f42545d-19a7-4ffc-94b1-108e8ede615a"
+            }
+          ],
+          "id": "6ba88dba-e493-4808-b9a9-2806c7ed6128",
+          "createdAt": "2026-07-28T01:28:34.000Z",
+          "updatedAt": "2026-07-28T01:28:34.000Z",
+          "uid": "35240-6ba88dba-e493-4808-b9a9-2806c7ed6128"
+        }
+      ],
+      "id": "267e1708-31e2-4b3f-a8c1-4c67bd54a4eb",
+      "createdAt": "2026-07-28T01:28:34.000Z",
+      "updatedAt": "2026-07-28T01:28:34.000Z",
+      "uid": "35240-267e1708-31e2-4b3f-a8c1-4c67bd54a4eb"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}",
+        "type": "string"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "tenant",
+      "value": "example"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{tenant}}.cumulocity.com"
+    }
+  ]
+}

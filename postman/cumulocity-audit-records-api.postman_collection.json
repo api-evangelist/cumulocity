@@ -1,0 +1,364 @@
+{
+  "info": {
+    "_postman_id": "33bd826f-f541-4333-b406-1b06a4dd3fc7",
+    "name": "Cumulocity Alarm Alarms Audit Records API",
+    "description": "Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL, MAJOR,\nMINOR, WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms\nby source + type so repeated raises increment the count rather than creating duplicates.\n",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:27:36.000Z",
+    "updatedAt": "2026-07-28T01:27:36.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-33bd826f-f541-4333-b406-1b06a4dd3fc7"
+  },
+  "item": [
+    {
+      "name": "audit",
+      "item": [
+        {
+          "name": "auditRecords",
+          "item": [
+            {
+              "name": "{id}",
+              "item": [
+                {
+                  "name": "Retrieve an Audit Record",
+                  "id": "b6707ac6-6ca1-4f9c-ba6e-59101409b760",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/audit/auditRecords/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "audit",
+                        "auditRecords",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "6d74064f-f47a-4363-b7e4-67caad5d229d",
+                          "key": "id",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "7156867e-1471-4d2b-a128-b537e7214ede",
+                      "name": "A single audit record.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/audit/auditRecords/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "audit",
+                            "auditRecords",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T01:27:37.000Z",
+                      "updatedAt": "2026-07-28T01:27:37.000Z",
+                      "uid": "35240-7156867e-1471-4d2b-a128-b537e7214ede"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:27:37.000Z",
+                  "updatedAt": "2026-07-28T01:27:37.000Z",
+                  "uid": "35240-b6707ac6-6ca1-4f9c-ba6e-59101409b760"
+                }
+              ],
+              "id": "f4645adf-5d54-408d-8363-ebfa3b2eec51",
+              "createdAt": "2026-07-28T01:27:37.000Z",
+              "updatedAt": "2026-07-28T01:27:37.000Z",
+              "uid": "35240-f4645adf-5d54-408d-8363-ebfa3b2eec51"
+            },
+            {
+              "name": "List Audit Records",
+              "id": "dd8cc1c8-c83f-41d4-b056-8dabbba777b2",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.com.nsn.cumulocity.auditRecordCollection+json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/audit/auditRecords?source=<string>&type=<string>&user=<string>&application=<string>&dateFrom=<dateTime>&dateTo=<dateTime>&revert=<boolean>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "audit",
+                    "auditRecords"
+                  ],
+                  "query": [
+                    {
+                      "key": "source",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "user",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "application",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "dateFrom",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "dateTo",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "revert",
+                      "value": "<boolean>"
+                    }
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "id": "93b1fd50-b597-46d5-8ddb-edf21df62fc7",
+                  "name": "A collection of audit records.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/vnd.com.nsn.cumulocity.auditRecordCollection+json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/audit/auditRecords?source=<string>&type=<string>&user=<string>&application=<string>&dateFrom=<dateTime>&dateTo=<dateTime>&revert=<boolean>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "audit",
+                        "auditRecords"
+                      ],
+                      "query": [
+                        {
+                          "key": "source",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "type",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "user",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "application",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "dateFrom",
+                          "value": "<dateTime>"
+                        },
+                        {
+                          "key": "dateTo",
+                          "value": "<dateTime>"
+                        },
+                        {
+                          "key": "revert",
+                          "value": "<boolean>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/vnd.com.nsn.cumulocity.auditRecordCollection+json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"self\": \"<uri>\",\n  \"auditRecords\": [\n    {\n      \"id\": \"<string>\",\n      \"self\": \"<uri>\",\n      \"activity\": \"<string>\",\n      \"application\": \"<string>\",\n      \"severity\": \"MAJOR\",\n      \"text\": \"<string>\",\n      \"time\": \"<dateTime>\",\n      \"type\": \"<string>\",\n      \"user\": \"<string>\",\n      \"source\": {\n        \"id\": \"<string>\",\n        \"self\": \"<uri>\"\n      },\n      \"changes\": [\n        {\n          \"attribute\": \"<string>\",\n          \"type\": \"<string>\",\n          \"previousValue\": {},\n          \"newValue\": {},\n          \"changeType\": \"REMOVED\"\n        },\n        {\n          \"attribute\": \"<string>\",\n          \"type\": \"<string>\",\n          \"previousValue\": {},\n          \"newValue\": {},\n          \"changeType\": \"ADDED\"\n        }\n      ]\n    },\n    {\n      \"id\": \"<string>\",\n      \"self\": \"<uri>\",\n      \"activity\": \"<string>\",\n      \"application\": \"<string>\",\n      \"severity\": \"MINOR\",\n      \"text\": \"<string>\",\n      \"time\": \"<dateTime>\",\n      \"type\": \"<string>\",\n      \"user\": \"<string>\",\n      \"source\": {\n        \"id\": \"<string>\",\n        \"self\": \"<uri>\"\n      },\n      \"changes\": [\n        {\n          \"attribute\": \"<string>\",\n          \"type\": \"<string>\",\n          \"previousValue\": {},\n          \"newValue\": {},\n          \"changeType\": \"REPLACED\"\n        },\n        {\n          \"attribute\": \"<string>\",\n          \"type\": \"<string>\",\n          \"previousValue\": {},\n          \"newValue\": {},\n          \"changeType\": \"REPLACED\"\n        }\n      ]\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T01:27:37.000Z",
+                  "updatedAt": "2026-07-28T01:27:37.000Z",
+                  "uid": "35240-93b1fd50-b597-46d5-8ddb-edf21df62fc7"
+                }
+              ],
+              "createdAt": "2026-07-28T01:27:37.000Z",
+              "updatedAt": "2026-07-28T01:27:37.000Z",
+              "uid": "35240-dd8cc1c8-c83f-41d4-b056-8dabbba777b2"
+            },
+            {
+              "name": "Create an Audit Record",
+              "id": "32be138d-2a0b-45ce-8524-2b4c5fdaa740",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/vnd.com.nsn.cumulocity.auditRecord+json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"activity\": \"<string>\",\n  \"application\": \"<string>\",\n  \"severity\": \"WARNING\",\n  \"text\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"type\": \"<string>\",\n  \"user\": \"<string>\",\n  \"source\": {\n    \"id\": \"<string>\",\n    \"self\": \"<uri>\"\n  },\n  \"changes\": [\n    {\n      \"attribute\": \"<string>\",\n      \"type\": \"<string>\",\n      \"previousValue\": {},\n      \"newValue\": {},\n      \"changeType\": \"REMOVED\"\n    },\n    {\n      \"attribute\": \"<string>\",\n      \"type\": \"<string>\",\n      \"previousValue\": {},\n      \"newValue\": {},\n      \"changeType\": \"REMOVED\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/audit/auditRecords",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "audit",
+                    "auditRecords"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "id": "a0624f83-9318-439e-a758-7c5a3babacaf",
+                  "name": "Audit record created.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/vnd.com.nsn.cumulocity.auditRecord+json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"activity\": \"<string>\",\n  \"application\": \"<string>\",\n  \"severity\": \"WARNING\",\n  \"text\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"type\": \"<string>\",\n  \"user\": \"<string>\",\n  \"source\": {\n    \"id\": \"<string>\",\n    \"self\": \"<uri>\"\n  },\n  \"changes\": [\n    {\n      \"attribute\": \"<string>\",\n      \"type\": \"<string>\",\n      \"previousValue\": {},\n      \"newValue\": {},\n      \"changeType\": \"REMOVED\"\n    },\n    {\n      \"attribute\": \"<string>\",\n      \"type\": \"<string>\",\n      \"previousValue\": {},\n      \"newValue\": {},\n      \"changeType\": \"REMOVED\"\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/audit/auditRecords",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "audit",
+                        "auditRecords"
+                      ]
+                    }
+                  },
+                  "status": "Created",
+                  "code": 201,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T01:27:37.000Z",
+                  "updatedAt": "2026-07-28T01:27:37.000Z",
+                  "uid": "35240-a0624f83-9318-439e-a758-7c5a3babacaf"
+                }
+              ],
+              "createdAt": "2026-07-28T01:27:37.000Z",
+              "updatedAt": "2026-07-28T01:27:37.000Z",
+              "uid": "35240-32be138d-2a0b-45ce-8524-2b4c5fdaa740"
+            }
+          ],
+          "id": "331bd556-688e-4a05-bfe9-c6bfac871c94",
+          "createdAt": "2026-07-28T01:27:37.000Z",
+          "updatedAt": "2026-07-28T01:27:37.000Z",
+          "uid": "35240-331bd556-688e-4a05-bfe9-c6bfac871c94"
+        }
+      ],
+      "id": "328299fe-d006-4361-9b6d-559afa6f3561",
+      "createdAt": "2026-07-28T01:27:37.000Z",
+      "updatedAt": "2026-07-28T01:27:37.000Z",
+      "uid": "35240-328299fe-d006-4361-9b6d-559afa6f3561"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}",
+        "type": "string"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "tenant",
+      "value": "example"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{tenant}}.cumulocity.com"
+    }
+  ]
+}

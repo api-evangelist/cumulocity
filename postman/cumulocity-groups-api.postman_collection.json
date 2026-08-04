@@ -1,0 +1,541 @@
+{
+  "info": {
+    "_postman_id": "264684e8-ed5c-4057-8a58-0b8a3ddb21a5",
+    "name": "Cumulocity Alarm Alarms Groups API",
+    "description": "Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL, MAJOR,\nMINOR, WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms\nby source + type so repeated raises increment the count rather than creating duplicates.\n",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:28:08.000Z",
+    "updatedAt": "2026-07-28T01:28:09.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-264684e8-ed5c-4057-8a58-0b8a3ddb21a5"
+  },
+  "item": [
+    {
+      "name": "user",
+      "item": [
+        {
+          "name": "{tenantId}",
+          "item": [
+            {
+              "name": "groups",
+              "item": [
+                {
+                  "name": "{groupId}",
+                  "item": [
+                    {
+                      "name": "Retrieve a Group",
+                      "id": "aa7b521a-9a0c-4ccf-a98d-b793083fe452",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/user/:tenantId/groups/:groupId",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "user",
+                            ":tenantId",
+                            "groups",
+                            ":groupId"
+                          ],
+                          "variable": [
+                            {
+                              "id": "d42e9650-a7fa-4454-b026-31cd6dfcba72",
+                              "key": "tenantId",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            },
+                            {
+                              "id": "b848b352-827b-4625-8538-cedda3cf1d4c",
+                              "key": "groupId",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        }
+                      },
+                      "response": [
+                        {
+                          "id": "0b636dce-13d4-4f05-8cf6-b5b60c61418c",
+                          "name": "A single group.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/user/:tenantId/groups/:groupId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "user",
+                                ":tenantId",
+                                "groups",
+                                ":groupId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "tenantId"
+                                },
+                                {
+                                  "key": "groupId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-07-28T01:28:09.000Z",
+                          "updatedAt": "2026-07-28T01:28:09.000Z",
+                          "uid": "35240-0b636dce-13d4-4f05-8cf6-b5b60c61418c"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:28:09.000Z",
+                      "updatedAt": "2026-07-28T01:28:09.000Z",
+                      "uid": "35240-aa7b521a-9a0c-4ccf-a98d-b793083fe452"
+                    },
+                    {
+                      "name": "Update a Group",
+                      "id": "b99825cf-f8d1-42c9-88eb-71b68724ec95",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/vnd.com.nsn.cumulocity.group+json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"id\": \"<integer>\",\n  \"self\": \"<uri>\",\n  \"name\": \"<string>\",\n  \"description\": \"<string>\",\n  \"roles\": {},\n  \"users\": {}\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/user/:tenantId/groups/:groupId",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "user",
+                            ":tenantId",
+                            "groups",
+                            ":groupId"
+                          ],
+                          "variable": [
+                            {
+                              "id": "5686ea5d-fddb-4a25-947d-4ebb64417faa",
+                              "key": "tenantId",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            },
+                            {
+                              "id": "37ca8f16-64d0-4102-a241-79e75f948770",
+                              "key": "groupId",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        }
+                      },
+                      "response": [
+                        {
+                          "id": "2b96f3c2-b1ce-4ce4-ba1e-071cef5990cb",
+                          "name": "Group updated.",
+                          "originalRequest": {
+                            "method": "PUT",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/vnd.com.nsn.cumulocity.group+json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"id\": \"<integer>\",\n  \"self\": \"<uri>\",\n  \"name\": \"<string>\",\n  \"description\": \"<string>\",\n  \"roles\": {},\n  \"users\": {}\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/user/:tenantId/groups/:groupId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "user",
+                                ":tenantId",
+                                "groups",
+                                ":groupId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "tenantId"
+                                },
+                                {
+                                  "key": "groupId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-07-28T01:28:09.000Z",
+                          "updatedAt": "2026-07-28T01:28:09.000Z",
+                          "uid": "35240-2b96f3c2-b1ce-4ce4-ba1e-071cef5990cb"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:28:09.000Z",
+                      "updatedAt": "2026-07-28T01:28:09.000Z",
+                      "uid": "35240-b99825cf-f8d1-42c9-88eb-71b68724ec95"
+                    },
+                    {
+                      "name": "Delete a Group",
+                      "id": "125d63cf-5f4a-493e-9c9a-f47b4e79cb22",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "DELETE",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/user/:tenantId/groups/:groupId",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "user",
+                            ":tenantId",
+                            "groups",
+                            ":groupId"
+                          ],
+                          "variable": [
+                            {
+                              "id": "db058c65-31fb-40d9-8e6c-9dfa6bb1bc2c",
+                              "key": "tenantId",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            },
+                            {
+                              "id": "ea703594-ecf2-413e-99a1-b51996a14110",
+                              "key": "groupId",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        }
+                      },
+                      "response": [
+                        {
+                          "id": "592bee4e-50e2-4060-8ce7-cc7b3d9fbd29",
+                          "name": "Group deleted.",
+                          "originalRequest": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/user/:tenantId/groups/:groupId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "user",
+                                ":tenantId",
+                                "groups",
+                                ":groupId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "tenantId"
+                                },
+                                {
+                                  "key": "groupId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "No Content",
+                          "code": 204,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-07-28T01:28:09.000Z",
+                          "updatedAt": "2026-07-28T01:28:09.000Z",
+                          "uid": "35240-592bee4e-50e2-4060-8ce7-cc7b3d9fbd29"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:28:09.000Z",
+                      "updatedAt": "2026-07-28T01:28:09.000Z",
+                      "uid": "35240-125d63cf-5f4a-493e-9c9a-f47b4e79cb22"
+                    }
+                  ],
+                  "id": "de4cdca5-c336-4178-ae04-41109bbf8f18",
+                  "createdAt": "2026-07-28T01:28:09.000Z",
+                  "updatedAt": "2026-07-28T01:28:09.000Z",
+                  "uid": "35240-de4cdca5-c336-4178-ae04-41109bbf8f18"
+                },
+                {
+                  "name": "List Groups",
+                  "id": "3df2367c-4041-431d-b143-758a991eba34",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/user/:tenantId/groups",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "user",
+                        ":tenantId",
+                        "groups"
+                      ],
+                      "variable": [
+                        {
+                          "id": "618da0fc-39f1-4c42-8a38-7246e80bc03b",
+                          "key": "tenantId",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "05a10c94-3272-4820-a1a8-01e93e1c3512",
+                      "name": "A collection of groups.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/user/:tenantId/groups",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "user",
+                            ":tenantId",
+                            "groups"
+                          ],
+                          "variable": [
+                            {
+                              "key": "tenantId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T01:28:09.000Z",
+                      "updatedAt": "2026-07-28T01:28:09.000Z",
+                      "uid": "35240-05a10c94-3272-4820-a1a8-01e93e1c3512"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:28:09.000Z",
+                  "updatedAt": "2026-07-28T01:28:09.000Z",
+                  "uid": "35240-3df2367c-4041-431d-b143-758a991eba34"
+                },
+                {
+                  "name": "Create a Group",
+                  "id": "19183403-4002-49b8-bf35-cf000ba8c911",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/vnd.com.nsn.cumulocity.group+json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"id\": \"<integer>\",\n  \"self\": \"<uri>\",\n  \"name\": \"<string>\",\n  \"description\": \"<string>\",\n  \"roles\": {},\n  \"users\": {}\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/user/:tenantId/groups",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "user",
+                        ":tenantId",
+                        "groups"
+                      ],
+                      "variable": [
+                        {
+                          "id": "d4574548-2847-4a6a-a9ad-3b1e596a97dc",
+                          "key": "tenantId",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "3953d547-7fc7-4831-8bbc-88c7217fcf66",
+                      "name": "Group created.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/vnd.com.nsn.cumulocity.group+json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"id\": \"<integer>\",\n  \"self\": \"<uri>\",\n  \"name\": \"<string>\",\n  \"description\": \"<string>\",\n  \"roles\": {},\n  \"users\": {}\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/user/:tenantId/groups",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "user",
+                            ":tenantId",
+                            "groups"
+                          ],
+                          "variable": [
+                            {
+                              "key": "tenantId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Created",
+                      "code": 201,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T01:28:09.000Z",
+                      "updatedAt": "2026-07-28T01:28:09.000Z",
+                      "uid": "35240-3953d547-7fc7-4831-8bbc-88c7217fcf66"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:28:09.000Z",
+                  "updatedAt": "2026-07-28T01:28:09.000Z",
+                  "uid": "35240-19183403-4002-49b8-bf35-cf000ba8c911"
+                }
+              ],
+              "id": "b232f725-31dc-444a-b9a9-378e28a81128",
+              "createdAt": "2026-07-28T01:28:09.000Z",
+              "updatedAt": "2026-07-28T01:28:09.000Z",
+              "uid": "35240-b232f725-31dc-444a-b9a9-378e28a81128"
+            }
+          ],
+          "id": "b6df66ba-f197-42bb-ba6b-c3addb37a1fe",
+          "createdAt": "2026-07-28T01:28:09.000Z",
+          "updatedAt": "2026-07-28T01:28:09.000Z",
+          "uid": "35240-b6df66ba-f197-42bb-ba6b-c3addb37a1fe"
+        }
+      ],
+      "id": "aa633129-0d9a-4051-9f75-56f670df9057",
+      "createdAt": "2026-07-28T01:28:09.000Z",
+      "updatedAt": "2026-07-28T01:28:09.000Z",
+      "uid": "35240-aa633129-0d9a-4051-9f75-56f670df9057"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}",
+        "type": "string"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "tenant",
+      "value": "example"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{tenant}}.cumulocity.com"
+    }
+  ]
+}

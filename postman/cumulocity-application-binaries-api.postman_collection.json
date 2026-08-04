@@ -1,0 +1,257 @@
+{
+  "info": {
+    "_postman_id": "3716405d-84cd-4e39-ae02-f40bcfa3af63",
+    "name": "Cumulocity Alarm Alarms Application Binaries API",
+    "description": "Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL, MAJOR,\nMINOR, WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms\nby source + type so repeated raises increment the count rather than creating duplicates.\n",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:27:33.000Z",
+    "updatedAt": "2026-07-28T01:27:33.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-3716405d-84cd-4e39-ae02-f40bcfa3af63"
+  },
+  "item": [
+    {
+      "name": "application",
+      "item": [
+        {
+          "name": "applications",
+          "item": [
+            {
+              "name": "{id}",
+              "item": [
+                {
+                  "name": "binaries",
+                  "item": [
+                    {
+                      "name": "List Application Binaries",
+                      "id": "eee32de6-d88a-42a9-a44f-5ffcb46990b5",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/application/applications/:id/binaries",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "application",
+                            "applications",
+                            ":id",
+                            "binaries"
+                          ],
+                          "variable": [
+                            {
+                              "id": "d52137a9-dbe5-4fe7-868d-8531bd3f8c73",
+                              "key": "id",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        }
+                      },
+                      "response": [
+                        {
+                          "id": "ab22e29d-043a-4189-b933-30527f217a94",
+                          "name": "A collection of application binaries.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/application/applications/:id/binaries",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "application",
+                                "applications",
+                                ":id",
+                                "binaries"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-07-28T01:27:33.000Z",
+                          "updatedAt": "2026-07-28T01:27:33.000Z",
+                          "uid": "35240-ab22e29d-043a-4189-b933-30527f217a94"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:27:33.000Z",
+                      "updatedAt": "2026-07-28T01:27:33.000Z",
+                      "uid": "35240-eee32de6-d88a-42a9-a44f-5ffcb46990b5"
+                    },
+                    {
+                      "name": "Upload an Application Binary",
+                      "id": "0a089332-0f61-404b-af04-04f7977d1576",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "multipart/form-data"
+                          }
+                        ],
+                        "body": {
+                          "mode": "formdata",
+                          "formdata": [
+                            {
+                              "key": "file",
+                              "type": "file",
+                              "value": null
+                            }
+                          ]
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/application/applications/:id/binaries",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "application",
+                            "applications",
+                            ":id",
+                            "binaries"
+                          ],
+                          "variable": [
+                            {
+                              "id": "f295be89-4dda-4c94-b6a8-730f6e8de2a2",
+                              "key": "id",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        }
+                      },
+                      "response": [
+                        {
+                          "id": "c645ecb2-57af-4bb4-8623-143ea4915138",
+                          "name": "Binary uploaded.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "multipart/form-data"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "formdata",
+                              "formdata": [
+                                {
+                                  "key": "file",
+                                  "type": "file"
+                                }
+                              ]
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/application/applications/:id/binaries",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "application",
+                                "applications",
+                                ":id",
+                                "binaries"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Created",
+                          "code": 201,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-07-28T01:27:33.000Z",
+                          "updatedAt": "2026-07-28T01:27:33.000Z",
+                          "uid": "35240-c645ecb2-57af-4bb4-8623-143ea4915138"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:27:33.000Z",
+                      "updatedAt": "2026-07-28T01:27:33.000Z",
+                      "uid": "35240-0a089332-0f61-404b-af04-04f7977d1576"
+                    }
+                  ],
+                  "id": "6f1b5b40-ee64-42bb-8cfa-bd4238fc3007",
+                  "createdAt": "2026-07-28T01:27:33.000Z",
+                  "updatedAt": "2026-07-28T01:27:33.000Z",
+                  "uid": "35240-6f1b5b40-ee64-42bb-8cfa-bd4238fc3007"
+                }
+              ],
+              "id": "26a4f3e3-6d5c-44e5-ae9a-be566743493b",
+              "createdAt": "2026-07-28T01:27:33.000Z",
+              "updatedAt": "2026-07-28T01:27:33.000Z",
+              "uid": "35240-26a4f3e3-6d5c-44e5-ae9a-be566743493b"
+            }
+          ],
+          "id": "0969cfe6-7e18-4a18-894e-ca44d72eaf13",
+          "createdAt": "2026-07-28T01:27:33.000Z",
+          "updatedAt": "2026-07-28T01:27:33.000Z",
+          "uid": "35240-0969cfe6-7e18-4a18-894e-ca44d72eaf13"
+        }
+      ],
+      "id": "b5bcd993-e88d-4e96-a48d-12d30bd62ea4",
+      "createdAt": "2026-07-28T01:27:33.000Z",
+      "updatedAt": "2026-07-28T01:27:33.000Z",
+      "uid": "35240-b5bcd993-e88d-4e96-a48d-12d30bd62ea4"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}",
+        "type": "string"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "tenant",
+      "value": "example"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{tenant}}.cumulocity.com"
+    }
+  ]
+}

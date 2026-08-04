@@ -1,0 +1,215 @@
+{
+  "info": {
+    "_postman_id": "f2fd98e9-1b00-4429-a186-4bdf29262a20",
+    "name": "Cumulocity Alarm Alarms System API",
+    "description": "Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL, MAJOR,\nMINOR, WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms\nby source + type so repeated raises increment the count rather than creating duplicates.\n",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:28:43.000Z",
+    "updatedAt": "2026-07-28T01:28:44.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-f2fd98e9-1b00-4429-a186-4bdf29262a20"
+  },
+  "item": [
+    {
+      "name": "service",
+      "item": [
+        {
+          "name": "edge",
+          "item": [
+            {
+              "name": "system",
+              "item": [
+                {
+                  "name": "restart",
+                  "item": [
+                    {
+                      "name": "Restart the Edge System",
+                      "id": "65bb0b7d-aca7-4665-9da1-da435bba42c0",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/service/edge/system/restart",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "service",
+                            "edge",
+                            "system",
+                            "restart"
+                          ]
+                        }
+                      },
+                      "response": [
+                        {
+                          "id": "799b57ef-a2a1-4b05-b686-406d139b5660",
+                          "name": "Restart requested.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/service/edge/system/restart",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "service",
+                                "edge",
+                                "system",
+                                "restart"
+                              ]
+                            }
+                          },
+                          "status": "Accepted",
+                          "code": 202,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-07-28T01:28:44.000Z",
+                          "updatedAt": "2026-07-28T01:28:44.000Z",
+                          "uid": "35240-799b57ef-a2a1-4b05-b686-406d139b5660"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:28:44.000Z",
+                      "updatedAt": "2026-07-28T01:28:44.000Z",
+                      "uid": "35240-65bb0b7d-aca7-4665-9da1-da435bba42c0"
+                    }
+                  ],
+                  "id": "0db5cb59-41c7-4243-9d6d-cd4e6be0d99e",
+                  "createdAt": "2026-07-28T01:28:44.000Z",
+                  "updatedAt": "2026-07-28T01:28:44.000Z",
+                  "uid": "35240-0db5cb59-41c7-4243-9d6d-cd4e6be0d99e"
+                },
+                {
+                  "name": "Retrieve Edge System Status",
+                  "id": "a5267a12-faca-4223-ad2e-faa8ab111b12",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/service/edge/system",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "service",
+                        "edge",
+                        "system"
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "0d513b48-c809-42e6-9d0e-73218c86161a",
+                      "name": "System status including version, uptime, disk, and service health.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/service/edge/system",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "service",
+                            "edge",
+                            "system"
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"version\": \"<string>\",\n  \"edition\": \"CONNECTED\",\n  \"uptime\": \"<integer>\",\n  \"services\": [\n    {\n      \"name\": \"<string>\",\n      \"status\": \"FAILED\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"status\": \"FAILED\"\n    }\n  ],\n  \"storage\": {\n    \"totalBytes\": \"<integer>\",\n    \"usedBytes\": \"<integer>\"\n  }\n}",
+                      "createdAt": "2026-07-28T01:28:44.000Z",
+                      "updatedAt": "2026-07-28T01:28:44.000Z",
+                      "uid": "35240-0d513b48-c809-42e6-9d0e-73218c86161a"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:28:44.000Z",
+                  "updatedAt": "2026-07-28T01:28:44.000Z",
+                  "uid": "35240-a5267a12-faca-4223-ad2e-faa8ab111b12"
+                }
+              ],
+              "id": "6e73edea-8420-42d3-822e-a0e7c17f3597",
+              "createdAt": "2026-07-28T01:28:44.000Z",
+              "updatedAt": "2026-07-28T01:28:44.000Z",
+              "uid": "35240-6e73edea-8420-42d3-822e-a0e7c17f3597"
+            }
+          ],
+          "id": "824a445a-e412-4830-82de-481dae5eb42d",
+          "createdAt": "2026-07-28T01:28:44.000Z",
+          "updatedAt": "2026-07-28T01:28:44.000Z",
+          "uid": "35240-824a445a-e412-4830-82de-481dae5eb42d"
+        }
+      ],
+      "id": "782dc087-f12a-4b6b-96c4-5792e5ab6a8f",
+      "createdAt": "2026-07-28T01:28:44.000Z",
+      "updatedAt": "2026-07-28T01:28:44.000Z",
+      "uid": "35240-782dc087-f12a-4b6b-96c4-5792e5ab6a8f"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}",
+        "type": "string"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "tenant",
+      "value": "example"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{tenant}}.cumulocity.com"
+    }
+  ]
+}

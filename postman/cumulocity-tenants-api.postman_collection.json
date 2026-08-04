@@ -1,0 +1,497 @@
+{
+  "info": {
+    "_postman_id": "260ddece-5433-4ae1-b9da-cce56b924aa4",
+    "name": "Cumulocity Alarm Alarms Tenants API",
+    "description": "Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL, MAJOR,\nMINOR, WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms\nby source + type so repeated raises increment the count rather than creating duplicates.\n",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:28:46.000Z",
+    "updatedAt": "2026-07-28T01:28:46.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-260ddece-5433-4ae1-b9da-cce56b924aa4"
+  },
+  "item": [
+    {
+      "name": "tenant",
+      "item": [
+        {
+          "name": "tenants",
+          "item": [
+            {
+              "name": "{tenantId}",
+              "item": [
+                {
+                  "name": "Retrieve a Tenant",
+                  "id": "0c4d971a-cf7e-435f-b510-c32e1cc170e4",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/vnd.com.nsn.cumulocity.tenant+json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/tenant/tenants/:tenantId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "tenant",
+                        "tenants",
+                        ":tenantId"
+                      ],
+                      "variable": [
+                        {
+                          "id": "0ed9b958-ab4d-468f-9fdb-30d247b231b5",
+                          "key": "tenantId",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "6f76e184-2523-4458-b79a-6d3fcb189ab9",
+                      "name": "A single tenant.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/vnd.com.nsn.cumulocity.tenant+json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/tenant/tenants/:tenantId",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "tenant",
+                            "tenants",
+                            ":tenantId"
+                          ],
+                          "variable": [
+                            {
+                              "key": "tenantId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/vnd.com.nsn.cumulocity.tenant+json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"company\": \"<string>\",\n  \"domain\": \"<string>\",\n  \"adminName\": \"<string>\",\n  \"adminEmail\": \"<string>\",\n  \"contactName\": \"<string>\",\n  \"contactPhone\": \"<string>\",\n  \"parent\": \"<string>\",\n  \"status\": \"ACTIVE\",\n  \"creationTime\": \"<dateTime>\",\n  \"customProperties\": {},\n  \"allowCreateTenants\": \"<boolean>\"\n}",
+                      "createdAt": "2026-07-28T01:28:47.000Z",
+                      "updatedAt": "2026-07-28T01:28:47.000Z",
+                      "uid": "35240-6f76e184-2523-4458-b79a-6d3fcb189ab9"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:28:47.000Z",
+                  "updatedAt": "2026-07-28T01:28:47.000Z",
+                  "uid": "35240-0c4d971a-cf7e-435f-b510-c32e1cc170e4"
+                },
+                {
+                  "name": "Update a Tenant",
+                  "id": "75e9fb9a-c3ee-4865-97dd-dead44176bd7",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/vnd.com.nsn.cumulocity.tenant+json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"company\": \"<string>\",\n  \"domain\": \"<string>\",\n  \"adminName\": \"<string>\",\n  \"adminEmail\": \"<string>\",\n  \"contactName\": \"<string>\",\n  \"contactPhone\": \"<string>\",\n  \"parent\": \"<string>\",\n  \"status\": \"ACTIVE\",\n  \"creationTime\": \"<dateTime>\",\n  \"customProperties\": {},\n  \"allowCreateTenants\": \"<boolean>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/tenant/tenants/:tenantId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "tenant",
+                        "tenants",
+                        ":tenantId"
+                      ],
+                      "variable": [
+                        {
+                          "id": "18278e15-00b9-47da-935e-0b5cf58dcbc1",
+                          "key": "tenantId",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "23474b7e-2d52-46f4-b3ae-08134aaa34da",
+                      "name": "Tenant updated.",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/vnd.com.nsn.cumulocity.tenant+json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"company\": \"<string>\",\n  \"domain\": \"<string>\",\n  \"adminName\": \"<string>\",\n  \"adminEmail\": \"<string>\",\n  \"contactName\": \"<string>\",\n  \"contactPhone\": \"<string>\",\n  \"parent\": \"<string>\",\n  \"status\": \"ACTIVE\",\n  \"creationTime\": \"<dateTime>\",\n  \"customProperties\": {},\n  \"allowCreateTenants\": \"<boolean>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/tenant/tenants/:tenantId",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "tenant",
+                            "tenants",
+                            ":tenantId"
+                          ],
+                          "variable": [
+                            {
+                              "key": "tenantId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T01:28:47.000Z",
+                      "updatedAt": "2026-07-28T01:28:47.000Z",
+                      "uid": "35240-23474b7e-2d52-46f4-b3ae-08134aaa34da"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:28:47.000Z",
+                  "updatedAt": "2026-07-28T01:28:47.000Z",
+                  "uid": "35240-75e9fb9a-c3ee-4865-97dd-dead44176bd7"
+                },
+                {
+                  "name": "Delete a Tenant",
+                  "id": "1579f958-f8f4-4969-90e4-95accc0de8d3",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "DELETE",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/tenant/tenants/:tenantId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "tenant",
+                        "tenants",
+                        ":tenantId"
+                      ],
+                      "variable": [
+                        {
+                          "id": "8fa92b6b-179f-440e-aca0-918f993a55c1",
+                          "key": "tenantId",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "b6c45c10-d84d-446b-a1e8-8901dbd48aff",
+                      "name": "Tenant deleted.",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/tenant/tenants/:tenantId",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "tenant",
+                            "tenants",
+                            ":tenantId"
+                          ],
+                          "variable": [
+                            {
+                              "key": "tenantId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "No Content",
+                      "code": 204,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T01:28:47.000Z",
+                      "updatedAt": "2026-07-28T01:28:47.000Z",
+                      "uid": "35240-b6c45c10-d84d-446b-a1e8-8901dbd48aff"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:28:47.000Z",
+                  "updatedAt": "2026-07-28T01:28:47.000Z",
+                  "uid": "35240-1579f958-f8f4-4969-90e4-95accc0de8d3"
+                }
+              ],
+              "id": "86a9e05b-94cc-4068-b326-20246b0f9772",
+              "createdAt": "2026-07-28T01:28:47.000Z",
+              "updatedAt": "2026-07-28T01:28:47.000Z",
+              "uid": "35240-86a9e05b-94cc-4068-b326-20246b0f9772"
+            },
+            {
+              "name": "List Tenants",
+              "id": "50b81250-13e6-46ce-bf5c-72554bfe6c8f",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.com.nsn.cumulocity.tenantCollection+json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/tenant/tenants",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "tenant",
+                    "tenants"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "id": "45bc1af0-f37f-4d63-9f72-99de907b4b09",
+                  "name": "A collection of tenants.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/vnd.com.nsn.cumulocity.tenantCollection+json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/tenant/tenants",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "tenant",
+                        "tenants"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/vnd.com.nsn.cumulocity.tenantCollection+json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"self\": \"<uri>\",\n  \"tenants\": [\n    {\n      \"id\": \"<string>\",\n      \"self\": \"<uri>\",\n      \"company\": \"<string>\",\n      \"domain\": \"<string>\",\n      \"adminName\": \"<string>\",\n      \"adminEmail\": \"<string>\",\n      \"contactName\": \"<string>\",\n      \"contactPhone\": \"<string>\",\n      \"parent\": \"<string>\",\n      \"status\": \"SUSPENDED\",\n      \"creationTime\": \"<dateTime>\",\n      \"customProperties\": {},\n      \"allowCreateTenants\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"self\": \"<uri>\",\n      \"company\": \"<string>\",\n      \"domain\": \"<string>\",\n      \"adminName\": \"<string>\",\n      \"adminEmail\": \"<string>\",\n      \"contactName\": \"<string>\",\n      \"contactPhone\": \"<string>\",\n      \"parent\": \"<string>\",\n      \"status\": \"ACTIVE\",\n      \"creationTime\": \"<dateTime>\",\n      \"customProperties\": {},\n      \"allowCreateTenants\": \"<boolean>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T01:28:47.000Z",
+                  "updatedAt": "2026-07-28T01:28:47.000Z",
+                  "uid": "35240-45bc1af0-f37f-4d63-9f72-99de907b4b09"
+                }
+              ],
+              "createdAt": "2026-07-28T01:28:47.000Z",
+              "updatedAt": "2026-07-28T01:28:47.000Z",
+              "uid": "35240-50b81250-13e6-46ce-bf5c-72554bfe6c8f"
+            },
+            {
+              "name": "Create a Tenant",
+              "id": "36632c30-846c-44a0-8f02-c360709b98f4",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/vnd.com.nsn.cumulocity.tenant+json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"company\": \"<string>\",\n  \"domain\": \"<string>\",\n  \"adminName\": \"<string>\",\n  \"adminEmail\": \"<string>\",\n  \"contactName\": \"<string>\",\n  \"contactPhone\": \"<string>\",\n  \"parent\": \"<string>\",\n  \"status\": \"ACTIVE\",\n  \"creationTime\": \"<dateTime>\",\n  \"customProperties\": {},\n  \"allowCreateTenants\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/tenant/tenants",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "tenant",
+                    "tenants"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "id": "513018ec-8cf1-4c2a-8f7b-348ca5383f8e",
+                  "name": "Tenant created.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/vnd.com.nsn.cumulocity.tenant+json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"company\": \"<string>\",\n  \"domain\": \"<string>\",\n  \"adminName\": \"<string>\",\n  \"adminEmail\": \"<string>\",\n  \"contactName\": \"<string>\",\n  \"contactPhone\": \"<string>\",\n  \"parent\": \"<string>\",\n  \"status\": \"ACTIVE\",\n  \"creationTime\": \"<dateTime>\",\n  \"customProperties\": {},\n  \"allowCreateTenants\": \"<boolean>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/tenant/tenants",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "tenant",
+                        "tenants"
+                      ]
+                    }
+                  },
+                  "status": "Created",
+                  "code": 201,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T01:28:47.000Z",
+                  "updatedAt": "2026-07-28T01:28:47.000Z",
+                  "uid": "35240-513018ec-8cf1-4c2a-8f7b-348ca5383f8e"
+                }
+              ],
+              "createdAt": "2026-07-28T01:28:47.000Z",
+              "updatedAt": "2026-07-28T01:28:47.000Z",
+              "uid": "35240-36632c30-846c-44a0-8f02-c360709b98f4"
+            }
+          ],
+          "id": "e0f55cec-1cc9-440b-ad27-18d6549c0a1d",
+          "createdAt": "2026-07-28T01:28:47.000Z",
+          "updatedAt": "2026-07-28T01:28:47.000Z",
+          "uid": "35240-e0f55cec-1cc9-440b-ad27-18d6549c0a1d"
+        }
+      ],
+      "id": "93603083-20ca-4c33-8382-4f2c3552e2cd",
+      "createdAt": "2026-07-28T01:28:47.000Z",
+      "updatedAt": "2026-07-28T01:28:47.000Z",
+      "uid": "35240-93603083-20ca-4c33-8382-4f2c3552e2cd"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}",
+        "type": "string"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "tenant",
+      "value": "example"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{tenant}}.cumulocity.com"
+    }
+  ]
+}

@@ -1,0 +1,185 @@
+{
+  "info": {
+    "_postman_id": "249d9a24-fc3b-40d0-b596-07fed9e834bf",
+    "name": "Cumulocity Alarm Alarms Series API",
+    "description": "Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL, MAJOR,\nMINOR, WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms\nby source + type so repeated raises increment the count rather than creating duplicates.\n",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:28:35.000Z",
+    "updatedAt": "2026-07-28T01:28:35.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-249d9a24-fc3b-40d0-b596-07fed9e834bf"
+  },
+  "item": [
+    {
+      "name": "measurement",
+      "item": [
+        {
+          "name": "measurements",
+          "item": [
+            {
+              "name": "series",
+              "item": [
+                {
+                  "name": "Retrieve Series Aggregations",
+                  "id": "c808b52b-4439-4d00-a378-e05c9823484b",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/measurement/measurements/series?source=<string>&series=<string>&series=<string>&aggregationType=DAILY&dateFrom=<dateTime>&dateTo=<dateTime>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "measurement",
+                        "measurements",
+                        "series"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required) ",
+                          "key": "source",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "(Required) ",
+                          "key": "series",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "(Required) ",
+                          "key": "series",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "aggregationType",
+                          "value": "DAILY"
+                        },
+                        {
+                          "description": "(Required) ",
+                          "key": "dateFrom",
+                          "value": "<dateTime>"
+                        },
+                        {
+                          "description": "(Required) ",
+                          "key": "dateTo",
+                          "value": "<dateTime>"
+                        }
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "a1924a62-1e37-4010-b92a-16db3ca6f95c",
+                      "name": "Series aggregation result.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/measurement/measurements/series?source=<string>&series=<string>&aggregationType=DAILY&dateFrom=<dateTime>&dateTo=<dateTime>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "measurement",
+                            "measurements",
+                            "series"
+                          ],
+                          "query": [
+                            {
+                              "description": "(Required) ",
+                              "key": "source",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "(Required) ",
+                              "key": "series",
+                              "value": "<string>"
+                            },
+                            {
+                              "key": "aggregationType",
+                              "value": "DAILY"
+                            },
+                            {
+                              "description": "(Required) ",
+                              "key": "dateFrom",
+                              "value": "<dateTime>"
+                            },
+                            {
+                              "description": "(Required) ",
+                              "key": "dateTo",
+                              "value": "<dateTime>"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T01:28:36.000Z",
+                      "updatedAt": "2026-07-28T01:28:36.000Z",
+                      "uid": "35240-a1924a62-1e37-4010-b92a-16db3ca6f95c"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:28:36.000Z",
+                  "updatedAt": "2026-07-28T01:28:36.000Z",
+                  "uid": "35240-c808b52b-4439-4d00-a378-e05c9823484b"
+                }
+              ],
+              "id": "ec550217-5f1b-4b30-bd13-c66008508c3c",
+              "createdAt": "2026-07-28T01:28:36.000Z",
+              "updatedAt": "2026-07-28T01:28:36.000Z",
+              "uid": "35240-ec550217-5f1b-4b30-bd13-c66008508c3c"
+            }
+          ],
+          "id": "8affa6c5-030d-47b6-b046-72cabd83dcc6",
+          "createdAt": "2026-07-28T01:28:36.000Z",
+          "updatedAt": "2026-07-28T01:28:36.000Z",
+          "uid": "35240-8affa6c5-030d-47b6-b046-72cabd83dcc6"
+        }
+      ],
+      "id": "57609c6d-648f-490b-8480-fae84ef7ab56",
+      "createdAt": "2026-07-28T01:28:36.000Z",
+      "updatedAt": "2026-07-28T01:28:36.000Z",
+      "uid": "35240-57609c6d-648f-490b-8480-fae84ef7ab56"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}",
+        "type": "string"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "tenant",
+      "value": "example"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{tenant}}.cumulocity.com"
+    }
+  ]
+}

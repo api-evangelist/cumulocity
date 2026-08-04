@@ -1,0 +1,542 @@
+{
+  "info": {
+    "_postman_id": "8720e288-dce0-458a-a546-d65ae2b08391",
+    "name": "Cumulocity Alarm Alarms Operations API",
+    "description": "Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL, MAJOR,\nMINOR, WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms\nby source + type so repeated raises increment the count rather than creating duplicates.\n",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:28:15.000Z",
+    "updatedAt": "2026-07-28T01:28:15.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-8720e288-dce0-458a-a546-d65ae2b08391"
+  },
+  "item": [
+    {
+      "name": "devicecontrol",
+      "item": [
+        {
+          "name": "operations",
+          "item": [
+            {
+              "name": "{id}",
+              "item": [
+                {
+                  "name": "Retrieve an Operation",
+                  "id": "1f12c26b-d3f4-4634-8810-786fde169efc",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/vnd.com.nsn.cumulocity.operation+json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/devicecontrol/operations/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "devicecontrol",
+                        "operations",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "71384925-8b8c-431c-ac1f-a2f0532e0b71",
+                          "key": "id",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "a438f8e9-763a-49e7-aa5f-4b45228b0a3e",
+                      "name": "A single operation.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/vnd.com.nsn.cumulocity.operation+json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/devicecontrol/operations/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "devicecontrol",
+                            "operations",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/vnd.com.nsn.cumulocity.operation+json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"deviceId\": \"<string>\",\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"deviceExternalIDs\": {},\n  \"agentId\": \"<string>\",\n  \"status\": \"FAILED\",\n  \"creationTime\": \"<dateTime>\",\n  \"failureReason\": \"<string>\",\n  \"description\": \"<string>\",\n  \"c8y_Restart\": {},\n  \"c8y_Command\": {\n    \"text\": \"<string>\",\n    \"result\": \"<string>\"\n  },\n  \"c8y_Firmware\": {\n    \"name\": \"<string>\",\n    \"version\": \"<string>\",\n    \"url\": \"<string>\"\n  },\n  \"c8y_Software\": \"<array>\"\n}",
+                      "createdAt": "2026-07-28T01:28:16.000Z",
+                      "updatedAt": "2026-07-28T01:28:16.000Z",
+                      "uid": "35240-a438f8e9-763a-49e7-aa5f-4b45228b0a3e"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:28:16.000Z",
+                  "updatedAt": "2026-07-28T01:28:16.000Z",
+                  "uid": "35240-1f12c26b-d3f4-4634-8810-786fde169efc"
+                },
+                {
+                  "name": "Update an Operation",
+                  "id": "cf73b694-f489-435b-8e90-127839bc69b7",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/vnd.com.nsn.cumulocity.operation+json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"deviceId\": \"<string>\",\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"deviceExternalIDs\": {},\n  \"agentId\": \"<string>\",\n  \"status\": \"FAILED\",\n  \"creationTime\": \"<dateTime>\",\n  \"failureReason\": \"<string>\",\n  \"description\": \"<string>\",\n  \"c8y_Restart\": {},\n  \"c8y_Command\": {\n    \"text\": \"<string>\",\n    \"result\": \"<string>\"\n  },\n  \"c8y_Firmware\": {\n    \"name\": \"<string>\",\n    \"version\": \"<string>\",\n    \"url\": \"<string>\"\n  },\n  \"c8y_Software\": \"<array>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/devicecontrol/operations/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "devicecontrol",
+                        "operations",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "415cee46-16cb-40cc-b69d-132123b634f9",
+                          "key": "id",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "79294392-ac4d-4756-b875-4f89e164e61b",
+                      "name": "Operation updated.",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/vnd.com.nsn.cumulocity.operation+json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"deviceId\": \"<string>\",\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"deviceExternalIDs\": {},\n  \"agentId\": \"<string>\",\n  \"status\": \"FAILED\",\n  \"creationTime\": \"<dateTime>\",\n  \"failureReason\": \"<string>\",\n  \"description\": \"<string>\",\n  \"c8y_Restart\": {},\n  \"c8y_Command\": {\n    \"text\": \"<string>\",\n    \"result\": \"<string>\"\n  },\n  \"c8y_Firmware\": {\n    \"name\": \"<string>\",\n    \"version\": \"<string>\",\n    \"url\": \"<string>\"\n  },\n  \"c8y_Software\": \"<array>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/devicecontrol/operations/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "devicecontrol",
+                            "operations",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T01:28:16.000Z",
+                      "updatedAt": "2026-07-28T01:28:16.000Z",
+                      "uid": "35240-79294392-ac4d-4756-b875-4f89e164e61b"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:28:16.000Z",
+                  "updatedAt": "2026-07-28T01:28:16.000Z",
+                  "uid": "35240-cf73b694-f489-435b-8e90-127839bc69b7"
+                }
+              ],
+              "id": "f511321d-dd48-4df0-99a2-f4d365dc7390",
+              "createdAt": "2026-07-28T01:28:16.000Z",
+              "updatedAt": "2026-07-28T01:28:16.000Z",
+              "uid": "35240-f511321d-dd48-4df0-99a2-f4d365dc7390"
+            },
+            {
+              "name": "List Operations",
+              "id": "0673721d-d875-4614-a5e4-a8813a0bacff",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.com.nsn.cumulocity.operationCollection+json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/devicecontrol/operations?deviceId=<string>&agentId=<string>&status=SUCCESSFUL&fragmentType=<string>&dateFrom=<dateTime>&dateTo=<dateTime>&revert=<boolean>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "devicecontrol",
+                    "operations"
+                  ],
+                  "query": [
+                    {
+                      "key": "deviceId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "agentId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "SUCCESSFUL"
+                    },
+                    {
+                      "key": "fragmentType",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "dateFrom",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "dateTo",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "revert",
+                      "value": "<boolean>"
+                    }
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "id": "254956d4-a8fb-4d1d-990e-8e6e7f1ed769",
+                  "name": "A collection of operations.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/vnd.com.nsn.cumulocity.operationCollection+json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/devicecontrol/operations?deviceId=<string>&agentId=<string>&status=SUCCESSFUL&fragmentType=<string>&dateFrom=<dateTime>&dateTo=<dateTime>&revert=<boolean>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "devicecontrol",
+                        "operations"
+                      ],
+                      "query": [
+                        {
+                          "key": "deviceId",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "agentId",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "status",
+                          "value": "SUCCESSFUL"
+                        },
+                        {
+                          "key": "fragmentType",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "dateFrom",
+                          "value": "<dateTime>"
+                        },
+                        {
+                          "key": "dateTo",
+                          "value": "<dateTime>"
+                        },
+                        {
+                          "key": "revert",
+                          "value": "<boolean>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/vnd.com.nsn.cumulocity.operationCollection+json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"self\": \"<uri>\",\n  \"operations\": [\n    {\n      \"deviceId\": \"<string>\",\n      \"id\": \"<string>\",\n      \"self\": \"<uri>\",\n      \"deviceExternalIDs\": {},\n      \"agentId\": \"<string>\",\n      \"status\": \"PENDING\",\n      \"creationTime\": \"<dateTime>\",\n      \"failureReason\": \"<string>\",\n      \"description\": \"<string>\",\n      \"c8y_Restart\": {},\n      \"c8y_Command\": {\n        \"text\": \"<string>\",\n        \"result\": \"<string>\"\n      },\n      \"c8y_Firmware\": {\n        \"name\": \"<string>\",\n        \"version\": \"<string>\",\n        \"url\": \"<string>\"\n      },\n      \"c8y_Software\": \"<array>\"\n    },\n    {\n      \"deviceId\": \"<string>\",\n      \"id\": \"<string>\",\n      \"self\": \"<uri>\",\n      \"deviceExternalIDs\": {},\n      \"agentId\": \"<string>\",\n      \"status\": \"PENDING\",\n      \"creationTime\": \"<dateTime>\",\n      \"failureReason\": \"<string>\",\n      \"description\": \"<string>\",\n      \"c8y_Restart\": {},\n      \"c8y_Command\": {\n        \"text\": \"<string>\",\n        \"result\": \"<string>\"\n      },\n      \"c8y_Firmware\": {\n        \"name\": \"<string>\",\n        \"version\": \"<string>\",\n        \"url\": \"<string>\"\n      },\n      \"c8y_Software\": \"<array>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T01:28:16.000Z",
+                  "updatedAt": "2026-07-28T01:28:16.000Z",
+                  "uid": "35240-254956d4-a8fb-4d1d-990e-8e6e7f1ed769"
+                }
+              ],
+              "createdAt": "2026-07-28T01:28:16.000Z",
+              "updatedAt": "2026-07-28T01:28:16.000Z",
+              "uid": "35240-0673721d-d875-4614-a5e4-a8813a0bacff"
+            },
+            {
+              "name": "Create an Operation",
+              "id": "d59437f2-bff6-4f6a-b2cb-7f848393d59e",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/vnd.com.nsn.cumulocity.operation+json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"deviceId\": \"<string>\",\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"deviceExternalIDs\": {},\n  \"agentId\": \"<string>\",\n  \"status\": \"FAILED\",\n  \"creationTime\": \"<dateTime>\",\n  \"failureReason\": \"<string>\",\n  \"description\": \"<string>\",\n  \"c8y_Restart\": {},\n  \"c8y_Command\": {\n    \"text\": \"<string>\",\n    \"result\": \"<string>\"\n  },\n  \"c8y_Firmware\": {\n    \"name\": \"<string>\",\n    \"version\": \"<string>\",\n    \"url\": \"<string>\"\n  },\n  \"c8y_Software\": \"<array>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/devicecontrol/operations",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "devicecontrol",
+                    "operations"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "id": "710b9329-ee7e-4022-a8ef-e7e738cc7040",
+                  "name": "Operation created.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/vnd.com.nsn.cumulocity.operation+json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"deviceId\": \"<string>\",\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"deviceExternalIDs\": {},\n  \"agentId\": \"<string>\",\n  \"status\": \"FAILED\",\n  \"creationTime\": \"<dateTime>\",\n  \"failureReason\": \"<string>\",\n  \"description\": \"<string>\",\n  \"c8y_Restart\": {},\n  \"c8y_Command\": {\n    \"text\": \"<string>\",\n    \"result\": \"<string>\"\n  },\n  \"c8y_Firmware\": {\n    \"name\": \"<string>\",\n    \"version\": \"<string>\",\n    \"url\": \"<string>\"\n  },\n  \"c8y_Software\": \"<array>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/devicecontrol/operations",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "devicecontrol",
+                        "operations"
+                      ]
+                    }
+                  },
+                  "status": "Created",
+                  "code": 201,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T01:28:16.000Z",
+                  "updatedAt": "2026-07-28T01:28:16.000Z",
+                  "uid": "35240-710b9329-ee7e-4022-a8ef-e7e738cc7040"
+                }
+              ],
+              "createdAt": "2026-07-28T01:28:16.000Z",
+              "updatedAt": "2026-07-28T01:28:16.000Z",
+              "uid": "35240-d59437f2-bff6-4f6a-b2cb-7f848393d59e"
+            },
+            {
+              "name": "Delete Operations by Filter",
+              "id": "8f37966d-7004-42b2-abef-e147ca75a06c",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/devicecontrol/operations",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "devicecontrol",
+                    "operations"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "id": "b1867d0b-149a-4271-a977-aca45c8adcd4",
+                  "name": "Operations deleted.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/devicecontrol/operations",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "devicecontrol",
+                        "operations"
+                      ]
+                    }
+                  },
+                  "status": "No Content",
+                  "code": 204,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T01:28:16.000Z",
+                  "updatedAt": "2026-07-28T01:28:16.000Z",
+                  "uid": "35240-b1867d0b-149a-4271-a977-aca45c8adcd4"
+                }
+              ],
+              "createdAt": "2026-07-28T01:28:16.000Z",
+              "updatedAt": "2026-07-28T01:28:16.000Z",
+              "uid": "35240-8f37966d-7004-42b2-abef-e147ca75a06c"
+            }
+          ],
+          "id": "8ee2adc1-8b50-47ca-82d1-2281727d373a",
+          "createdAt": "2026-07-28T01:28:16.000Z",
+          "updatedAt": "2026-07-28T01:28:16.000Z",
+          "uid": "35240-8ee2adc1-8b50-47ca-82d1-2281727d373a"
+        }
+      ],
+      "id": "9a431ace-fa15-4d97-b205-8fe8a427338a",
+      "createdAt": "2026-07-28T01:28:16.000Z",
+      "updatedAt": "2026-07-28T01:28:16.000Z",
+      "uid": "35240-9a431ace-fa15-4d97-b205-8fe8a427338a"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}",
+        "type": "string"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "tenant",
+      "value": "example"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{tenant}}.cumulocity.com"
+    }
+  ]
+}

@@ -1,0 +1,469 @@
+{
+  "info": {
+    "_postman_id": "50fd229f-630a-444a-a091-48e03b72de95",
+    "name": "Cumulocity Alarm Alarms New Device Requests API",
+    "description": "Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL, MAJOR,\nMINOR, WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms\nby source + type so repeated raises increment the count rather than creating duplicates.\n",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:28:11.000Z",
+    "updatedAt": "2026-07-28T01:28:11.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-50fd229f-630a-444a-a091-48e03b72de95"
+  },
+  "item": [
+    {
+      "name": "devicecontrol",
+      "item": [
+        {
+          "name": "newDeviceRequests",
+          "item": [
+            {
+              "name": "{id}",
+              "item": [
+                {
+                  "name": "Retrieve a New Device Request",
+                  "id": "d441e72e-5bad-438e-93be-bb7e17d194e8",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/devicecontrol/newDeviceRequests/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "devicecontrol",
+                        "newDeviceRequests",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "98d86b1b-a0f2-47f3-a408-ce90861870ea",
+                          "key": "id",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "d72c7a85-cc65-401b-adbd-c5a4acfbf334",
+                      "name": "A single registration request.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/devicecontrol/newDeviceRequests/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "devicecontrol",
+                            "newDeviceRequests",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T01:28:12.000Z",
+                      "updatedAt": "2026-07-28T01:28:12.000Z",
+                      "uid": "35240-d72c7a85-cc65-401b-adbd-c5a4acfbf334"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:28:12.000Z",
+                  "updatedAt": "2026-07-28T01:28:12.000Z",
+                  "uid": "35240-d441e72e-5bad-438e-93be-bb7e17d194e8"
+                },
+                {
+                  "name": "Accept or Reject a New Device Request",
+                  "id": "109ca08c-6949-4589-b975-1055158bf635",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/vnd.com.nsn.cumulocity.newDeviceRequest+json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"id\": \"<string>\",\n  \"status\": \"WAITING_FOR_CONNECTION\",\n  \"self\": \"<uri>\",\n  \"creationTime\": \"<dateTime>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/devicecontrol/newDeviceRequests/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "devicecontrol",
+                        "newDeviceRequests",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "b6f45aad-9bde-4af0-9f60-cd4973a09aaf",
+                          "key": "id",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "61c6c71d-85e7-4721-949f-a2f7c64393ad",
+                      "name": "Registration request updated.",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/vnd.com.nsn.cumulocity.newDeviceRequest+json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"id\": \"<string>\",\n  \"status\": \"WAITING_FOR_CONNECTION\",\n  \"self\": \"<uri>\",\n  \"creationTime\": \"<dateTime>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/devicecontrol/newDeviceRequests/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "devicecontrol",
+                            "newDeviceRequests",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T01:28:12.000Z",
+                      "updatedAt": "2026-07-28T01:28:12.000Z",
+                      "uid": "35240-61c6c71d-85e7-4721-949f-a2f7c64393ad"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:28:12.000Z",
+                  "updatedAt": "2026-07-28T01:28:12.000Z",
+                  "uid": "35240-109ca08c-6949-4589-b975-1055158bf635"
+                },
+                {
+                  "name": "Delete a New Device Request",
+                  "id": "c697d32c-825b-48f7-abd0-0627b2fb654e",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "DELETE",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/devicecontrol/newDeviceRequests/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "devicecontrol",
+                        "newDeviceRequests",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "f5e6005f-a885-4fc8-b1b9-974e009a8fce",
+                          "key": "id",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "e9792915-1458-4046-87cd-7e49a8126ac4",
+                      "name": "Registration request deleted.",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/devicecontrol/newDeviceRequests/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "devicecontrol",
+                            "newDeviceRequests",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "No Content",
+                      "code": 204,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T01:28:12.000Z",
+                      "updatedAt": "2026-07-28T01:28:12.000Z",
+                      "uid": "35240-e9792915-1458-4046-87cd-7e49a8126ac4"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:28:12.000Z",
+                  "updatedAt": "2026-07-28T01:28:12.000Z",
+                  "uid": "35240-c697d32c-825b-48f7-abd0-0627b2fb654e"
+                }
+              ],
+              "id": "f1677dde-b5be-4191-a2b2-1765cfca43c1",
+              "createdAt": "2026-07-28T01:28:12.000Z",
+              "updatedAt": "2026-07-28T01:28:12.000Z",
+              "uid": "35240-f1677dde-b5be-4191-a2b2-1765cfca43c1"
+            },
+            {
+              "name": "List New Device Requests",
+              "id": "67d439f1-1b65-40ef-aea3-f9fabe2309b7",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/devicecontrol/newDeviceRequests",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "devicecontrol",
+                    "newDeviceRequests"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "id": "1bdc8a09-b692-46fb-99a1-1d6d4ba36ab9",
+                  "name": "A collection of pending registration requests.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/devicecontrol/newDeviceRequests",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "devicecontrol",
+                        "newDeviceRequests"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T01:28:12.000Z",
+                  "updatedAt": "2026-07-28T01:28:12.000Z",
+                  "uid": "35240-1bdc8a09-b692-46fb-99a1-1d6d4ba36ab9"
+                }
+              ],
+              "createdAt": "2026-07-28T01:28:12.000Z",
+              "updatedAt": "2026-07-28T01:28:12.000Z",
+              "uid": "35240-67d439f1-1b65-40ef-aea3-f9fabe2309b7"
+            },
+            {
+              "name": "Create a New Device Request",
+              "id": "3c2e3b75-2b3b-49b3-9782-0a848d9ebefd",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/vnd.com.nsn.cumulocity.newDeviceRequest+json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": \"<string>\",\n  \"status\": \"WAITING_FOR_CONNECTION\",\n  \"self\": \"<uri>\",\n  \"creationTime\": \"<dateTime>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/devicecontrol/newDeviceRequests",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "devicecontrol",
+                    "newDeviceRequests"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "id": "29bd1902-6229-4c95-8dd6-2958bf1c03bb",
+                  "name": "Registration request created.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/vnd.com.nsn.cumulocity.newDeviceRequest+json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"id\": \"<string>\",\n  \"status\": \"WAITING_FOR_CONNECTION\",\n  \"self\": \"<uri>\",\n  \"creationTime\": \"<dateTime>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/devicecontrol/newDeviceRequests",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "devicecontrol",
+                        "newDeviceRequests"
+                      ]
+                    }
+                  },
+                  "status": "Created",
+                  "code": 201,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T01:28:12.000Z",
+                  "updatedAt": "2026-07-28T01:28:12.000Z",
+                  "uid": "35240-29bd1902-6229-4c95-8dd6-2958bf1c03bb"
+                }
+              ],
+              "createdAt": "2026-07-28T01:28:12.000Z",
+              "updatedAt": "2026-07-28T01:28:12.000Z",
+              "uid": "35240-3c2e3b75-2b3b-49b3-9782-0a848d9ebefd"
+            }
+          ],
+          "id": "6543fc61-c376-4b4f-9eee-21f41c912c6a",
+          "createdAt": "2026-07-28T01:28:12.000Z",
+          "updatedAt": "2026-07-28T01:28:12.000Z",
+          "uid": "35240-6543fc61-c376-4b4f-9eee-21f41c912c6a"
+        }
+      ],
+      "id": "cc6b1b25-e4df-44d4-bf65-320412def8e9",
+      "createdAt": "2026-07-28T01:28:12.000Z",
+      "updatedAt": "2026-07-28T01:28:12.000Z",
+      "uid": "35240-cc6b1b25-e4df-44d4-bf65-320412def8e9"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}",
+        "type": "string"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "tenant",
+      "value": "example"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{tenant}}.cumulocity.com"
+    }
+  ]
+}

@@ -1,0 +1,220 @@
+{
+  "info": {
+    "_postman_id": "42795da1-ba35-49c6-9e0b-0c2e7db13e96",
+    "name": "Cumulocity Alarm Alarms Current User API",
+    "description": "Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL, MAJOR,\nMINOR, WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms\nby source + type so repeated raises increment the count rather than creating duplicates.\n",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:27:42.000Z",
+    "updatedAt": "2026-07-28T01:27:42.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-42795da1-ba35-49c6-9e0b-0c2e7db13e96"
+  },
+  "item": [
+    {
+      "name": "user",
+      "item": [
+        {
+          "name": "currentUser",
+          "item": [
+            {
+              "name": "Retrieve Current User",
+              "id": "65e1e61e-e9b6-41e2-befa-7f6f69194bd3",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.com.nsn.cumulocity.currentUser+json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/user/currentUser",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "user",
+                    "currentUser"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "id": "16350440-b965-4560-96b4-9bb896195911",
+                  "name": "The authenticated user.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/vnd.com.nsn.cumulocity.currentUser+json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/user/currentUser",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "user",
+                        "currentUser"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/vnd.com.nsn.cumulocity.currentUser+json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"userName\": \"<string>\",\n  \"email\": \"<string>\",\n  \"firstName\": \"<string>\",\n  \"lastName\": \"<string>\",\n  \"displayName\": \"<string>\",\n  \"phone\": \"<string>\",\n  \"enabled\": \"<boolean>\",\n  \"password\": \"<string>\",\n  \"shouldResetPassword\": \"<boolean>\",\n  \"lastPasswordChange\": \"<dateTime>\",\n  \"twoFactorAuthenticationEnabled\": \"<boolean>\",\n  \"groups\": {},\n  \"roles\": {},\n  \"devicePermissions\": {}\n}",
+                  "createdAt": "2026-07-28T01:27:43.000Z",
+                  "updatedAt": "2026-07-28T01:27:43.000Z",
+                  "uid": "35240-16350440-b965-4560-96b4-9bb896195911"
+                }
+              ],
+              "createdAt": "2026-07-28T01:27:43.000Z",
+              "updatedAt": "2026-07-28T01:27:43.000Z",
+              "uid": "35240-65e1e61e-e9b6-41e2-befa-7f6f69194bd3"
+            },
+            {
+              "name": "Update Current User",
+              "id": "927975b9-079a-4300-9425-8fba9366f1d1",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/vnd.com.nsn.cumulocity.currentUser+json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"userName\": \"<string>\",\n  \"email\": \"<string>\",\n  \"firstName\": \"<string>\",\n  \"lastName\": \"<string>\",\n  \"displayName\": \"<string>\",\n  \"phone\": \"<string>\",\n  \"enabled\": \"<boolean>\",\n  \"password\": \"<string>\",\n  \"shouldResetPassword\": \"<boolean>\",\n  \"lastPasswordChange\": \"<dateTime>\",\n  \"twoFactorAuthenticationEnabled\": \"<boolean>\",\n  \"groups\": {},\n  \"roles\": {},\n  \"devicePermissions\": {}\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/user/currentUser",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "user",
+                    "currentUser"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "id": "27eadd96-bc4d-4d68-a0ba-1db3491a7b25",
+                  "name": "Current user updated.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/vnd.com.nsn.cumulocity.currentUser+json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"userName\": \"<string>\",\n  \"email\": \"<string>\",\n  \"firstName\": \"<string>\",\n  \"lastName\": \"<string>\",\n  \"displayName\": \"<string>\",\n  \"phone\": \"<string>\",\n  \"enabled\": \"<boolean>\",\n  \"password\": \"<string>\",\n  \"shouldResetPassword\": \"<boolean>\",\n  \"lastPasswordChange\": \"<dateTime>\",\n  \"twoFactorAuthenticationEnabled\": \"<boolean>\",\n  \"groups\": {},\n  \"roles\": {},\n  \"devicePermissions\": {}\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/user/currentUser",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "user",
+                        "currentUser"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T01:27:43.000Z",
+                  "updatedAt": "2026-07-28T01:27:43.000Z",
+                  "uid": "35240-27eadd96-bc4d-4d68-a0ba-1db3491a7b25"
+                }
+              ],
+              "createdAt": "2026-07-28T01:27:43.000Z",
+              "updatedAt": "2026-07-28T01:27:43.000Z",
+              "uid": "35240-927975b9-079a-4300-9425-8fba9366f1d1"
+            }
+          ],
+          "id": "ef0c5d53-96cc-4394-ac67-2e364403fbe0",
+          "createdAt": "2026-07-28T01:27:43.000Z",
+          "updatedAt": "2026-07-28T01:27:43.000Z",
+          "uid": "35240-ef0c5d53-96cc-4394-ac67-2e364403fbe0"
+        }
+      ],
+      "id": "b37497ee-9bd9-48db-b2f8-01e6a07247c5",
+      "createdAt": "2026-07-28T01:27:43.000Z",
+      "updatedAt": "2026-07-28T01:27:43.000Z",
+      "uid": "35240-b37497ee-9bd9-48db-b2f8-01e6a07247c5"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}",
+        "type": "string"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "tenant",
+      "value": "example"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{tenant}}.cumulocity.com"
+    }
+  ]
+}

@@ -1,0 +1,160 @@
+{
+  "info": {
+    "_postman_id": "ab4be366-da95-4a26-8fc4-151b55f7b5ef",
+    "name": "Cumulocity Alarm Alarms Bayeux Handshake API",
+    "description": "Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL, MAJOR,\nMINOR, WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms\nby source + type so repeated raises increment the count rather than creating duplicates.\n",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:27:37.000Z",
+    "updatedAt": "2026-07-28T01:27:37.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-ab4be366-da95-4a26-8fc4-151b55f7b5ef"
+  },
+  "item": [
+    {
+      "name": "notification",
+      "item": [
+        {
+          "name": "realtime",
+          "item": [
+            {
+              "name": "Bayeux Channel Endpoint (Handshake, Connect, Subscribe, Disconnect)",
+              "id": "13495de7-3586-48ed-a8d8-23976a8b4655",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"channel\": \"<string>\",\n  \"clientId\": \"<string>\",\n  \"id\": \"<string>\",\n  \"data\": {},\n  \"successful\": \"<boolean>\",\n  \"subscription\": \"<string>\",\n  \"ext\": {},\n  \"advice\": {},\n  \"supportedConnectionTypes\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"connectionType\": \"<string>\",\n  \"version\": \"<string>\",\n  \"minimumVersion\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/notification/realtime",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "notification",
+                    "realtime"
+                  ]
+                },
+                "description": "Single endpoint for the Bayeux/CometD protocol. The channel of the message body determines the\naction \u2014 `/meta/handshake`, `/meta/connect`, `/meta/subscribe`, `/meta/unsubscribe`,\n`/meta/disconnect`. Subscribe to channels such as `/measurements/{deviceId}`,\n`/events/{deviceId}`, `/alarms/{deviceId}`, `/operations/{deviceId}`, `/managedobjects/{deviceId}`.\n"
+              },
+              "response": [
+                {
+                  "id": "91d042d6-d694-4b52-8195-fa8f921c3f7f",
+                  "name": "Bayeux protocol response.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"channel\": \"<string>\",\n  \"clientId\": \"<string>\",\n  \"id\": \"<string>\",\n  \"data\": {},\n  \"successful\": \"<boolean>\",\n  \"subscription\": \"<string>\",\n  \"ext\": {},\n  \"advice\": {},\n  \"supportedConnectionTypes\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"connectionType\": \"<string>\",\n  \"version\": \"<string>\",\n  \"minimumVersion\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/notification/realtime",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "notification",
+                        "realtime"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "[\n  {\n    \"channel\": \"<string>\",\n    \"clientId\": \"<string>\",\n    \"id\": \"<string>\",\n    \"data\": {},\n    \"successful\": \"<boolean>\",\n    \"subscription\": \"<string>\",\n    \"ext\": {},\n    \"advice\": {},\n    \"supportedConnectionTypes\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"connectionType\": \"<string>\",\n    \"version\": \"<string>\",\n    \"minimumVersion\": \"<string>\"\n  },\n  {\n    \"channel\": \"<string>\",\n    \"clientId\": \"<string>\",\n    \"id\": \"<string>\",\n    \"data\": {},\n    \"successful\": \"<boolean>\",\n    \"subscription\": \"<string>\",\n    \"ext\": {},\n    \"advice\": {},\n    \"supportedConnectionTypes\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"connectionType\": \"<string>\",\n    \"version\": \"<string>\",\n    \"minimumVersion\": \"<string>\"\n  }\n]",
+                  "createdAt": "2026-07-28T01:27:38.000Z",
+                  "updatedAt": "2026-07-28T01:27:38.000Z",
+                  "uid": "35240-91d042d6-d694-4b52-8195-fa8f921c3f7f"
+                }
+              ],
+              "createdAt": "2026-07-28T01:27:38.000Z",
+              "updatedAt": "2026-07-28T01:27:38.000Z",
+              "uid": "35240-13495de7-3586-48ed-a8d8-23976a8b4655"
+            }
+          ],
+          "id": "81dfc76e-1ee8-41db-9f89-b44c53195f81",
+          "createdAt": "2026-07-28T01:27:38.000Z",
+          "updatedAt": "2026-07-28T01:27:38.000Z",
+          "uid": "35240-81dfc76e-1ee8-41db-9f89-b44c53195f81"
+        }
+      ],
+      "id": "44e7c29b-5b37-4456-a34e-b0d15c8d0763",
+      "createdAt": "2026-07-28T01:27:38.000Z",
+      "updatedAt": "2026-07-28T01:27:38.000Z",
+      "uid": "35240-44e7c29b-5b37-4456-a34e-b0d15c8d0763"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}",
+        "type": "string"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "tenant",
+      "value": "example"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{tenant}}.cumulocity.com"
+    }
+  ]
+}

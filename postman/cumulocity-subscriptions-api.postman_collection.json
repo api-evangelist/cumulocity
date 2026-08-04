@@ -1,0 +1,480 @@
+{
+  "info": {
+    "_postman_id": "ecca18e3-e963-4248-b6a6-8ed4a40d2d29",
+    "name": "Cumulocity Alarm Alarms Subscriptions API",
+    "description": "Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL, MAJOR,\nMINOR, WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms\nby source + type so repeated raises increment the count rather than creating duplicates.\n",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:28:42.000Z",
+    "updatedAt": "2026-07-28T01:28:42.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-ecca18e3-e963-4248-b6a6-8ed4a40d2d29"
+  },
+  "item": [
+    {
+      "name": "notification2",
+      "item": [
+        {
+          "name": "subscriptions",
+          "item": [
+            {
+              "name": "{id}",
+              "item": [
+                {
+                  "name": "Retrieve a Subscription",
+                  "id": "5f0face0-212d-4fef-bf61-0b6d070fb912",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/notification2/subscriptions/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "notification2",
+                        "subscriptions",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "a29f34cb-c7a9-47a9-b5a2-69921a7ea0b0",
+                          "key": "id",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "ee9737fd-c408-4470-9c68-f956401ef65b",
+                      "name": "A single subscription.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/notification2/subscriptions/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "notification2",
+                            "subscriptions",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T01:28:42.000Z",
+                      "updatedAt": "2026-07-28T01:28:42.000Z",
+                      "uid": "35240-ee9737fd-c408-4470-9c68-f956401ef65b"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:28:42.000Z",
+                  "updatedAt": "2026-07-28T01:28:42.000Z",
+                  "uid": "35240-5f0face0-212d-4fef-bf61-0b6d070fb912"
+                },
+                {
+                  "name": "Delete a Subscription",
+                  "id": "0804fe86-e53a-4266-bcf2-a09d164c2616",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "DELETE",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/notification2/subscriptions/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "notification2",
+                        "subscriptions",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "a11a196a-4657-475a-91e3-1e9809194f27",
+                          "key": "id",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "96884ef8-2eec-441c-be87-1aec12d8b69c",
+                      "name": "Subscription deleted.",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/notification2/subscriptions/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "notification2",
+                            "subscriptions",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "No Content",
+                      "code": 204,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T01:28:42.000Z",
+                      "updatedAt": "2026-07-28T01:28:42.000Z",
+                      "uid": "35240-96884ef8-2eec-441c-be87-1aec12d8b69c"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:28:42.000Z",
+                  "updatedAt": "2026-07-28T01:28:42.000Z",
+                  "uid": "35240-0804fe86-e53a-4266-bcf2-a09d164c2616"
+                }
+              ],
+              "id": "9a10ba42-be33-4770-b1c0-c13dbbbdae5e",
+              "createdAt": "2026-07-28T01:28:42.000Z",
+              "updatedAt": "2026-07-28T01:28:42.000Z",
+              "uid": "35240-9a10ba42-be33-4770-b1c0-c13dbbbdae5e"
+            },
+            {
+              "name": "List Notification 2.0 Subscriptions",
+              "id": "ec3739ea-933d-487f-ba30-f182422b72f7",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/notification2/subscriptions?source=<string>&context=tenant&subscription=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "notification2",
+                    "subscriptions"
+                  ],
+                  "query": [
+                    {
+                      "key": "source",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "context",
+                      "value": "tenant"
+                    },
+                    {
+                      "key": "subscription",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "id": "0bdef433-9919-4291-882f-41e72e93cc1a",
+                  "name": "A collection of subscriptions.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/notification2/subscriptions?source=<string>&context=tenant&subscription=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "notification2",
+                        "subscriptions"
+                      ],
+                      "query": [
+                        {
+                          "key": "source",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "context",
+                          "value": "tenant"
+                        },
+                        {
+                          "key": "subscription",
+                          "value": "<string>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"self\": \"<uri>\",\n  \"subscriptions\": [\n    {\n      \"subscription\": \"<string>\",\n      \"context\": \"mo\",\n      \"id\": \"<string>\",\n      \"self\": \"<uri>\",\n      \"source\": {\n        \"id\": \"<string>\",\n        \"self\": \"<uri>\"\n      },\n      \"fragmentsToCopy\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"subscriptionFilter\": {\n        \"apis\": [\n          \"eventsWithChildren\",\n          \"eventsWithChildren\"\n        ],\n        \"typeFilter\": \"<string>\"\n      },\n      \"nonPersistent\": \"<boolean>\"\n    },\n    {\n      \"subscription\": \"<string>\",\n      \"context\": \"mo\",\n      \"id\": \"<string>\",\n      \"self\": \"<uri>\",\n      \"source\": {\n        \"id\": \"<string>\",\n        \"self\": \"<uri>\"\n      },\n      \"fragmentsToCopy\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"subscriptionFilter\": {\n        \"apis\": [\n          \"eventsWithChildren\",\n          \"measurements\"\n        ],\n        \"typeFilter\": \"<string>\"\n      },\n      \"nonPersistent\": \"<boolean>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T01:28:42.000Z",
+                  "updatedAt": "2026-07-28T01:28:42.000Z",
+                  "uid": "35240-0bdef433-9919-4291-882f-41e72e93cc1a"
+                }
+              ],
+              "createdAt": "2026-07-28T01:28:42.000Z",
+              "updatedAt": "2026-07-28T01:28:42.000Z",
+              "uid": "35240-ec3739ea-933d-487f-ba30-f182422b72f7"
+            },
+            {
+              "name": "Create a Subscription",
+              "id": "6bec8f8d-486b-4346-8684-8ef342b1a4d1",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"subscription\": \"<string>\",\n  \"context\": \"mo\",\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"source\": {\n    \"id\": \"<string>\",\n    \"self\": \"<uri>\"\n  },\n  \"fragmentsToCopy\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"subscriptionFilter\": {\n    \"apis\": [\n      \"alarms\",\n      \"measurements\"\n    ],\n    \"typeFilter\": \"<string>\"\n  },\n  \"nonPersistent\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/notification2/subscriptions",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "notification2",
+                    "subscriptions"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "id": "6e70fe45-e057-4ae1-9a42-4a99ee43a2bf",
+                  "name": "Subscription created.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"subscription\": \"<string>\",\n  \"context\": \"mo\",\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"source\": {\n    \"id\": \"<string>\",\n    \"self\": \"<uri>\"\n  },\n  \"fragmentsToCopy\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"subscriptionFilter\": {\n    \"apis\": [\n      \"alarms\",\n      \"measurements\"\n    ],\n    \"typeFilter\": \"<string>\"\n  },\n  \"nonPersistent\": \"<boolean>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/notification2/subscriptions",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "notification2",
+                        "subscriptions"
+                      ]
+                    }
+                  },
+                  "status": "Created",
+                  "code": 201,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"subscription\": \"<string>\",\n  \"context\": \"mo\",\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"source\": {\n    \"id\": \"<string>\",\n    \"self\": \"<uri>\"\n  },\n  \"fragmentsToCopy\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"subscriptionFilter\": {\n    \"apis\": [\n      \"alarms\",\n      \"measurements\"\n    ],\n    \"typeFilter\": \"<string>\"\n  },\n  \"nonPersistent\": \"<boolean>\"\n}",
+                  "createdAt": "2026-07-28T01:28:42.000Z",
+                  "updatedAt": "2026-07-28T01:28:42.000Z",
+                  "uid": "35240-6e70fe45-e057-4ae1-9a42-4a99ee43a2bf"
+                }
+              ],
+              "createdAt": "2026-07-28T01:28:42.000Z",
+              "updatedAt": "2026-07-28T01:28:42.000Z",
+              "uid": "35240-6bec8f8d-486b-4346-8684-8ef342b1a4d1"
+            },
+            {
+              "name": "Delete Subscriptions by Filter",
+              "id": "fc2b2ed8-5ce8-4fe7-9035-3329a3292716",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/notification2/subscriptions",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "notification2",
+                    "subscriptions"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "id": "1a705890-31e1-4c37-ac25-f4f511e22dd1",
+                  "name": "Subscriptions deleted.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/notification2/subscriptions",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "notification2",
+                        "subscriptions"
+                      ]
+                    }
+                  },
+                  "status": "No Content",
+                  "code": 204,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T01:28:42.000Z",
+                  "updatedAt": "2026-07-28T01:28:42.000Z",
+                  "uid": "35240-1a705890-31e1-4c37-ac25-f4f511e22dd1"
+                }
+              ],
+              "createdAt": "2026-07-28T01:28:42.000Z",
+              "updatedAt": "2026-07-28T01:28:42.000Z",
+              "uid": "35240-fc2b2ed8-5ce8-4fe7-9035-3329a3292716"
+            }
+          ],
+          "id": "80d96be6-7ed9-4d8e-9c3c-d88bfc770cda",
+          "createdAt": "2026-07-28T01:28:42.000Z",
+          "updatedAt": "2026-07-28T01:28:42.000Z",
+          "uid": "35240-80d96be6-7ed9-4d8e-9c3c-d88bfc770cda"
+        }
+      ],
+      "id": "ed5daaca-7ee7-450a-b503-2e2d20108ed5",
+      "createdAt": "2026-07-28T01:28:42.000Z",
+      "updatedAt": "2026-07-28T01:28:42.000Z",
+      "uid": "35240-ed5daaca-7ee7-450a-b503-2e2d20108ed5"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}",
+        "type": "string"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "tenant",
+      "value": "example"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{tenant}}.cumulocity.com"
+    }
+  ]
+}

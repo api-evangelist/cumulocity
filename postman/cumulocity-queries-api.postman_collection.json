@@ -1,0 +1,157 @@
+{
+  "info": {
+    "_postman_id": "d31959af-5894-46ab-8e87-e20b0b15feb1",
+    "name": "Cumulocity Alarm Alarms Queries API",
+    "description": "Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL, MAJOR,\nMINOR, WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms\nby source + type so repeated raises increment the count rather than creating duplicates.\n",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:28:31.000Z",
+    "updatedAt": "2026-07-28T01:28:31.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-d31959af-5894-46ab-8e87-e20b0b15feb1"
+  },
+  "item": [
+    {
+      "name": "service",
+      "item": [
+        {
+          "name": "datahub",
+          "item": [
+            {
+              "name": "query",
+              "item": [
+                {
+                  "name": "Run an Ad-Hoc SQL Query",
+                  "id": "e387fece-bef9-4ee7-bff7-b275e4bf1764",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"sql\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/service/datahub/query",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "service",
+                        "datahub",
+                        "query"
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "0b5e9f20-9963-436a-b608-67bfbef6c11b",
+                      "name": "Query results.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"sql\": \"<string>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/service/datahub/query",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "service",
+                            "datahub",
+                            "query"
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T01:28:32.000Z",
+                      "updatedAt": "2026-07-28T01:28:32.000Z",
+                      "uid": "35240-0b5e9f20-9963-436a-b608-67bfbef6c11b"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:28:32.000Z",
+                  "updatedAt": "2026-07-28T01:28:32.000Z",
+                  "uid": "35240-e387fece-bef9-4ee7-bff7-b275e4bf1764"
+                }
+              ],
+              "id": "fc3c8591-5f35-4e82-a4fd-494477364209",
+              "createdAt": "2026-07-28T01:28:32.000Z",
+              "updatedAt": "2026-07-28T01:28:32.000Z",
+              "uid": "35240-fc3c8591-5f35-4e82-a4fd-494477364209"
+            }
+          ],
+          "id": "6ee9fab0-62f0-4304-9409-54188dacc272",
+          "createdAt": "2026-07-28T01:28:32.000Z",
+          "updatedAt": "2026-07-28T01:28:32.000Z",
+          "uid": "35240-6ee9fab0-62f0-4304-9409-54188dacc272"
+        }
+      ],
+      "id": "e11546dd-1966-4d37-893b-678efb7a6091",
+      "createdAt": "2026-07-28T01:28:32.000Z",
+      "updatedAt": "2026-07-28T01:28:32.000Z",
+      "uid": "35240-e11546dd-1966-4d37-893b-678efb7a6091"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}",
+        "type": "string"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "tenant",
+      "value": "example"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{tenant}}.cumulocity.com"
+    }
+  ]
+}

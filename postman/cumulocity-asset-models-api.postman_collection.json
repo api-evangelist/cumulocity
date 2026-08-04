@@ -1,0 +1,488 @@
+{
+  "info": {
+    "_postman_id": "577da577-5813-4daa-8eec-02957b4341a4",
+    "name": "Cumulocity Alarm Alarms Asset Models API",
+    "description": "Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL, MAJOR,\nMINOR, WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms\nby source + type so repeated raises increment the count rather than creating duplicates.\n",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:27:35.000Z",
+    "updatedAt": "2026-07-28T01:27:35.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-577da577-5813-4daa-8eec-02957b4341a4"
+  },
+  "item": [
+    {
+      "name": "service",
+      "item": [
+        {
+          "name": "dtm",
+          "item": [
+            {
+              "name": "asset-models",
+              "item": [
+                {
+                  "name": "{id}",
+                  "item": [
+                    {
+                      "name": "Retrieve an Asset Model",
+                      "id": "89036a14-6738-4691-a315-780919b89038",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/service/dtm/asset-models/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "service",
+                            "dtm",
+                            "asset-models",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "id": "c9dca84c-2d34-4dce-9118-96cad2d84f44",
+                              "key": "id",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        }
+                      },
+                      "response": [
+                        {
+                          "id": "84efdef8-600c-4841-8813-41346f2fb97f",
+                          "name": "A single asset model.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/service/dtm/asset-models/:id",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "service",
+                                "dtm",
+                                "asset-models",
+                                ":id"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-07-28T01:27:36.000Z",
+                          "updatedAt": "2026-07-28T01:27:36.000Z",
+                          "uid": "35240-84efdef8-600c-4841-8813-41346f2fb97f"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:27:36.000Z",
+                      "updatedAt": "2026-07-28T01:27:36.000Z",
+                      "uid": "35240-89036a14-6738-4691-a315-780919b89038"
+                    },
+                    {
+                      "name": "Update an Asset Model",
+                      "id": "c7c3b068-b3dd-40f5-a6df-65832d42ebb6",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"name\": \"<string>\",\n  \"description\": \"<string>\",\n  \"icon\": \"<string>\",\n  \"allowedSubtypes\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"smartFunctions\": [\n    {\n      \"name\": \"<string>\",\n      \"expression\": \"<string>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"expression\": \"<string>\"\n    }\n  ]\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/service/dtm/asset-models/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "service",
+                            "dtm",
+                            "asset-models",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "id": "500a9a15-ae60-42fc-b388-d5ea5f5b0187",
+                              "key": "id",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        }
+                      },
+                      "response": [
+                        {
+                          "id": "cc13758c-cf25-4f61-bb59-a8c59aaa0d7b",
+                          "name": "Asset model updated.",
+                          "originalRequest": {
+                            "method": "PUT",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"name\": \"<string>\",\n  \"description\": \"<string>\",\n  \"icon\": \"<string>\",\n  \"allowedSubtypes\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"smartFunctions\": [\n    {\n      \"name\": \"<string>\",\n      \"expression\": \"<string>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"expression\": \"<string>\"\n    }\n  ]\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/service/dtm/asset-models/:id",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "service",
+                                "dtm",
+                                "asset-models",
+                                ":id"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-07-28T01:27:36.000Z",
+                          "updatedAt": "2026-07-28T01:27:36.000Z",
+                          "uid": "35240-cc13758c-cf25-4f61-bb59-a8c59aaa0d7b"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:27:36.000Z",
+                      "updatedAt": "2026-07-28T01:27:36.000Z",
+                      "uid": "35240-c7c3b068-b3dd-40f5-a6df-65832d42ebb6"
+                    },
+                    {
+                      "name": "Delete an Asset Model",
+                      "id": "bb408440-3dce-42f1-a1a8-71de92c9b4d4",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "DELETE",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/service/dtm/asset-models/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "service",
+                            "dtm",
+                            "asset-models",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "id": "aec7d10a-3740-484c-9791-03417b6a8828",
+                              "key": "id",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        }
+                      },
+                      "response": [
+                        {
+                          "id": "6c3bf4ae-098c-45a5-9941-5947f0b54146",
+                          "name": "Asset model deleted.",
+                          "originalRequest": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/service/dtm/asset-models/:id",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "service",
+                                "dtm",
+                                "asset-models",
+                                ":id"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "No Content",
+                          "code": 204,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-07-28T01:27:36.000Z",
+                          "updatedAt": "2026-07-28T01:27:36.000Z",
+                          "uid": "35240-6c3bf4ae-098c-45a5-9941-5947f0b54146"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:27:36.000Z",
+                      "updatedAt": "2026-07-28T01:27:36.000Z",
+                      "uid": "35240-bb408440-3dce-42f1-a1a8-71de92c9b4d4"
+                    }
+                  ],
+                  "id": "99997950-b8a9-454a-8f88-2210875fa138",
+                  "createdAt": "2026-07-28T01:27:36.000Z",
+                  "updatedAt": "2026-07-28T01:27:36.000Z",
+                  "uid": "35240-99997950-b8a9-454a-8f88-2210875fa138"
+                },
+                {
+                  "name": "List Asset Models",
+                  "id": "78eb31e6-7fb2-4aeb-91a8-b51049bec6d0",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/service/dtm/asset-models",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "service",
+                        "dtm",
+                        "asset-models"
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "3f82d819-dd7a-4ba9-a7f0-f9ca4a6ae31b",
+                      "name": "A collection of asset models.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/service/dtm/asset-models",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "service",
+                            "dtm",
+                            "asset-models"
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T01:27:36.000Z",
+                      "updatedAt": "2026-07-28T01:27:36.000Z",
+                      "uid": "35240-3f82d819-dd7a-4ba9-a7f0-f9ca4a6ae31b"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:27:36.000Z",
+                  "updatedAt": "2026-07-28T01:27:36.000Z",
+                  "uid": "35240-78eb31e6-7fb2-4aeb-91a8-b51049bec6d0"
+                },
+                {
+                  "name": "Create an Asset Model",
+                  "id": "52992d4d-78cd-4e5f-9f4b-cd289f60e9ea",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"name\": \"<string>\",\n  \"description\": \"<string>\",\n  \"icon\": \"<string>\",\n  \"allowedSubtypes\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"smartFunctions\": [\n    {\n      \"name\": \"<string>\",\n      \"expression\": \"<string>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"expression\": \"<string>\"\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/service/dtm/asset-models",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "service",
+                        "dtm",
+                        "asset-models"
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "8a076b9c-9d90-4b7f-98a4-4760a7fd976d",
+                      "name": "Asset model created.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"name\": \"<string>\",\n  \"description\": \"<string>\",\n  \"icon\": \"<string>\",\n  \"allowedSubtypes\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"smartFunctions\": [\n    {\n      \"name\": \"<string>\",\n      \"expression\": \"<string>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"expression\": \"<string>\"\n    }\n  ]\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/service/dtm/asset-models",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "service",
+                            "dtm",
+                            "asset-models"
+                          ]
+                        }
+                      },
+                      "status": "Created",
+                      "code": 201,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T01:27:36.000Z",
+                      "updatedAt": "2026-07-28T01:27:36.000Z",
+                      "uid": "35240-8a076b9c-9d90-4b7f-98a4-4760a7fd976d"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:27:36.000Z",
+                  "updatedAt": "2026-07-28T01:27:36.000Z",
+                  "uid": "35240-52992d4d-78cd-4e5f-9f4b-cd289f60e9ea"
+                }
+              ],
+              "id": "961d1b78-c5da-457b-a85a-c289f78bbb09",
+              "createdAt": "2026-07-28T01:27:36.000Z",
+              "updatedAt": "2026-07-28T01:27:36.000Z",
+              "uid": "35240-961d1b78-c5da-457b-a85a-c289f78bbb09"
+            }
+          ],
+          "id": "299d1d63-0f4e-4226-a940-f64aa3ff83af",
+          "createdAt": "2026-07-28T01:27:36.000Z",
+          "updatedAt": "2026-07-28T01:27:36.000Z",
+          "uid": "35240-299d1d63-0f4e-4226-a940-f64aa3ff83af"
+        }
+      ],
+      "id": "f29af7ed-0328-4f1e-962c-64778f16793f",
+      "createdAt": "2026-07-28T01:27:36.000Z",
+      "updatedAt": "2026-07-28T01:27:36.000Z",
+      "uid": "35240-f29af7ed-0328-4f1e-962c-64778f16793f"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}",
+        "type": "string"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "tenant",
+      "value": "example"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{tenant}}.cumulocity.com"
+    }
+  ]
+}

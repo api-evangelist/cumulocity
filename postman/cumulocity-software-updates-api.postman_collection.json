@@ -1,0 +1,219 @@
+{
+  "info": {
+    "_postman_id": "41ef1f6f-1658-42d2-90b3-b0ed74bf8f0c",
+    "name": "Cumulocity Alarm Alarms Software Updates API",
+    "description": "Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL, MAJOR,\nMINOR, WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms\nby source + type so repeated raises increment the count rather than creating duplicates.\n",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:28:41.000Z",
+    "updatedAt": "2026-07-28T01:28:41.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-41ef1f6f-1658-42d2-90b3-b0ed74bf8f0c"
+  },
+  "item": [
+    {
+      "name": "service",
+      "item": [
+        {
+          "name": "edge",
+          "item": [
+            {
+              "name": "updates",
+              "item": [
+                {
+                  "name": "List Available Edge Updates",
+                  "id": "c3841e6b-2d73-4a5f-85e2-6846a4e9bc02",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/service/edge/updates",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "service",
+                        "edge",
+                        "updates"
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "82b49c87-beda-4bac-9407-1f71c2dcd946",
+                      "name": "Available Edge software releases.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/service/edge/updates",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "service",
+                            "edge",
+                            "updates"
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T01:28:41.000Z",
+                      "updatedAt": "2026-07-28T01:28:41.000Z",
+                      "uid": "35240-82b49c87-beda-4bac-9407-1f71c2dcd946"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:28:41.000Z",
+                  "updatedAt": "2026-07-28T01:28:41.000Z",
+                  "uid": "35240-c3841e6b-2d73-4a5f-85e2-6846a4e9bc02"
+                },
+                {
+                  "name": "Install an Edge Update",
+                  "id": "6660f3d5-0661-435b-b24d-5bdd4efce54d",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"version\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/service/edge/updates",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "service",
+                        "edge",
+                        "updates"
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "a64d7b72-bb37-4dd0-a097-c799f98636d6",
+                      "name": "Update started.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"version\": \"<string>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/service/edge/updates",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "service",
+                            "edge",
+                            "updates"
+                          ]
+                        }
+                      },
+                      "status": "Accepted",
+                      "code": 202,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T01:28:41.000Z",
+                      "updatedAt": "2026-07-28T01:28:41.000Z",
+                      "uid": "35240-a64d7b72-bb37-4dd0-a097-c799f98636d6"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:28:41.000Z",
+                  "updatedAt": "2026-07-28T01:28:41.000Z",
+                  "uid": "35240-6660f3d5-0661-435b-b24d-5bdd4efce54d"
+                }
+              ],
+              "id": "e175c38b-4361-40d7-b887-3aa3386ac0fc",
+              "createdAt": "2026-07-28T01:28:41.000Z",
+              "updatedAt": "2026-07-28T01:28:41.000Z",
+              "uid": "35240-e175c38b-4361-40d7-b887-3aa3386ac0fc"
+            }
+          ],
+          "id": "29e96589-95de-408c-ba55-6a30a43465c8",
+          "createdAt": "2026-07-28T01:28:41.000Z",
+          "updatedAt": "2026-07-28T01:28:41.000Z",
+          "uid": "35240-29e96589-95de-408c-ba55-6a30a43465c8"
+        }
+      ],
+      "id": "5be04291-f59b-4436-b0a1-d32643cedf1f",
+      "createdAt": "2026-07-28T01:28:41.000Z",
+      "updatedAt": "2026-07-28T01:28:41.000Z",
+      "uid": "35240-5be04291-f59b-4436-b0a1-d32643cedf1f"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}",
+        "type": "string"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "tenant",
+      "value": "example"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{tenant}}.cumulocity.com"
+    }
+  ]
+}

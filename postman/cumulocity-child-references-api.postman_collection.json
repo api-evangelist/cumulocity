@@ -1,0 +1,458 @@
+{
+  "info": {
+    "_postman_id": "b266df1e-3cb3-4cf2-9cee-04573929de9a",
+    "name": "Cumulocity Alarm Alarms Child References API",
+    "description": "Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL, MAJOR,\nMINOR, WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms\nby source + type so repeated raises increment the count rather than creating duplicates.\n",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:27:40.000Z",
+    "updatedAt": "2026-07-28T01:27:41.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-b266df1e-3cb3-4cf2-9cee-04573929de9a"
+  },
+  "item": [
+    {
+      "name": "inventory",
+      "item": [
+        {
+          "name": "managedObjects",
+          "item": [
+            {
+              "name": "{id}",
+              "item": [
+                {
+                  "name": "childDevices",
+                  "item": [
+                    {
+                      "name": "List Child Devices",
+                      "id": "a0e8cfd0-d1ec-47e0-b223-174044b01847",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/vnd.com.nsn.cumulocity.managedObjectReferenceCollection+json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/inventory/managedObjects/:id/childDevices",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "inventory",
+                            "managedObjects",
+                            ":id",
+                            "childDevices"
+                          ],
+                          "variable": [
+                            {
+                              "id": "b8c82983-017b-4d88-9847-ce2974fc42e8",
+                              "key": "id",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        }
+                      },
+                      "response": [
+                        {
+                          "id": "b8d4c6e0-4574-4fde-8cd7-7a8d27e749e5",
+                          "name": "A collection of child device references.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/vnd.com.nsn.cumulocity.managedObjectReferenceCollection+json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/inventory/managedObjects/:id/childDevices",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "inventory",
+                                "managedObjects",
+                                ":id",
+                                "childDevices"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/vnd.com.nsn.cumulocity.managedObjectReferenceCollection+json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"self\": \"<uri>\",\n  \"references\": [\n    {\n      \"self\": \"<uri>\",\n      \"managedObject\": {\n        \"id\": \"<string>\",\n        \"self\": \"<uri>\",\n        \"name\": \"<string>\"\n      }\n    },\n    {\n      \"self\": \"<uri>\",\n      \"managedObject\": {\n        \"id\": \"<string>\",\n        \"self\": \"<uri>\",\n        \"name\": \"<string>\"\n      }\n    }\n  ]\n}",
+                          "createdAt": "2026-07-28T01:27:41.000Z",
+                          "updatedAt": "2026-07-28T01:27:41.000Z",
+                          "uid": "35240-b8d4c6e0-4574-4fde-8cd7-7a8d27e749e5"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:27:41.000Z",
+                      "updatedAt": "2026-07-28T01:27:41.000Z",
+                      "uid": "35240-a0e8cfd0-d1ec-47e0-b223-174044b01847"
+                    },
+                    {
+                      "name": "Add a Child Device",
+                      "id": "361877c1-c150-42ab-b2d1-412457ed494b",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/vnd.com.nsn.cumulocity.managedObjectReference+json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"self\": \"<uri>\",\n  \"managedObject\": {\n    \"id\": \"<string>\",\n    \"self\": \"<uri>\",\n    \"name\": \"<string>\"\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/inventory/managedObjects/:id/childDevices",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "inventory",
+                            "managedObjects",
+                            ":id",
+                            "childDevices"
+                          ],
+                          "variable": [
+                            {
+                              "id": "5b786d0e-8eb2-4b01-b2ac-90602f1bffbf",
+                              "key": "id",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        }
+                      },
+                      "response": [
+                        {
+                          "id": "e436e44a-aabe-49fd-a9b8-53abfbc448ae",
+                          "name": "Child device reference created.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/vnd.com.nsn.cumulocity.managedObjectReference+json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"self\": \"<uri>\",\n  \"managedObject\": {\n    \"id\": \"<string>\",\n    \"self\": \"<uri>\",\n    \"name\": \"<string>\"\n  }\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/inventory/managedObjects/:id/childDevices",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "inventory",
+                                "managedObjects",
+                                ":id",
+                                "childDevices"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Created",
+                          "code": 201,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-07-28T01:27:41.000Z",
+                          "updatedAt": "2026-07-28T01:27:41.000Z",
+                          "uid": "35240-e436e44a-aabe-49fd-a9b8-53abfbc448ae"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:27:41.000Z",
+                      "updatedAt": "2026-07-28T01:27:41.000Z",
+                      "uid": "35240-361877c1-c150-42ab-b2d1-412457ed494b"
+                    }
+                  ],
+                  "id": "342b1920-67db-4c83-93d1-bff2f8fec159",
+                  "createdAt": "2026-07-28T01:27:41.000Z",
+                  "updatedAt": "2026-07-28T01:27:41.000Z",
+                  "uid": "35240-342b1920-67db-4c83-93d1-bff2f8fec159"
+                },
+                {
+                  "name": "childAssets",
+                  "item": [
+                    {
+                      "name": "List Child Assets",
+                      "id": "5a9ca3a2-a693-4b76-8cae-7b75dc95e8cc",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/vnd.com.nsn.cumulocity.managedObjectReferenceCollection+json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/inventory/managedObjects/:id/childAssets",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "inventory",
+                            "managedObjects",
+                            ":id",
+                            "childAssets"
+                          ],
+                          "variable": [
+                            {
+                              "id": "87139937-16a8-4ee4-9729-16e6558c52dd",
+                              "key": "id",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        }
+                      },
+                      "response": [
+                        {
+                          "id": "4b198fff-bb90-4e95-9e52-48cf708371c6",
+                          "name": "A collection of child asset references.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/vnd.com.nsn.cumulocity.managedObjectReferenceCollection+json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/inventory/managedObjects/:id/childAssets",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "inventory",
+                                "managedObjects",
+                                ":id",
+                                "childAssets"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/vnd.com.nsn.cumulocity.managedObjectReferenceCollection+json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"self\": \"<uri>\",\n  \"references\": [\n    {\n      \"self\": \"<uri>\",\n      \"managedObject\": {\n        \"id\": \"<string>\",\n        \"self\": \"<uri>\",\n        \"name\": \"<string>\"\n      }\n    },\n    {\n      \"self\": \"<uri>\",\n      \"managedObject\": {\n        \"id\": \"<string>\",\n        \"self\": \"<uri>\",\n        \"name\": \"<string>\"\n      }\n    }\n  ]\n}",
+                          "createdAt": "2026-07-28T01:27:41.000Z",
+                          "updatedAt": "2026-07-28T01:27:41.000Z",
+                          "uid": "35240-4b198fff-bb90-4e95-9e52-48cf708371c6"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:27:41.000Z",
+                      "updatedAt": "2026-07-28T01:27:41.000Z",
+                      "uid": "35240-5a9ca3a2-a693-4b76-8cae-7b75dc95e8cc"
+                    }
+                  ],
+                  "id": "072a0977-4443-4c05-bdf6-a81ca94a7e2f",
+                  "createdAt": "2026-07-28T01:27:41.000Z",
+                  "updatedAt": "2026-07-28T01:27:41.000Z",
+                  "uid": "35240-072a0977-4443-4c05-bdf6-a81ca94a7e2f"
+                },
+                {
+                  "name": "childAdditions",
+                  "item": [
+                    {
+                      "name": "List Child Additions",
+                      "id": "0d7beb6f-1d86-4d3c-bcd2-80cfcc25bf29",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/inventory/managedObjects/:id/childAdditions",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "inventory",
+                            "managedObjects",
+                            ":id",
+                            "childAdditions"
+                          ],
+                          "variable": [
+                            {
+                              "id": "0d665559-d9b5-41ef-b148-a833083d8e06",
+                              "key": "id",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        }
+                      },
+                      "response": [
+                        {
+                          "id": "1ce32ccd-d02c-4943-918f-a3ec06cb23f5",
+                          "name": "A collection of child addition references.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/inventory/managedObjects/:id/childAdditions",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "inventory",
+                                "managedObjects",
+                                ":id",
+                                "childAdditions"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-07-28T01:27:41.000Z",
+                          "updatedAt": "2026-07-28T01:27:41.000Z",
+                          "uid": "35240-1ce32ccd-d02c-4943-918f-a3ec06cb23f5"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:27:41.000Z",
+                      "updatedAt": "2026-07-28T01:27:41.000Z",
+                      "uid": "35240-0d7beb6f-1d86-4d3c-bcd2-80cfcc25bf29"
+                    }
+                  ],
+                  "id": "5e268245-7785-4e34-a527-5539d7117c95",
+                  "createdAt": "2026-07-28T01:27:41.000Z",
+                  "updatedAt": "2026-07-28T01:27:41.000Z",
+                  "uid": "35240-5e268245-7785-4e34-a527-5539d7117c95"
+                }
+              ],
+              "id": "32b63a9e-e9f1-42c8-8a6f-ee15b0fc51ee",
+              "createdAt": "2026-07-28T01:27:41.000Z",
+              "updatedAt": "2026-07-28T01:27:41.000Z",
+              "uid": "35240-32b63a9e-e9f1-42c8-8a6f-ee15b0fc51ee"
+            }
+          ],
+          "id": "14f46194-a84f-44df-950d-79a68fee05c9",
+          "createdAt": "2026-07-28T01:27:41.000Z",
+          "updatedAt": "2026-07-28T01:27:41.000Z",
+          "uid": "35240-14f46194-a84f-44df-950d-79a68fee05c9"
+        }
+      ],
+      "id": "f10b570b-7b98-469d-97f2-163a829b3184",
+      "createdAt": "2026-07-28T01:27:41.000Z",
+      "updatedAt": "2026-07-28T01:27:41.000Z",
+      "uid": "35240-f10b570b-7b98-469d-97f2-163a829b3184"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}",
+        "type": "string"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "tenant",
+      "value": "example"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{tenant}}.cumulocity.com"
+    }
+  ]
+}

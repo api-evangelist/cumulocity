@@ -1,0 +1,141 @@
+openapi: 3.0.3
+info:
+  title: Cumulocity DataHub API
+  version: 2025.1
+  description: |
+    Offload operational IoT data (measurements, events, alarms, inventory) from the Cumulocity MongoDB
+    operational store into a Parquet-backed data lake queryable with ANSI SQL via Dremio. Configure offload
+    pipelines, run analytics queries, and export results to BI tools (Power BI, Tableau) over JDBC/ODBC/Arrow Flight.
+servers:
+- url: https://{tenant}.cumulocity.com
+  variables:
+    tenant:
+      default: example
+security:
+- basicAuth: []
+- bearerAuth: []
+tags:
+- name: Offload Configurations
+- name: Offload Jobs
+- name: Queries
+paths:
+  /service/datahub/offload:
+    get:
+      tags: [Offload Configurations]
+      summary: List Offload Configurations
+      operationId: listOffloadConfigurations
+      responses:
+        '200':
+          description: A collection of offload configurations.
+    post:
+      tags: [Offload Configurations]
+      summary: Create an Offload Configuration
+      operationId: createOffloadConfiguration
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OffloadConfiguration'
+      responses:
+        '201':
+          description: Offload configuration created.
+  /service/datahub/offload/{id}:
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema: {type: string}
+    get:
+      tags: [Offload Configurations]
+      summary: Retrieve an Offload Configuration
+      operationId: getOffloadConfiguration
+      responses:
+        '200':
+          description: A single offload configuration.
+    put:
+      tags: [Offload Configurations]
+      summary: Update an Offload Configuration
+      operationId: updateOffloadConfiguration
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OffloadConfiguration'
+      responses:
+        '200':
+          description: Offload configuration updated.
+    delete:
+      tags: [Offload Configurations]
+      summary: Delete an Offload Configuration
+      operationId: deleteOffloadConfiguration
+      responses:
+        '204':
+          description: Offload configuration deleted.
+  /service/datahub/offload/{id}/jobs:
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema: {type: string}
+    get:
+      tags: [Offload Jobs]
+      summary: List Offload Jobs
+      operationId: listOffloadJobs
+      responses:
+        '200':
+          description: A collection of offload jobs.
+    post:
+      tags: [Offload Jobs]
+      summary: Start an Offload Job
+      operationId: startOffloadJob
+      responses:
+        '201':
+          description: Offload job started.
+  /service/datahub/query:
+    post:
+      tags: [Queries]
+      summary: Run an Ad-Hoc SQL Query
+      operationId: runQuery
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                sql: {type: string}
+      responses:
+        '200':
+          description: Query results.
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    OffloadConfiguration:
+      type: object
+      properties:
+        id: {type: string}
+        self: {type: string, format: uri}
+        source:
+          type: string
+          enum: [measurements, events, alarms, inventory, operations, audit]
+        filter: {type: string}
+        offloadType:
+          type: string
+          enum: [INITIAL_PLUS_INCREMENT, INCREMENTAL]
+        schedule: {type: string}
+        status:
+          type: string
+          enum: [ACTIVE, PAUSED, FAILED]
+        targetDataset: {type: string}
+        partitioning:
+          type: array
+          items: {type: string}

@@ -1,0 +1,99 @@
+openapi: 3.0.3
+info:
+  title: Cumulocity Retention Rules API
+  version: 10.20.0
+  description: |
+    Define retention rules that automatically delete measurements, events, alarms, audit records, and
+    operations older than a configured age. Rules can be scoped by data type, source, and fragment.
+    Default policies apply per-plan; Enterprise tenants can override.
+servers:
+- url: https://{tenant}.cumulocity.com
+  variables:
+    tenant:
+      default: example
+security:
+- basicAuth: []
+- bearerAuth: []
+tags:
+- name: Retention Rules
+paths:
+  /retention/retentions:
+    get:
+      tags: [Retention Rules]
+      summary: List Retention Rules
+      operationId: listRetentionRules
+      responses:
+        '200':
+          description: A collection of retention rules.
+    post:
+      tags: [Retention Rules]
+      summary: Create a Retention Rule
+      operationId: createRetentionRule
+      requestBody:
+        required: true
+        content:
+          application/vnd.com.nsn.cumulocity.retentionRule+json:
+            schema:
+              $ref: '#/components/schemas/RetentionRule'
+      responses:
+        '201':
+          description: Retention rule created.
+  /retention/retentions/{id}:
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema: {type: string}
+    get:
+      tags: [Retention Rules]
+      summary: Retrieve a Retention Rule
+      operationId: getRetentionRule
+      responses:
+        '200':
+          description: A single retention rule.
+    put:
+      tags: [Retention Rules]
+      summary: Update a Retention Rule
+      operationId: updateRetentionRule
+      requestBody:
+        required: true
+        content:
+          application/vnd.com.nsn.cumulocity.retentionRule+json:
+            schema:
+              $ref: '#/components/schemas/RetentionRule'
+      responses:
+        '200':
+          description: Retention rule updated.
+    delete:
+      tags: [Retention Rules]
+      summary: Delete a Retention Rule
+      operationId: deleteRetentionRule
+      responses:
+        '204':
+          description: Retention rule deleted.
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    RetentionRule:
+      type: object
+      required: [dataType, maximumAge]
+      properties:
+        id: {type: string}
+        self: {type: string, format: uri}
+        dataType:
+          type: string
+          enum: [ALARM, AUDIT, EVENT, MEASUREMENT, OPERATION, BULK_OPERATION, '*']
+        fragmentType: {type: string}
+        type: {type: string}
+        source: {type: string}
+        maximumAge:
+          type: integer
+          description: Age in days after which records are deleted.
+        editable: {type: boolean}

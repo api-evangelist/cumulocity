@@ -1,0 +1,511 @@
+{
+  "info": {
+    "_postman_id": "70e52eb6-3306-45d5-a916-8fbb5056c580",
+    "name": "Cumulocity Alarm Alarms Tenant Options API",
+    "description": "Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL, MAJOR,\nMINOR, WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms\nby source + type so repeated raises increment the count rather than creating duplicates.\n",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:28:44.000Z",
+    "updatedAt": "2026-07-28T01:28:44.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-70e52eb6-3306-45d5-a916-8fbb5056c580"
+  },
+  "item": [
+    {
+      "name": "tenant",
+      "item": [
+        {
+          "name": "options",
+          "item": [
+            {
+              "name": "{category}",
+              "item": [
+                {
+                  "name": "{key}",
+                  "item": [
+                    {
+                      "name": "Retrieve a Tenant Option",
+                      "id": "cc7f3b56-9a2a-4b75-b709-83eb95bf3ceb",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/tenant/options/:category/:key",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "tenant",
+                            "options",
+                            ":category",
+                            ":key"
+                          ],
+                          "variable": [
+                            {
+                              "id": "5d3e6791-3114-4d28-970c-287a0dc54fbd",
+                              "key": "category",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            },
+                            {
+                              "id": "c869418b-69d3-441f-be5e-44b3d37450e1",
+                              "key": "key",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        }
+                      },
+                      "response": [
+                        {
+                          "id": "b126c4ad-6b8a-4e52-9575-42d1f0f9af0b",
+                          "name": "A single tenant option.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/tenant/options/:category/:key",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "tenant",
+                                "options",
+                                ":category",
+                                ":key"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "category"
+                                },
+                                {
+                                  "key": "key"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-07-28T01:28:45.000Z",
+                          "updatedAt": "2026-07-28T01:28:45.000Z",
+                          "uid": "35240-b126c4ad-6b8a-4e52-9575-42d1f0f9af0b"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:28:45.000Z",
+                      "updatedAt": "2026-07-28T01:28:45.000Z",
+                      "uid": "35240-cc7f3b56-9a2a-4b75-b709-83eb95bf3ceb"
+                    },
+                    {
+                      "name": "Update a Tenant Option",
+                      "id": "12b353cd-0a69-4049-80d5-e6bdd827aec8",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/vnd.com.nsn.cumulocity.option+json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"category\": \"<string>\",\n  \"key\": \"<string>\",\n  \"value\": \"<string>\",\n  \"self\": \"<uri>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/tenant/options/:category/:key",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "tenant",
+                            "options",
+                            ":category",
+                            ":key"
+                          ],
+                          "variable": [
+                            {
+                              "id": "f7202f74-03a2-44a8-8d5c-d725a44bce37",
+                              "key": "category",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            },
+                            {
+                              "id": "e5d806c5-8898-4520-b624-26e8da257d9b",
+                              "key": "key",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        }
+                      },
+                      "response": [
+                        {
+                          "id": "c930524f-1e15-4200-a372-1a1b19a57d92",
+                          "name": "Tenant option updated.",
+                          "originalRequest": {
+                            "method": "PUT",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/vnd.com.nsn.cumulocity.option+json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"category\": \"<string>\",\n  \"key\": \"<string>\",\n  \"value\": \"<string>\",\n  \"self\": \"<uri>\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/tenant/options/:category/:key",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "tenant",
+                                "options",
+                                ":category",
+                                ":key"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "category"
+                                },
+                                {
+                                  "key": "key"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-07-28T01:28:45.000Z",
+                          "updatedAt": "2026-07-28T01:28:45.000Z",
+                          "uid": "35240-c930524f-1e15-4200-a372-1a1b19a57d92"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:28:45.000Z",
+                      "updatedAt": "2026-07-28T01:28:45.000Z",
+                      "uid": "35240-12b353cd-0a69-4049-80d5-e6bdd827aec8"
+                    },
+                    {
+                      "name": "Delete a Tenant Option",
+                      "id": "47c99fe5-ceda-42cf-be01-1d218329c948",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "DELETE",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/tenant/options/:category/:key",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "tenant",
+                            "options",
+                            ":category",
+                            ":key"
+                          ],
+                          "variable": [
+                            {
+                              "id": "b0dd1bbb-8bf6-4e58-b32e-33c824c1b35d",
+                              "key": "category",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            },
+                            {
+                              "id": "88db657c-66c9-44b1-8e83-9c70bf17a2c1",
+                              "key": "key",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        }
+                      },
+                      "response": [
+                        {
+                          "id": "8aef11f1-4f74-4f2d-8559-0511bf7ee012",
+                          "name": "Tenant option deleted.",
+                          "originalRequest": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/tenant/options/:category/:key",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "tenant",
+                                "options",
+                                ":category",
+                                ":key"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "category"
+                                },
+                                {
+                                  "key": "key"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "No Content",
+                          "code": 204,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-07-28T01:28:45.000Z",
+                          "updatedAt": "2026-07-28T01:28:45.000Z",
+                          "uid": "35240-8aef11f1-4f74-4f2d-8559-0511bf7ee012"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:28:45.000Z",
+                      "updatedAt": "2026-07-28T01:28:45.000Z",
+                      "uid": "35240-47c99fe5-ceda-42cf-be01-1d218329c948"
+                    }
+                  ],
+                  "id": "4e7206ee-8bb5-438d-a72b-ad979e0e2847",
+                  "createdAt": "2026-07-28T01:28:45.000Z",
+                  "updatedAt": "2026-07-28T01:28:45.000Z",
+                  "uid": "35240-4e7206ee-8bb5-438d-a72b-ad979e0e2847"
+                }
+              ],
+              "id": "e291beeb-5a70-4734-ba03-6d686808793b",
+              "createdAt": "2026-07-28T01:28:45.000Z",
+              "updatedAt": "2026-07-28T01:28:45.000Z",
+              "uid": "35240-e291beeb-5a70-4734-ba03-6d686808793b"
+            },
+            {
+              "name": "List Tenant Options",
+              "id": "055a43c8-fc98-41b1-bec4-b33cdc5c299f",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/tenant/options",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "tenant",
+                    "options"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "id": "45ba58ac-6677-4e29-bf35-ed3ca3f831c2",
+                  "name": "A collection of tenant options.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/tenant/options",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "tenant",
+                        "options"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T01:28:45.000Z",
+                  "updatedAt": "2026-07-28T01:28:45.000Z",
+                  "uid": "35240-45ba58ac-6677-4e29-bf35-ed3ca3f831c2"
+                }
+              ],
+              "createdAt": "2026-07-28T01:28:45.000Z",
+              "updatedAt": "2026-07-28T01:28:45.000Z",
+              "uid": "35240-055a43c8-fc98-41b1-bec4-b33cdc5c299f"
+            },
+            {
+              "name": "Create a Tenant Option",
+              "id": "0f253d74-cdbf-40d0-9d54-c6c830279d4c",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/vnd.com.nsn.cumulocity.option+json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"category\": \"<string>\",\n  \"key\": \"<string>\",\n  \"value\": \"<string>\",\n  \"self\": \"<uri>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/tenant/options",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "tenant",
+                    "options"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "id": "a08d9e51-7dd7-4d18-9bcd-76008ea6e8a3",
+                  "name": "Tenant option created.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/vnd.com.nsn.cumulocity.option+json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"category\": \"<string>\",\n  \"key\": \"<string>\",\n  \"value\": \"<string>\",\n  \"self\": \"<uri>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/tenant/options",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "tenant",
+                        "options"
+                      ]
+                    }
+                  },
+                  "status": "Created",
+                  "code": 201,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T01:28:45.000Z",
+                  "updatedAt": "2026-07-28T01:28:45.000Z",
+                  "uid": "35240-a08d9e51-7dd7-4d18-9bcd-76008ea6e8a3"
+                }
+              ],
+              "createdAt": "2026-07-28T01:28:45.000Z",
+              "updatedAt": "2026-07-28T01:28:45.000Z",
+              "uid": "35240-0f253d74-cdbf-40d0-9d54-c6c830279d4c"
+            }
+          ],
+          "id": "0092861f-63e2-4141-83ca-c546da116b71",
+          "createdAt": "2026-07-28T01:28:45.000Z",
+          "updatedAt": "2026-07-28T01:28:45.000Z",
+          "uid": "35240-0092861f-63e2-4141-83ca-c546da116b71"
+        }
+      ],
+      "id": "a5c0fc06-3846-4714-9883-5d8f5b10b830",
+      "createdAt": "2026-07-28T01:28:45.000Z",
+      "updatedAt": "2026-07-28T01:28:45.000Z",
+      "uid": "35240-a5c0fc06-3846-4714-9883-5d8f5b10b830"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}",
+        "type": "string"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "tenant",
+      "value": "example"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{tenant}}.cumulocity.com"
+    }
+  ]
+}

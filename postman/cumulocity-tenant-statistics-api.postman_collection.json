@@ -1,0 +1,137 @@
+{
+  "info": {
+    "_postman_id": "a9c39b46-e55c-4f89-9f55-3e3a14544a31",
+    "name": "Cumulocity Alarm Alarms Tenant Statistics API",
+    "description": "Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL, MAJOR,\nMINOR, WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms\nby source + type so repeated raises increment the count rather than creating duplicates.\n",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:28:45.000Z",
+    "updatedAt": "2026-07-28T01:28:45.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-a9c39b46-e55c-4f89-9f55-3e3a14544a31"
+  },
+  "item": [
+    {
+      "name": "tenant",
+      "item": [
+        {
+          "name": "statistics",
+          "item": [
+            {
+              "name": "List Tenant Usage Statistics",
+              "id": "d2ec9310-92c1-4a48-ad0d-2d3cb44fb393",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/tenant/statistics?dateFrom=<date>&dateTo=<date>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "tenant",
+                    "statistics"
+                  ],
+                  "query": [
+                    {
+                      "key": "dateFrom",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "dateTo",
+                      "value": "<date>"
+                    }
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "id": "6b62ffff-8f0b-4d9d-8f2f-9e99d34fa0cb",
+                  "name": "Per-day tenant usage statistics.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/tenant/statistics?dateFrom=<date>&dateTo=<date>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "tenant",
+                        "statistics"
+                      ],
+                      "query": [
+                        {
+                          "key": "dateFrom",
+                          "value": "<date>"
+                        },
+                        {
+                          "key": "dateTo",
+                          "value": "<date>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T01:28:46.000Z",
+                  "updatedAt": "2026-07-28T01:28:46.000Z",
+                  "uid": "35240-6b62ffff-8f0b-4d9d-8f2f-9e99d34fa0cb"
+                }
+              ],
+              "createdAt": "2026-07-28T01:28:46.000Z",
+              "updatedAt": "2026-07-28T01:28:46.000Z",
+              "uid": "35240-d2ec9310-92c1-4a48-ad0d-2d3cb44fb393"
+            }
+          ],
+          "id": "afc09d4d-bdd5-46f3-aaf2-f2b2aff356e7",
+          "createdAt": "2026-07-28T01:28:46.000Z",
+          "updatedAt": "2026-07-28T01:28:46.000Z",
+          "uid": "35240-afc09d4d-bdd5-46f3-aaf2-f2b2aff356e7"
+        }
+      ],
+      "id": "20ce2d1d-49a2-4974-85fd-52bdd7a46665",
+      "createdAt": "2026-07-28T01:28:46.000Z",
+      "updatedAt": "2026-07-28T01:28:46.000Z",
+      "uid": "35240-20ce2d1d-49a2-4974-85fd-52bdd7a46665"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}",
+        "type": "string"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "tenant",
+      "value": "example"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{tenant}}.cumulocity.com"
+    }
+  ]
+}

@@ -1,0 +1,238 @@
+{
+  "info": {
+    "_postman_id": "33a18ded-6810-4171-aeda-dc7b055a3f09",
+    "name": "Cumulocity Alarm Alarms Supported Measurements API",
+    "description": "Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL, MAJOR,\nMINOR, WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms\nby source + type so repeated raises increment the count rather than creating duplicates.\n",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:28:42.000Z",
+    "updatedAt": "2026-07-28T01:28:43.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-33a18ded-6810-4171-aeda-dc7b055a3f09"
+  },
+  "item": [
+    {
+      "name": "inventory",
+      "item": [
+        {
+          "name": "managedObjects",
+          "item": [
+            {
+              "name": "{id}",
+              "item": [
+                {
+                  "name": "supportedMeasurements",
+                  "item": [
+                    {
+                      "name": "List Supported Measurements",
+                      "id": "d0b69a48-5d4a-459a-b9e5-68680f752a77",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/inventory/managedObjects/:id/supportedMeasurements",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "inventory",
+                            "managedObjects",
+                            ":id",
+                            "supportedMeasurements"
+                          ],
+                          "variable": [
+                            {
+                              "id": "5450e641-1470-41b7-9e69-b4afc028de40",
+                              "key": "id",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        }
+                      },
+                      "response": [
+                        {
+                          "id": "25be5e9e-f946-41ed-ae1d-1841b94d0c57",
+                          "name": "List of measurement types reported for this managed object.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/inventory/managedObjects/:id/supportedMeasurements",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "inventory",
+                                "managedObjects",
+                                ":id",
+                                "supportedMeasurements"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-07-28T01:28:43.000Z",
+                          "updatedAt": "2026-07-28T01:28:43.000Z",
+                          "uid": "35240-25be5e9e-f946-41ed-ae1d-1841b94d0c57"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:28:43.000Z",
+                      "updatedAt": "2026-07-28T01:28:43.000Z",
+                      "uid": "35240-d0b69a48-5d4a-459a-b9e5-68680f752a77"
+                    }
+                  ],
+                  "id": "c1f33af9-fc2e-47ec-baac-f6534693da69",
+                  "createdAt": "2026-07-28T01:28:43.000Z",
+                  "updatedAt": "2026-07-28T01:28:43.000Z",
+                  "uid": "35240-c1f33af9-fc2e-47ec-baac-f6534693da69"
+                },
+                {
+                  "name": "supportedSeries",
+                  "item": [
+                    {
+                      "name": "List Supported Series",
+                      "id": "d174fec1-9dda-41b9-81d9-fc2dfb0ca773",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/inventory/managedObjects/:id/supportedSeries",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "inventory",
+                            "managedObjects",
+                            ":id",
+                            "supportedSeries"
+                          ],
+                          "variable": [
+                            {
+                              "id": "540caaa0-494d-4ad2-81b8-5c4f184b10e7",
+                              "key": "id",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        }
+                      },
+                      "response": [
+                        {
+                          "id": "ed35c5be-7e56-4281-98e1-8d25e68e4a78",
+                          "name": "List of measurement series reported for this managed object.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/inventory/managedObjects/:id/supportedSeries",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "inventory",
+                                "managedObjects",
+                                ":id",
+                                "supportedSeries"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-07-28T01:28:43.000Z",
+                          "updatedAt": "2026-07-28T01:28:43.000Z",
+                          "uid": "35240-ed35c5be-7e56-4281-98e1-8d25e68e4a78"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:28:43.000Z",
+                      "updatedAt": "2026-07-28T01:28:43.000Z",
+                      "uid": "35240-d174fec1-9dda-41b9-81d9-fc2dfb0ca773"
+                    }
+                  ],
+                  "id": "524e137f-338c-46e0-9ffd-fb43a40e2386",
+                  "createdAt": "2026-07-28T01:28:43.000Z",
+                  "updatedAt": "2026-07-28T01:28:43.000Z",
+                  "uid": "35240-524e137f-338c-46e0-9ffd-fb43a40e2386"
+                }
+              ],
+              "id": "4acf0846-c60d-48cc-b632-ed2b5c266fdd",
+              "createdAt": "2026-07-28T01:28:43.000Z",
+              "updatedAt": "2026-07-28T01:28:43.000Z",
+              "uid": "35240-4acf0846-c60d-48cc-b632-ed2b5c266fdd"
+            }
+          ],
+          "id": "11aea241-c3cc-430b-887c-a15a65646b38",
+          "createdAt": "2026-07-28T01:28:43.000Z",
+          "updatedAt": "2026-07-28T01:28:43.000Z",
+          "uid": "35240-11aea241-c3cc-430b-887c-a15a65646b38"
+        }
+      ],
+      "id": "ea09cf9a-94bf-4d1d-b458-a3a644d5a8b8",
+      "createdAt": "2026-07-28T01:28:43.000Z",
+      "updatedAt": "2026-07-28T01:28:43.000Z",
+      "uid": "35240-ea09cf9a-94bf-4d1d-b458-a3a644d5a8b8"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}",
+        "type": "string"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "tenant",
+      "value": "example"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{tenant}}.cumulocity.com"
+    }
+  ]
+}

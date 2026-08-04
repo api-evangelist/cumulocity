@@ -1,0 +1,257 @@
+{
+  "info": {
+    "_postman_id": "9c9db8f1-25ce-4565-a1a7-395b39675c21",
+    "name": "Cumulocity Alarm Alarms Tokens API",
+    "description": "Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL, MAJOR,\nMINOR, WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms\nby source + type so repeated raises increment the count rather than creating duplicates.\n",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:28:47.000Z",
+    "updatedAt": "2026-07-28T01:28:47.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-9c9db8f1-25ce-4565-a1a7-395b39675c21"
+  },
+  "item": [
+    {
+      "name": "notification2",
+      "item": [
+        {
+          "name": "token",
+          "item": [
+            {
+              "name": "Create a Subscription Token",
+              "id": "e449ee56-955b-41c1-8520-439448430114",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"subscriber\": \"<string>\",\n  \"subscription\": \"<string>\",\n  \"expiresInMinutes\": \"<integer>\",\n  \"nonPersistent\": \"<boolean>\",\n  \"signed\": \"<boolean>\",\n  \"shared\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/notification2/token",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "notification2",
+                    "token"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "id": "5872063d-856b-4871-9dcf-3c00f31ca92b",
+                  "name": "A short-lived JWT token to use with the WebSocket consumer endpoint.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"subscriber\": \"<string>\",\n  \"subscription\": \"<string>\",\n  \"expiresInMinutes\": \"<integer>\",\n  \"nonPersistent\": \"<boolean>\",\n  \"signed\": \"<boolean>\",\n  \"shared\": \"<boolean>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/notification2/token",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "notification2",
+                        "token"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"token\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:28:47.000Z",
+                  "updatedAt": "2026-07-28T01:28:47.000Z",
+                  "uid": "35240-5872063d-856b-4871-9dcf-3c00f31ca92b"
+                }
+              ],
+              "createdAt": "2026-07-28T01:28:47.000Z",
+              "updatedAt": "2026-07-28T01:28:47.000Z",
+              "uid": "35240-e449ee56-955b-41c1-8520-439448430114"
+            }
+          ],
+          "id": "19d80806-7080-46ef-a365-331285188f4d",
+          "createdAt": "2026-07-28T01:28:47.000Z",
+          "updatedAt": "2026-07-28T01:28:47.000Z",
+          "uid": "35240-19d80806-7080-46ef-a365-331285188f4d"
+        },
+        {
+          "name": "unsubscribe",
+          "item": [
+            {
+              "name": "Unsubscribe (Invalidate Token)",
+              "id": "d249617f-2186-42d7-84e7-cebf7fd130b2",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"token\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/notification2/unsubscribe",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "notification2",
+                    "unsubscribe"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "id": "a3b09c2e-bc91-4d8a-a3a7-f7e42cf0f30f",
+                  "name": "Token invalidated.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"token\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/notification2/unsubscribe",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "notification2",
+                        "unsubscribe"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T01:28:47.000Z",
+                  "updatedAt": "2026-07-28T01:28:47.000Z",
+                  "uid": "35240-a3b09c2e-bc91-4d8a-a3a7-f7e42cf0f30f"
+                }
+              ],
+              "createdAt": "2026-07-28T01:28:47.000Z",
+              "updatedAt": "2026-07-28T01:28:47.000Z",
+              "uid": "35240-d249617f-2186-42d7-84e7-cebf7fd130b2"
+            }
+          ],
+          "id": "7c390aee-1cff-4b5a-b753-717abdb9a3b8",
+          "createdAt": "2026-07-28T01:28:47.000Z",
+          "updatedAt": "2026-07-28T01:28:47.000Z",
+          "uid": "35240-7c390aee-1cff-4b5a-b753-717abdb9a3b8"
+        }
+      ],
+      "id": "84a19adf-c921-4e55-9d1c-4afe57af2714",
+      "createdAt": "2026-07-28T01:28:47.000Z",
+      "updatedAt": "2026-07-28T01:28:47.000Z",
+      "uid": "35240-84a19adf-c921-4e55-9d1c-4afe57af2714"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}",
+        "type": "string"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "tenant",
+      "value": "example"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{tenant}}.cumulocity.com"
+    }
+  ]
+}

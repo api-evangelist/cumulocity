@@ -1,0 +1,201 @@
+openapi: 3.0.3
+info:
+  title: Cumulocity Tenant API
+  version: 10.20.0
+  description: |
+    Manage Cumulocity tenants (sub-tenants in enterprise and management hierarchies), tenant options
+    (key-value config including encrypted secrets), tenant applications, and tenant usage statistics.
+servers:
+- url: https://{tenant}.cumulocity.com
+  variables:
+    tenant:
+      default: example
+security:
+- basicAuth: []
+- bearerAuth: []
+tags:
+- name: Tenants
+- name: Tenant Options
+- name: Tenant Applications
+- name: Tenant Statistics
+paths:
+  /tenant/tenants:
+    get:
+      tags: [Tenants]
+      summary: List Tenants
+      operationId: listTenants
+      responses:
+        '200':
+          description: A collection of tenants.
+          content:
+            application/vnd.com.nsn.cumulocity.tenantCollection+json:
+              schema:
+                $ref: '#/components/schemas/TenantCollection'
+    post:
+      tags: [Tenants]
+      summary: Create a Tenant
+      operationId: createTenant
+      requestBody:
+        required: true
+        content:
+          application/vnd.com.nsn.cumulocity.tenant+json:
+            schema:
+              $ref: '#/components/schemas/Tenant'
+      responses:
+        '201':
+          description: Tenant created.
+  /tenant/tenants/{tenantId}:
+    parameters:
+    - name: tenantId
+      in: path
+      required: true
+      schema: {type: string}
+    get:
+      tags: [Tenants]
+      summary: Retrieve a Tenant
+      operationId: getTenant
+      responses:
+        '200':
+          description: A single tenant.
+          content:
+            application/vnd.com.nsn.cumulocity.tenant+json:
+              schema:
+                $ref: '#/components/schemas/Tenant'
+    put:
+      tags: [Tenants]
+      summary: Update a Tenant
+      operationId: updateTenant
+      requestBody:
+        required: true
+        content:
+          application/vnd.com.nsn.cumulocity.tenant+json:
+            schema:
+              $ref: '#/components/schemas/Tenant'
+      responses:
+        '200':
+          description: Tenant updated.
+    delete:
+      tags: [Tenants]
+      summary: Delete a Tenant
+      operationId: deleteTenant
+      responses:
+        '204':
+          description: Tenant deleted.
+  /tenant/options:
+    get:
+      tags: [Tenant Options]
+      summary: List Tenant Options
+      operationId: listTenantOptions
+      responses:
+        '200':
+          description: A collection of tenant options.
+    post:
+      tags: [Tenant Options]
+      summary: Create a Tenant Option
+      operationId: createTenantOption
+      requestBody:
+        required: true
+        content:
+          application/vnd.com.nsn.cumulocity.option+json:
+            schema:
+              $ref: '#/components/schemas/TenantOption'
+      responses:
+        '201':
+          description: Tenant option created.
+  /tenant/options/{category}/{key}:
+    parameters:
+    - name: category
+      in: path
+      required: true
+      schema: {type: string}
+    - name: key
+      in: path
+      required: true
+      schema: {type: string}
+    get:
+      tags: [Tenant Options]
+      summary: Retrieve a Tenant Option
+      operationId: getTenantOption
+      responses:
+        '200':
+          description: A single tenant option.
+    put:
+      tags: [Tenant Options]
+      summary: Update a Tenant Option
+      operationId: updateTenantOption
+      requestBody:
+        required: true
+        content:
+          application/vnd.com.nsn.cumulocity.option+json:
+            schema:
+              $ref: '#/components/schemas/TenantOption'
+      responses:
+        '200':
+          description: Tenant option updated.
+    delete:
+      tags: [Tenant Options]
+      summary: Delete a Tenant Option
+      operationId: deleteTenantOption
+      responses:
+        '204':
+          description: Tenant option deleted.
+  /tenant/statistics:
+    get:
+      tags: [Tenant Statistics]
+      summary: List Tenant Usage Statistics
+      operationId: listTenantStatistics
+      parameters:
+      - name: dateFrom
+        in: query
+        schema: {type: string, format: date}
+      - name: dateTo
+        in: query
+        schema: {type: string, format: date}
+      responses:
+        '200':
+          description: Per-day tenant usage statistics.
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Tenant:
+      type: object
+      properties:
+        id: {type: string}
+        self: {type: string, format: uri}
+        company: {type: string}
+        domain: {type: string}
+        adminName: {type: string}
+        adminEmail: {type: string}
+        contactName: {type: string}
+        contactPhone: {type: string}
+        parent: {type: string}
+        status:
+          type: string
+          enum: [ACTIVE, SUSPENDED]
+        creationTime: {type: string, format: date-time}
+        customProperties:
+          type: object
+        allowCreateTenants: {type: boolean}
+    TenantCollection:
+      type: object
+      properties:
+        self: {type: string, format: uri}
+        tenants:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tenant'
+    TenantOption:
+      type: object
+      required: [category, key, value]
+      properties:
+        self: {type: string, format: uri}
+        category: {type: string}
+        key: {type: string}
+        value: {type: string}

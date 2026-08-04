@@ -1,0 +1,664 @@
+{
+  "info": {
+    "_postman_id": "0005bf27-9d22-4a0f-969b-28c1132c0d62",
+    "name": "Cumulocity Alarm Alarms API",
+    "description": "Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL, MAJOR,\nMINOR, WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms\nby source + type so repeated raises increment the count rather than creating duplicates.\n",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:27:32.000Z",
+    "updatedAt": "2026-07-28T01:27:32.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-0005bf27-9d22-4a0f-969b-28c1132c0d62"
+  },
+  "item": [
+    {
+      "name": "alarm",
+      "item": [
+        {
+          "name": "alarms",
+          "item": [
+            {
+              "name": "{id}",
+              "item": [
+                {
+                  "name": "Retrieve an Alarm",
+                  "id": "88073a62-98d9-436f-8ccb-49d4bb0eedf5",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/vnd.com.nsn.cumulocity.alarm+json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/alarm/alarms/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "alarm",
+                        "alarms",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "31b3500e-d907-40a7-bc83-557419c3ec3b",
+                          "key": "id",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "9b2182ac-9ffc-405e-bbaa-8bd21e275e17",
+                      "name": "A single alarm.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/vnd.com.nsn.cumulocity.alarm+json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/alarm/alarms/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "alarm",
+                            "alarms",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/vnd.com.nsn.cumulocity.alarm+json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"time\": \"<dateTime>\",\n  \"type\": \"<string>\",\n  \"text\": \"<string>\",\n  \"source\": {\n    \"id\": \"<string>\",\n    \"self\": \"<uri>\"\n  },\n  \"severity\": \"MAJOR\",\n  \"status\": \"ACTIVE\",\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"creationTime\": \"<dateTime>\",\n  \"count\": \"<integer>\",\n  \"firstOccurrenceTime\": \"<dateTime>\"\n}",
+                      "createdAt": "2026-07-28T01:27:32.000Z",
+                      "updatedAt": "2026-07-28T01:27:32.000Z",
+                      "uid": "35240-9b2182ac-9ffc-405e-bbaa-8bd21e275e17"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:27:32.000Z",
+                  "updatedAt": "2026-07-28T01:27:32.000Z",
+                  "uid": "35240-88073a62-98d9-436f-8ccb-49d4bb0eedf5"
+                },
+                {
+                  "name": "Update an Alarm",
+                  "id": "1d5c7334-b4a0-4abb-9265-a0e7915e7066",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/vnd.com.nsn.cumulocity.alarm+json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"time\": \"<dateTime>\",\n  \"type\": \"<string>\",\n  \"text\": \"<string>\",\n  \"source\": {\n    \"id\": \"<string>\",\n    \"self\": \"<uri>\"\n  },\n  \"severity\": \"MAJOR\",\n  \"status\": \"ACTIVE\",\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"creationTime\": \"<dateTime>\",\n  \"count\": \"<integer>\",\n  \"firstOccurrenceTime\": \"<dateTime>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/alarm/alarms/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "alarm",
+                        "alarms",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "8a144491-21db-49ae-bd83-f55a11a85075",
+                          "key": "id",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "44045f1c-a54c-42ba-a416-2236270e0e86",
+                      "name": "Alarm updated.",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/vnd.com.nsn.cumulocity.alarm+json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"time\": \"<dateTime>\",\n  \"type\": \"<string>\",\n  \"text\": \"<string>\",\n  \"source\": {\n    \"id\": \"<string>\",\n    \"self\": \"<uri>\"\n  },\n  \"severity\": \"MAJOR\",\n  \"status\": \"ACTIVE\",\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"creationTime\": \"<dateTime>\",\n  \"count\": \"<integer>\",\n  \"firstOccurrenceTime\": \"<dateTime>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/alarm/alarms/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "alarm",
+                            "alarms",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T01:27:32.000Z",
+                      "updatedAt": "2026-07-28T01:27:32.000Z",
+                      "uid": "35240-44045f1c-a54c-42ba-a416-2236270e0e86"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:27:32.000Z",
+                  "updatedAt": "2026-07-28T01:27:32.000Z",
+                  "uid": "35240-1d5c7334-b4a0-4abb-9265-a0e7915e7066"
+                }
+              ],
+              "id": "58e7596e-b00d-4ded-927e-18efdfd98a59",
+              "createdAt": "2026-07-28T01:27:32.000Z",
+              "updatedAt": "2026-07-28T01:27:32.000Z",
+              "uid": "35240-58e7596e-b00d-4ded-927e-18efdfd98a59"
+            },
+            {
+              "name": "List Alarms",
+              "id": "8953f249-8d3e-42aa-a679-c0c923f1910b",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.com.nsn.cumulocity.alarmCollection+json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/alarm/alarms?source=<string>&status=CLEARED&severity=MAJOR&type=<string>&dateFrom=<dateTime>&dateTo=<dateTime>&resolved=<boolean>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "alarm",
+                    "alarms"
+                  ],
+                  "query": [
+                    {
+                      "key": "source",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "CLEARED"
+                    },
+                    {
+                      "key": "severity",
+                      "value": "MAJOR"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "dateFrom",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "dateTo",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "resolved",
+                      "value": "<boolean>"
+                    }
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "id": "d6d82690-88ca-42ea-9be7-80d0306d8b42",
+                  "name": "A collection of alarms.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/vnd.com.nsn.cumulocity.alarmCollection+json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/alarm/alarms?source=<string>&status=CLEARED&severity=MAJOR&type=<string>&dateFrom=<dateTime>&dateTo=<dateTime>&resolved=<boolean>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "alarm",
+                        "alarms"
+                      ],
+                      "query": [
+                        {
+                          "key": "source",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "status",
+                          "value": "CLEARED"
+                        },
+                        {
+                          "key": "severity",
+                          "value": "MAJOR"
+                        },
+                        {
+                          "key": "type",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "dateFrom",
+                          "value": "<dateTime>"
+                        },
+                        {
+                          "key": "dateTo",
+                          "value": "<dateTime>"
+                        },
+                        {
+                          "key": "resolved",
+                          "value": "<boolean>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/vnd.com.nsn.cumulocity.alarmCollection+json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"self\": \"<uri>\",\n  \"alarms\": [\n    {\n      \"time\": \"<dateTime>\",\n      \"type\": \"<string>\",\n      \"text\": \"<string>\",\n      \"source\": {\n        \"id\": \"<string>\",\n        \"self\": \"<uri>\"\n      },\n      \"severity\": \"MAJOR\",\n      \"status\": \"ACTIVE\",\n      \"id\": \"<string>\",\n      \"self\": \"<uri>\",\n      \"creationTime\": \"<dateTime>\",\n      \"count\": \"<integer>\",\n      \"firstOccurrenceTime\": \"<dateTime>\"\n    },\n    {\n      \"time\": \"<dateTime>\",\n      \"type\": \"<string>\",\n      \"text\": \"<string>\",\n      \"source\": {\n        \"id\": \"<string>\",\n        \"self\": \"<uri>\"\n      },\n      \"severity\": \"MAJOR\",\n      \"status\": \"ACTIVE\",\n      \"id\": \"<string>\",\n      \"self\": \"<uri>\",\n      \"creationTime\": \"<dateTime>\",\n      \"count\": \"<integer>\",\n      \"firstOccurrenceTime\": \"<dateTime>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T01:27:32.000Z",
+                  "updatedAt": "2026-07-28T01:27:32.000Z",
+                  "uid": "35240-d6d82690-88ca-42ea-9be7-80d0306d8b42"
+                }
+              ],
+              "createdAt": "2026-07-28T01:27:32.000Z",
+              "updatedAt": "2026-07-28T01:27:32.000Z",
+              "uid": "35240-8953f249-8d3e-42aa-a679-c0c923f1910b"
+            },
+            {
+              "name": "Raise an Alarm",
+              "id": "2c860b49-b6ef-4a00-a9c6-6f069b5108b8",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/vnd.com.nsn.cumulocity.alarm+json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.com.nsn.cumulocity.alarm+json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"time\": \"<dateTime>\",\n  \"type\": \"<string>\",\n  \"text\": \"<string>\",\n  \"source\": {\n    \"id\": \"<string>\",\n    \"self\": \"<uri>\"\n  },\n  \"severity\": \"MAJOR\",\n  \"status\": \"ACTIVE\",\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"creationTime\": \"<dateTime>\",\n  \"count\": \"<integer>\",\n  \"firstOccurrenceTime\": \"<dateTime>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/alarm/alarms",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "alarm",
+                    "alarms"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "id": "58309a9e-d5fe-4430-a961-716890e7b6f3",
+                  "name": "Alarm raised (or count incremented if duplicate).",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/vnd.com.nsn.cumulocity.alarm+json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/vnd.com.nsn.cumulocity.alarm+json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"time\": \"<dateTime>\",\n  \"type\": \"<string>\",\n  \"text\": \"<string>\",\n  \"source\": {\n    \"id\": \"<string>\",\n    \"self\": \"<uri>\"\n  },\n  \"severity\": \"MAJOR\",\n  \"status\": \"ACTIVE\",\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"creationTime\": \"<dateTime>\",\n  \"count\": \"<integer>\",\n  \"firstOccurrenceTime\": \"<dateTime>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/alarm/alarms",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "alarm",
+                        "alarms"
+                      ]
+                    }
+                  },
+                  "status": "Created",
+                  "code": 201,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/vnd.com.nsn.cumulocity.alarm+json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"time\": \"<dateTime>\",\n  \"type\": \"<string>\",\n  \"text\": \"<string>\",\n  \"source\": {\n    \"id\": \"<string>\",\n    \"self\": \"<uri>\"\n  },\n  \"severity\": \"MAJOR\",\n  \"status\": \"ACTIVE\",\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"creationTime\": \"<dateTime>\",\n  \"count\": \"<integer>\",\n  \"firstOccurrenceTime\": \"<dateTime>\"\n}",
+                  "createdAt": "2026-07-28T01:27:32.000Z",
+                  "updatedAt": "2026-07-28T01:27:32.000Z",
+                  "uid": "35240-58309a9e-d5fe-4430-a961-716890e7b6f3"
+                }
+              ],
+              "createdAt": "2026-07-28T01:27:32.000Z",
+              "updatedAt": "2026-07-28T01:27:32.000Z",
+              "uid": "35240-2c860b49-b6ef-4a00-a9c6-6f069b5108b8"
+            },
+            {
+              "name": "Bulk Update Alarms",
+              "id": "13efd6f5-5005-4651-9493-49dd94777a84",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/vnd.com.nsn.cumulocity.alarm+json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"time\": \"<dateTime>\",\n  \"type\": \"<string>\",\n  \"text\": \"<string>\",\n  \"source\": {\n    \"id\": \"<string>\",\n    \"self\": \"<uri>\"\n  },\n  \"severity\": \"MAJOR\",\n  \"status\": \"ACTIVE\",\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"creationTime\": \"<dateTime>\",\n  \"count\": \"<integer>\",\n  \"firstOccurrenceTime\": \"<dateTime>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/alarm/alarms?source=<string>&status=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "alarm",
+                    "alarms"
+                  ],
+                  "query": [
+                    {
+                      "key": "source",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "id": "853e3ed1-47b3-4956-9643-f6bcfe3f2459",
+                  "name": "Alarms updated.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/vnd.com.nsn.cumulocity.alarm+json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"time\": \"<dateTime>\",\n  \"type\": \"<string>\",\n  \"text\": \"<string>\",\n  \"source\": {\n    \"id\": \"<string>\",\n    \"self\": \"<uri>\"\n  },\n  \"severity\": \"MAJOR\",\n  \"status\": \"ACTIVE\",\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"creationTime\": \"<dateTime>\",\n  \"count\": \"<integer>\",\n  \"firstOccurrenceTime\": \"<dateTime>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/alarm/alarms?source=<string>&status=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "alarm",
+                        "alarms"
+                      ],
+                      "query": [
+                        {
+                          "key": "source",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "status",
+                          "value": "<string>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T01:27:32.000Z",
+                  "updatedAt": "2026-07-28T01:27:32.000Z",
+                  "uid": "35240-853e3ed1-47b3-4956-9643-f6bcfe3f2459"
+                }
+              ],
+              "createdAt": "2026-07-28T01:27:32.000Z",
+              "updatedAt": "2026-07-28T01:27:32.000Z",
+              "uid": "35240-13efd6f5-5005-4651-9493-49dd94777a84"
+            },
+            {
+              "name": "Delete Alarms by Filter",
+              "id": "58cee85a-8dbd-407d-b741-81a39e31656e",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/alarm/alarms",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "alarm",
+                    "alarms"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "id": "7e6dfb82-0628-4baf-bd40-da16d576ed52",
+                  "name": "Alarms deleted.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/alarm/alarms",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "alarm",
+                        "alarms"
+                      ]
+                    }
+                  },
+                  "status": "No Content",
+                  "code": 204,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T01:27:32.000Z",
+                  "updatedAt": "2026-07-28T01:27:32.000Z",
+                  "uid": "35240-7e6dfb82-0628-4baf-bd40-da16d576ed52"
+                }
+              ],
+              "createdAt": "2026-07-28T01:27:32.000Z",
+              "updatedAt": "2026-07-28T01:27:32.000Z",
+              "uid": "35240-58cee85a-8dbd-407d-b741-81a39e31656e"
+            }
+          ],
+          "id": "dc591206-4c81-4caa-9f78-ea5b94051f86",
+          "createdAt": "2026-07-28T01:27:32.000Z",
+          "updatedAt": "2026-07-28T01:27:32.000Z",
+          "uid": "35240-dc591206-4c81-4caa-9f78-ea5b94051f86"
+        }
+      ],
+      "id": "92263a21-8900-43ab-a796-bec4c17f8b70",
+      "createdAt": "2026-07-28T01:27:32.000Z",
+      "updatedAt": "2026-07-28T01:27:32.000Z",
+      "uid": "35240-92263a21-8900-43ab-a796-bec4c17f8b70"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}",
+        "type": "string"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "tenant",
+      "value": "example"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{tenant}}.cumulocity.com"
+    }
+  ]
+}

@@ -1,0 +1,569 @@
+{
+  "info": {
+    "_postman_id": "d71077d0-be01-4856-b429-1ee8e8437456",
+    "name": "Cumulocity Alarm Alarms Users API",
+    "description": "Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL, MAJOR,\nMINOR, WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms\nby source + type so repeated raises increment the count rather than creating duplicates.\n",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:28:48.000Z",
+    "updatedAt": "2026-07-28T01:28:48.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-d71077d0-be01-4856-b429-1ee8e8437456"
+  },
+  "item": [
+    {
+      "name": "user",
+      "item": [
+        {
+          "name": "{tenantId}",
+          "item": [
+            {
+              "name": "users",
+              "item": [
+                {
+                  "name": "{userId}",
+                  "item": [
+                    {
+                      "name": "Retrieve a User",
+                      "id": "c20088c7-2715-4b0a-b023-e50d1e5ac569",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/vnd.com.nsn.cumulocity.user+json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/user/:tenantId/users/:userId",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "user",
+                            ":tenantId",
+                            "users",
+                            ":userId"
+                          ],
+                          "variable": [
+                            {
+                              "id": "8e3aee90-d149-4eb6-aad1-4105f7e62244",
+                              "key": "tenantId",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            },
+                            {
+                              "id": "3d853710-8fbe-4228-8daf-ca08010d6a4a",
+                              "key": "userId",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        }
+                      },
+                      "response": [
+                        {
+                          "id": "ac32065b-f88e-4cc4-91b4-45b43b28d555",
+                          "name": "A single user.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/vnd.com.nsn.cumulocity.user+json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/user/:tenantId/users/:userId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "user",
+                                ":tenantId",
+                                "users",
+                                ":userId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "tenantId"
+                                },
+                                {
+                                  "key": "userId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/vnd.com.nsn.cumulocity.user+json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"userName\": \"<string>\",\n  \"email\": \"<string>\",\n  \"firstName\": \"<string>\",\n  \"lastName\": \"<string>\",\n  \"displayName\": \"<string>\",\n  \"phone\": \"<string>\",\n  \"enabled\": \"<boolean>\",\n  \"password\": \"<string>\",\n  \"shouldResetPassword\": \"<boolean>\",\n  \"lastPasswordChange\": \"<dateTime>\",\n  \"twoFactorAuthenticationEnabled\": \"<boolean>\",\n  \"groups\": {},\n  \"roles\": {},\n  \"devicePermissions\": {}\n}",
+                          "createdAt": "2026-07-28T01:28:48.000Z",
+                          "updatedAt": "2026-07-28T01:28:48.000Z",
+                          "uid": "35240-ac32065b-f88e-4cc4-91b4-45b43b28d555"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:28:48.000Z",
+                      "updatedAt": "2026-07-28T01:28:48.000Z",
+                      "uid": "35240-c20088c7-2715-4b0a-b023-e50d1e5ac569"
+                    },
+                    {
+                      "name": "Update a User",
+                      "id": "92d0b7b9-4f7e-48b1-8777-0abd45648394",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/vnd.com.nsn.cumulocity.user+json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"userName\": \"<string>\",\n  \"email\": \"<string>\",\n  \"firstName\": \"<string>\",\n  \"lastName\": \"<string>\",\n  \"displayName\": \"<string>\",\n  \"phone\": \"<string>\",\n  \"enabled\": \"<boolean>\",\n  \"password\": \"<string>\",\n  \"shouldResetPassword\": \"<boolean>\",\n  \"lastPasswordChange\": \"<dateTime>\",\n  \"twoFactorAuthenticationEnabled\": \"<boolean>\",\n  \"groups\": {},\n  \"roles\": {},\n  \"devicePermissions\": {}\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/user/:tenantId/users/:userId",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "user",
+                            ":tenantId",
+                            "users",
+                            ":userId"
+                          ],
+                          "variable": [
+                            {
+                              "id": "13e82939-94b1-4f14-8770-b611c0048df6",
+                              "key": "tenantId",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            },
+                            {
+                              "id": "65c01dbd-7f6e-4eb0-8d49-00239a207095",
+                              "key": "userId",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        }
+                      },
+                      "response": [
+                        {
+                          "id": "fbb59091-e8a0-4d3a-9ffe-1a163b251306",
+                          "name": "User updated.",
+                          "originalRequest": {
+                            "method": "PUT",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/vnd.com.nsn.cumulocity.user+json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"userName\": \"<string>\",\n  \"email\": \"<string>\",\n  \"firstName\": \"<string>\",\n  \"lastName\": \"<string>\",\n  \"displayName\": \"<string>\",\n  \"phone\": \"<string>\",\n  \"enabled\": \"<boolean>\",\n  \"password\": \"<string>\",\n  \"shouldResetPassword\": \"<boolean>\",\n  \"lastPasswordChange\": \"<dateTime>\",\n  \"twoFactorAuthenticationEnabled\": \"<boolean>\",\n  \"groups\": {},\n  \"roles\": {},\n  \"devicePermissions\": {}\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/user/:tenantId/users/:userId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "user",
+                                ":tenantId",
+                                "users",
+                                ":userId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "tenantId"
+                                },
+                                {
+                                  "key": "userId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-07-28T01:28:48.000Z",
+                          "updatedAt": "2026-07-28T01:28:48.000Z",
+                          "uid": "35240-fbb59091-e8a0-4d3a-9ffe-1a163b251306"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:28:48.000Z",
+                      "updatedAt": "2026-07-28T01:28:48.000Z",
+                      "uid": "35240-92d0b7b9-4f7e-48b1-8777-0abd45648394"
+                    },
+                    {
+                      "name": "Delete a User",
+                      "id": "4ced4bae-398a-4319-9d1b-2a58ddc7e96f",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "DELETE",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/user/:tenantId/users/:userId",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "user",
+                            ":tenantId",
+                            "users",
+                            ":userId"
+                          ],
+                          "variable": [
+                            {
+                              "id": "6d881ca2-3717-4f19-8c69-955e02e7cfc2",
+                              "key": "tenantId",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            },
+                            {
+                              "id": "6bb4bc0c-bfdb-49d4-a57f-6f3707986765",
+                              "key": "userId",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        }
+                      },
+                      "response": [
+                        {
+                          "id": "f0714d85-4725-45b4-8b95-f6457af366ad",
+                          "name": "User deleted.",
+                          "originalRequest": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/user/:tenantId/users/:userId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "user",
+                                ":tenantId",
+                                "users",
+                                ":userId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "tenantId"
+                                },
+                                {
+                                  "key": "userId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "No Content",
+                          "code": 204,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-07-28T01:28:48.000Z",
+                          "updatedAt": "2026-07-28T01:28:48.000Z",
+                          "uid": "35240-f0714d85-4725-45b4-8b95-f6457af366ad"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:28:48.000Z",
+                      "updatedAt": "2026-07-28T01:28:48.000Z",
+                      "uid": "35240-4ced4bae-398a-4319-9d1b-2a58ddc7e96f"
+                    }
+                  ],
+                  "id": "683620e8-6e9f-4535-894b-2243462b5a45",
+                  "createdAt": "2026-07-28T01:28:48.000Z",
+                  "updatedAt": "2026-07-28T01:28:48.000Z",
+                  "uid": "35240-683620e8-6e9f-4535-894b-2243462b5a45"
+                },
+                {
+                  "name": "List Users",
+                  "id": "4af523f1-a80a-4afa-8125-984f0f456665",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/vnd.com.nsn.cumulocity.userCollection+json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/user/:tenantId/users",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "user",
+                        ":tenantId",
+                        "users"
+                      ],
+                      "variable": [
+                        {
+                          "id": "663eaa70-a44c-4d1d-a4ba-9237d0fe2b6b",
+                          "key": "tenantId",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "04d98745-27e1-4c33-b861-e99ca3a8fba5",
+                      "name": "A collection of users.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/vnd.com.nsn.cumulocity.userCollection+json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/user/:tenantId/users",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "user",
+                            ":tenantId",
+                            "users"
+                          ],
+                          "variable": [
+                            {
+                              "key": "tenantId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/vnd.com.nsn.cumulocity.userCollection+json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"self\": \"<uri>\",\n  \"users\": [\n    {\n      \"id\": \"<string>\",\n      \"self\": \"<uri>\",\n      \"userName\": \"<string>\",\n      \"email\": \"<string>\",\n      \"firstName\": \"<string>\",\n      \"lastName\": \"<string>\",\n      \"displayName\": \"<string>\",\n      \"phone\": \"<string>\",\n      \"enabled\": \"<boolean>\",\n      \"password\": \"<string>\",\n      \"shouldResetPassword\": \"<boolean>\",\n      \"lastPasswordChange\": \"<dateTime>\",\n      \"twoFactorAuthenticationEnabled\": \"<boolean>\",\n      \"groups\": {},\n      \"roles\": {},\n      \"devicePermissions\": {}\n    },\n    {\n      \"id\": \"<string>\",\n      \"self\": \"<uri>\",\n      \"userName\": \"<string>\",\n      \"email\": \"<string>\",\n      \"firstName\": \"<string>\",\n      \"lastName\": \"<string>\",\n      \"displayName\": \"<string>\",\n      \"phone\": \"<string>\",\n      \"enabled\": \"<boolean>\",\n      \"password\": \"<string>\",\n      \"shouldResetPassword\": \"<boolean>\",\n      \"lastPasswordChange\": \"<dateTime>\",\n      \"twoFactorAuthenticationEnabled\": \"<boolean>\",\n      \"groups\": {},\n      \"roles\": {},\n      \"devicePermissions\": {}\n    }\n  ]\n}",
+                      "createdAt": "2026-07-28T01:28:48.000Z",
+                      "updatedAt": "2026-07-28T01:28:48.000Z",
+                      "uid": "35240-04d98745-27e1-4c33-b861-e99ca3a8fba5"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:28:48.000Z",
+                  "updatedAt": "2026-07-28T01:28:48.000Z",
+                  "uid": "35240-4af523f1-a80a-4afa-8125-984f0f456665"
+                },
+                {
+                  "name": "Create a User",
+                  "id": "4a026cf6-3d03-45ac-be0d-de9a304964f1",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/vnd.com.nsn.cumulocity.user+json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"userName\": \"<string>\",\n  \"email\": \"<string>\",\n  \"firstName\": \"<string>\",\n  \"lastName\": \"<string>\",\n  \"displayName\": \"<string>\",\n  \"phone\": \"<string>\",\n  \"enabled\": \"<boolean>\",\n  \"password\": \"<string>\",\n  \"shouldResetPassword\": \"<boolean>\",\n  \"lastPasswordChange\": \"<dateTime>\",\n  \"twoFactorAuthenticationEnabled\": \"<boolean>\",\n  \"groups\": {},\n  \"roles\": {},\n  \"devicePermissions\": {}\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/user/:tenantId/users",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "user",
+                        ":tenantId",
+                        "users"
+                      ],
+                      "variable": [
+                        {
+                          "id": "42162aec-9e78-430b-bbaf-d14c91a40174",
+                          "key": "tenantId",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "32386f18-fc3e-460d-a842-6f6ba2d144e7",
+                      "name": "User created.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/vnd.com.nsn.cumulocity.user+json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"userName\": \"<string>\",\n  \"email\": \"<string>\",\n  \"firstName\": \"<string>\",\n  \"lastName\": \"<string>\",\n  \"displayName\": \"<string>\",\n  \"phone\": \"<string>\",\n  \"enabled\": \"<boolean>\",\n  \"password\": \"<string>\",\n  \"shouldResetPassword\": \"<boolean>\",\n  \"lastPasswordChange\": \"<dateTime>\",\n  \"twoFactorAuthenticationEnabled\": \"<boolean>\",\n  \"groups\": {},\n  \"roles\": {},\n  \"devicePermissions\": {}\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/user/:tenantId/users",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "user",
+                            ":tenantId",
+                            "users"
+                          ],
+                          "variable": [
+                            {
+                              "key": "tenantId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Created",
+                      "code": 201,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T01:28:48.000Z",
+                      "updatedAt": "2026-07-28T01:28:48.000Z",
+                      "uid": "35240-32386f18-fc3e-460d-a842-6f6ba2d144e7"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:28:48.000Z",
+                  "updatedAt": "2026-07-28T01:28:48.000Z",
+                  "uid": "35240-4a026cf6-3d03-45ac-be0d-de9a304964f1"
+                }
+              ],
+              "id": "f7c71588-b40a-4f9c-b19f-67f6f9d8fd5a",
+              "createdAt": "2026-07-28T01:28:48.000Z",
+              "updatedAt": "2026-07-28T01:28:48.000Z",
+              "uid": "35240-f7c71588-b40a-4f9c-b19f-67f6f9d8fd5a"
+            }
+          ],
+          "id": "6d6443fc-8dc1-48ab-8088-35ab9b07bcbe",
+          "createdAt": "2026-07-28T01:28:48.000Z",
+          "updatedAt": "2026-07-28T01:28:48.000Z",
+          "uid": "35240-6d6443fc-8dc1-48ab-8088-35ab9b07bcbe"
+        }
+      ],
+      "id": "a5599fac-d651-45f6-87bf-037e8a0922a2",
+      "createdAt": "2026-07-28T01:28:48.000Z",
+      "updatedAt": "2026-07-28T01:28:48.000Z",
+      "uid": "35240-a5599fac-d651-45f6-87bf-037e8a0922a2"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}",
+        "type": "string"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "tenant",
+      "value": "example"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{tenant}}.cumulocity.com"
+    }
+  ]
+}

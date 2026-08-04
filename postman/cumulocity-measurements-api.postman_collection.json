@@ -1,0 +1,578 @@
+{
+  "info": {
+    "_postman_id": "2535f64d-b088-46e0-889b-95782067e9a8",
+    "name": "Cumulocity Alarm Alarms Measurements API",
+    "description": "Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL, MAJOR,\nMINOR, WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms\nby source + type so repeated raises increment the count rather than creating duplicates.\n",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:28:10.000Z",
+    "updatedAt": "2026-07-28T01:28:10.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-2535f64d-b088-46e0-889b-95782067e9a8"
+  },
+  "item": [
+    {
+      "name": "measurement",
+      "item": [
+        {
+          "name": "measurements",
+          "item": [
+            {
+              "name": "{id}",
+              "item": [
+                {
+                  "name": "Retrieve a Measurement",
+                  "id": "9e84f331-1353-496e-a693-3b8360a57125",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/vnd.com.nsn.cumulocity.measurement+json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/measurement/measurements/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "measurement",
+                        "measurements",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "174a3f48-4aad-40a4-8ca9-1996079c68ba",
+                          "key": "id",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "83c269c8-d6c2-4251-990a-71f943398f16",
+                      "name": "A single measurement.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/vnd.com.nsn.cumulocity.measurement+json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/measurement/measurements/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "measurement",
+                            "measurements",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/vnd.com.nsn.cumulocity.measurement+json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"time\": \"<dateTime>\",\n  \"type\": \"<string>\",\n  \"source\": {\n    \"id\": \"<string>\",\n    \"self\": \"<uri>\"\n  },\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\"\n}",
+                      "createdAt": "2026-07-28T01:28:11.000Z",
+                      "updatedAt": "2026-07-28T01:28:11.000Z",
+                      "uid": "35240-83c269c8-d6c2-4251-990a-71f943398f16"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:28:11.000Z",
+                  "updatedAt": "2026-07-28T01:28:11.000Z",
+                  "uid": "35240-9e84f331-1353-496e-a693-3b8360a57125"
+                },
+                {
+                  "name": "Delete a Measurement",
+                  "id": "678497ad-fb2f-4f40-bca1-e17f30df98d3",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "DELETE",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/measurement/measurements/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "measurement",
+                        "measurements",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "affc7fe0-f259-484f-a9ed-ac2392945ebe",
+                          "key": "id",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "8e40709c-f5f4-462c-8891-a99f44043276",
+                      "name": "Measurement deleted.",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/measurement/measurements/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "measurement",
+                            "measurements",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "No Content",
+                      "code": 204,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T01:28:11.000Z",
+                      "updatedAt": "2026-07-28T01:28:11.000Z",
+                      "uid": "35240-8e40709c-f5f4-462c-8891-a99f44043276"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:28:11.000Z",
+                  "updatedAt": "2026-07-28T01:28:11.000Z",
+                  "uid": "35240-678497ad-fb2f-4f40-bca1-e17f30df98d3"
+                }
+              ],
+              "id": "81e7765a-e111-477e-8991-61f61699a4db",
+              "createdAt": "2026-07-28T01:28:11.000Z",
+              "updatedAt": "2026-07-28T01:28:11.000Z",
+              "uid": "35240-81e7765a-e111-477e-8991-61f61699a4db"
+            },
+            {
+              "name": "List Measurements",
+              "id": "0d734865-7920-41b8-96b7-b9d7ee50a111",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.com.nsn.cumulocity.measurementCollection+json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/measurement/measurements?source=<string>&type=<string>&valueFragmentType=<string>&valueFragmentSeries=<string>&dateFrom=<dateTime>&dateTo=<dateTime>&revert=<boolean>&pageSize=5&currentPage=1",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "measurement",
+                    "measurements"
+                  ],
+                  "query": [
+                    {
+                      "key": "source",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "valueFragmentType",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "valueFragmentSeries",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "dateFrom",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "dateTo",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "revert",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "5"
+                    },
+                    {
+                      "key": "currentPage",
+                      "value": "1"
+                    }
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "id": "8d145ffb-86e5-441d-be99-e3ab4e18a1e2",
+                  "name": "A collection of measurements.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/vnd.com.nsn.cumulocity.measurementCollection+json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/measurement/measurements?source=<string>&type=<string>&valueFragmentType=<string>&valueFragmentSeries=<string>&dateFrom=<dateTime>&dateTo=<dateTime>&revert=<boolean>&pageSize=5&currentPage=1",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "measurement",
+                        "measurements"
+                      ],
+                      "query": [
+                        {
+                          "key": "source",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "type",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "valueFragmentType",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "valueFragmentSeries",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "dateFrom",
+                          "value": "<dateTime>"
+                        },
+                        {
+                          "key": "dateTo",
+                          "value": "<dateTime>"
+                        },
+                        {
+                          "key": "revert",
+                          "value": "<boolean>"
+                        },
+                        {
+                          "key": "pageSize",
+                          "value": "5"
+                        },
+                        {
+                          "key": "currentPage",
+                          "value": "1"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/vnd.com.nsn.cumulocity.measurementCollection+json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"self\": \"<uri>\",\n  \"measurements\": [\n    {\n      \"time\": \"<dateTime>\",\n      \"type\": \"<string>\",\n      \"source\": {\n        \"id\": \"<string>\",\n        \"self\": \"<uri>\"\n      },\n      \"id\": \"<string>\",\n      \"self\": \"<uri>\"\n    },\n    {\n      \"time\": \"<dateTime>\",\n      \"type\": \"<string>\",\n      \"source\": {\n        \"id\": \"<string>\",\n        \"self\": \"<uri>\"\n      },\n      \"id\": \"<string>\",\n      \"self\": \"<uri>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T01:28:11.000Z",
+                  "updatedAt": "2026-07-28T01:28:11.000Z",
+                  "uid": "35240-8d145ffb-86e5-441d-be99-e3ab4e18a1e2"
+                }
+              ],
+              "createdAt": "2026-07-28T01:28:11.000Z",
+              "updatedAt": "2026-07-28T01:28:11.000Z",
+              "uid": "35240-0d734865-7920-41b8-96b7-b9d7ee50a111"
+            },
+            {
+              "name": "Create a Measurement",
+              "id": "c579bbd5-936c-4371-9874-d54fb348881e",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/vnd.com.nsn.cumulocity.measurement+json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.com.nsn.cumulocity.measurement+json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"time\": \"<dateTime>\",\n  \"type\": \"<string>\",\n  \"source\": {\n    \"id\": \"<string>\",\n    \"self\": \"<uri>\"\n  },\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/measurement/measurements",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "measurement",
+                    "measurements"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "id": "189d39ee-2662-4b8e-b162-8f7f5248dd61",
+                  "name": "Measurement created.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/vnd.com.nsn.cumulocity.measurement+json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/vnd.com.nsn.cumulocity.measurement+json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"time\": \"<dateTime>\",\n  \"type\": \"<string>\",\n  \"source\": {\n    \"id\": \"<string>\",\n    \"self\": \"<uri>\"\n  },\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/measurement/measurements",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "measurement",
+                        "measurements"
+                      ]
+                    }
+                  },
+                  "status": "Created",
+                  "code": 201,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/vnd.com.nsn.cumulocity.measurement+json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"time\": \"<dateTime>\",\n  \"type\": \"<string>\",\n  \"source\": {\n    \"id\": \"<string>\",\n    \"self\": \"<uri>\"\n  },\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\"\n}",
+                  "createdAt": "2026-07-28T01:28:11.000Z",
+                  "updatedAt": "2026-07-28T01:28:11.000Z",
+                  "uid": "35240-189d39ee-2662-4b8e-b162-8f7f5248dd61"
+                }
+              ],
+              "createdAt": "2026-07-28T01:28:11.000Z",
+              "updatedAt": "2026-07-28T01:28:11.000Z",
+              "uid": "35240-c579bbd5-936c-4371-9874-d54fb348881e"
+            },
+            {
+              "name": "Delete Measurements by Filter",
+              "id": "44454c56-4a30-4af8-a23b-5739c0eaf2d6",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/measurement/measurements?source=<string>&type=<string>&dateFrom=<dateTime>&dateTo=<dateTime>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "measurement",
+                    "measurements"
+                  ],
+                  "query": [
+                    {
+                      "key": "source",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "dateFrom",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "dateTo",
+                      "value": "<dateTime>"
+                    }
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "id": "1f408efe-7f42-40b9-8c03-5363f8d3f27b",
+                  "name": "Measurements deleted.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/measurement/measurements?source=<string>&type=<string>&dateFrom=<dateTime>&dateTo=<dateTime>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "measurement",
+                        "measurements"
+                      ],
+                      "query": [
+                        {
+                          "key": "source",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "type",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "dateFrom",
+                          "value": "<dateTime>"
+                        },
+                        {
+                          "key": "dateTo",
+                          "value": "<dateTime>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "No Content",
+                  "code": 204,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T01:28:11.000Z",
+                  "updatedAt": "2026-07-28T01:28:11.000Z",
+                  "uid": "35240-1f408efe-7f42-40b9-8c03-5363f8d3f27b"
+                }
+              ],
+              "createdAt": "2026-07-28T01:28:11.000Z",
+              "updatedAt": "2026-07-28T01:28:11.000Z",
+              "uid": "35240-44454c56-4a30-4af8-a23b-5739c0eaf2d6"
+            }
+          ],
+          "id": "4e478875-e94c-40b3-b894-a03e65f3dab3",
+          "createdAt": "2026-07-28T01:28:11.000Z",
+          "updatedAt": "2026-07-28T01:28:11.000Z",
+          "uid": "35240-4e478875-e94c-40b3-b894-a03e65f3dab3"
+        }
+      ],
+      "id": "98ea4b36-687a-450f-b574-c36d7dfafc00",
+      "createdAt": "2026-07-28T01:28:11.000Z",
+      "updatedAt": "2026-07-28T01:28:11.000Z",
+      "uid": "35240-98ea4b36-687a-450f-b574-c36d7dfafc00"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}",
+        "type": "string"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "tenant",
+      "value": "example"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{tenant}}.cumulocity.com"
+    }
+  ]
+}

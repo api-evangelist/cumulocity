@@ -1,0 +1,469 @@
+{
+  "info": {
+    "_postman_id": "56b6deb4-2347-40de-a2e5-7f3c9acde77c",
+    "name": "Cumulocity Alarm Alarms Bulk Operations API",
+    "description": "Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL, MAJOR,\nMINOR, WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms\nby source + type so repeated raises increment the count rather than creating duplicates.\n",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:27:39.000Z",
+    "updatedAt": "2026-07-28T01:27:40.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-56b6deb4-2347-40de-a2e5-7f3c9acde77c"
+  },
+  "item": [
+    {
+      "name": "devicecontrol",
+      "item": [
+        {
+          "name": "bulkoperations",
+          "item": [
+            {
+              "name": "{id}",
+              "item": [
+                {
+                  "name": "Retrieve a Bulk Operation",
+                  "id": "ea293b2c-8c37-4e49-a0df-8492d6fca13a",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/devicecontrol/bulkoperations/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "devicecontrol",
+                        "bulkoperations",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "036943b5-d739-4c3d-966e-1c71ef47d5e9",
+                          "key": "id",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "20900282-57d5-4fae-9649-b4485dd5c265",
+                      "name": "A single bulk operation.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/devicecontrol/bulkoperations/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "devicecontrol",
+                            "bulkoperations",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T01:27:40.000Z",
+                      "updatedAt": "2026-07-28T01:27:40.000Z",
+                      "uid": "35240-20900282-57d5-4fae-9649-b4485dd5c265"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:27:40.000Z",
+                  "updatedAt": "2026-07-28T01:27:40.000Z",
+                  "uid": "35240-ea293b2c-8c37-4e49-a0df-8492d6fca13a"
+                },
+                {
+                  "name": "Update a Bulk Operation",
+                  "id": "aba66720-af0f-4385-8bcd-da2229c0ed60",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/vnd.com.nsn.cumulocity.bulkOperation+json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"id\": \"<string>\",\n  \"groupId\": \"<string>\",\n  \"failedParentId\": \"<string>\",\n  \"startDate\": \"<dateTime>\",\n  \"creationRamp\": \"<integer>\",\n  \"status\": \"CANCELED\",\n  \"operationPrototype\": {},\n  \"progress\": {\n    \"pending\": \"<integer>\",\n    \"executing\": \"<integer>\",\n    \"successful\": \"<integer>\",\n    \"failed\": \"<integer>\",\n    \"all\": \"<integer>\"\n  },\n  \"eae\": false\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/devicecontrol/bulkoperations/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "devicecontrol",
+                        "bulkoperations",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "a213388b-9e0d-4f90-966d-83c88a9c6dd3",
+                          "key": "id",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "eff1a8fe-271f-45a9-b3d3-fb5e96286181",
+                      "name": "Bulk operation updated.",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/vnd.com.nsn.cumulocity.bulkOperation+json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"id\": \"<string>\",\n  \"groupId\": \"<string>\",\n  \"failedParentId\": \"<string>\",\n  \"startDate\": \"<dateTime>\",\n  \"creationRamp\": \"<integer>\",\n  \"status\": \"CANCELED\",\n  \"operationPrototype\": {},\n  \"progress\": {\n    \"pending\": \"<integer>\",\n    \"executing\": \"<integer>\",\n    \"successful\": \"<integer>\",\n    \"failed\": \"<integer>\",\n    \"all\": \"<integer>\"\n  },\n  \"eae\": false\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/devicecontrol/bulkoperations/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "devicecontrol",
+                            "bulkoperations",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T01:27:40.000Z",
+                      "updatedAt": "2026-07-28T01:27:40.000Z",
+                      "uid": "35240-eff1a8fe-271f-45a9-b3d3-fb5e96286181"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:27:40.000Z",
+                  "updatedAt": "2026-07-28T01:27:40.000Z",
+                  "uid": "35240-aba66720-af0f-4385-8bcd-da2229c0ed60"
+                },
+                {
+                  "name": "Delete a Bulk Operation",
+                  "id": "e28c2c4e-d9cd-4ee6-b20a-150685b83c02",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "DELETE",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/devicecontrol/bulkoperations/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "devicecontrol",
+                        "bulkoperations",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "8c490e2e-23a4-41cf-b3ff-d14da592fd89",
+                          "key": "id",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "aa9fdf28-f132-489b-96b1-c9c83d7447df",
+                      "name": "Bulk operation deleted.",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/devicecontrol/bulkoperations/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "devicecontrol",
+                            "bulkoperations",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "No Content",
+                      "code": 204,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T01:27:40.000Z",
+                      "updatedAt": "2026-07-28T01:27:40.000Z",
+                      "uid": "35240-aa9fdf28-f132-489b-96b1-c9c83d7447df"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:27:40.000Z",
+                  "updatedAt": "2026-07-28T01:27:40.000Z",
+                  "uid": "35240-e28c2c4e-d9cd-4ee6-b20a-150685b83c02"
+                }
+              ],
+              "id": "5dbcaf1d-ac14-4f60-b6ab-5242ea95b4ea",
+              "createdAt": "2026-07-28T01:27:40.000Z",
+              "updatedAt": "2026-07-28T01:27:40.000Z",
+              "uid": "35240-5dbcaf1d-ac14-4f60-b6ab-5242ea95b4ea"
+            },
+            {
+              "name": "List Bulk Operations",
+              "id": "1e68dc42-0fb0-4414-91dd-295740571305",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/devicecontrol/bulkoperations",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "devicecontrol",
+                    "bulkoperations"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "id": "d986a7b1-ba31-49a5-9a5d-10dee3b0e932",
+                  "name": "A collection of bulk operations.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/devicecontrol/bulkoperations",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "devicecontrol",
+                        "bulkoperations"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T01:27:40.000Z",
+                  "updatedAt": "2026-07-28T01:27:40.000Z",
+                  "uid": "35240-d986a7b1-ba31-49a5-9a5d-10dee3b0e932"
+                }
+              ],
+              "createdAt": "2026-07-28T01:27:40.000Z",
+              "updatedAt": "2026-07-28T01:27:40.000Z",
+              "uid": "35240-1e68dc42-0fb0-4414-91dd-295740571305"
+            },
+            {
+              "name": "Create a Bulk Operation",
+              "id": "82638778-891d-4bea-8b37-14dc18a9e8a9",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/vnd.com.nsn.cumulocity.bulkOperation+json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": \"<string>\",\n  \"groupId\": \"<string>\",\n  \"failedParentId\": \"<string>\",\n  \"startDate\": \"<dateTime>\",\n  \"creationRamp\": \"<integer>\",\n  \"status\": \"CANCELED\",\n  \"operationPrototype\": {},\n  \"progress\": {\n    \"pending\": \"<integer>\",\n    \"executing\": \"<integer>\",\n    \"successful\": \"<integer>\",\n    \"failed\": \"<integer>\",\n    \"all\": \"<integer>\"\n  },\n  \"eae\": false\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/devicecontrol/bulkoperations",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "devicecontrol",
+                    "bulkoperations"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "id": "5e71bab8-dfd2-464f-a8e8-624190b79de1",
+                  "name": "Bulk operation created.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/vnd.com.nsn.cumulocity.bulkOperation+json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"id\": \"<string>\",\n  \"groupId\": \"<string>\",\n  \"failedParentId\": \"<string>\",\n  \"startDate\": \"<dateTime>\",\n  \"creationRamp\": \"<integer>\",\n  \"status\": \"CANCELED\",\n  \"operationPrototype\": {},\n  \"progress\": {\n    \"pending\": \"<integer>\",\n    \"executing\": \"<integer>\",\n    \"successful\": \"<integer>\",\n    \"failed\": \"<integer>\",\n    \"all\": \"<integer>\"\n  },\n  \"eae\": false\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/devicecontrol/bulkoperations",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "devicecontrol",
+                        "bulkoperations"
+                      ]
+                    }
+                  },
+                  "status": "Created",
+                  "code": 201,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T01:27:40.000Z",
+                  "updatedAt": "2026-07-28T01:27:40.000Z",
+                  "uid": "35240-5e71bab8-dfd2-464f-a8e8-624190b79de1"
+                }
+              ],
+              "createdAt": "2026-07-28T01:27:40.000Z",
+              "updatedAt": "2026-07-28T01:27:40.000Z",
+              "uid": "35240-82638778-891d-4bea-8b37-14dc18a9e8a9"
+            }
+          ],
+          "id": "fca87c48-4615-4ee1-ad82-d3eb28c37db0",
+          "createdAt": "2026-07-28T01:27:40.000Z",
+          "updatedAt": "2026-07-28T01:27:40.000Z",
+          "uid": "35240-fca87c48-4615-4ee1-ad82-d3eb28c37db0"
+        }
+      ],
+      "id": "add8e420-dcc1-45d4-8616-d07c54232477",
+      "createdAt": "2026-07-28T01:27:40.000Z",
+      "updatedAt": "2026-07-28T01:27:40.000Z",
+      "uid": "35240-add8e420-dcc1-45d4-8616-d07c54232477"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}",
+        "type": "string"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "tenant",
+      "value": "example"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{tenant}}.cumulocity.com"
+    }
+  ]
+}

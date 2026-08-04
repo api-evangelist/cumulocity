@@ -1,0 +1,117 @@
+{
+  "info": {
+    "_postman_id": "d4cfc534-0c26-488f-a3d9-08bcf1d72729",
+    "name": "Cumulocity Alarm Alarms Roles API",
+    "description": "Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL, MAJOR,\nMINOR, WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms\nby source + type so repeated raises increment the count rather than creating duplicates.\n",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:28:34.000Z",
+    "updatedAt": "2026-07-28T01:28:35.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-d4cfc534-0c26-488f-a3d9-08bcf1d72729"
+  },
+  "item": [
+    {
+      "name": "user",
+      "item": [
+        {
+          "name": "roles",
+          "item": [
+            {
+              "name": "List Global Roles",
+              "id": "5e73f287-e99c-4ea2-8b83-264ddd08e0fa",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/user/roles",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "user",
+                    "roles"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "id": "6222d329-73d9-4da9-8711-8d4d359d527b",
+                  "name": "A collection of global roles.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/user/roles",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "user",
+                        "roles"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T01:28:35.000Z",
+                  "updatedAt": "2026-07-28T01:28:35.000Z",
+                  "uid": "35240-6222d329-73d9-4da9-8711-8d4d359d527b"
+                }
+              ],
+              "createdAt": "2026-07-28T01:28:35.000Z",
+              "updatedAt": "2026-07-28T01:28:35.000Z",
+              "uid": "35240-5e73f287-e99c-4ea2-8b83-264ddd08e0fa"
+            }
+          ],
+          "id": "127a8293-339f-442d-aacb-fbcd8075e9b6",
+          "createdAt": "2026-07-28T01:28:35.000Z",
+          "updatedAt": "2026-07-28T01:28:35.000Z",
+          "uid": "35240-127a8293-339f-442d-aacb-fbcd8075e9b6"
+        }
+      ],
+      "id": "606c22c6-24a2-4aff-9c9a-89fa8292711f",
+      "createdAt": "2026-07-28T01:28:35.000Z",
+      "updatedAt": "2026-07-28T01:28:35.000Z",
+      "uid": "35240-606c22c6-24a2-4aff-9c9a-89fa8292711f"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}",
+        "type": "string"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "tenant",
+      "value": "example"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{tenant}}.cumulocity.com"
+    }
+  ]
+}

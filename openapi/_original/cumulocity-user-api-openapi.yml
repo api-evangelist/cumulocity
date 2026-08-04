@@ -1,0 +1,250 @@
+openapi: 3.0.3
+info:
+  title: Cumulocity User API
+  version: 10.20.0
+  description: |
+    Manage users, user groups, global roles, inventory roles, and device permissions. Cumulocity uses an
+    RBAC model where global roles grant API access and inventory roles grant access to specific managed-object
+    subtrees. Supports SSO via SAML/OIDC and SCIM provisioning for enterprise tenants.
+servers:
+- url: https://{tenant}.cumulocity.com
+  variables:
+    tenant:
+      default: example
+security:
+- basicAuth: []
+- bearerAuth: []
+tags:
+- name: Users
+- name: Groups
+- name: Roles
+- name: Current User
+paths:
+  /user/{tenantId}/users:
+    parameters:
+    - name: tenantId
+      in: path
+      required: true
+      schema: {type: string}
+    get:
+      tags: [Users]
+      summary: List Users
+      operationId: listUsers
+      responses:
+        '200':
+          description: A collection of users.
+          content:
+            application/vnd.com.nsn.cumulocity.userCollection+json:
+              schema:
+                $ref: '#/components/schemas/UserCollection'
+    post:
+      tags: [Users]
+      summary: Create a User
+      operationId: createUser
+      requestBody:
+        required: true
+        content:
+          application/vnd.com.nsn.cumulocity.user+json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: User created.
+  /user/{tenantId}/users/{userId}:
+    parameters:
+    - name: tenantId
+      in: path
+      required: true
+      schema: {type: string}
+    - name: userId
+      in: path
+      required: true
+      schema: {type: string}
+    get:
+      tags: [Users]
+      summary: Retrieve a User
+      operationId: getUser
+      responses:
+        '200':
+          description: A single user.
+          content:
+            application/vnd.com.nsn.cumulocity.user+json:
+              schema:
+                $ref: '#/components/schemas/User'
+    put:
+      tags: [Users]
+      summary: Update a User
+      operationId: updateUser
+      requestBody:
+        required: true
+        content:
+          application/vnd.com.nsn.cumulocity.user+json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: User updated.
+    delete:
+      tags: [Users]
+      summary: Delete a User
+      operationId: deleteUser
+      responses:
+        '204':
+          description: User deleted.
+  /user/{tenantId}/groups:
+    parameters:
+    - name: tenantId
+      in: path
+      required: true
+      schema: {type: string}
+    get:
+      tags: [Groups]
+      summary: List Groups
+      operationId: listGroups
+      responses:
+        '200':
+          description: A collection of groups.
+    post:
+      tags: [Groups]
+      summary: Create a Group
+      operationId: createGroup
+      requestBody:
+        required: true
+        content:
+          application/vnd.com.nsn.cumulocity.group+json:
+            schema:
+              $ref: '#/components/schemas/Group'
+      responses:
+        '201':
+          description: Group created.
+  /user/{tenantId}/groups/{groupId}:
+    parameters:
+    - name: tenantId
+      in: path
+      required: true
+      schema: {type: string}
+    - name: groupId
+      in: path
+      required: true
+      schema: {type: string}
+    get:
+      tags: [Groups]
+      summary: Retrieve a Group
+      operationId: getGroup
+      responses:
+        '200':
+          description: A single group.
+    put:
+      tags: [Groups]
+      summary: Update a Group
+      operationId: updateGroup
+      requestBody:
+        required: true
+        content:
+          application/vnd.com.nsn.cumulocity.group+json:
+            schema:
+              $ref: '#/components/schemas/Group'
+      responses:
+        '200':
+          description: Group updated.
+    delete:
+      tags: [Groups]
+      summary: Delete a Group
+      operationId: deleteGroup
+      responses:
+        '204':
+          description: Group deleted.
+  /user/roles:
+    get:
+      tags: [Roles]
+      summary: List Global Roles
+      operationId: listRoles
+      responses:
+        '200':
+          description: A collection of global roles.
+  /user/currentUser:
+    get:
+      tags: [Current User]
+      summary: Retrieve Current User
+      operationId: getCurrentUser
+      responses:
+        '200':
+          description: The authenticated user.
+          content:
+            application/vnd.com.nsn.cumulocity.currentUser+json:
+              schema:
+                $ref: '#/components/schemas/User'
+    put:
+      tags: [Current User]
+      summary: Update Current User
+      operationId: updateCurrentUser
+      requestBody:
+        required: true
+        content:
+          application/vnd.com.nsn.cumulocity.currentUser+json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: Current user updated.
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    User:
+      type: object
+      properties:
+        id: {type: string}
+        self: {type: string, format: uri}
+        userName: {type: string}
+        email: {type: string}
+        firstName: {type: string}
+        lastName: {type: string}
+        displayName: {type: string}
+        phone: {type: string}
+        enabled: {type: boolean}
+        password: {type: string, writeOnly: true}
+        shouldResetPassword: {type: boolean}
+        lastPasswordChange: {type: string, format: date-time}
+        twoFactorAuthenticationEnabled: {type: boolean}
+        groups:
+          type: object
+          properties:
+            references:
+              type: array
+              items:
+                type: object
+        roles:
+          type: object
+          properties:
+            references:
+              type: array
+              items:
+                type: object
+        devicePermissions:
+          type: object
+    UserCollection:
+      type: object
+      properties:
+        self: {type: string, format: uri}
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+    Group:
+      type: object
+      properties:
+        id: {type: integer}
+        self: {type: string, format: uri}
+        name: {type: string}
+        description: {type: string}
+        roles:
+          type: object
+        users:
+          type: object

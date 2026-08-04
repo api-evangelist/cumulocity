@@ -1,0 +1,488 @@
+{
+  "info": {
+    "_postman_id": "8cbbcf53-dd60-4c39-9616-f268b0cbdea2",
+    "name": "Cumulocity Alarm Alarms Offload Configurations API",
+    "description": "Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL, MAJOR,\nMINOR, WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms\nby source + type so repeated raises increment the count rather than creating duplicates.\n",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:28:13.000Z",
+    "updatedAt": "2026-07-28T01:28:14.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-8cbbcf53-dd60-4c39-9616-f268b0cbdea2"
+  },
+  "item": [
+    {
+      "name": "service",
+      "item": [
+        {
+          "name": "datahub",
+          "item": [
+            {
+              "name": "offload",
+              "item": [
+                {
+                  "name": "{id}",
+                  "item": [
+                    {
+                      "name": "Retrieve an Offload Configuration",
+                      "id": "cd4e0483-b134-4d34-a072-6fe88aec3598",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/service/datahub/offload/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "service",
+                            "datahub",
+                            "offload",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "id": "ee362a5b-6b79-472d-8e56-12a69c68a1cd",
+                              "key": "id",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        }
+                      },
+                      "response": [
+                        {
+                          "id": "599b94e1-a439-49c1-a1ee-aa582c432d5b",
+                          "name": "A single offload configuration.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/service/datahub/offload/:id",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "service",
+                                "datahub",
+                                "offload",
+                                ":id"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-07-28T01:28:14.000Z",
+                          "updatedAt": "2026-07-28T01:28:14.000Z",
+                          "uid": "35240-599b94e1-a439-49c1-a1ee-aa582c432d5b"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:28:14.000Z",
+                      "updatedAt": "2026-07-28T01:28:14.000Z",
+                      "uid": "35240-cd4e0483-b134-4d34-a072-6fe88aec3598"
+                    },
+                    {
+                      "name": "Update an Offload Configuration",
+                      "id": "6ea400cd-a688-482a-9a02-cef89d8100d9",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"source\": \"alarms\",\n  \"filter\": \"<string>\",\n  \"offloadType\": \"INCREMENTAL\",\n  \"schedule\": \"<string>\",\n  \"status\": \"ACTIVE\",\n  \"targetDataset\": \"<string>\",\n  \"partitioning\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/service/datahub/offload/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "service",
+                            "datahub",
+                            "offload",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "id": "1fdc797c-27fd-4e60-bf8d-c70082636976",
+                              "key": "id",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        }
+                      },
+                      "response": [
+                        {
+                          "id": "5b902de4-c935-4169-b774-41bc5c978567",
+                          "name": "Offload configuration updated.",
+                          "originalRequest": {
+                            "method": "PUT",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"source\": \"alarms\",\n  \"filter\": \"<string>\",\n  \"offloadType\": \"INCREMENTAL\",\n  \"schedule\": \"<string>\",\n  \"status\": \"ACTIVE\",\n  \"targetDataset\": \"<string>\",\n  \"partitioning\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/service/datahub/offload/:id",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "service",
+                                "datahub",
+                                "offload",
+                                ":id"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-07-28T01:28:14.000Z",
+                          "updatedAt": "2026-07-28T01:28:14.000Z",
+                          "uid": "35240-5b902de4-c935-4169-b774-41bc5c978567"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:28:14.000Z",
+                      "updatedAt": "2026-07-28T01:28:14.000Z",
+                      "uid": "35240-6ea400cd-a688-482a-9a02-cef89d8100d9"
+                    },
+                    {
+                      "name": "Delete an Offload Configuration",
+                      "id": "c7cbfe29-4ec8-4022-8528-1ce7d88d1d03",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "DELETE",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/service/datahub/offload/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "service",
+                            "datahub",
+                            "offload",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "id": "99e4e719-7153-4bfd-a09a-cc1ec87e7303",
+                              "key": "id",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        }
+                      },
+                      "response": [
+                        {
+                          "id": "1b3b7a6b-03b6-4a8d-92b3-e7ac43c4ccc4",
+                          "name": "Offload configuration deleted.",
+                          "originalRequest": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/service/datahub/offload/:id",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "service",
+                                "datahub",
+                                "offload",
+                                ":id"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "No Content",
+                          "code": 204,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-07-28T01:28:14.000Z",
+                          "updatedAt": "2026-07-28T01:28:14.000Z",
+                          "uid": "35240-1b3b7a6b-03b6-4a8d-92b3-e7ac43c4ccc4"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:28:14.000Z",
+                      "updatedAt": "2026-07-28T01:28:14.000Z",
+                      "uid": "35240-c7cbfe29-4ec8-4022-8528-1ce7d88d1d03"
+                    }
+                  ],
+                  "id": "0bbc5da5-3a15-4d75-b12e-2d84c79e5b03",
+                  "createdAt": "2026-07-28T01:28:14.000Z",
+                  "updatedAt": "2026-07-28T01:28:14.000Z",
+                  "uid": "35240-0bbc5da5-3a15-4d75-b12e-2d84c79e5b03"
+                },
+                {
+                  "name": "List Offload Configurations",
+                  "id": "b1e21115-de59-42b4-b2e1-eb9602edb001",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/service/datahub/offload",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "service",
+                        "datahub",
+                        "offload"
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "ac29144e-7fd0-40f1-bcc5-7c2a0b986f91",
+                      "name": "A collection of offload configurations.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/service/datahub/offload",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "service",
+                            "datahub",
+                            "offload"
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T01:28:14.000Z",
+                      "updatedAt": "2026-07-28T01:28:14.000Z",
+                      "uid": "35240-ac29144e-7fd0-40f1-bcc5-7c2a0b986f91"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:28:14.000Z",
+                  "updatedAt": "2026-07-28T01:28:14.000Z",
+                  "uid": "35240-b1e21115-de59-42b4-b2e1-eb9602edb001"
+                },
+                {
+                  "name": "Create an Offload Configuration",
+                  "id": "89289502-d908-4148-9297-9411929188eb",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"source\": \"alarms\",\n  \"filter\": \"<string>\",\n  \"offloadType\": \"INCREMENTAL\",\n  \"schedule\": \"<string>\",\n  \"status\": \"ACTIVE\",\n  \"targetDataset\": \"<string>\",\n  \"partitioning\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/service/datahub/offload",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "service",
+                        "datahub",
+                        "offload"
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "f5b9258d-1685-4625-9114-0d3768975d2c",
+                      "name": "Offload configuration created.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"id\": \"<string>\",\n  \"self\": \"<uri>\",\n  \"source\": \"alarms\",\n  \"filter\": \"<string>\",\n  \"offloadType\": \"INCREMENTAL\",\n  \"schedule\": \"<string>\",\n  \"status\": \"ACTIVE\",\n  \"targetDataset\": \"<string>\",\n  \"partitioning\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/service/datahub/offload",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "service",
+                            "datahub",
+                            "offload"
+                          ]
+                        }
+                      },
+                      "status": "Created",
+                      "code": 201,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T01:28:14.000Z",
+                      "updatedAt": "2026-07-28T01:28:14.000Z",
+                      "uid": "35240-f5b9258d-1685-4625-9114-0d3768975d2c"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:28:14.000Z",
+                  "updatedAt": "2026-07-28T01:28:14.000Z",
+                  "uid": "35240-89289502-d908-4148-9297-9411929188eb"
+                }
+              ],
+              "id": "b7b873a7-7c86-4424-a5bf-d2923ca5933e",
+              "createdAt": "2026-07-28T01:28:14.000Z",
+              "updatedAt": "2026-07-28T01:28:14.000Z",
+              "uid": "35240-b7b873a7-7c86-4424-a5bf-d2923ca5933e"
+            }
+          ],
+          "id": "400f74f6-23fd-4e32-96b6-6ecd4519f7dd",
+          "createdAt": "2026-07-28T01:28:14.000Z",
+          "updatedAt": "2026-07-28T01:28:14.000Z",
+          "uid": "35240-400f74f6-23fd-4e32-96b6-6ecd4519f7dd"
+        }
+      ],
+      "id": "39b94a8a-3f25-4143-86c0-53a2c68e99c2",
+      "createdAt": "2026-07-28T01:28:14.000Z",
+      "updatedAt": "2026-07-28T01:28:14.000Z",
+      "uid": "35240-39b94a8a-3f25-4143-86c0-53a2c68e99c2"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}",
+        "type": "string"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "tenant",
+      "value": "example"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{tenant}}.cumulocity.com"
+    }
+  ]
+}

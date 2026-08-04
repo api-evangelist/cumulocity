@@ -1,0 +1,323 @@
+{
+  "info": {
+    "_postman_id": "af0241a2-b53f-4166-b273-d550252f123a",
+    "name": "Cumulocity Alarm Alarms Event Binaries API",
+    "description": "Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL, MAJOR,\nMINOR, WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms\nby source + type so repeated raises increment the count rather than creating duplicates.\n",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:28:06.000Z",
+    "updatedAt": "2026-07-28T01:28:06.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-af0241a2-b53f-4166-b273-d550252f123a"
+  },
+  "item": [
+    {
+      "name": "event",
+      "item": [
+        {
+          "name": "events",
+          "item": [
+            {
+              "name": "{id}",
+              "item": [
+                {
+                  "name": "binaries",
+                  "item": [
+                    {
+                      "name": "Retrieve an Event Binary",
+                      "id": "bbbf6a28-770b-4a41-a540-39cac3145aa0",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/event/events/:id/binaries",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "event",
+                            "events",
+                            ":id",
+                            "binaries"
+                          ],
+                          "variable": [
+                            {
+                              "id": "98183538-0749-4643-865f-33193e84b010",
+                              "key": "id",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        }
+                      },
+                      "response": [
+                        {
+                          "id": "d8b01c34-1fb3-4b10-af9e-207e2d7853d6",
+                          "name": "Binary content attached to the event.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/event/events/:id/binaries",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "event",
+                                "events",
+                                ":id",
+                                "binaries"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-07-28T01:28:06.000Z",
+                          "updatedAt": "2026-07-28T01:28:06.000Z",
+                          "uid": "35240-d8b01c34-1fb3-4b10-af9e-207e2d7853d6"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:28:06.000Z",
+                      "updatedAt": "2026-07-28T01:28:06.000Z",
+                      "uid": "35240-bbbf6a28-770b-4a41-a540-39cac3145aa0"
+                    },
+                    {
+                      "name": "Attach a Binary to an Event",
+                      "id": "0eee2a61-7521-443e-a425-5ad664b816ad",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/octet-stream"
+                          }
+                        ],
+                        "body": {
+                          "mode": "file",
+                          "file": {}
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/event/events/:id/binaries",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "event",
+                            "events",
+                            ":id",
+                            "binaries"
+                          ],
+                          "variable": [
+                            {
+                              "id": "a470d1f6-b012-4f9a-81d9-56a6b6405842",
+                              "key": "id",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        }
+                      },
+                      "response": [
+                        {
+                          "id": "8e3b65b1-6e17-4324-a3fc-52cca615e10a",
+                          "name": "Binary attached.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/octet-stream"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "file",
+                              "file": {}
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/event/events/:id/binaries",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "event",
+                                "events",
+                                ":id",
+                                "binaries"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Created",
+                          "code": 201,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-07-28T01:28:06.000Z",
+                          "updatedAt": "2026-07-28T01:28:06.000Z",
+                          "uid": "35240-8e3b65b1-6e17-4324-a3fc-52cca615e10a"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:28:06.000Z",
+                      "updatedAt": "2026-07-28T01:28:06.000Z",
+                      "uid": "35240-0eee2a61-7521-443e-a425-5ad664b816ad"
+                    },
+                    {
+                      "name": "Delete an Event Binary",
+                      "id": "8d6f8e03-5167-4e47-81aa-33221f7336f5",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "DELETE",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/event/events/:id/binaries",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "event",
+                            "events",
+                            ":id",
+                            "binaries"
+                          ],
+                          "variable": [
+                            {
+                              "id": "fa56a774-4a2e-4d40-9b1e-9efbc9768dee",
+                              "key": "id",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        }
+                      },
+                      "response": [
+                        {
+                          "id": "0943e066-3c47-4200-885c-0d93b8c1bc1f",
+                          "name": "Binary deleted.",
+                          "originalRequest": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/event/events/:id/binaries",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "event",
+                                "events",
+                                ":id",
+                                "binaries"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "No Content",
+                          "code": 204,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-07-28T01:28:06.000Z",
+                          "updatedAt": "2026-07-28T01:28:06.000Z",
+                          "uid": "35240-0943e066-3c47-4200-885c-0d93b8c1bc1f"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:28:06.000Z",
+                      "updatedAt": "2026-07-28T01:28:06.000Z",
+                      "uid": "35240-8d6f8e03-5167-4e47-81aa-33221f7336f5"
+                    }
+                  ],
+                  "id": "b7666e8b-bc5e-41e0-b67a-fb49f4c2aa77",
+                  "createdAt": "2026-07-28T01:28:06.000Z",
+                  "updatedAt": "2026-07-28T01:28:06.000Z",
+                  "uid": "35240-b7666e8b-bc5e-41e0-b67a-fb49f4c2aa77"
+                }
+              ],
+              "id": "27d3fe90-d36e-42f6-94f6-5ec9d873a0c5",
+              "createdAt": "2026-07-28T01:28:06.000Z",
+              "updatedAt": "2026-07-28T01:28:06.000Z",
+              "uid": "35240-27d3fe90-d36e-42f6-94f6-5ec9d873a0c5"
+            }
+          ],
+          "id": "71134c2f-0124-4276-bd52-9f111c460eca",
+          "createdAt": "2026-07-28T01:28:06.000Z",
+          "updatedAt": "2026-07-28T01:28:06.000Z",
+          "uid": "35240-71134c2f-0124-4276-bd52-9f111c460eca"
+        }
+      ],
+      "id": "103aea45-a737-4e1e-9ce4-6ef342ff32b4",
+      "createdAt": "2026-07-28T01:28:06.000Z",
+      "updatedAt": "2026-07-28T01:28:06.000Z",
+      "uid": "35240-103aea45-a737-4e1e-9ce4-6ef342ff32b4"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}",
+        "type": "string"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "tenant",
+      "value": "example"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{tenant}}.cumulocity.com"
+    }
+  ]
+}
