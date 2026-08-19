@@ -1,0 +1,47 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Cumulocity Alarm Alarms System API",
+    "version": "10.20.0"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "System",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve Edge System Status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{tenant}.cumulocity.com/service/edge/system"
+          },
+          "docs": "Retrieve Edge System Status"
+        },
+        {
+          "info": {
+            "name": "Restart the Edge System",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{tenant}.cumulocity.com/service/edge/system/restart"
+          },
+          "docs": "Restart the Edge System"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

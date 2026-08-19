@@ -1,0 +1,724 @@
+{
+  "item": [
+    {
+      "id": "8a847d94-8aa0-4e74-be94-d961566a2d67",
+      "name": "Managed Objects",
+      "description": {
+        "content": "Inventory documents representing devices, assets, groups, and digital twins.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "368d9df7-4b07-4278-92a4-a0612a3af44d",
+          "name": "List Managed Objects",
+          "request": {
+            "name": "List Managed Objects",
+            "description": {},
+            "url": {
+              "path": [
+                "inventory",
+                "managedObjects"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "pageSize",
+                  "value": "5"
+                },
+                {
+                  "disabled": false,
+                  "key": "currentPage",
+                  "value": "1"
+                },
+                {
+                  "disabled": false,
+                  "key": "withTotalPages",
+                  "value": "false"
+                },
+                {
+                  "disabled": false,
+                  "key": "type",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "fragmentType",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "text",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "ids",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "owner",
+                  "value": "<string>"
+                }
+              ],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{tenant}}",
+                  "key": "tenant"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.com.nsn.cumulocity.managedObjectCollection+json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "3481b24b-c490-4515-97fd-c9bc80a2dbee",
+              "name": "A collection of managed objects.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "inventory",
+                    "managedObjects"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "pageSize",
+                      "value": "5"
+                    },
+                    {
+                      "key": "currentPage",
+                      "value": "1"
+                    },
+                    {
+                      "key": "withTotalPages",
+                      "value": "false"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "fragmentType",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "text",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "owner",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{tenant}}",
+                      "key": "tenant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.com.nsn.cumulocity.managedObjectCollection+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.com.nsn.cumulocity.managedObjectCollection+json"
+                }
+              ],
+              "body": "{\n  \"self\": \"https://YPhpQeBEJNMhYmKBGqOOpepTjDH.qajwQqKA2b2fHmpSn58c0PmgEBpqW9JhRmCgp,6h+bG\",\n  \"managedObjects\": [\n    {\n      \"id\": \"string\",\n      \"self\": \"http://jZpNktTKvWIJmtUJGIIJVOdvWiY.ttdgPtgWfDVcEcdJVN1ot7kB,yzBr35+LgR3yWCmfDe28d7ITxUN.nnNCj\",\n      \"type\": \"string\",\n      \"name\": \"string\",\n      \"owner\": \"string\",\n      \"creationTime\": \"2006-08-04T00:46:16.230Z\",\n      \"lastUpdated\": \"2016-02-14T04:50:43.024Z\",\n      \"c8y_IsDevice\": {},\n      \"c8y_IsDeviceGroup\": {},\n      \"c8y_Hardware\": {\n        \"model\": \"string\",\n        \"revision\": \"string\",\n        \"serialNumber\": \"string\"\n      },\n      \"c8y_Firmware\": {\n        \"name\": \"string\",\n        \"version\": \"string\",\n        \"url\": \"string\"\n      },\n      \"childDevices\": {\n        \"self\": \"http://pEnlcpdS.vexyMPDOK\",\n        \"references\": [\n          {\n            \"self\": \"https://GfhiPoLxdHBPD.ydjnaBw,CiwgsZhFsCCj7WxLsOYbX26TtyF1Om-a1oYJ3wF22F6Q1X-aeWHWPU-GFkCqweO+cI\",\n            \"managedObject\": {\n              \"id\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"self\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"name\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          },\n          {\n            \"self\": \"http://kybydlQIOZBxnbRgerRN.eyGGtTRE-BMsAfZO\",\n            \"managedObject\": {\n              \"id\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"self\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"name\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          }\n        ]\n      },\n      \"childAssets\": {\n        \"self\": \"https://LzcTkpOveIIdVZtXkonHIGDAvfK.ocyrsjT8tQyvlfrU1y+XqiSNRXHCH5U2BM1+JuGGQjvTlcE9,rJB8pngROoXUm3r4\",\n        \"references\": [\n          {\n            \"self\": \"http://FOiFXCCB.pkxebj\",\n            \"managedObject\": {\n              \"id\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"self\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"name\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          },\n          {\n            \"self\": \"http://UmbuUhPozjXJgZBB.stbFED,qFLgZQ1Tv8O-IgLnz7jmI8dOOd3aU+aFODw3JB8snoCGOTcMKc-\",\n            \"managedObject\": {\n              \"id\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"self\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"name\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          }\n        ]\n      },\n      \"childAdditions\": {\n        \"self\": \"https://yQBJDpWDiVLuzxiJycFOmH.cjuMWnuFlwOLcqmnLX.uo4,RM24WCfjkuAEzDsqwOTi4u7GdxoBE,45wj7Xt4LmnAn3AbJgDvDF\",\n        \"references\": [\n          {\n            \"self\": \"https://IrJkBmnmfNyLEDxSDWiYztyGoLVdXIH.sfd1lRhKbw5bqL3tFZzqm\",\n            \"managedObject\": {\n              \"id\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"self\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"name\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          },\n          {\n            \"self\": \"https://rnWrtZLYDxDNKJAClAwwPohnt.ppVUPs0vpW7t1agvhCntZpuuo-q8P3.FaKBc96Fh5A6jBZQmAF\",\n            \"managedObject\": {\n              \"id\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"self\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"name\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          }\n        ]\n      },\n      \"deviceParents\": {\n        \"self\": \"http://dpIMGgrcuuYcJHcGkGgxjbW.jgG7RX+y\",\n        \"references\": [\n          {\n            \"self\": \"http://m.hyrhr-1qz+l,wex\",\n            \"managedObject\": {\n              \"id\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"self\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"name\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          },\n          {\n            \"self\": \"http://NEXsv.fketi6J2CAqbSlAl+IrnQopaGEE\",\n            \"managedObject\": {\n              \"id\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"self\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"name\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          }\n        ]\n      },\n      \"assetParents\": {\n        \"self\": \"https://UbBbhBGRSgfivdXmWlQ.faxstf6kfW3wFx,\",\n        \"references\": [\n          {\n            \"self\": \"http://ivyblOnXadNhuDPygs.ihbqLMfUIBJKHQQ7VpMD.XepbtXZWYIAGYHnOublpu541bcVsWO6MYedG\",\n            \"managedObject\": {\n              \"id\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"self\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"name\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          },\n          {\n            \"self\": \"https://xuBxNuOwjIdPlawpd.lhMmYqIzZlL4trn8zmQkHAsYgr3YgOGEDxScyY-ggLDW\",\n            \"managedObject\": {\n              \"id\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"self\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"name\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          }\n        ]\n      }\n    },\n    {\n      \"id\": \"string\",\n      \"self\": \"https://dhVCAkjKBpvEirSofrAHZOC.pdwLW+NBZxCQ0y03cHWJdXpdc,zuv7CiBWP0O.xdmzlEE6F+KoNxNEe5\",\n      \"type\": \"string\",\n      \"name\": \"string\",\n      \"owner\": \"string\",\n      \"creationTime\": \"1955-06-28T15:36:46.904Z\",\n      \"lastUpdated\": \"1950-10-16T13:33:30.278Z\",\n      \"c8y_IsDevice\": {},\n      \"c8y_IsDeviceGroup\": {},\n      \"c8y_Hardware\": {\n        \"model\": \"string\",\n        \"revision\": \"string\",\n        \"serialNumber\": \"string\"\n      },\n      \"c8y_Firmware\": {\n        \"name\": \"string\",\n        \"version\": \"string\",\n        \"url\": \"string\"\n      },\n      \"childDevices\": {\n        \"self\": \"https://ozcvOenczAZ.twfL5IlDcaqXml+b4aG\",\n        \"references\": [\n          {\n            \"self\": \"https://nBcgGFuGPCgyeEaAC.njAii9dTNxKX4PQ.IlO1jA22fAzU\",\n            \"managedObject\": {\n              \"id\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"self\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"name\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          },\n          {\n            \"self\": \"https://RvIXRDlxRjaepYERJqXBxVbDOVMTlyLF.xegKgfSuH9UdTwoM4lutPVu-jQfpbI\",\n            \"managedObject\": {\n              \"id\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"self\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"name\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          }\n        ]\n      },\n      \"childAssets\": {\n        \"self\": \"http://nKDnkzsLcZfZGAsQPJFQrGWxRgOOIR.qoj8KgQ0sghW9t5jQVqenRSi,SgzF23v\",\n        \"references\": [\n          {\n            \"self\": \"https://DATnjiW.uaS88rbPRI60kkPtxYS1i.U5KBvwDGm,mc0iaY\",\n            \"managedObject\": {\n              \"id\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"self\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"name\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          },\n          {\n            \"self\": \"https://JuREYwOSfcDJTNpzjkmgzCemVBFTWG.daqE,F1D0UtzD,hyeTZv0xWPhzPLVCmGQjcKlu2muL6+\",\n            \"managedObject\": {\n              \"id\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"self\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"name\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          }\n        ]\n      },\n      \"childAdditions\": {\n        \"self\": \"https://bWoQvQkLtlyVUAE.gzhrdR7cLiFfOyIzEjXXG2tMcOH1O7N+pbX0BPArJKJljmVYmDwYDW55XB7iVklismK1sQp\",\n        \"references\": [\n          {\n            \"self\": \"https://JzjWCSuFbVZ.mtpkUjmcsIuVS.H0\",\n            \"managedObject\": {\n              \"id\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"self\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"name\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          },\n          {\n            \"self\": \"http://LKQkTYVGZtOybgGcMdpYYaWtykQNSCBb.vdcN5MJL5xugwX83p-5,kNVw74rWzfvNnIoBPuxnGTPA\",\n            \"managedObject\": {\n              \"id\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"self\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"name\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          }\n        ]\n      },\n      \"deviceParents\": {\n        \"self\": \"https://BwfXayVnarct.wptmz9jMMLGkL7g.ndB9xgA\",\n        \"references\": [\n          {\n            \"self\": \"http://ekDQLvOeB.iwOLDt2Y1unzVW0YcDJcJNgrpEF+R-m,yWBoC9AnXkVeigxCOudq27o3\",\n            \"managedObject\": {\n              \"id\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"self\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"name\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          },\n          {\n            \"self\": \"http://yKWBDFJpRUjydVdccdNgIyJlGDVeqA.ftxooIrYjdnvX90mMvtUNHe6lsKj7,T-uHTNot5.0x\",\n            \"managedObject\": {\n              \"id\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"self\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"name\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          }\n        ]\n      },\n      \"assetParents\": {\n        \"self\": \"https://mQCgWScNmFiIr.svwxLjvhtqZbGE4SB,OpgKrOIO2U1.vucnPw1imc-NLnmBfCBmBLk,\",\n        \"references\": [\n          {\n            \"self\": \"https://kdieBwfoGA.vkcoWTE8D2Um4Xxv,ybQFJRluB,gKNRyuJnO\",\n            \"managedObject\": {\n              \"id\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"self\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"name\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          },\n          {\n            \"self\": \"https://kGx.ouAcuK6TY753bOCPpGSvUg4PR2IU\",\n            \"managedObject\": {\n              \"id\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"self\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"name\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          }\n        ]\n      }\n    }\n  ],\n  \"statistics\": {\n    \"pageSize\": 3374,\n    \"currentPage\": 7502,\n    \"totalPages\": 8784\n  },\n  \"next\": \"https://miedrHEbsvHut.bprahLfxEiRjbSP23rBSd-xA,FlHFobzo-8CaN2rRy-fdg36LJZX7DY2DAW8O\",\n  \"prev\": \"http://booqZ.zzjfqZYkV-O.iX6Q1bWPz6k-XPNH\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "aa0dcdd7-100c-45e3-abdf-82878862246f",
+          "name": "Create a Managed Object",
+          "request": {
+            "name": "Create a Managed Object",
+            "description": {},
+            "url": {
+              "path": [
+                "inventory",
+                "managedObjects"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{tenant}}",
+                  "key": "tenant"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/vnd.com.nsn.cumulocity.managedObject+json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/vnd.com.nsn.cumulocity.managedObject+json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"<string>\",\n  \"name\": \"<string>\",\n  \"owner\": \"<string>\",\n  \"creationTime\": \"<dateTime>\",\n  \"lastUpdated\": \"<dateTime>\",\n  \"c8y_IsDevice\": \"<object>\",\n  \"c8y_IsDeviceGroup\": \"<object>\",\n  \"c8y_Hardware\": {\n    \"model\": \"<string>\",\n    \"revision\": \"<string>\",\n    \"serialNumber\": \"<string>\"\n  },\n  \"c8y_Firmware\": {\n    \"name\": \"<string>\",\n    \"version\": \"<string>\",\n    \"url\": \"<string>\"\n  },\n  \"childDevices\": {\n    \"self\": \"<uri>\",\n    \"references\": [\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      },\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      }\n    ]\n  },\n  \"childAssets\": {\n    \"self\": \"<uri>\",\n    \"references\": [\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      },\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      }\n    ]\n  },\n  \"childAdditions\": {\n    \"self\": \"<uri>\",\n    \"references\": [\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      },\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      }\n    ]\n  },\n  \"deviceParents\": {\n    \"self\": \"<uri>\",\n    \"references\": [\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      },\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      }\n    ]\n  },\n  \"assetParents\": {\n    \"self\": \"<uri>\",\n    \"references\": [\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      },\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      }\n    ]\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "2be1a23d-c87e-4c79-bbf4-a423013bc539",
+              "name": "Managed object created.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "inventory",
+                    "managedObjects"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{tenant}}",
+                      "key": "tenant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.com.nsn.cumulocity.managedObject+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"<string>\",\n  \"name\": \"<string>\",\n  \"owner\": \"<string>\",\n  \"creationTime\": \"<dateTime>\",\n  \"lastUpdated\": \"<dateTime>\",\n  \"c8y_IsDevice\": \"<object>\",\n  \"c8y_IsDeviceGroup\": \"<object>\",\n  \"c8y_Hardware\": {\n    \"model\": \"<string>\",\n    \"revision\": \"<string>\",\n    \"serialNumber\": \"<string>\"\n  },\n  \"c8y_Firmware\": {\n    \"name\": \"<string>\",\n    \"version\": \"<string>\",\n    \"url\": \"<string>\"\n  },\n  \"childDevices\": {\n    \"self\": \"<uri>\",\n    \"references\": [\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      },\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      }\n    ]\n  },\n  \"childAssets\": {\n    \"self\": \"<uri>\",\n    \"references\": [\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      },\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      }\n    ]\n  },\n  \"childAdditions\": {\n    \"self\": \"<uri>\",\n    \"references\": [\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      },\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      }\n    ]\n  },\n  \"deviceParents\": {\n    \"self\": \"<uri>\",\n    \"references\": [\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      },\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      }\n    ]\n  },\n  \"assetParents\": {\n    \"self\": \"<uri>\",\n    \"references\": [\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      },\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.com.nsn.cumulocity.managedObject+json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"self\": \"https://ddkPRZHzstlN.icYpkPHLVLMoApWoCXza\",\n  \"type\": \"<string>\",\n  \"name\": \"<string>\",\n  \"owner\": \"<string>\",\n  \"creationTime\": \"<dateTime>\",\n  \"lastUpdated\": \"<dateTime>\",\n  \"c8y_IsDevice\": \"<object>\",\n  \"c8y_IsDeviceGroup\": \"<object>\",\n  \"c8y_Hardware\": {\n    \"model\": \"<string>\",\n    \"revision\": \"<string>\",\n    \"serialNumber\": \"<string>\"\n  },\n  \"c8y_Firmware\": {\n    \"name\": \"<string>\",\n    \"version\": \"<string>\",\n    \"url\": \"<string>\"\n  },\n  \"childDevices\": {\n    \"self\": \"<uri>\",\n    \"references\": [\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      },\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      }\n    ]\n  },\n  \"childAssets\": {\n    \"self\": \"<uri>\",\n    \"references\": [\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      },\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      }\n    ]\n  },\n  \"childAdditions\": {\n    \"self\": \"<uri>\",\n    \"references\": [\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      },\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      }\n    ]\n  },\n  \"deviceParents\": {\n    \"self\": \"<uri>\",\n    \"references\": [\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      },\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      }\n    ]\n  },\n  \"assetParents\": {\n    \"self\": \"<uri>\",\n    \"references\": [\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      },\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2d948163-a5c2-4f46-a991-efccb28d9027",
+          "name": "Retrieve a Managed Object",
+          "request": {
+            "name": "Retrieve a Managed Object",
+            "description": {},
+            "url": {
+              "path": [
+                "inventory",
+                "managedObjects",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "withChildren",
+                  "value": "<boolean>"
+                },
+                {
+                  "disabled": false,
+                  "key": "withParents",
+                  "value": "<boolean>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{tenant}}",
+                  "key": "tenant"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.com.nsn.cumulocity.managedObject+json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "3e7928a4-4903-48dd-91db-9bbc09114b27",
+              "name": "A single managed object.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "inventory",
+                    "managedObjects",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "withChildren",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "withParents",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{tenant}}",
+                      "key": "tenant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.com.nsn.cumulocity.managedObject+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.com.nsn.cumulocity.managedObject+json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"self\": \"https://ddkPRZHzstlN.icYpkPHLVLMoApWoCXza\",\n  \"type\": \"<string>\",\n  \"name\": \"<string>\",\n  \"owner\": \"<string>\",\n  \"creationTime\": \"<dateTime>\",\n  \"lastUpdated\": \"<dateTime>\",\n  \"c8y_IsDevice\": \"<object>\",\n  \"c8y_IsDeviceGroup\": \"<object>\",\n  \"c8y_Hardware\": {\n    \"model\": \"<string>\",\n    \"revision\": \"<string>\",\n    \"serialNumber\": \"<string>\"\n  },\n  \"c8y_Firmware\": {\n    \"name\": \"<string>\",\n    \"version\": \"<string>\",\n    \"url\": \"<string>\"\n  },\n  \"childDevices\": {\n    \"self\": \"<uri>\",\n    \"references\": [\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      },\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      }\n    ]\n  },\n  \"childAssets\": {\n    \"self\": \"<uri>\",\n    \"references\": [\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      },\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      }\n    ]\n  },\n  \"childAdditions\": {\n    \"self\": \"<uri>\",\n    \"references\": [\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      },\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      }\n    ]\n  },\n  \"deviceParents\": {\n    \"self\": \"<uri>\",\n    \"references\": [\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      },\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      }\n    ]\n  },\n  \"assetParents\": {\n    \"self\": \"<uri>\",\n    \"references\": [\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      },\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9f7f813a-aeed-413f-b6bc-04cc0afecdd7",
+          "name": "Update a Managed Object",
+          "request": {
+            "name": "Update a Managed Object",
+            "description": {},
+            "url": {
+              "path": [
+                "inventory",
+                "managedObjects",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{tenant}}",
+                  "key": "tenant"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/vnd.com.nsn.cumulocity.managedObject+json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/vnd.com.nsn.cumulocity.managedObject+json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"<string>\",\n  \"name\": \"<string>\",\n  \"owner\": \"<string>\",\n  \"creationTime\": \"<dateTime>\",\n  \"lastUpdated\": \"<dateTime>\",\n  \"c8y_IsDevice\": \"<object>\",\n  \"c8y_IsDeviceGroup\": \"<object>\",\n  \"c8y_Hardware\": {\n    \"model\": \"<string>\",\n    \"revision\": \"<string>\",\n    \"serialNumber\": \"<string>\"\n  },\n  \"c8y_Firmware\": {\n    \"name\": \"<string>\",\n    \"version\": \"<string>\",\n    \"url\": \"<string>\"\n  },\n  \"childDevices\": {\n    \"self\": \"<uri>\",\n    \"references\": [\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      },\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      }\n    ]\n  },\n  \"childAssets\": {\n    \"self\": \"<uri>\",\n    \"references\": [\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      },\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      }\n    ]\n  },\n  \"childAdditions\": {\n    \"self\": \"<uri>\",\n    \"references\": [\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      },\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      }\n    ]\n  },\n  \"deviceParents\": {\n    \"self\": \"<uri>\",\n    \"references\": [\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      },\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      }\n    ]\n  },\n  \"assetParents\": {\n    \"self\": \"<uri>\",\n    \"references\": [\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      },\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      }\n    ]\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "3e375295-b287-4120-b1a2-2debfbf7622c",
+              "name": "Managed object updated.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "inventory",
+                    "managedObjects",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{tenant}}",
+                      "key": "tenant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.com.nsn.cumulocity.managedObject+json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"<string>\",\n  \"name\": \"<string>\",\n  \"owner\": \"<string>\",\n  \"creationTime\": \"<dateTime>\",\n  \"lastUpdated\": \"<dateTime>\",\n  \"c8y_IsDevice\": \"<object>\",\n  \"c8y_IsDeviceGroup\": \"<object>\",\n  \"c8y_Hardware\": {\n    \"model\": \"<string>\",\n    \"revision\": \"<string>\",\n    \"serialNumber\": \"<string>\"\n  },\n  \"c8y_Firmware\": {\n    \"name\": \"<string>\",\n    \"version\": \"<string>\",\n    \"url\": \"<string>\"\n  },\n  \"childDevices\": {\n    \"self\": \"<uri>\",\n    \"references\": [\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      },\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      }\n    ]\n  },\n  \"childAssets\": {\n    \"self\": \"<uri>\",\n    \"references\": [\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      },\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      }\n    ]\n  },\n  \"childAdditions\": {\n    \"self\": \"<uri>\",\n    \"references\": [\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      },\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      }\n    ]\n  },\n  \"deviceParents\": {\n    \"self\": \"<uri>\",\n    \"references\": [\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      },\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      }\n    ]\n  },\n  \"assetParents\": {\n    \"self\": \"<uri>\",\n    \"references\": [\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      },\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.com.nsn.cumulocity.managedObject+json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"self\": \"https://ddkPRZHzstlN.icYpkPHLVLMoApWoCXza\",\n  \"type\": \"<string>\",\n  \"name\": \"<string>\",\n  \"owner\": \"<string>\",\n  \"creationTime\": \"<dateTime>\",\n  \"lastUpdated\": \"<dateTime>\",\n  \"c8y_IsDevice\": \"<object>\",\n  \"c8y_IsDeviceGroup\": \"<object>\",\n  \"c8y_Hardware\": {\n    \"model\": \"<string>\",\n    \"revision\": \"<string>\",\n    \"serialNumber\": \"<string>\"\n  },\n  \"c8y_Firmware\": {\n    \"name\": \"<string>\",\n    \"version\": \"<string>\",\n    \"url\": \"<string>\"\n  },\n  \"childDevices\": {\n    \"self\": \"<uri>\",\n    \"references\": [\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      },\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      }\n    ]\n  },\n  \"childAssets\": {\n    \"self\": \"<uri>\",\n    \"references\": [\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      },\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      }\n    ]\n  },\n  \"childAdditions\": {\n    \"self\": \"<uri>\",\n    \"references\": [\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      },\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      }\n    ]\n  },\n  \"deviceParents\": {\n    \"self\": \"<uri>\",\n    \"references\": [\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      },\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      }\n    ]\n  },\n  \"assetParents\": {\n    \"self\": \"<uri>\",\n    \"references\": [\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      },\n      {\n        \"self\": \"<uri>\",\n        \"managedObject\": {\n          \"id\": \"<string>\",\n          \"self\": \"<uri>\",\n          \"name\": \"<string>\"\n        }\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a23a22c0-65f4-4b8d-89bc-798d863764c9",
+          "name": "Delete a Managed Object",
+          "request": {
+            "name": "Delete a Managed Object",
+            "description": {},
+            "url": {
+              "path": [
+                "inventory",
+                "managedObjects",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "cascade",
+                  "value": "<boolean>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{tenant}}",
+                  "key": "tenant"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "9224a73b-4bea-4311-bda2-179eb1fba8f9",
+              "name": "Managed object deleted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "inventory",
+                    "managedObjects",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "cascade",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{tenant}}",
+                      "key": "tenant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "example",
+      "key": "tenant"
+    },
+    {
+      "type": "string",
+      "value": "https://{{tenant}}.cumulocity.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "df104c1f-2102-4743-9378-bc0a1f719ab7",
+    "name": "Cumulocity Alarm Alarms Managed Objects API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL, MAJOR,\nMINOR, WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms\nby source + type so repeated raises increment the count rather than creating duplicates.\n",
+      "type": "text/plain"
+    }
+  }
+}

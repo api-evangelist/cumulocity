@@ -1,0 +1,265 @@
+{
+  "item": [
+    {
+      "id": "ae0dfb98-70dc-4660-94a1-e48b595f21eb",
+      "name": "Cloud Sync",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "7b1921a0-7108-4411-9cd6-f87051ae93c5",
+          "name": "Retrieve Cloud Sync Configuration",
+          "request": {
+            "name": "Retrieve Cloud Sync Configuration",
+            "description": {},
+            "url": {
+              "path": [
+                "service",
+                "edge",
+                "cloud-sync"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{tenant}}",
+                  "key": "tenant"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "f021b52f-9123-4caa-9d99-6e65d6811cda",
+              "name": "Current cloud-sync configuration.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "service",
+                    "edge",
+                    "cloud-sync"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{tenant}}",
+                      "key": "tenant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"enabled\": true,\n  \"targetTenantUrl\": \"https://NgvuszUKQ.kihj2CpEVRT2QHagIbtFyBFKV9ViFNq.bPozf,,eb6gLZ\",\n  \"targetTenantId\": \"string\",\n  \"syncedDataTypes\": [\n    \"ALARMS\",\n    \"OPERATIONS\"\n  ],\n  \"bandwidthLimitKbps\": 987,\n  \"bufferingPolicy\": \"BLOCK\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c725e1dd-4945-41da-8948-d592cab10c52",
+          "name": "Update Cloud Sync Configuration",
+          "request": {
+            "name": "Update Cloud Sync Configuration",
+            "description": {},
+            "url": {
+              "path": [
+                "service",
+                "edge",
+                "cloud-sync"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{tenant}}",
+                  "key": "tenant"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"enabled\": \"<boolean>\",\n  \"targetTenantUrl\": \"<uri>\",\n  \"targetTenantId\": \"<string>\",\n  \"syncedDataTypes\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"bandwidthLimitKbps\": \"<integer>\",\n  \"bufferingPolicy\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "1d61b193-03c5-4183-9af1-761d13be7d1d",
+              "name": "Cloud-sync configuration updated.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "service",
+                    "edge",
+                    "cloud-sync"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{tenant}}",
+                      "key": "tenant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"enabled\": \"<boolean>\",\n  \"targetTenantUrl\": \"<uri>\",\n  \"targetTenantId\": \"<string>\",\n  \"syncedDataTypes\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"bandwidthLimitKbps\": \"<integer>\",\n  \"bufferingPolicy\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "example",
+      "key": "tenant"
+    },
+    {
+      "type": "string",
+      "value": "https://{{tenant}}.cumulocity.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "878d2ab5-e8b4-4763-8efb-2658692ae6a1",
+    "name": "Cumulocity Alarm Alarms Cloud Sync API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL, MAJOR,\nMINOR, WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms\nby source + type so repeated raises increment the count rather than creating duplicates.\n",
+      "type": "text/plain"
+    }
+  }
+}

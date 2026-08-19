@@ -1,0 +1,98 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Cumulocity Alarm Alarms Binaries API",
+    "version": "10.20.0"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Binaries",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Binaries",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{tenant}.cumulocity.com/inventory/binaries"
+          },
+          "docs": "List Binaries"
+        },
+        {
+          "info": {
+            "name": "Upload a Binary",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{tenant}.cumulocity.com/inventory/binaries",
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "object",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "file",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Upload a Binary"
+        },
+        {
+          "info": {
+            "name": "Retrieve a Binary",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{tenant}.cumulocity.com/inventory/binaries/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieve a Binary"
+        },
+        {
+          "info": {
+            "name": "Delete a Binary",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{tenant}.cumulocity.com/inventory/binaries/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete a Binary"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
