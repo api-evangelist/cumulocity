@@ -137,6 +137,8 @@ apis:
   humanURL: https://cumulocity.com/api/core/
   baseURL: https://{tenant}.cumulocity.com/inventory
   tags:
+  - Application
+  tags_raw:
   - Applications
   properties:
   - type: OpenAPI
@@ -709,6 +711,8 @@ apis:
   humanURL: https://cumulocity.com/api/core/
   baseURL: https://{tenant}.cumulocity.com/inventory
   tags:
+  - Event
+  tags_raw:
   - Events
   properties:
   - type: OpenAPI
@@ -797,6 +801,8 @@ apis:
   humanURL: https://cumulocity.com/api/core/
   baseURL: https://{tenant}.cumulocity.com/inventory
   tags:
+  - Group
+  tags_raw:
   - Groups
   properties:
   - type: OpenAPI
@@ -1061,7 +1067,8 @@ apis:
   description: The Operations API from Cumulocity — 2 operation(s) for operations.
   humanURL: https://cumulocity.com/api/core/
   baseURL: https://{tenant}.cumulocity.com/inventory
-  tags:
+  tags: []
+  tags_raw:
   - Operations
   properties:
   - type: OpenAPI
@@ -1106,6 +1113,8 @@ apis:
   humanURL: https://cumulocity.com/api/core/
   baseURL: https://{tenant}.cumulocity.com/inventory
   tags:
+  - Query
+  tags_raw:
   - Queries
   properties:
   - type: OpenAPI
@@ -1326,6 +1335,8 @@ apis:
   humanURL: https://cumulocity.com/api/core/
   baseURL: https://{tenant}.cumulocity.com/inventory
   tags:
+  - Subscription
+  tags_raw:
   - Subscriptions
   properties:
   - type: OpenAPI
@@ -1634,6 +1645,8 @@ apis:
   humanURL: https://cumulocity.com/api/core/
   baseURL: https://{tenant}.cumulocity.com/inventory
   tags:
+  - User
+  tags_raw:
   - Users
   properties:
   - type: OpenAPI
