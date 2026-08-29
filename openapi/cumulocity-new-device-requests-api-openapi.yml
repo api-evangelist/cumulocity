@@ -1,12 +1,12 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Cumulocity Alarm Alarms New Device Requests API
+  title: Cumulocity Device Bootstrap New Device Requests API
   version: 10.20.0
-  description: 'Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL, MAJOR,
+  description: 'Zero-touch device onboarding flow. A factory-bootstrapped device authenticates with a shared bootstrap
 
-    MINOR, WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms
+    user, polls /devicecontrol/deviceCredentials with its external ID, and receives back tenant-scoped
 
-    by source + type so repeated raises increment the count rather than creating duplicates.
+    credentials once an admin accepts the registration request in the Device Management UI.
 
     '
 servers:
@@ -15,8 +15,8 @@ servers:
     tenant:
       default: example
 security:
+- bootstrapAuth: []
 - basicAuth: []
-- bearerAuth: []
 tags:
 - name: New Device Requests
 paths:
@@ -103,7 +103,7 @@ components:
     basicAuth:
       type: http
       scheme: basic
-    bearerAuth:
+    bootstrapAuth:
       type: http
-      scheme: bearer
-      bearerFormat: JWT
+      scheme: basic
+      description: HTTP Basic with the tenant-wide bootstrap user (devicebootstrap).

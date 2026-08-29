@@ -1,19 +1,20 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Cumulocity Alarm Alarms Software Updates API
-  version: 10.20.0
-  description: 'Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL, MAJOR,
+  title: Cumulocity Edge Software Updates API
+  version: 10.18.0
+  description: 'Single-node on-premises deployment of Cumulocity that runs the full platform locally (inventory,
 
-    MINOR, WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms
+    events, measurements, alarms, streaming analytics, UI) and optionally syncs selected data to a cloud
 
-    by source + type so repeated raises increment the count rather than creating duplicates.
+    tenant. Targets factory floors, vessels, and regulated/air-gapped environments.
 
     '
 servers:
-- url: https://{tenant}.cumulocity.com
+- url: https://edge.local
+- url: https://{edgeHost}
   variables:
-    tenant:
-      default: example
+    edgeHost:
+      default: edge.local
 security:
 - basicAuth: []
 - bearerAuth: []

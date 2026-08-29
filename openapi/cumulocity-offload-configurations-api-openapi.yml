@@ -1,12 +1,12 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Cumulocity Alarm Alarms Offload Configurations API
-  version: 10.20.0
-  description: 'Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL, MAJOR,
+  title: Cumulocity DataHub Offload Configurations API
+  version: 2025.1
+  description: 'Offload operational IoT data (measurements, events, alarms, inventory) from the Cumulocity MongoDB
 
-    MINOR, WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms
+    operational store into a Parquet-backed data lake queryable with ANSI SQL via Dremio. Configure offload
 
-    by source + type so repeated raises increment the count rather than creating duplicates.
+    pipelines, run analytics queries, and export results to BI tools (Power BI, Tableau) over JDBC/ODBC/Arrow Flight.
 
     '
 servers:

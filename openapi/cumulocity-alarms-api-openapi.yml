@@ -1,4 +1,4 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
   title: Cumulocity Alarm Alarms API
   version: 10.20.0
@@ -156,6 +156,16 @@ paths:
           description: Alarm updated.
 components:
   schemas:
+    AlarmCollection:
+      type: object
+      properties:
+        self:
+          type: string
+          format: uri
+        alarms:
+          type: array
+          items:
+            $ref: '#/components/schemas/Alarm'
     Alarm:
       type: object
       required:
@@ -213,16 +223,6 @@ components:
               type: string
               format: uri
       additionalProperties: true
-    AlarmCollection:
-      type: object
-      properties:
-        self:
-          type: string
-          format: uri
-        alarms:
-          type: array
-          items:
-            $ref: '#/components/schemas/Alarm'
   securitySchemes:
     basicAuth:
       type: http

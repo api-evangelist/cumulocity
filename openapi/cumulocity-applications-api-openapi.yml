@@ -1,12 +1,12 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Cumulocity Alarm Alarms Applications API
+  title: Cumulocity Application Applications API
   version: 10.20.0
-  description: 'Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL, MAJOR,
+  description: 'Register, subscribe, configure, and upload Cumulocity microservices, hosted web applications, and plugins.
 
-    MINOR, WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms
+    Microservices run inside Cumulocity''s managed container runtime and authenticate via a bootstrap user
 
-    by source + type so repeated raises increment the count rather than creating duplicates.
+    issued by this API; web applications are uploaded as ZIPs and served from the tenant subdomain.
 
     '
 servers:

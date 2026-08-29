@@ -1,12 +1,12 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Cumulocity Alarm Alarms Asset Models API
-  version: 10.20.0
-  description: 'Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL, MAJOR,
+  title: Cumulocity Digital Twin Manager Asset Models API
+  version: 2025.1
+  description: 'Model real-world assets and their hierarchies with strongly-typed asset models, custom properties,
 
-    MINOR, WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms
+    and computed smart-function values. Asset instances reference the underlying Cumulocity managed objects
 
-    by source + type so repeated raises increment the count rather than creating duplicates.
+    so measurements and alarms automatically roll up.
 
     '
 servers:

@@ -1,12 +1,12 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Cumulocity Alarm Alarms External IDs API
+  title: Cumulocity Identity External IDs API
   version: 10.20.0
-  description: 'Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL, MAJOR,
+  description: 'Link external identifiers (IMEI, serial number, MAC, ICCID, c8y_Serial, etc.) to Cumulocity managed
 
-    MINOR, WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms
+    object IDs. The Identity API is the primary lookup table used by device bootstrap, MQTT auto-registration,
 
-    by source + type so repeated raises increment the count rather than creating duplicates.
+    and any integration translating provider-specific IDs to Cumulocity IDs.
 
     '
 servers:

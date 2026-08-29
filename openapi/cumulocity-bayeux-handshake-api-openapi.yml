@@ -1,12 +1,12 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Cumulocity Alarm Alarms Bayeux Handshake API
+  title: Cumulocity Real-Time Notifications Bayeux Handshake API
   version: 10.20.0
-  description: 'Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL, MAJOR,
+  description: 'Bayeux/CometD-based long-poll subscription protocol for receiving live updates of measurements, events,
 
-    MINOR, WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms
+    alarms, operations, and inventory changes. Predates Notification 2.0 but remains the default for the Web
 
-    by source + type so repeated raises increment the count rather than creating duplicates.
+    SDK and legacy integrations.
 
     '
 servers:

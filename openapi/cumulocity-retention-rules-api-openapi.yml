@@ -1,12 +1,12 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Cumulocity Alarm Alarms Retention Rules API
+  title: Cumulocity Retention Rules API
   version: 10.20.0
-  description: 'Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL, MAJOR,
+  description: 'Define retention rules that automatically delete measurements, events, alarms, audit records, and
 
-    MINOR, WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms
+    operations older than a configured age. Rules can be scoped by data type, source, and fragment.
 
-    by source + type so repeated raises increment the count rather than creating duplicates.
+    Default policies apply per-plan; Enterprise tenants can override.
 
     '
 servers:

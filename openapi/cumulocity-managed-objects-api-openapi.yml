@@ -1,14 +1,20 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Cumulocity Alarm Alarms Managed Objects API
+  title: Cumulocity Inventory Managed Objects API
   version: 10.20.0
-  description: 'Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL, MAJOR,
+  description: 'Manage Cumulocity managed objects — the universal representation of any IoT-relevant asset including
 
-    MINOR, WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms
+    devices, groups, assets, and digital twins. Managed objects are fragment-extensible documents
 
-    by source + type so repeated raises increment the count rather than creating duplicates.
+    addressed by Cumulocity-assigned IDs and linked via parent/child references.
 
     '
+  contact:
+    name: Cumulocity
+    url: https://cumulocity.com
+  license:
+    name: Cumulocity Terms of Service
+    url: https://cumulocity.com/legal/terms/
 servers:
 - url: https://{tenant}.cumulocity.com
   variables:
@@ -133,43 +139,6 @@ paths:
           description: Managed object deleted.
 components:
   schemas:
-    PageStatistics:
-      type: object
-      properties:
-        pageSize:
-          type: integer
-        currentPage:
-          type: integer
-        totalPages:
-          type: integer
-    ManagedObjectReferenceCollection:
-      type: object
-      properties:
-        self:
-          type: string
-          format: uri
-        references:
-          type: array
-          items:
-            $ref: '#/components/schemas/ManagedObjectReference'
-    ManagedObjectCollection:
-      type: object
-      properties:
-        self:
-          type: string
-          format: uri
-        managedObjects:
-          type: array
-          items:
-            $ref: '#/components/schemas/ManagedObject'
-        statistics:
-          $ref: '#/components/schemas/PageStatistics'
-        next:
-          type: string
-          format: uri
-        prev:
-          type: string
-          format: uri
     ManagedObject:
       type: object
       properties:
@@ -240,20 +209,44 @@ components:
               format: uri
             name:
               type: string
+    ManagedObjectReferenceCollection:
+      type: object
+      properties:
+        self:
+          type: string
+          format: uri
+        references:
+          type: array
+          items:
+            $ref: '#/components/schemas/ManagedObjectReference'
+    PageStatistics:
+      type: object
+      properties:
+        pageSize:
+          type: integer
+        currentPage:
+          type: integer
+        totalPages:
+          type: integer
+    ManagedObjectCollection:
+      type: object
+      properties:
+        self:
+          type: string
+          format: uri
+        managedObjects:
+          type: array
+          items:
+            $ref: '#/components/schemas/ManagedObject'
+        statistics:
+          $ref: '#/components/schemas/PageStatistics'
+        next:
+          type: string
+          format: uri
+        prev:
+          type: string
+          format: uri
   parameters:
-    CurrentPage:
-      name: currentPage
-      in: query
-      schema:
-        type: integer
-        minimum: 1
-        default: 1
-    WithTotalPages:
-      name: withTotalPages
-      in: query
-      schema:
-        type: boolean
-        default: false
     PageSize:
       name: pageSize
       in: query
@@ -262,12 +255,25 @@ components:
         minimum: 1
         maximum: 2000
         default: 5
+    WithTotalPages:
+      name: withTotalPages
+      in: query
+      schema:
+        type: boolean
+        default: false
     ManagedObjectId:
       name: id
       in: path
       required: true
       schema:
         type: string
+    CurrentPage:
+      name: currentPage
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
   securitySchemes:
     basicAuth:
       type: http
