@@ -1727,6 +1727,8 @@ accessModel:
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/cumulocity.png
 access: 3rd-Party
 common:
+  - type: Website
+    url: https://www.cumulocity.com/
   - type: CapabilityMap
     url: capabilities/cumulocity-capability-edges.yml
     name: Cumulocity Business Capability Map
