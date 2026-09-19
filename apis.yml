@@ -1688,6 +1688,16 @@ apis:
 name: Cumulocity
 tags:
   - IoT
+  - Industrial IoT
+  - AIoT
+  - Device Management
+  - Digital Twin
+  - MQTT
+  - Edge Computing
+  - Streaming Analytics
+  - Data Lake
+tags_raw:
+  - IoT
   - Internet of Things
   - Industrial IoT
   - AIoT
