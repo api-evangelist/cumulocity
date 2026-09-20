@@ -1,0 +1,77 @@
+slug: cumulocity
+provider: Cumulocity
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 6
+edges:
+- tag: Tenants
+  spec_file: cumulocity-tenants-api-openapi.yml
+  capability_id: BC-4230.10
+  capability_id_l1: BC-4230
+  capability_name: Tenant Provisioning & Lifecycle
+  confidence: 0.9
+  evidence: POST /tenant/tenants  createTenant  Create a Tenant; DELETE /tenant/tenants/{tenantId}  deleteTenant  Delete
+    a Tenant
+  reason: Full CRUD lifecycle over tenants of a multi-tenant platform maps directly to tenant provisioning
+    and lifecycle. Title referencing alarms is a refine-openapis concatenation artefact.
+- tag: Subscriptions
+  spec_file: cumulocity-subscriptions-api-openapi.yml
+  capability_id: BC-4270.80
+  capability_id_l1: BC-4270
+  capability_name: Webhook & Event Subscription Management
+  confidence: 0.72
+  evidence: GET /notification2/subscriptions  listSubscriptions  List Notification 2.0 Subscriptions
+  reason: These are outbound event-notification subscriptions (Notification 2.0), not commercial subscriptions
+    — lifecycle CRUD over event subscription objects matches Webhook & Event Subscription Management.
+    Homograph risk with Subscription Lifecycle Management explicitly rejected.
+- tag: Alarms
+  spec_file: cumulocity-alarms-api-openapi.yml
+  capability_id: BC-600.40
+  capability_id_l1: BC-600
+  capability_name: IT Operations Management
+  confidence: 0.7
+  evidence: Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL,
+    MAJOR, MINOR, WARNING)
+  reason: IoT device/asset alarm raising and acknowledgement is operational monitoring and event handling
+    — IT/technical operations monitoring, not financial-crime alerting. Some ambiguity between IT Operations
+    Management and observability, hence 0.7.
+- tag: Applications
+  spec_file: cumulocity-applications-api-openapi.yml
+  capability_id: BC-600.60
+  capability_id_l1: BC-600
+  capability_name: IT Application Management
+  confidence: 0.7
+  evidence: POST /application/applications  createApplication  Create an Application
+  reason: CRUD over registered applications/microservices on the platform is application lifecycle administration,
+    mapping to IT Application Management. Note title mentions Alarms but operations are clearly application
+    registry.
+- tag: Tenant Options
+  spec_file: cumulocity-tenant-options-api-openapi.yml
+  capability_id: BC-4230.20
+  capability_id_l1: BC-4230
+  capability_name: Tenant Configuration Management
+  confidence: 0.7
+  evidence: PUT /tenant/options/{category}/{key}  updateTenantOption  Update a Tenant Option
+  reason: Category/key configuration values scoped to a tenant of the multi-tenant platform — per-tenant
+    configuration above the shared product baseline. Could arguably be read as generic configuration management,
+    hence 0.7.
+- tag: Users
+  spec_file: cumulocity-users-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.7
+  evidence: POST /user/{tenantId}/users  createUser  Create a User; DELETE /user/{tenantId}/users/{userId}  deleteUser  Delete
+    a User
+  reason: Create/read/update/delete of user accounts within a tenant is identity and access administration
+    (joiner-mover-leaver). Ambiguity remains between generic IAM and tenant-scoped user lifecycle under
+    SaaS tenant management, since no SSO/SCIM federation is evidenced.
