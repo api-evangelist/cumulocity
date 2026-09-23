@@ -390,70 +390,7 @@ artifacts:
   json-structure/cumulocity-managed-object-structure.json:
     method: unknown
     evidence: no authorship recorded
-  kin/checks-2026-08-28T221322.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-07-23T094130.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-07-23T182523.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-07-26T223651.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-07-27T083119.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-07-27T190208.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-07-28T115055.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-07-28T170848.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-07-28T172558.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-07-28T192327.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-07-28T200725.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-07-31T133250.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-07-31T151044.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-07-31T162206.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-07-31T202106.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-01T163141.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-01T163302.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-01T171935.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-03T113057.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-03T161012.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-04T083143.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-05T153418.yml:
+  kin/checks-2026-09-05T072335.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
   kin/score-2026-08-06T210741.yml:
@@ -537,117 +474,219 @@ artifacts:
   kin/score-2026-08-28T221322.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-08-29T213958.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-08-29T230545.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-08-30T203505.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-08-30T220315.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-08-31T223420.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-01T063623.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-01T210448.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-01T222808.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-02T211804.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-02T224043.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-03T161828.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-03T174231.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-04T062714.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-04T212454.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-04T224856.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-05T055819.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-05T072335.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  openapi/_original/cumulocity-alarm-api-openapi.yml:
+    method: harvested
+    evidence: fetched from the provider as-is; byte-identical to the source
+  openapi/_original/cumulocity-application-api-openapi.yml:
+    method: harvested
+    evidence: fetched from the provider as-is; byte-identical to the source
+  openapi/_original/cumulocity-audit-api-openapi.yml:
+    method: harvested
+    evidence: fetched from the provider as-is; byte-identical to the source
+  openapi/_original/cumulocity-datahub-api-openapi.yml:
+    method: harvested
+    evidence: fetched from the provider as-is; byte-identical to the source
+  openapi/_original/cumulocity-device-bootstrap-api-openapi.yml:
+    method: harvested
+    evidence: fetched from the provider as-is; byte-identical to the source
+  openapi/_original/cumulocity-device-control-api-openapi.yml:
+    method: harvested
+    evidence: fetched from the provider as-is; byte-identical to the source
+  openapi/_original/cumulocity-dtm-api-openapi.yml:
+    method: harvested
+    evidence: fetched from the provider as-is; byte-identical to the source
+  openapi/_original/cumulocity-edge-api-openapi.yml:
+    method: harvested
+    evidence: fetched from the provider as-is; byte-identical to the source
+  openapi/_original/cumulocity-event-api-openapi.yml:
+    method: harvested
+    evidence: fetched from the provider as-is; byte-identical to the source
+  openapi/_original/cumulocity-identity-api-openapi.yml:
+    method: harvested
+    evidence: fetched from the provider as-is; byte-identical to the source
+  openapi/_original/cumulocity-inventory-api-openapi.yml:
+    method: harvested
+    evidence: fetched from the provider as-is; byte-identical to the source
+  openapi/_original/cumulocity-measurement-api-openapi.yml:
+    method: harvested
+    evidence: fetched from the provider as-is; byte-identical to the source
+  openapi/_original/cumulocity-notification2-api-openapi.yml:
+    method: harvested
+    evidence: fetched from the provider as-is; byte-identical to the source
+  openapi/_original/cumulocity-real-time-api-openapi.yml:
+    method: harvested
+    evidence: fetched from the provider as-is; byte-identical to the source
+  openapi/_original/cumulocity-retention-api-openapi.yml:
+    method: harvested
+    evidence: fetched from the provider as-is; byte-identical to the source
+  openapi/_original/cumulocity-tenant-api-openapi.yml:
+    method: harvested
+    evidence: fetched from the provider as-is; byte-identical to the source
+  openapi/_original/cumulocity-user-api-openapi.yml:
+    method: harvested
+    evidence: fetched from the provider as-is; byte-identical to the source
   openapi/cumulocity-alarms-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/cumulocity-application-binaries-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/cumulocity-applications-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/cumulocity-asset-instances-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/cumulocity-asset-models-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/cumulocity-audit-records-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/cumulocity-bayeux-handshake-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/cumulocity-binaries-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/cumulocity-bootstrap-users-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/cumulocity-bulk-operations-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/cumulocity-child-references-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/cumulocity-cloud-sync-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/cumulocity-current-user-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/cumulocity-device-credentials-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/cumulocity-event-binaries-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/cumulocity-events-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/cumulocity-external-ids-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/cumulocity-groups-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/cumulocity-managed-objects-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/cumulocity-measurements-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/cumulocity-new-device-requests-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/cumulocity-offload-configurations-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/cumulocity-offload-jobs-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/cumulocity-operations-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/cumulocity-queries-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/cumulocity-retention-rules-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/cumulocity-roles-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/cumulocity-series-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/cumulocity-software-updates-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/cumulocity-subscriptions-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/cumulocity-supported-measurements-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/cumulocity-system-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/cumulocity-tenant-options-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/cumulocity-tenant-statistics-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/cumulocity-tenants-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/cumulocity-tokens-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/cumulocity-users-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   plans/cumulocity-plans-pricing.yml:
     method: unknown
     evidence: no authorship recorded

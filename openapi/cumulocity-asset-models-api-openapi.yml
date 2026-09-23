@@ -6,9 +6,7 @@ info:
 
     and computed smart-function values. Asset instances reference the underlying Cumulocity managed objects
 
-    so measurements and alarms automatically roll up.
-
-    '
+    so measurements and alarms automatically roll up.'
 servers:
 - url: https://{tenant}.cumulocity.com
   variables:

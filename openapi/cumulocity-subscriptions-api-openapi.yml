@@ -8,9 +8,7 @@ info:
 
     for short-lived JWT tokens, and consume via WebSocket. Survives subscriber outages by buffering messages
 
-    on the server.
-
-    '
+    on the server.'
 servers:
 - url: https://{tenant}.cumulocity.com
   variables:

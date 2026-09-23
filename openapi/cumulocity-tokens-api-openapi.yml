@@ -8,9 +8,7 @@ info:
 
     for short-lived JWT tokens, and consume via WebSocket. Survives subscriber outages by buffering messages
 
-    on the server.
-
-    '
+    on the server.'
 servers:
 - url: https://{tenant}.cumulocity.com
   variables:
@@ -61,11 +59,6 @@ paths:
           description: Token invalidated.
 components:
   schemas:
-    TokenResponse:
-      type: object
-      properties:
-        token:
-          type: string
     TokenRequest:
       type: object
       required:
@@ -86,6 +79,11 @@ components:
           type: boolean
         shared:
           type: boolean
+    TokenResponse:
+      type: object
+      properties:
+        token:
+          type: string
   securitySchemes:
     basicAuth:
       type: http

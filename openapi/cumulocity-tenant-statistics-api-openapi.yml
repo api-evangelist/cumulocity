@@ -4,9 +4,7 @@ info:
   version: 10.20.0
   description: 'Manage Cumulocity tenants (sub-tenants in enterprise and management hierarchies), tenant options
 
-    (key-value config including encrypted secrets), tenant applications, and tenant usage statistics.
-
-    '
+    (key-value config including encrypted secrets), tenant applications, and tenant usage statistics.'
 servers:
 - url: https://{tenant}.cumulocity.com
   variables:

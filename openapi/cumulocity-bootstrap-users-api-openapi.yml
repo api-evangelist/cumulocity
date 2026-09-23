@@ -6,9 +6,7 @@ info:
 
     Microservices run inside Cumulocity''s managed container runtime and authenticate via a bootstrap user
 
-    issued by this API; web applications are uploaded as ZIPs and served from the tenant subdomain.
-
-    '
+    issued by this API; web applications are uploaded as ZIPs and served from the tenant subdomain.'
 servers:
 - url: https://{tenant}.cumulocity.com
   variables:

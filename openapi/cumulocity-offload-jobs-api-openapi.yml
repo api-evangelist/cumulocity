@@ -6,9 +6,7 @@ info:
 
     operational store into a Parquet-backed data lake queryable with ANSI SQL via Dremio. Configure offload
 
-    pipelines, run analytics queries, and export results to BI tools (Power BI, Tableau) over JDBC/ODBC/Arrow Flight.
-
-    '
+    pipelines, run analytics queries, and export results to BI tools (Power BI, Tableau) over JDBC/ODBC/Arrow Flight.'
 servers:
 - url: https://{tenant}.cumulocity.com
   variables:

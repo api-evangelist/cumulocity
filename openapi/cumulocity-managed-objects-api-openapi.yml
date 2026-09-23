@@ -6,9 +6,7 @@ info:
 
     devices, groups, assets, and digital twins. Managed objects are fragment-extensible documents
 
-    addressed by Cumulocity-assigned IDs and linked via parent/child references.
-
-    '
+    addressed by Cumulocity-assigned IDs and linked via parent/child references.'
   contact:
     name: Cumulocity
     url: https://cumulocity.com
@@ -139,6 +137,59 @@ paths:
           description: Managed object deleted.
 components:
   schemas:
+    PageStatistics:
+      type: object
+      properties:
+        pageSize:
+          type: integer
+        currentPage:
+          type: integer
+        totalPages:
+          type: integer
+    ManagedObjectReferenceCollection:
+      type: object
+      properties:
+        self:
+          type: string
+          format: uri
+        references:
+          type: array
+          items:
+            $ref: '#/components/schemas/ManagedObjectReference'
+    ManagedObjectCollection:
+      type: object
+      properties:
+        self:
+          type: string
+          format: uri
+        managedObjects:
+          type: array
+          items:
+            $ref: '#/components/schemas/ManagedObject'
+        statistics:
+          $ref: '#/components/schemas/PageStatistics'
+        next:
+          type: string
+          format: uri
+        prev:
+          type: string
+          format: uri
+    ManagedObjectReference:
+      type: object
+      properties:
+        self:
+          type: string
+          format: uri
+        managedObject:
+          type: object
+          properties:
+            id:
+              type: string
+            self:
+              type: string
+              format: uri
+            name:
+              type: string
     ManagedObject:
       type: object
       properties:
@@ -193,60 +244,20 @@ components:
           $ref: '#/components/schemas/ManagedObjectReferenceCollection'
         assetParents:
           $ref: '#/components/schemas/ManagedObjectReferenceCollection'
-    ManagedObjectReference:
-      type: object
-      properties:
-        self:
-          type: string
-          format: uri
-        managedObject:
-          type: object
-          properties:
-            id:
-              type: string
-            self:
-              type: string
-              format: uri
-            name:
-              type: string
-    ManagedObjectReferenceCollection:
-      type: object
-      properties:
-        self:
-          type: string
-          format: uri
-        references:
-          type: array
-          items:
-            $ref: '#/components/schemas/ManagedObjectReference'
-    PageStatistics:
-      type: object
-      properties:
-        pageSize:
-          type: integer
-        currentPage:
-          type: integer
-        totalPages:
-          type: integer
-    ManagedObjectCollection:
-      type: object
-      properties:
-        self:
-          type: string
-          format: uri
-        managedObjects:
-          type: array
-          items:
-            $ref: '#/components/schemas/ManagedObject'
-        statistics:
-          $ref: '#/components/schemas/PageStatistics'
-        next:
-          type: string
-          format: uri
-        prev:
-          type: string
-          format: uri
   parameters:
+    ManagedObjectId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    CurrentPage:
+      name: currentPage
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
     PageSize:
       name: pageSize
       in: query
@@ -261,19 +272,6 @@ components:
       schema:
         type: boolean
         default: false
-    ManagedObjectId:
-      name: id
-      in: path
-      required: true
-      schema:
-        type: string
-    CurrentPage:
-      name: currentPage
-      in: query
-      schema:
-        type: integer
-        minimum: 1
-        default: 1
   securitySchemes:
     basicAuth:
       type: http

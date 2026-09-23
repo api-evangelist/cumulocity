@@ -6,9 +6,7 @@ info:
 
     location, and arbitrary custom fragments with units. Supports time-range queries, source/type filters,
 
-    series aggregations (hourly/daily), and bulk creation.
-
-    '
+    series aggregations (hourly/daily), and bulk creation.'
 servers:
 - url: https://{tenant}.cumulocity.com
   variables:

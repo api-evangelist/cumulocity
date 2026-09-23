@@ -6,9 +6,7 @@ info:
 
     (door opened, geofence crossed, image captured) with a type, time, text, source device, and arbitrary
 
-    custom fragments. Binary attachments are supported via the events/{id}/binaries sub-resource.
-
-    '
+    custom fragments. Binary attachments are supported via the events/{id}/binaries sub-resource.'
 servers:
 - url: https://{tenant}.cumulocity.com
   variables:

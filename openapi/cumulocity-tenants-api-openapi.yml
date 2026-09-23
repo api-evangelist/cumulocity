@@ -4,9 +4,7 @@ info:
   version: 10.20.0
   description: 'Manage Cumulocity tenants (sub-tenants in enterprise and management hierarchies), tenant options
 
-    (key-value config including encrypted secrets), tenant applications, and tenant usage statistics.
-
-    '
+    (key-value config including encrypted secrets), tenant applications, and tenant usage statistics.'
 servers:
 - url: https://{tenant}.cumulocity.com
   variables:
@@ -88,16 +86,6 @@ paths:
           description: Tenant deleted.
 components:
   schemas:
-    TenantCollection:
-      type: object
-      properties:
-        self:
-          type: string
-          format: uri
-        tenants:
-          type: array
-          items:
-            $ref: '#/components/schemas/Tenant'
     Tenant:
       type: object
       properties:
@@ -132,6 +120,16 @@ components:
           type: object
         allowCreateTenants:
           type: boolean
+    TenantCollection:
+      type: object
+      properties:
+        self:
+          type: string
+          format: uri
+        tenants:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tenant'
   securitySchemes:
     basicAuth:
       type: http

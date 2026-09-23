@@ -6,9 +6,7 @@ info:
 
     alarms, operations, and inventory changes. Predates Notification 2.0 but remains the default for the Web
 
-    SDK and legacy integrations.
-
-    '
+    SDK and legacy integrations.'
 servers:
 - url: https://{tenant}.cumulocity.com
   variables:
@@ -32,9 +30,7 @@ paths:
 
         `/meta/disconnect`. Subscribe to channels such as `/measurements/{deviceId}`,
 
-        `/events/{deviceId}`, `/alarms/{deviceId}`, `/operations/{deviceId}`, `/managedobjects/{deviceId}`.
-
-        '
+        `/events/{deviceId}`, `/alarms/{deviceId}`, `/operations/{deviceId}`, `/managedobjects/{deviceId}`.'
       requestBody:
         required: true
         content:

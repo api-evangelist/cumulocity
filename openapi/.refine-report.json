@@ -79,7 +79,8 @@
     "cumulocity-real-time-api-openapi.yml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
     "cumulocity-retention-api-openapi.yml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
     "cumulocity-tenant-api-openapi.yml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
-    "cumulocity-user-api-openapi.yml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0"
+    "cumulocity-user-api-openapi.yml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
   ],
   "skipped": [
     "cumulocity-alarms-api-openapi.yml: previously refined output, superseded by openapi/_original/",

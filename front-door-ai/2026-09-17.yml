@@ -1,0 +1,33 @@
+# Front Door AI Index — cumulocity — 2026-09-17
+# AI vocabulary counted on the provider's root page. Generated; do not edit.
+# `score` is null unless ownership is `own` — see front_door_ai.py.
+front_door_ai:
+  slug: cumulocity
+  lexicon_version: '1.0'
+  probed_at: '2026-09-17'
+  host: www.cumulocity.com
+  final_host: www.cumulocity.com
+  ownership: own
+  owner: cumulocity
+  shares_host_with: null
+  inherited_from: null
+  verdict: scored
+  score: 19
+  host_score: 19
+  density: 10.08
+  words: 1885
+  tiers:
+    agentic: 1
+    core: 18
+    model: 0
+  ambiguous: 11
+  top_terms:
+    AI: 16
+    predictive: 4
+    smart: 3
+    agent: 2
+    AI agent: 1
+    ML: 1
+    automation: 1
+    intelligence: 1
+    machine learning: 1

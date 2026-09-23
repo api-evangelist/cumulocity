@@ -6,9 +6,7 @@ info:
 
     MINOR, WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms
 
-    by source + type so repeated raises increment the count rather than creating duplicates.
-
-    '
+    by source + type so repeated raises increment the count rather than creating duplicates.'
 servers:
 - url: https://{tenant}.cumulocity.com
   variables:
@@ -156,16 +154,6 @@ paths:
           description: Alarm updated.
 components:
   schemas:
-    AlarmCollection:
-      type: object
-      properties:
-        self:
-          type: string
-          format: uri
-        alarms:
-          type: array
-          items:
-            $ref: '#/components/schemas/Alarm'
     Alarm:
       type: object
       required:
@@ -223,6 +211,16 @@ components:
               type: string
               format: uri
       additionalProperties: true
+    AlarmCollection:
+      type: object
+      properties:
+        self:
+          type: string
+          format: uri
+        alarms:
+          type: array
+          items:
+            $ref: '#/components/schemas/Alarm'
   securitySchemes:
     basicAuth:
       type: http

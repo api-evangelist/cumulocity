@@ -6,9 +6,7 @@ info:
 
     events, measurements, alarms, streaming analytics, UI) and optionally syncs selected data to a cloud
 
-    tenant. Targets factory floors, vessels, and regulated/air-gapped environments.
-
-    '
+    tenant. Targets factory floors, vessels, and regulated/air-gapped environments.'
 servers:
 - url: https://edge.local
 - url: https://{edgeHost}

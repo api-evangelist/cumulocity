@@ -6,9 +6,7 @@ info:
 
     software installation, shell commands, and restart requests. Operations move through PENDING, EXECUTING,
 
-    SUCCESSFUL, FAILED status. Bulk operations let you target an entire device group with a single request.
-
-    '
+    SUCCESSFUL, FAILED status. Bulk operations let you target an entire device group with a single request.'
 servers:
 - url: https://{tenant}.cumulocity.com
   variables:
@@ -126,6 +124,16 @@ paths:
           description: Operation updated.
 components:
   schemas:
+    OperationCollection:
+      type: object
+      properties:
+        self:
+          type: string
+          format: uri
+        operations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Operation'
     Operation:
       type: object
       required:
@@ -180,16 +188,6 @@ components:
         c8y_Software:
           type: array
       additionalProperties: true
-    OperationCollection:
-      type: object
-      properties:
-        self:
-          type: string
-          format: uri
-        operations:
-          type: array
-          items:
-            $ref: '#/components/schemas/Operation'
   securitySchemes:
     basicAuth:
       type: http

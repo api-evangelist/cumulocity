@@ -6,9 +6,7 @@ info:
 
     devices, groups, assets, and digital twins. Managed objects are fragment-extensible documents
 
-    addressed by Cumulocity-assigned IDs and linked via parent/child references.
-
-    '
+    addressed by Cumulocity-assigned IDs and linked via parent/child references.'
   contact:
     name: Cumulocity
     url: https://cumulocity.com
@@ -91,16 +89,6 @@ components:
       schema:
         type: string
   schemas:
-    ManagedObjectReferenceCollection:
-      type: object
-      properties:
-        self:
-          type: string
-          format: uri
-        references:
-          type: array
-          items:
-            $ref: '#/components/schemas/ManagedObjectReference'
     ManagedObjectReference:
       type: object
       properties:
@@ -117,6 +105,16 @@ components:
               format: uri
             name:
               type: string
+    ManagedObjectReferenceCollection:
+      type: object
+      properties:
+        self:
+          type: string
+          format: uri
+        references:
+          type: array
+          items:
+            $ref: '#/components/schemas/ManagedObjectReference'
   securitySchemes:
     basicAuth:
       type: http

@@ -6,9 +6,7 @@ info:
 
     RBAC model where global roles grant API access and inventory roles grant access to specific managed-object
 
-    subtrees. Supports SSO via SAML/OIDC and SCIM provisioning for enterprise tenants.
-
-    '
+    subtrees. Supports SSO via SAML/OIDC and SCIM provisioning for enterprise tenants.'
 servers:
 - url: https://{tenant}.cumulocity.com
   variables:

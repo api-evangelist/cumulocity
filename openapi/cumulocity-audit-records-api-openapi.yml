@@ -6,9 +6,7 @@ info:
 
     operations triggered, and managed-object create/update/delete. Critical for compliance, security review,
 
-    and incident forensics.
-
-    '
+    and incident forensics.'
 servers:
 - url: https://{tenant}.cumulocity.com
   variables:

@@ -6,9 +6,7 @@ info:
 
     operations older than a configured age. Rules can be scoped by data type, source, and fragment.
 
-    Default policies apply per-plan; Enterprise tenants can override.
-
-    '
+    Default policies apply per-plan; Enterprise tenants can override.'
 servers:
 - url: https://{tenant}.cumulocity.com
   variables:
