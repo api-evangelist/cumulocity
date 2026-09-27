@@ -1696,6 +1696,7 @@ tags:
   - Edge Computing
   - Streaming Analytics
   - Data Lake
+  - Real-Time
 tags_raw:
   - IoT
   - Internet of Things
@@ -1707,6 +1708,7 @@ tags_raw:
   - Edge Computing
   - Streaming Analytics
   - Data Lake
+  - Real-Time
 kind: contract
 deliveryModel:
   model: saas

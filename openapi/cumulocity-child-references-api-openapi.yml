@@ -81,14 +81,17 @@ paths:
         '200':
           description: A collection of child addition references.
 components:
-  parameters:
-    ManagedObjectId:
-      name: id
-      in: path
-      required: true
-      schema:
-        type: string
   schemas:
+    ManagedObjectReferenceCollection:
+      type: object
+      properties:
+        self:
+          type: string
+          format: uri
+        references:
+          type: array
+          items:
+            $ref: '#/components/schemas/ManagedObjectReference'
     ManagedObjectReference:
       type: object
       properties:
@@ -105,16 +108,13 @@ components:
               format: uri
             name:
               type: string
-    ManagedObjectReferenceCollection:
-      type: object
-      properties:
-        self:
-          type: string
-          format: uri
-        references:
-          type: array
-          items:
-            $ref: '#/components/schemas/ManagedObjectReference'
+  parameters:
+    ManagedObjectId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
   securitySchemes:
     basicAuth:
       type: http

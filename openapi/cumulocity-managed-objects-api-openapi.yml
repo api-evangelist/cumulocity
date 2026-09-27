@@ -137,25 +137,6 @@ paths:
           description: Managed object deleted.
 components:
   schemas:
-    PageStatistics:
-      type: object
-      properties:
-        pageSize:
-          type: integer
-        currentPage:
-          type: integer
-        totalPages:
-          type: integer
-    ManagedObjectReferenceCollection:
-      type: object
-      properties:
-        self:
-          type: string
-          format: uri
-        references:
-          type: array
-          items:
-            $ref: '#/components/schemas/ManagedObjectReference'
     ManagedObjectCollection:
       type: object
       properties:
@@ -174,6 +155,16 @@ components:
         prev:
           type: string
           format: uri
+    ManagedObjectReferenceCollection:
+      type: object
+      properties:
+        self:
+          type: string
+          format: uri
+        references:
+          type: array
+          items:
+            $ref: '#/components/schemas/ManagedObjectReference'
     ManagedObjectReference:
       type: object
       properties:
@@ -190,6 +181,15 @@ components:
               format: uri
             name:
               type: string
+    PageStatistics:
+      type: object
+      properties:
+        pageSize:
+          type: integer
+        currentPage:
+          type: integer
+        totalPages:
+          type: integer
     ManagedObject:
       type: object
       properties:
@@ -245,6 +245,12 @@ components:
         assetParents:
           $ref: '#/components/schemas/ManagedObjectReferenceCollection'
   parameters:
+    WithTotalPages:
+      name: withTotalPages
+      in: query
+      schema:
+        type: boolean
+        default: false
     ManagedObjectId:
       name: id
       in: path
@@ -266,12 +272,6 @@ components:
         minimum: 1
         maximum: 2000
         default: 5
-    WithTotalPages:
-      name: withTotalPages
-      in: query
-      schema:
-        type: boolean
-        default: false
   securitySchemes:
     basicAuth:
       type: http
