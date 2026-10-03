@@ -124,16 +124,6 @@ paths:
           description: Operation updated.
 components:
   schemas:
-    OperationCollection:
-      type: object
-      properties:
-        self:
-          type: string
-          format: uri
-        operations:
-          type: array
-          items:
-            $ref: '#/components/schemas/Operation'
     Operation:
       type: object
       required:
@@ -188,6 +178,16 @@ components:
         c8y_Software:
           type: array
       additionalProperties: true
+    OperationCollection:
+      type: object
+      properties:
+        self:
+          type: string
+          format: uri
+        operations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Operation'
   securitySchemes:
     basicAuth:
       type: http

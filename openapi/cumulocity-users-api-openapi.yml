@@ -99,6 +99,16 @@ paths:
           description: User deleted.
 components:
   schemas:
+    UserCollection:
+      type: object
+      properties:
+        self:
+          type: string
+          format: uri
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
     User:
       type: object
       properties:
@@ -147,16 +157,6 @@ components:
                 type: object
         devicePermissions:
           type: object
-    UserCollection:
-      type: object
-      properties:
-        self:
-          type: string
-          format: uri
-        users:
-          type: array
-          items:
-            $ref: '#/components/schemas/User'
   securitySchemes:
     basicAuth:
       type: http

@@ -93,16 +93,6 @@ paths:
           description: A single audit record.
 components:
   schemas:
-    AuditRecordCollection:
-      type: object
-      properties:
-        self:
-          type: string
-          format: uri
-        auditRecords:
-          type: array
-          items:
-            $ref: '#/components/schemas/AuditRecord'
     AuditRecord:
       type: object
       properties:
@@ -159,6 +149,16 @@ components:
                 - ADDED
                 - REPLACED
                 - REMOVED
+    AuditRecordCollection:
+      type: object
+      properties:
+        self:
+          type: string
+          format: uri
+        auditRecords:
+          type: array
+          items:
+            $ref: '#/components/schemas/AuditRecord'
   securitySchemes:
     basicAuth:
       type: http
