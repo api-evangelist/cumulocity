@@ -85,6 +85,16 @@ paths:
           description: External ID created.
 components:
   schemas:
+    ExternalIdCollection:
+      type: object
+      properties:
+        self:
+          type: string
+          format: uri
+        externalIds:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalId'
     ExternalId:
       type: object
       properties:
@@ -103,16 +113,6 @@ components:
             self:
               type: string
               format: uri
-    ExternalIdCollection:
-      type: object
-      properties:
-        self:
-          type: string
-          format: uri
-        externalIds:
-          type: array
-          items:
-            $ref: '#/components/schemas/ExternalId'
   securitySchemes:
     basicAuth:
       type: http

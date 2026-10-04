@@ -59,6 +59,11 @@ paths:
           description: Token invalidated.
 components:
   schemas:
+    TokenResponse:
+      type: object
+      properties:
+        token:
+          type: string
     TokenRequest:
       type: object
       required:
@@ -79,11 +84,6 @@ components:
           type: boolean
         shared:
           type: boolean
-    TokenResponse:
-      type: object
-      properties:
-        token:
-          type: string
   securitySchemes:
     basicAuth:
       type: http

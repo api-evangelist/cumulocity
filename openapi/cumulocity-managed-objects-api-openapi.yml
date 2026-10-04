@@ -137,43 +137,6 @@ paths:
           description: Managed object deleted.
 components:
   schemas:
-    ManagedObjectReferenceCollection:
-      type: object
-      properties:
-        self:
-          type: string
-          format: uri
-        references:
-          type: array
-          items:
-            $ref: '#/components/schemas/ManagedObjectReference'
-    PageStatistics:
-      type: object
-      properties:
-        pageSize:
-          type: integer
-        currentPage:
-          type: integer
-        totalPages:
-          type: integer
-    ManagedObjectCollection:
-      type: object
-      properties:
-        self:
-          type: string
-          format: uri
-        managedObjects:
-          type: array
-          items:
-            $ref: '#/components/schemas/ManagedObject'
-        statistics:
-          $ref: '#/components/schemas/PageStatistics'
-        next:
-          type: string
-          format: uri
-        prev:
-          type: string
-          format: uri
     ManagedObject:
       type: object
       properties:
@@ -244,13 +207,44 @@ components:
               format: uri
             name:
               type: string
+    ManagedObjectCollection:
+      type: object
+      properties:
+        self:
+          type: string
+          format: uri
+        managedObjects:
+          type: array
+          items:
+            $ref: '#/components/schemas/ManagedObject'
+        statistics:
+          $ref: '#/components/schemas/PageStatistics'
+        next:
+          type: string
+          format: uri
+        prev:
+          type: string
+          format: uri
+    PageStatistics:
+      type: object
+      properties:
+        pageSize:
+          type: integer
+        currentPage:
+          type: integer
+        totalPages:
+          type: integer
+    ManagedObjectReferenceCollection:
+      type: object
+      properties:
+        self:
+          type: string
+          format: uri
+        references:
+          type: array
+          items:
+            $ref: '#/components/schemas/ManagedObjectReference'
   parameters:
-    WithTotalPages:
-      name: withTotalPages
-      in: query
-      schema:
-        type: boolean
-        default: false
     CurrentPage:
       name: currentPage
       in: query
@@ -264,6 +258,12 @@ components:
       required: true
       schema:
         type: string
+    WithTotalPages:
+      name: withTotalPages
+      in: query
+      schema:
+        type: boolean
+        default: false
     PageSize:
       name: pageSize
       in: query

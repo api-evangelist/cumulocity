@@ -100,6 +100,16 @@ paths:
           description: Subscription deleted.
 components:
   schemas:
+    SubscriptionCollection:
+      type: object
+      properties:
+        self:
+          type: string
+          format: uri
+        subscriptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Subscription'
     Subscription:
       type: object
       required:
@@ -150,16 +160,6 @@ components:
               type: string
         nonPersistent:
           type: boolean
-    SubscriptionCollection:
-      type: object
-      properties:
-        self:
-          type: string
-          format: uri
-        subscriptions:
-          type: array
-          items:
-            $ref: '#/components/schemas/Subscription'
   securitySchemes:
     basicAuth:
       type: http

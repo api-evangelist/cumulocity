@@ -141,6 +141,16 @@ paths:
           description: Measurement deleted.
 components:
   schemas:
+    MeasurementCollection:
+      type: object
+      properties:
+        self:
+          type: string
+          format: uri
+        measurements:
+          type: array
+          items:
+            $ref: '#/components/schemas/Measurement'
     Measurement:
       type: object
       required:
@@ -169,17 +179,14 @@ components:
               type: string
               format: uri
       additionalProperties: true
-    MeasurementCollection:
-      type: object
-      properties:
-        self:
-          type: string
-          format: uri
-        measurements:
-          type: array
-          items:
-            $ref: '#/components/schemas/Measurement'
   parameters:
+    CurrentPage:
+      name: currentPage
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
     PageSize:
       name: pageSize
       in: query
@@ -188,13 +195,6 @@ components:
         minimum: 1
         maximum: 2000
         default: 5
-    CurrentPage:
-      name: currentPage
-      in: query
-      schema:
-        type: integer
-        minimum: 1
-        default: 1
   securitySchemes:
     basicAuth:
       type: http

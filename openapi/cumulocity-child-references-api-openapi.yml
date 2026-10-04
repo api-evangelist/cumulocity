@@ -82,16 +82,6 @@ paths:
           description: A collection of child addition references.
 components:
   schemas:
-    ManagedObjectReferenceCollection:
-      type: object
-      properties:
-        self:
-          type: string
-          format: uri
-        references:
-          type: array
-          items:
-            $ref: '#/components/schemas/ManagedObjectReference'
     ManagedObjectReference:
       type: object
       properties:
@@ -108,6 +98,16 @@ components:
               format: uri
             name:
               type: string
+    ManagedObjectReferenceCollection:
+      type: object
+      properties:
+        self:
+          type: string
+          format: uri
+        references:
+          type: array
+          items:
+            $ref: '#/components/schemas/ManagedObjectReference'
   parameters:
     ManagedObjectId:
       name: id
