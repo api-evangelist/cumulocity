@@ -52,3 +52,45 @@ rate_limit_statements:
 - Business Up to 250 Mio platform messages/month and 100 platform messages/second
 - Enterprise Unlimited platform messages/second
 - You can connect up to 10 devices
+x-canonical:
+  generated: '2026-10-08'
+  vocabulary: all/0-working/economics/plans-canonical.yml
+  models:
+  - subscription
+  units: []
+  plans:
+  - name: Starter
+    access: other
+    model: subscription
+    model_how: derived
+    units: []
+    periods:
+    - month
+  - name: Business
+    access: other
+    model: unstated
+    model_how: derived
+    units: []
+    periods:
+    - none
+  - name: Enterprise
+    access: other
+    model: unstated
+    model_how: derived
+    units: []
+    periods:
+    - none
+  - name: Connected (Edge, single-node on-prem)
+    access: other
+    model: unstated
+    model_how: derived
+    units: []
+    periods:
+    - none
+  - name: Air-Gapped (Edge, single-node on-prem)
+    access: other
+    model: unstated
+    model_how: derived
+    units: []
+    periods:
+    - none
