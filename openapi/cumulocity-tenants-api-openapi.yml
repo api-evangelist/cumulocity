@@ -86,16 +86,6 @@ paths:
           description: Tenant deleted.
 components:
   schemas:
-    TenantCollection:
-      type: object
-      properties:
-        self:
-          type: string
-          format: uri
-        tenants:
-          type: array
-          items:
-            $ref: '#/components/schemas/Tenant'
     Tenant:
       type: object
       properties:
@@ -130,6 +120,16 @@ components:
           type: object
         allowCreateTenants:
           type: boolean
+    TenantCollection:
+      type: object
+      properties:
+        self:
+          type: string
+          format: uri
+        tenants:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tenant'
   securitySchemes:
     basicAuth:
       type: http

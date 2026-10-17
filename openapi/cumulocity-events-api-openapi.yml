@@ -127,6 +127,16 @@ paths:
           description: Event deleted.
 components:
   schemas:
+    EventCollection:
+      type: object
+      properties:
+        self:
+          type: string
+          format: uri
+        events:
+          type: array
+          items:
+            $ref: '#/components/schemas/Event'
     Event:
       type: object
       required:
@@ -162,16 +172,6 @@ components:
               type: string
               format: uri
       additionalProperties: true
-    EventCollection:
-      type: object
-      properties:
-        self:
-          type: string
-          format: uri
-        events:
-          type: array
-          items:
-            $ref: '#/components/schemas/Event'
   securitySchemes:
     basicAuth:
       type: http

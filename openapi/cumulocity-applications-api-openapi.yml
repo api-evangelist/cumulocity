@@ -88,16 +88,6 @@ paths:
           description: Application deleted.
 components:
   schemas:
-    ApplicationCollection:
-      type: object
-      properties:
-        self:
-          type: string
-          format: uri
-        applications:
-          type: array
-          items:
-            $ref: '#/components/schemas/Application'
     Application:
       type: object
       properties:
@@ -139,6 +129,16 @@ components:
                   type: string
         resourcesUrl:
           type: string
+    ApplicationCollection:
+      type: object
+      properties:
+        self:
+          type: string
+          format: uri
+        applications:
+          type: array
+          items:
+            $ref: '#/components/schemas/Application'
   securitySchemes:
     basicAuth:
       type: http
