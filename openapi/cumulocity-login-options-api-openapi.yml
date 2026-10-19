@@ -1,0 +1,2292 @@
+openapi: 3.2.0
+info:
+  version: Latest
+  title: Cumulocity Login options API
+  x-logo:
+    url: https://www.cumulocity.com/docs/images/logo-platform.svg
+    backgroundColor: '#F8F8F8'
+    altText: Cumulocity
+    href: https://www.cumulocity.com/api
+  description: '# REST implementation
+
+
+    This section describes the aspects common to all REST-based interfaces of Cumulocity. The interfaces are based on the Hypertext Transfer Protocol 1.1 using HTTPS. ## HTTP usage
+
+
+    ### Application management
+
+
+    Cumulocity uses a so-called "application key" to distinguish requests coming from devices and traffic from applications. If you write an application, pass the following header as part of all requests:
+
+
+    ```markup
+
+    X-Cumulocity-Application-Key:
+
+    ```
+
+
+    For example, if you registered your application in the Cumulocity Administration application with the key "myapp", your requests should contain the header:
+
+
+    ```markup
+
+    X-Cumulocity-Application-Key: myapp
+
+    ```
+
+
+    This makes your application subscribable and billable. If you implement a device, do not pass the key. > **ⓘ Info:** Make sure that you pass the key in **all** requests coming from an application. If you leave out the key,
+
+    > the request will be considered as a device request, and the corresponding device will be marked as "available". ### Limited HTTP clients
+
+
+    If you use an HTTP client that can only perform GET and POST methods in HTTP, you can emulate the other methods through an additional "X-HTTP-METHOD" header. Simply issue a POST request and add the header, specifying the actual REST method to be executed. For example, to emulate the "PUT" (modify) method, you can use:
+
+
+    ```http
+
+    POST ... X-HTTP-METHOD: PUT
+
+    ```
+
+
+    ### Processing mode
+
+
+    Every update request (PUT, POST, DELETE) executes with a so-called *processing mode*. The processing modes are as follows:
+
+
+    |Processing mode|Description|
+
+    |---|---|
+
+    |PERSISTENT (default)|Stores data in the Cumulocity database and sends data to the Streaming Analytics engine. Afterwards, Cumulocity returns the result of the request. This is the default mode.|
+
+    |TRANSIENT|Sends data to the Streaming Analytics engine and immediately returns the results asynchronously but does not store data in Cumulocity’s database. This mode saves storage and processing costs and is useful for example when tracking devices in real time without requiring data to be stored.|
+
+    |QUIESCENT|Behaves similar to the persistent mode with the exception that no real-time notifications will be sent.|
+
+    |CEP|Behaves like the transient mode with the exception that no real-time notifications are sent.|
+
+
+    To explicitly control the processing mode of an update request, you can use the "X-Cumulocity-Processing-Mode" header with a value of either "PERSISTENT", "TRANSIENT", "QUIESCENT" or "CEP":
+
+
+    ```markup
+
+    X-Cumulocity-Processing-Mode: PERSISTENT
+
+    ```
+
+
+    > **ⓘ Info:** Events are always delivered to CEP/Apama for all processing modes. This is independent from real-time notifications. ### Authorization
+
+
+    All requests issued to Cumulocity are subject to authorization. To determine the required permissions, see the "Required role" entries for the individual requests. To learn more about the different permissions and the concept of ownership in Cumulocity, see Getting started > Technical concepts > Security aspects > Access control > Managing roles and assigning permissions in the Cumulocity user documentation. > **⚠️ Important:** In the Cumulocity API, each granular permission is identified by a unique “permission” string, which is prefixed with ROLE_ (for example, ROLE_ALARM_READ, ROLE_INVENTORY_ADMIN). Therefore, permissions are frequently referred to as “roles” throughout the API as well as in the configuration files. For example, the microservice manifest includes a requiredRoles field, which actually expects a permission string. See also the Glossary of the Cumulocity user documentation for the usage of the terms “permission” and “role” in the Cumulocity context. ### Media types
+
+
+    Each type of data is associated with an own media type. The general format of media types is:
+
+
+    ```markup
+
+    application/vnd.com.nsn.cumulocity.+json;ver=;charset=UTF-8
+
+    ```
+
+
+    Each media type contains a parameter `ver` indicating the version of the type.'
+servers:
+- description: Cumulocity tenant
+  url: https://<TENANT_DOMAIN>
+security:
+- Basic: []
+- OAI-Secure: []
+- SSO: []
+- JWT-IAM: []
+tags:
+- name: Login options
+  description: 'API methods to retrieve the login options configured in the tenant.
+
+
+    More detailed information about the parameters and their meaning can be found in Platform administration > Authentication in the Cumulocity user documentation.
+
+
+    > **ⓘ Info:** If OAuth external is the only login option shown in the response, the user will be automatically redirected to the SSO login screen.'
+paths:
+  /tenant/loginOptions:
+    post:
+      operationId: postLoginOptionCollectionResource
+      x-codegen-resource-name: createLoginOption
+      parameters:
+      - $ref: '#/components/parameters/acceptHeader'
+      tags:
+      - Login options
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Create a login option
+      description: 'Create an authentication configuration on your tenant.
+
+
+        Required roles
+
+
+        ROLE_TENANT_ADMIN OR ROLE_TENANT_MANAGEMENT_ADMIN'
+      requestBody:
+        required: true
+        content:
+          application/vnd.com.nsn.cumulocity.authconfig+json:
+            example:
+              userManagementSource: INTERNAL
+              type: OAUTH2_INTERNAL
+              sessionConfiguration:
+                absoluteTimeoutMillis: 7200000
+                renewalTimeoutMillis: 3600000
+                userAgentValidationRequired: false
+                maximumNumberOfParallelSessions: 3
+              providerName: Cumulocity
+              visibleOnLoginPage: true
+              grantType: PASSWORD
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/authConfig'
+              - properties:
+                  id:
+                    readOnly: true
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request POST "https://<TENANT_DOMAIN>/tenant/loginOptions" \
+
+          --header "Authorization: Basic <AUTHORIZATION>" \
+
+          --header "Accept: application/json" \
+
+          --header "Content-Type: application/json" \
+
+          --data-raw ''<Payload>''
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/tenant/loginOptions");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.POST);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+          request.AddHeader("Content-Type", "application/json");
+
+          request.AddHeader("Accept", "application/json");
+
+          request.AddParameter("application/json", "<Payload>",  ParameterType.RequestBody);
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.post(\"https://<TENANT_DOMAIN>/tenant/loginOptions\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .header(\"Content-Type\", \"application/json\")\n    .header(\"Accept\", \"application/json\")\n    .body(\"<Payload>\")\n    .asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"POST\", \"https://<TENANT_DOMAIN>/tenant/loginOptions\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\",\n        \"Accept\": \"application/json\",\n        \"Content-Type\": \"application/json\"\n    })\n    .send(JSON.stringify( <Payload> ))\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\nimport json\n\nurl = \"https://<TENANT_DOMAIN>/tenant/loginOptions\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\",\n  \"Accept\": \"application/json\",\n  \"Content-Type\": \"application/json\"\n}\n\nresponse = requests.request(\"POST\", url, headers=headers, data = json.dumps(<Payload>))\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '200':
+          description: A login option was created.
+          content:
+            application/vnd.com.nsn.cumulocity.authconfig+json:
+              schema:
+                $ref: '#/components/schemas/authConfig'
+        '400':
+          description: Duplicated – The login option already exists.
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+        '422':
+          $ref: '#/components/responses/invalidPayload'
+    get:
+      operationId: getLoginOptionCollectionResource
+      x-codegen-resource-name: getLoginOptions
+      parameters:
+      - $ref: '#/components/parameters/queryParam_tenant_management'
+      - $ref: '#/components/parameters/queryParam_tenantId'
+      tags:
+      - Login options
+      security: []
+      summary: Retrieve all login options
+      description: Retrieve all login options available in the tenant.
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request GET "https://<TENANT_DOMAIN>/tenant/loginOptions"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/tenant/loginOptions");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.GET);
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: 'Unirest.setTimeouts(0, 0);
+
+          HttpResponse<String> response = Unirest.get("https://<TENANT_DOMAIN>/tenant/loginOptions").asString();
+
+          '
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"GET\", \"https://<TENANT_DOMAIN>/tenant/loginOptions\")\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: 'import requests
+
+
+          response = requests.request("GET", "https://<TENANT_DOMAIN>/tenant/loginOptions")
+
+          print(response.text.encode("utf8"))
+
+          '
+      responses:
+        '200':
+          $ref: '#/components/responses/loginOptionCollectionResourceFound'
+        '400':
+          $ref: '#/components/responses/loginOptionBadRequest'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+  /tenant/loginOptions/{typeOrId}:
+    get:
+      operationId: getLoginOptionResource
+      x-codegen-resource-name: getLoginOption
+      parameters:
+      - $ref: '#/components/parameters/loginOptionTypeOrId'
+      - $ref: '#/components/parameters/acceptHeader'
+      tags:
+      - Login options
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Retrieve a specific login option
+      description: 'Retrieve a specific login option in the tenant by the given type or ID.
+
+
+        Required roles
+
+
+        ((ROLE_TENANT_ADMIN OR ROLE_TENANT_MANAGEMENT_ADMIN OR ROLE_USER_MANAGEMENT_ADMIN OR ROLE_USER_MANAGEMENT_CREATE)
+
+        AND tenant access to login option is not restricted by management tenant)'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request GET "https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId}" \
+
+          --header "Authorization: Basic <AUTHORIZATION>" \
+
+          --header "Accept: application/json" \
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId}");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.GET);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+          request.AddHeader("Accept", "application/json");
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.get(\"https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId}\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .header(\"Accept\", \"application/json\")\n    .asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"GET\", \"https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId}\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\",\n        \"Accept\": \"application/json\"\n    })\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\nimport json\n\nurl = \"https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId}\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\",\n  \"Accept\": \"application/json\"\n}\nresponse = requests.request(\"PUT\", url, headers=headers)\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '200':
+          $ref: '#/components/responses/loginOptionFound'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+        '404':
+          $ref: '#/components/responses/loginOptionNotFound'
+    put:
+      operationId: putLoginOptionResource
+      x-codegen-resource-name: updateLoginOption
+      parameters:
+      - $ref: '#/components/parameters/queryParam_terminateUserSessions'
+      - $ref: '#/components/parameters/loginOptionTypeOrId'
+      - $ref: '#/components/parameters/acceptHeader'
+      - $ref: '#/components/parameters/processingModeHeader'
+      tags:
+      - Login options
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Update a specific login option
+      description: 'Update a specific login option in the tenant by a given type or ID.
+
+
+        Required roles
+
+
+        ((ROLE_TENANT_ADMIN OR ROLE_TENANT_MANAGEMENT_ADMIN)
+
+        AND tenant access to login option is not restricted by management tenant)'
+      requestBody:
+        required: true
+        content:
+          application/vnd.com.nsn.cumulocity.authconfig+json:
+            example:
+              userManagementSource: INTERNAL
+              id: 924997e5-863c-4532-96f9-cbe6dc5f8902
+              type: OAUTH2_INTERNAL
+              providerName: Cumulocity
+              visibleOnLoginPage: true
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/authConfig'
+              - required:
+                - id
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request PUT "https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId}\
+
+          --header "Authorization: Basic <AUTHORIZATION>" \
+
+          --header "Accept: application/json" \
+
+          --header "Content-Type: application/json" \
+
+          --data-raw ''<Payload>''
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId});
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.PUT);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+          request.AddHeader("Content-Type", "application/json");
+
+          request.AddHeader("Accept", "application/json");
+
+          request.AddParameter("application/json", "<Payload>",  ParameterType.RequestBody);
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.put(\"https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId}\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .header(\"Content-Type\", \"application/json\")\n    .header(\"Accept\", \"application/json\")\n    .body(\"<Payload>\")\n    .asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"PUT\", \"https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId}\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\",\n        \"Accept\": \"application/json\",\n        \"Content-Type\": \"application/json\"\n    })\n    .send(JSON.stringify( <Payload> ))\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\nimport json\n\nurl = \"https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId}\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\",\n  \"Accept\": \"application/json\",\n  \"Content-Type\": \"application/json\"\n}\n\nresponse = requests.request(\"PUT\", url, headers=headers, data = json.dumps(<Payload>))\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '200':
+          description: A login option was updated.
+          content:
+            application/vnd.com.nsn.cumulocity.authconfig+json:
+              schema:
+                $ref: '#/components/schemas/authConfig'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+        '404':
+          $ref: '#/components/responses/loginOptionNotFound'
+    delete:
+      operationId: deleteLoginOptionResource
+      x-codegen-resource-name: deleteLoginOption
+      parameters:
+      - $ref: '#/components/parameters/loginOptionTypeOrId'
+      tags:
+      - Login options
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Delete a specific login option
+      description: 'Delete a specific login option in the tenant by a given type or ID.
+
+
+        Required roles
+
+
+        ((ROLE_TENANT_ADMIN OR ROLE_TENANT_MANAGEMENT_ADMIN)
+
+        AND tenant access to login option is not restricted by management tenant)'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request DELETE "https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId}" \
+
+          --header "Authorization: Basic <AUTHORIZATION>" \
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId}");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.DELETE);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.delete(\"https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId}\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"DELETE\", \"https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId}\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\"\n    })\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\nimport json\n\nurl = \"https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId}\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\"\n}\nresponse = requests.request(\"DELETE\", url, headers=headers)\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '204':
+          description: A login option was removed.
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+        '404':
+          $ref: '#/components/responses/loginOptionNotFound'
+  /tenant/loginOptions/{typeOrId}/accessMappings:
+    post:
+      operationId: postAccessMappingResource
+      x-codegen-resource-name: createAccessMapping
+      parameters:
+      - $ref: '#/components/parameters/ssoLoginOptionTypeOrId'
+      - $ref: '#/components/parameters/queryParam_terminateUserSessions'
+      - $ref: '#/components/parameters/acceptHeader'
+      tags:
+      - Login options
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Create a login option access mapping
+      description: 'Create an authentication access mapping configuration on your tenant.
+
+
+        Required roles
+
+
+        ROLE_TENANT_ADMIN OR ROLE_TENANT_MANAGEMENT_ADMIN'
+      requestBody:
+        required: true
+        content:
+          application/vnd.com.nsn.cumulocity.accessMapping+json:
+            example:
+              when:
+                operator: AND
+                childPredicates:
+                - operator: EQ
+                  parameterPath: group
+                  value: '2'
+                  childPredicates: []
+              thenApplications:
+              - 2
+              thenGroups:
+              - 1
+              - 3
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/accessMapping'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request POST "https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId}/accessMappings\
+
+          --header "Authorization: Basic <AUTHORIZATION>" \
+
+          --header "Accept: application/json" \
+
+          --header "Content-Type: application/json" \
+
+          --data-raw ''<Payload>''
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId}/accessMappings);
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.POST);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+          request.AddHeader("Content-Type", "application/json");
+
+          request.AddHeader("Accept", "application/json");
+
+          request.AddParameter("application/json", "<Payload>",  ParameterType.RequestBody);
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.post(\"https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId}/accessMappings\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .header(\"Content-Type\", \"application/json\")\n    .header(\"Accept\", \"application/json\")\n    .body(\"<Payload>\")\n    .asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"PUT\", \"https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId}/accessMappings\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\",\n        \"Accept\": \"application/json\",\n        \"Content-Type\": \"application/json\"\n    })\n    .send(JSON.stringify( <Payload> ))\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\nimport json\n\nurl = \"https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId}/accessMappings\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\",\n  \"Accept\": \"application/json\",\n  \"Content-Type\": \"application/json\"\n}\n\nresponse = requests.request(\"PUT\", url, headers=headers, data = json.dumps(<Payload>))\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '200':
+          description: A login option access mapping was created.
+          content:
+            application/vnd.com.nsn.cumulocity.accessMapping+json:
+              schema:
+                $ref: '#/components/schemas/accessMappingWithId'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+        '422':
+          $ref: '#/components/responses/invalidPayload'
+    get:
+      operationId: getAccessMappingCollectionResource
+      x-codegen-resource-name: getAccessMappings
+      parameters:
+      - $ref: '#/components/parameters/ssoLoginOptionTypeOrId'
+      tags:
+      - Login options
+      security: []
+      summary: Retrieve all login option access mappings
+      description: 'Retrieve all access mappings available in the login option.
+
+
+        Required roles
+
+
+        ((ROLE_TENANT_ADMIN OR ROLE_TENANT_MANAGEMENT_READ OR ROLE_USER_MANAGEMENT_ADMIN OR ROLE_USER_MANAGEMENT_CREATE)
+
+        AND tenant access to login option is not restricted by management tenant)'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request GET "https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId}/accessMappings"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId}/accessMappings");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.GET);
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: 'Unirest.setTimeouts(0, 0);
+
+          HttpResponse<String> response = Unirest.get("https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId}/accessMappings").asString();
+
+          '
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"GET\", \"https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId}/accessMappings\")\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: 'import requests
+
+
+          response = requests.request("GET", "https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId}/accessMappings")
+
+          print(response.text.encode("utf8"))
+
+          '
+      responses:
+        '200':
+          description: A login option access mappings collection.
+          content:
+            application/vnd.com.nsn.cumulocity.accessMappingCollection+json:
+              schema:
+                $ref: '#/components/schemas/accessMappingCollection'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+  /tenant/loginOptions/{typeOrId}/accessMappings/{id}:
+    get:
+      operationId: getAccessMappingResource
+      x-codegen-resource-name: getAccessMapping
+      parameters:
+      - $ref: '#/components/parameters/loginOptionTypeOrId'
+      - $ref: '#/components/parameters/accessMappingId'
+      - $ref: '#/components/parameters/acceptHeader'
+      tags:
+      - Login options
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Retrieve a specific access mapping
+      description: 'Retrieve a specific access mapping in the login option by the given ID.
+
+
+        Required roles
+
+
+        ((ROLE_TENANT_ADMIN OR ROLE_TENANT_MANAGEMENT_READ OR ROLE_USER_MANAGEMENT_ADMIN OR ROLE_USER_MANAGEMENT_CREATE)
+
+        AND tenant access to login option is not restricted by management tenant)'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request GET "https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId}/accessMappings/{id}" \
+
+          --header "Authorization: Basic <AUTHORIZATION>" \
+
+          --header "Accept: application/json" \
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId}/accessMappings/{id}");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.GET);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+          request.AddHeader("Accept", "application/json");
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.get(\"https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId}/accessMappings/{id}\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .header(\"Accept\", \"application/json\")\n    .asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"GET\", \"https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId}/accessMappings/{id}\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\",\n        \"Accept\": \"application/json\"\n    })\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\nimport json\n\nurl = \"https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId}/accessMappings/{id}\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\",\n  \"Accept\": \"application/json\"\n}\nresponse = requests.request(\"PUT\", url, headers=headers)\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '200':
+          description: A login option access mappings.
+          content:
+            application/vnd.com.nsn.cumulocity.accessMapping+json:
+              schema:
+                $ref: '#/components/schemas/accessMappingWithId'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+        '404':
+          $ref: '#/components/responses/accessMappingNotFound'
+    put:
+      operationId: putAccessMappingResource
+      x-codegen-resource-name: updateAccessMapping
+      parameters:
+      - $ref: '#/components/parameters/loginOptionTypeOrId'
+      - $ref: '#/components/parameters/accessMappingId'
+      - $ref: '#/components/parameters/queryParam_terminateUserSessions'
+      - $ref: '#/components/parameters/acceptHeader'
+      tags:
+      - Login options
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Update a specific access mapping
+      description: 'Update a specific access mapping in the login option by a given ID.
+
+
+        Required roles
+
+
+        ((ROLE_TENANT_ADMIN OR ROLE_TENANT_MANAGEMENT_ADMIN)
+
+        AND tenant access to login option is not restricted by management tenant)'
+      requestBody:
+        required: true
+        content:
+          application/vnd.com.nsn.cumulocity.accessMapping+json:
+            example:
+              id: d7dfe6aa-6a7d-494b-9575-7e58c1651b86
+              when:
+                operator: AND
+                childPredicates:
+                - operator: EQ
+                  parameterPath: group
+                  value: '2'
+                  childPredicates: []
+              thenApplications:
+              - 2
+              thenGroups:
+              - 1
+              - 3
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/accessMappingWithId'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request PUT "https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId}/accessMappings/{id}\
+
+          --header "Authorization: Basic <AUTHORIZATION>" \
+
+          --header "Accept: application/json" \
+
+          --header "Content-Type: application/json" \
+
+          --data-raw ''<Payload>''
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId}/accessMappings/{id});
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.PUT);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+          request.AddHeader("Content-Type", "application/json");
+
+          request.AddHeader("Accept", "application/json");
+
+          request.AddParameter("application/json", "<Payload>",  ParameterType.RequestBody);
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.put(\"https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId}/accessMappings/{id}\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .header(\"Content-Type\", \"application/json\")\n    .header(\"Accept\", \"application/json\")\n    .body(\"<Payload>\")\n    .asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"PUT\", \"https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId}/accessMappings/{id}\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\",\n        \"Accept\": \"application/json\",\n        \"Content-Type\": \"application/json\"\n    })\n    .send(JSON.stringify( <Payload> ))\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\nimport json\n\nurl = \"https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId}/accessMappings/{id}\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\",\n  \"Accept\": \"application/json\",\n  \"Content-Type\": \"application/json\"\n}\n\nresponse = requests.request(\"PUT\", url, headers=headers, data = json.dumps(<Payload>))\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '200':
+          description: A access mapping was updated.
+          content:
+            application/vnd.com.nsn.cumulocity.accessMapping+json:
+              schema:
+                $ref: '#/components/schemas/accessMappingWithId'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+        '404':
+          $ref: '#/components/responses/accessMappingNotFound'
+        '422':
+          $ref: '#/components/responses/invalidPayload'
+    delete:
+      operationId: deleteAccessMappingResource
+      x-codegen-resource-name: deleteAccessMapping
+      parameters:
+      - $ref: '#/components/parameters/loginOptionTypeOrId'
+      - $ref: '#/components/parameters/accessMappingId'
+      - $ref: '#/components/parameters/queryParam_terminateUserSessions'
+      tags:
+      - Login options
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Delete a specific access mapping
+      description: 'Delete a specific access mapping in the login option by a given ID.
+
+
+        Required roles
+
+
+        ((ROLE_TENANT_ADMIN OR ROLE_TENANT_MANAGEMENT_ADMIN)
+
+        AND tenant access to login option is not restricted by management tenant)'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request DELETE "https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId}/accessMappings/{id}" \
+
+          --header "Authorization: Basic <AUTHORIZATION>" \
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId}/accessMappings/{id}");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.DELETE);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.delete(\"https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId}/accessMappings/{id}\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"DELETE\", \"https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId}/accessMappings/{id}\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\"\n    })\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\nimport json\n\nurl = \"https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId}/accessMappings/{id}\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\"\n}\nresponse = requests.request(\"DELETE\", url, headers=headers)\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '204':
+          description: A access mapping was removed.
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+        '404':
+          $ref: '#/components/responses/accessMappingNotFound'
+  /tenant/loginOptions/{typeOrId}/inventoryAccessMappings:
+    post:
+      operationId: postInventoryAccessMappingResource
+      x-codegen-resource-name: createInventoryAccessMapping
+      parameters:
+      - $ref: '#/components/parameters/ssoLoginOptionTypeOrId'
+      - $ref: '#/components/parameters/queryParam_terminateUserSessions'
+      - $ref: '#/components/parameters/acceptHeader'
+      tags:
+      - Login options
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Create an inventory access mapping
+      description: 'Create an inventory access mapping configuration on your tenant.
+
+
+        Required roles
+
+
+        ROLE_TENANT_ADMIN OR ROLE_TENANT_MANAGEMENT_ADMIN'
+      requestBody:
+        required: true
+        content:
+          application/vnd.com.nsn.cumulocity.inventoryAccessMapping+json:
+            example:
+              when:
+                operator: AND
+                childPredicates:
+                - childPredicates: []
+                  value: '2'
+                  operator: EQ
+                  parameterPath: group
+              thenInventoryRoles:
+              - managedObject: '358104'
+                roleIds:
+                - 1
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/inventoryAccessMapping'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request POST "https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId}/inventoryAccessMappings\
+
+          --header "Authorization: Basic <AUTHORIZATION>" \
+
+          --header "Accept: application/json" \
+
+          --header "Content-Type: application/json" \
+
+          --data-raw ''<Payload>''
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId}/inventoryAccessMappings);
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.POST);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+          request.AddHeader("Content-Type", "application/json");
+
+          request.AddHeader("Accept", "application/json");
+
+          request.AddParameter("application/json", "<Payload>",  ParameterType.RequestBody);
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.post(\"https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId}/inventoryAccessMappings\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .header(\"Content-Type\", \"application/json\")\n    .header(\"Accept\", \"application/json\")\n    .body(\"<Payload>\")\n    .asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"POST\", \"https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId}/inventoryAccessMappings\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\",\n        \"Accept\": \"application/json\",\n        \"Content-Type\": \"application/json\"\n    })\n    .send(JSON.stringify( <Payload> ))\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\nimport json\n\nurl = \"https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId}/inventoryAccessMappings\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\",\n  \"Accept\": \"application/json\",\n  \"Content-Type\": \"application/json\"\n}\npayload = json.dumps( <Payload> )\nresponse = requests.request(\"POST\", url, headers=headers, data=payload)\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '200':
+          description: An inventory access mapping was created.
+          content:
+            application/vnd.com.nsn.cumulocity.inventoryAccessMapping+json:
+              schema:
+                $ref: '#/components/schemas/inventoryAccessMappingWithId'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+        '422':
+          $ref: '#/components/responses/invalidPayload'
+    get:
+      operationId: getInventoryAccessMappingCollectionResource
+      x-codegen-resource-name: getInventoryAccessMappings
+      parameters:
+      - $ref: '#/components/parameters/ssoLoginOptionTypeOrId'
+      tags:
+      - Login options
+      security: []
+      summary: Retrieve all inventory access mappings
+      description: 'Retrieve all inventory access mappings available in the login option.
+
+
+        Required roles
+
+
+        ((ROLE_TENANT_ADMIN OR ROLE_TENANT_MANAGEMENT_READ OR ROLE_USER_MANAGEMENT_ADMIN OR ROLE_USER_MANAGEMENT_CREATE)
+
+        AND tenant access to login option is not restricted by management tenant)'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request GET "https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId}/inventoryAccessMappings"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId}/inventoryAccessMappings");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.GET);
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: 'Unirest.setTimeouts(0, 0);
+
+          HttpResponse<String> response = Unirest.get("https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId}/inventoryAccessMappings").asString();
+
+          '
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"GET\", \"https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId}/inventoryAccessMappings\")\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: 'import requests
+
+
+          response = requests.request("GET", "https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId}/inventoryAccessMappings")
+
+          print(response.text.encode("utf8"))
+
+          '
+      responses:
+        '200':
+          description: An inventory access mappings collection.
+          content:
+            application/vnd.com.nsn.cumulocity.inventoryAccessMappingCollection+json:
+              schema:
+                $ref: '#/components/schemas/inventoryAccessMappingCollection'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+  /tenant/loginOptions/{typeOrId}/inventoryAccessMappings/{id}:
+    get:
+      operationId: getInventoryAccessMappingResource
+      x-codegen-resource-name: getInventoryAccessMapping
+      parameters:
+      - $ref: '#/components/parameters/loginOptionTypeOrId'
+      - $ref: '#/components/parameters/inventoryAccessMappingId'
+      - $ref: '#/components/parameters/acceptHeader'
+      tags:
+      - Login options
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Retrieve a specific inventory access mapping
+      description: 'Retrieve a specific inventory access mapping in the login option by the given ID.
+
+
+        Required roles
+
+
+        ((ROLE_TENANT_ADMIN OR ROLE_TENANT_MANAGEMENT_READ OR ROLE_USER_MANAGEMENT_ADMIN OR ROLE_USER_MANAGEMENT_CREATE)
+
+        AND tenant access to login option is not restricted by management tenant)'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request GET "https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId}/inventoryAccessMappings/{id}" \
+
+          --header "Authorization: Basic <AUTHORIZATION>" \
+
+          --header "Accept: application/json" \
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId}/inventoryAccessMappings/{id}");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.GET);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+          request.AddHeader("Accept", "application/json");
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.get(\"https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId}/inventoryAccessMappings/{id}\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .header(\"Accept\", \"application/json\")\n    .asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"GET\", \"https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId}/inventoryAccessMappings/{id}\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\",\n        \"Accept\": \"application/json\"\n    })\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\nimport json\n\nurl = \"https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId}/inventoryAccessMappings/{id}\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\",\n  \"Accept\": \"application/json\"\n}\nresponse = requests.request(\"GET\", url, headers=headers)\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '200':
+          description: An inventory access mapping.
+          content:
+            application/vnd.com.nsn.cumulocity.inventoryAccessMapping+json:
+              schema:
+                $ref: '#/components/schemas/inventoryAccessMappingWithId'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+        '404':
+          $ref: '#/components/responses/inventoryAccessMappingNotFound'
+    put:
+      operationId: putInventoryAccessMappingResource
+      x-codegen-resource-name: updateInventoryAccessMapping
+      parameters:
+      - $ref: '#/components/parameters/loginOptionTypeOrId'
+      - $ref: '#/components/parameters/inventoryAccessMappingId'
+      - $ref: '#/components/parameters/queryParam_terminateUserSessions'
+      - $ref: '#/components/parameters/acceptHeader'
+      tags:
+      - Login options
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Update a specific inventory access mapping
+      description: 'Update a specific inventory access mapping in the login option by a given ID.
+
+
+        Required roles
+
+
+        ((ROLE_TENANT_ADMIN OR ROLE_TENANT_MANAGEMENT_ADMIN)
+
+        AND tenant access to login option is not restricted by management tenant)'
+      requestBody:
+        required: true
+        content:
+          application/vnd.com.nsn.cumulocity.inventoryAccessMapping+json:
+            example:
+              id: 5e7b7568-1f85-4e89-ae98-d7fbf4852fad
+              when:
+                operator: AND
+                childPredicates:
+                - childPredicates: []
+                  value: '2'
+                  operator: EQ
+                  parameterPath: group
+              thenInventoryRoles:
+              - managedObject: '358104'
+                roleIds:
+                - 1
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/inventoryAccessMappingWithId'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request PUT "https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId}/inventoryAccessMappings/{id}\
+
+          --header "Authorization: Basic <AUTHORIZATION>" \
+
+          --header "Accept: application/json" \
+
+          --header "Content-Type: application/json" \
+
+          --data-raw ''<Payload>''
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId}/inventoryAccessMappings/{id});
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.PUT);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+          request.AddHeader("Content-Type", "application/json");
+
+          request.AddHeader("Accept", "application/json");
+
+          request.AddParameter("application/json", "<Payload>",  ParameterType.RequestBody);
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.put(\"https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId}/inventoryAccessMappings/{id}\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .header(\"Content-Type\", \"application/json\")\n    .header(\"Accept\", \"application/json\")\n    .body(\"<Payload>\")\n    .asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"PUT\", \"https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId}/inventoryAccessMappings/{id}\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\",\n        \"Accept\": \"application/json\",\n        \"Content-Type\": \"application/json\"\n    })\n    .send(JSON.stringify( <Payload> ))\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\nimport json\n\nurl = \"https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId}/inventoryAccessMappings/{id}\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\",\n  \"Accept\": \"application/json\",\n  \"Content-Type\": \"application/json\"\n}\npayload = json.dumps( <Payload> )\nresponse = requests.request(\"PUT\", url, headers=headers, data=payload)\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '200':
+          description: An inventory access mapping was updated.
+          content:
+            application/vnd.com.nsn.cumulocity.inventoryAccessMapping+json:
+              schema:
+                $ref: '#/components/schemas/inventoryAccessMappingWithId'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+        '404':
+          $ref: '#/components/responses/inventoryAccessMappingNotFound'
+        '422':
+          $ref: '#/components/responses/invalidPayload'
+    delete:
+      operationId: deleteInventoryAccessMappingResource
+      x-codegen-resource-name: deleteInventoryAccessMapping
+      parameters:
+      - $ref: '#/components/parameters/loginOptionTypeOrId'
+      - $ref: '#/components/parameters/inventoryAccessMappingId'
+      - $ref: '#/components/parameters/queryParam_terminateUserSessions'
+      tags:
+      - Login options
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Delete a specific inventory access mapping
+      description: 'Delete a specific inventory access mapping in the login option by a given ID.
+
+
+        Required roles
+
+
+        ((ROLE_TENANT_ADMIN OR ROLE_TENANT_MANAGEMENT_ADMIN)
+
+        AND tenant access to login option is not restricted by management tenant)'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request DELETE "https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId}/inventoryAccessMappings/{id}" \
+
+          --header "Authorization: Basic <AUTHORIZATION>" \
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId}/inventoryAccessMappings/{id}");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.DELETE);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.delete(\"https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId}/inventoryAccessMappings/{id}\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"DELETE\", \"https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId}/inventoryAccessMappings/{id}\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\"\n    })\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\nimport json\n\nurl = \"https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId}/inventoryAccessMappings/{id}\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\"\n}\nresponse = requests.request(\"DELETE\", url, headers=headers)\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '204':
+          description: An inventory access mapping was removed.
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+        '404':
+          $ref: '#/components/responses/inventoryAccessMappingNotFound'
+  /tenant/loginOptions/{typeOrId}/restrict:
+    put:
+      operationId: putAccessLoginOptionResource
+      x-codegen-resource-name: updateLoginOptionAccess
+      parameters:
+      - $ref: '#/components/parameters/acceptHeader'
+      - $ref: '#/components/parameters/loginOptionTypeOrId'
+      - $ref: '#/components/parameters/queryParam_targetTenant'
+      tags:
+      - Login options
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Update a tenant's access to the login option
+      description: 'Update the tenant''s access to the authentication configuration.
+
+
+        Required roles
+
+
+        ROLE_TENANT_MANAGEMENT_ADMIN AND is the management tenant'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/authConfigAccess'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request PUT "https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId}/restrict?targetTenant=<TENANT_ID>" \
+
+          --header "Authorization: Basic <AUTHORIZATION>" \
+
+          --header "Accept: application/json" \
+
+          --header "Content-Type: application/json" \
+
+          --data-raw ''<Payload>''
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId}/restrict?targetTenant=<TENANT_ID>");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.PUT);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+          request.AddHeader("Content-Type", "application/json");
+
+          request.AddHeader("Accept", "application/json");
+
+          request.AddParameter("application/json", "<Payload>",  ParameterType.RequestBody);
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.put(\"https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId}/restrict?targetTenant=<TENANT_ID>\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .header(\"Content-Type\", \"application/json\")\n    .header(\"Accept\", \"application/json\")\n    .body(\"<Payload>\")\n    .asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"PUT\", \"https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId}/restrict?targetTenant=<TENANT_ID>\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\",\n        \"Accept\": \"application/json\",\n        \"Content-Type\": \"application/json\"\n    })\n    .send(JSON.stringify( <Payload> ))\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\nimport json\n\nurl = \"https://<TENANT_DOMAIN>/tenant/loginOptions/{typeOrId}/restrict?targetTenant=<TENANT_ID>\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\",\n  \"Accept\": \"application/json\",\n  \"Content-Type\": \"application/json\"\n}\n\nresponse = requests.request(\"PUT\", url, headers=headers, data = json.dumps(<Payload>))\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '200':
+          description: The login option was updated.
+          content:
+            application/vnd.com.nsn.cumulocity.authconfig+json:
+              schema:
+                $ref: '#/components/schemas/authConfig'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+        '404':
+          $ref: '#/components/responses/tenantNotFound'
+components:
+  parameters:
+    queryParam_tenant_management:
+      name: management
+      in: query
+      description: 'If this is set to `true`, the management tenant login options will be returned.
+
+
+        > **&#9432; Info:** The `tenantId` parameter must not be present in the request when using the `management` parameter, otherwise it will cause an error.
+
+        '
+      schema:
+        type: boolean
+        default: false
+        example: true
+    processingModeHeader:
+      name: X-Cumulocity-Processing-Mode
+      in: header
+      description: Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+      required: false
+      schema:
+        type: string
+        default: PERSISTENT
+        enum:
+        - PERSISTENT
+        - TRANSIENT
+        - QUIESCENT
+        - CEP
+        example: PERSISTENT
+    ssoLoginOptionTypeOrId:
+      name: typeOrId
+      in: path
+      description: The type or ID of the login option. The type's value is case insensitive and should be `OAUTH2`.
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        example: OAUTH2
+    queryParam_targetTenant:
+      name: targetTenant
+      in: query
+      description: Unique identifier of a Cumulocity tenant.
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        example: t07007007
+    queryParam_terminateUserSessions:
+      name: terminateUserSessions
+      in: query
+      description: 'When set to ''true'', all active sessions for all users within the tenant will be terminated.
+
+        '
+      schema:
+        type: boolean
+        default: true
+        example: true
+    accessMappingId:
+      name: id
+      in: path
+      description: Unique identifier of the access mapping.
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        example: d7dfe6aa-6a7d-494b-9575-7e58c1651b86
+    loginOptionTypeOrId:
+      name: typeOrId
+      in: path
+      description: The type or ID of the login option. The type's value is case insensitive and can be `OAUTH2`, `OAUTH2_INTERNAL` or `BASIC`.
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        example: OAUTH2
+    queryParam_tenantId:
+      name: tenantId
+      in: query
+      description: Unique identifier of a Cumulocity tenant.
+      schema:
+        type: string
+        minLength: 1
+        example: t07007007
+    inventoryAccessMappingId:
+      name: id
+      in: path
+      description: Unique identifier of the inventory access mapping.
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        example: 5e7b7568-1f85-4e89-ae98-d7fbf4852fad
+    acceptHeader:
+      name: Accept
+      in: header
+      description: Advertises which content types, expressed as MIME types, the client is able to understand.
+      required: false
+      schema:
+        type: string
+        minLength: 1
+        example: application/json
+  schemas:
+    inventoryAccessMapping:
+      description: Represents information of mapping access to inventory roles.
+      type: object
+      properties:
+        when:
+          description: Defines the condition that must be satisfied for this access mapping to apply.
+          type: object
+          properties:
+            operator:
+              description: Logical operator used to combine all child predicates (e.g. AND, OR).
+              type: string
+              example: AND
+            childPredicates:
+              description: List of predicates that are evaluated and combined using the operator.
+              type: object
+              $ref: '#/components/schemas/JSONPredicateRepresentation'
+        thenInventoryRoles:
+          description: List of the OAuth inventory assignments.
+          type: array
+          items:
+            description: Represents inventory roles for a specific device group.
+            type: object
+            properties:
+              managedObject:
+                description: A unique identifier for the managed object for which the roles are assigned.
+                type: string
+                example: '358104'
+              roleIds:
+                description: List of the inventory roles' identifiers.
+                type: array
+                items:
+                  type: integer
+                example:
+                - 1
+    accessMapping:
+      description: Represents information of mapping access to groups and applications.
+      type: object
+      properties:
+        when:
+          description: Defines the condition that must be satisfied for this access mapping to apply.
+          type: object
+          properties:
+            operator:
+              description: Logical operator used to combine all child predicates (e.g. AND, OR).
+              type: string
+              example: AND
+            childPredicates:
+              description: List of predicates that are evaluated and combined using the operator.
+              type: object
+              $ref: '#/components/schemas/JSONPredicateRepresentation'
+        thenApplications:
+          description: List of the applications' identifiers.
+          type: array
+          items:
+            type: integer
+          example:
+          - 2
+        thenGroups:
+          description: List of the groups' identifiers.
+          type: array
+          items:
+            type: integer
+            example:
+            - 1
+            - 3
+    desc_self:
+      title: SelfURL
+      description: A URL linking to this resource.
+      type: string
+      format: uri
+      readOnly: true
+    accessMappingCollection:
+      description: All available access mappings in the login option.
+      type: object
+      properties:
+        accessMappings:
+          description: An array containing the available access mappings.
+          type: array
+          items:
+            $ref: '#/components/schemas/accessMappingWithId'
+        self:
+          allOf:
+          - $ref: '#/components/schemas/desc_self'
+          example: https://<TENANT_DOMAIN>/tenant/loginOptions/OAUTH2/accessMappings
+    RequestRepresentation:
+      type: object
+      properties:
+        body:
+          description: Body of the request.
+          type: string
+        headers:
+          description: Headers of the request.
+          type: object
+          additionalProperties:
+            description: 'It is possible to add an arbitrary number of headers as a list of key-value string pairs, for example, `"header": "value"`.
+
+              '
+            type: string
+            x-additionalPropertiesName: requestHeaders
+        method:
+          description: HTTP request method.
+          type: string
+          enum:
+          - GET
+          - POST
+        operation:
+          description: Requested operation.
+          type: string
+          enum:
+          - EXECUTE
+          - REDIRECT
+        requestParams:
+          description: Parameters of the request.
+          type: object
+          additionalProperties:
+            description: 'It is possible to add an arbitrary number of parameters as a list of key-value string pairs, for example, `"parameter": "value"`.
+
+              '
+            type: string
+            x-additionalPropertiesName: requestParameters
+        url:
+          description: Target of the request described as a URL.
+          type: string
+          format: uri
+    inventoryAccessMappingWithId:
+      allOf:
+      - type: object
+        properties:
+          id:
+            type: string
+            description: Unique identifier of this inventory mapping.
+        example:
+          id: 5e7b7568-1f85-4e89-ae98-d7fbf4852fad
+      - $ref: '#/components/schemas/inventoryAccessMapping'
+      - type: object
+        properties:
+          self:
+            $ref: '#/components/schemas/desc_self'
+        example:
+          self: https://<TENANT_DOMAIN>/tenant/loginOptions/OAUTH2/inventoryAccessMappings/5e7b7568-1f85-4e89-ae98-d7fbf4852fad
+    JSONPredicateRepresentation:
+      description: Represents a predicate for verification. It acts as a condition which is necessary to assign a user to the given groups, permit access to the specified applications or to assign specific inventory roles to device groups.
+      type: object
+      properties:
+        childPredicates:
+          description: Nested predicates.
+          type: array
+          items:
+            $ref: '#/components/schemas/JSONPredicateRepresentation'
+          example: []
+        operator:
+          description: Operator executed on the parameter from the JWT access token claim pointed by `parameterPath` and the provided parameter `value`.
+          type: string
+          enum:
+          - EQ
+          - NEQ
+          - GT
+          - LT
+          - GTE
+          - LTE
+          - IN
+          - AND
+          - OR
+          example: EQ
+        parameterPath:
+          description: Path to the claim from the JWT access token from the external authorization server.
+          type: string
+          example: group
+        value:
+          description: Given value used for parameter verification.
+          type: string
+          example: '2'
+    error:
+      type: object
+      properties:
+        error:
+          description: The type of error returned.
+          type: string
+        message:
+          description: A human-readable message providing more details about the error.
+          type: string
+        info:
+          description: A URI reference [[RFC3986](https://tools.ietf.org/html/rfc3986)] that identifies the error code reported.
+          type: string
+    inventoryAccessMappingCollection:
+      description: All available inventory access mappings in the login option.
+      type: object
+      properties:
+        inventoryAccessMappings:
+          description: An array containing the available inventory access mappings.
+          type: array
+          items:
+            $ref: '#/components/schemas/inventoryAccessMappingWithId'
+        self:
+          allOf:
+          - $ref: '#/components/schemas/desc_self'
+          example: https://<TENANT_DOMAIN>/tenant/loginOptions/OAUTH2/inventoryAccessMappings
+    authConfigAccess:
+      type: object
+      properties:
+        onlyManagementTenantAccess:
+          description: Indicates whether the configuration is only accessible to the management tenant.
+          type: boolean
+          default: false
+          example: false
+    accessMappingWithId:
+      allOf:
+      - type: object
+        properties:
+          id:
+            type: string
+            description: Unique identifier of this access mapping.
+        example:
+          id: d7dfe6aa-6a7d-494b-9575-7e58c1651b86
+      - $ref: '#/components/schemas/accessMapping'
+      - type: object
+        properties:
+          self:
+            $ref: '#/components/schemas/desc_self'
+        example:
+          self: https://<TENANT_DOMAIN>/tenant/loginOptions/OAUTH2/accessMappings/d7dfe6aa-6a7d-494b-9575-7e58c1651b86
+    LoginOption:
+      description: Login option properties.
+      type: object
+      properties:
+        authenticationRestrictions:
+          $ref: '#/components/schemas/BasicAuthenticationRestrictions'
+        enforceStrength:
+          description: Indicates if password strength is enforced.
+          type: boolean
+        grantType:
+          description: The grant type of the OAuth configuration.
+          enum:
+          - PASSWORD
+          - AUTHORIZATION_CODE
+          type: string
+        greenMinLength:
+          description: Minimum length for the password when the strength validation is enforced.
+          type: integer
+        id:
+          description: Unique identifier of this login option.
+          type: string
+        initRequest:
+          description: A URL linking to the token generating endpoint.
+          type: string
+        loginRedirectDomain:
+          description: The tenant domain.
+          type: string
+        self:
+          $ref: '#/components/schemas/desc_self'
+        sessionConfiguration:
+          $ref: '#/components/schemas/OAuthSessionConfiguration'
+        strengthValidity:
+          description: Enforce password strength validation on subtenant level. `enforceStrength` enforces it on all tenants in the platform.
+          type: boolean
+        tfaStrategy:
+          description: 'Two-factor authentication being used by this login option. TFA supported: SMS and TOTP.'
+          type: string
+        type:
+          description: The type of authentication. See [Authentication](#section/Authentication) for more details.
+          type: string
+        userManagementSource:
+          description: Specifies if the users are managed internally by Cumulocity (`INTERNAL`) or if the users data are managed by a external system (`REMOTE`).
+          type: string
+        visibleOnLoginPage:
+          description: Indicates if this login option is available in the login page (only for SSO).
+          type: boolean
+        _type:
+          description: The type of authentication.
+          deprecated: true
+          type: string
+    OAuthSessionConfiguration:
+      description: The session configuration properties are only available for OAI-Secure. See [Platform administration > Authentication > Basic settings > OAI Secure session configuration ](https://www.cumulocity.com/docs/authentication/basic-settings/#oai-secure-session-configuration) in the Cumulocity user documentation.
+      type: object
+      properties:
+        absoluteTimeoutMillis:
+          description: Maximum session duration (in milliseconds) during which a user does not have to login again.
+          type: integer
+        maximumNumberOfParallelSessions:
+          description: Maximum number of parallel sessions for one user.
+          type: integer
+        renewalTimeoutMillis:
+          description: Amount of time before a token expires (in milliseconds) during which the token may be renewed.
+          type: integer
+        userAgentValidationRequired:
+          description: Switch to turn additional user agent verification on or off during the session.
+          type: boolean
+    LoginOptionCollection:
+      description: All available login options of the tenant.
+      type: object
+      properties:
+        loginOptions:
+          description: An array containing the available login options.
+          type: array
+          items:
+            $ref: '#/components/schemas/LoginOption'
+        self:
+          $ref: '#/components/schemas/desc_self'
+    authConfig:
+      description: Parameters determining the authentication process.
+      type: object
+      required:
+      - type
+      - providerName
+      properties:
+        accessTokenToUserDataMapping:
+          description: SSO specific. Describes the fields in the access token from the external server containing user information.
+          type: object
+          properties:
+            emailClaimName:
+              description: The name of the field containing the user's email.
+              type: string
+              format: email
+            firstNameClaimName:
+              description: The name of the field containing the user's first name.
+              type: string
+            lastNameClaimName:
+              description: The name of the field containing the user's last name.
+              type: string
+            phoneNumberClaimName:
+              description: The name of the field containing the user's phone number.
+              type: string
+              format: phone
+        audience:
+          description: SSO specific. Token audience.
+          type: string
+          format: uri
+        authorizationRequest:
+          allOf:
+          - $ref: '#/components/schemas/RequestRepresentation'
+          - description: SSO specific. Request to the external authorization server used by the Cumulocity platform to obtain an authorization code.
+        authenticationRestrictions:
+          $ref: '#/components/schemas/BasicAuthenticationRestrictions'
+        buttonName:
+          description: SSO specific. Information for the UI about the name displayed on the external server login button.
+          type: string
+        clientId:
+          description: SSO specific. The identifier of the Cumulocity tenant on the external authorization server.
+          type: string
+        grantType:
+          description: The authentication configuration grant type identifier.
+          type: string
+          enum:
+          - AUTHORIZATION_CODE
+          - PASSWORD
+        id:
+          description: Unique identifier of this login option.
+          type: string
+        issuer:
+          description: SSO specific. External token issuer.
+          type: string
+          format: uri
+        logoutRequest:
+          allOf:
+          - $ref: '#/components/schemas/RequestRepresentation'
+          - description: SSO specific. Request to the external authorization server used by the Cumulocity platform to logout the user.
+        onlyManagementTenantAccess:
+          description: Indicates whether the configuration is only accessible to the management tenant.
+          type: boolean
+        onNewUser:
+          description: SSO specific. Describes the process of internal user creation during login with the external authorization server.
+          type: object
+          properties:
+            dynamicMapping:
+              description: Modern version of configuration of default groups and applications. This ensures backward compatibility.
+              type: object
+              properties:
+                configuration:
+                  description: Configuration of the mapping.
+                  type: object
+                  properties:
+                    mapRolesOnlyForNewUser:
+                      description: Indicates whether the mapping should be evaluated always or only during the first external login when the internal user is created.
+                      type: boolean
+                    manageRolesOnlyFromAccessMapping:
+                      description: If set to `true`, dynamic access mapping is only managed for global roles, applications and inventory roles which are listed in the configuration. Others remain unchanged.
+                      type: boolean
+                    mapFromIdToken:
+                      description: If set to `true`, dynamic access mapping is performed using the claims from the id_token; otherwise, it is based on the access_token.
+                      type: boolean
+                mappings:
+                  description: Represents rules used to assign groups and applications.
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/accessMappingWithId'
+                inventoryMappings:
+                  description: Represents rules used to assign inventory roles.
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/inventoryAccessMappingWithId'
+        providerName:
+          description: The name of the authentication provider.
+          type: string
+        redirectToPlatform:
+          description: SSO specific. URL used for redirecting to the Cumulocity platform. Do not set or leave it empty to allow SSO flow to be controlled by client (UI) applications.
+          type: string
+          format: uri
+        refreshRequest:
+          allOf:
+          - $ref: '#/components/schemas/RequestRepresentation'
+          - description: SSO specific. Request to the external authorization server used by the Cumulocity platform to obtain a refresh token.
+        self:
+          $ref: '#/components/schemas/desc_self'
+        sessionConfiguration:
+          $ref: '#/components/schemas/OAuthSessionConfiguration'
+        signatureVerificationConfig:
+          type: object
+          description: SSO specific and authorization server dependent. Describes the method of access token signature verification on the Cumulocity platform.
+          properties:
+            aad:
+              description: AAD signature verification configuration.
+              type: object
+              properties:
+                publicKeyDiscoveryUrl:
+                  description: URL used to retrieve the public key used for signature verification.
+                  type: string
+                  format: uri
+            adfsManifest:
+              description: ADFS manifest signature verification configuration.
+              type: object
+              properties:
+                manifestUrl:
+                  description: The URI to the manifest resource.
+                  type: string
+                  format: uri
+            jwks:
+              description: The address of the endpoint which is used to retrieve the public key used to verify the JWT access token signature.
+              type: object
+              properties:
+                jwksUrl:
+                  description: The URI to the public key resource.
+                  type: string
+                  format: uri
+            manual:
+              description: Describes the process of verification of JWT access token with the public keys embedded in the provided X.509 certificates.
+              type: object
+              properties:
+                certIdField:
+                  description: The name of the field in the JWT access token containing the certificate identifier.
+                  type: string
+                certIdFromField:
+                  description: Indicates whether the certificate identifier should be read from the JWT access token.
+                  type: boolean
+                certificates:
+                  description: Details of the certificates.
+                  type: object
+                  properties:
+                    alg:
+                      description: The signing algorithm of the JWT access token.
+                      type: string
+                      enum:
+                      - RSA
+                      - PCKS
+                    publicKey:
+                      description: The public key certificate.
+                      type: string
+                    validFrom:
+                      description: The validity start date of the certificate.
+                      type: string
+                      format: date-time
+                    validTill:
+                      description: The expiry date of the certificate.
+                      type: string
+                      format: date-time
+        template:
+          description: SSO specific. Template name used by the UI.
+          type: string
+        tokenRequest:
+          allOf:
+          - $ref: '#/components/schemas/RequestRepresentation'
+          - description: SSO specific. Request to the external authorization server used by the Cumulocity platform to obtain an access token.
+        type:
+          description: The authentication configuration type. Note that the value is case insensitive.
+          type: string
+          enum:
+          - BASIC
+          - OAUTH2
+          - OAUTH2_INTERNAL
+        useIdToken:
+          description: If set to `true`, user data and the userId are retrieved using the claims from the id_token; otherwise, they are based on the access_token.
+          type: boolean
+        userIdConfig:
+          type: object
+          description: SSO specific. Points to the field in the obtained JWT access token that should be used as the username in the Cumulocity platform.
+          properties:
+            constantValue:
+              description: Used only if `useConstantValue` is set to `true`. It cannot contain whitespace, slashes nor any of `+$:` characters.
+              maxLength: 1000
+              type: string
+            jwtField:
+              description: The name of the field containing the JWT.
+              type: string
+            useConstantValue:
+              description: Not recommended. If set to `true`, all SSO users will share one account in the Cumulocity platform.
+              type: boolean
+        userManagementSource:
+          description: Indicates whether user data are managed internally by the Cumulocity platform or by an external server. Note that the value is case insensitive.
+          type: string
+          enum:
+          - INTERNAL
+          - REMOTE
+        visibleOnLoginPage:
+          description: Information for the UI if the respective authentication form should be visible for the user.
+          type: boolean
+        externalTokenConfig:
+          type: object
+          description: A configuration for authentication with an access token from the authorization server.
+          properties:
+            enabled:
+              description: Indicates whether authentication is enabled or disabled.
+              type: boolean
+            userOrAppIdConfig:
+              description: Points to the claim of the access token from the authorization server that must be used as the username in the Cumulocity platform.
+              type: object
+              properties:
+                constantValue:
+                  description: Used only if `useConstantValue` is set to `true`. It cannot contain whitespace, slashes nor any of `+$:` characters.
+                  maxLength: 1000
+                  type: string
+                jwtField:
+                  description: The name of the field containing the JWT.
+                  type: string
+                useConstantValue:
+                  description: Not recommended. If set to `true`, all users share a single account in the Cumulocity platform.
+                  type: boolean
+            validationRequired:
+              description: If set to `true`, the access token is validated against the authorization server by way of introspection or user info request.
+              type: boolean
+            validationMethod:
+              description: The method of validation of the access token.
+              type: string
+              enum:
+              - INTROSPECTION
+              - USERINFO
+            tokenValidationRequest:
+              description: Request to the external authorization server used by the Cumulocity platform to validate the access token.
+              $ref: '#/components/schemas/RequestRepresentation'
+            accessTokenValidityCheckIntervalInMinutes:
+              description: The frequency (in Minutes) in which Cumulocity sends a validation request to authorization server. The recommended frequency is 1 minute.
+              type: integer
+      example:
+        self: https://<TENANT_DOMAIN>/tenant/loginOptions/924997e5-863c-4532-96f9-cbe6dc5f8902
+        userManagementSource: INTERNAL
+        type: OAUTH2_INTERNAL
+        sessionConfiguration:
+          absoluteTimeoutMillis: 7200000
+          renewalTimeoutMillis: 3600000
+          userAgentValidationRequired: false
+          maximumNumberOfParallelSessions: 3
+        id: 924997e5-863c-4532-96f9-cbe6dc5f8902
+        providerName: Cumulocity
+        visibleOnLoginPage: true
+        grantType: PASSWORD
+        onlyManagementTenantAccess: false
+    BasicAuthenticationRestrictions:
+      description: For basic authentication case only.
+      type: object
+      properties:
+        forbiddenClients:
+          description: List of types of clients which are not allowed to use basic authentication. Currently the only supported option is WEB_BROWSERS.
+          type: array
+          items:
+            type: string
+        forbiddenUserAgents:
+          description: List of user agents, passed in `User-Agent` HTTP header, which are blocked if basic authentication is used.
+          type: array
+          items:
+            type: string
+        trustedUserAgents:
+          description: List of user agents, passed in `User-Agent` HTTP header, which are allowed to use basic authentication.
+          type: array
+          items:
+            type: string
+  responses:
+    accessMappingNotFound:
+      description: Access mapping not found.
+      content:
+        application/vnd.com.nsn.cumulocity.error+json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            error: tenants/Not Found
+            message: Cannot find mapping with id d7dfe6aa-6a7d-494b-9575-7e58c1651b86
+            info: https://www.cumulocity.com/guides/reference-guide/#error_reporting
+    tenantNotFound:
+      description: Tenant not found.
+      content:
+        application/vnd.com.nsn.cumulocity.error+json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            error: security/Not Found
+            message: There is no tenant with id = t01
+            info: https://www.cumulocity.com/guides/reference-guide/#error_reporting
+    loginOptionNotFound:
+      description: Login option not found.
+      content:
+        application/vnd.com.nsn.cumulocity.error+json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            error: tenants/Not Found
+            message: Cannot find the specified configuration
+            info: https://www.cumulocity.com/guides/reference-guide/#error_reporting
+    invalidPayload:
+      description: Unprocessable Entity – invalid payload.
+    unauthorizedError:
+      description: Authentication information is missing or invalid.
+      content:
+        application/vnd.com.nsn.cumulocity.error+json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            error: security/Unauthorized
+            message: 'Invalid credentials! : Bad credentials'
+            info: https://www.cumulocity.com/guides/reference-guide/#error_reporting
+    operationNotAuthorized:
+      description: Not authorized to perform this operation.
+    loginOptionBadRequest:
+      description: Bad request – invalid parameters.
+      content:
+        application/vnd.com.nsn.cumulocity.error+json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            error: LoginOptions/Bad Request
+            message: Do not use 'management' flag while querying loginOptions of tenant with id <TENANT_ID>
+            info: https://www.cumulocity.com/guides/reference-guide/#error_reporting
+    loginOptionFound:
+      description: The request has succeeded and the login option is sent in the response.
+      content:
+        application/vnd.com.nsn.cumulocity.authConfig+json:
+          schema:
+            $ref: '#/components/schemas/authConfig'
+    inventoryAccessMappingNotFound:
+      description: Inventory access mapping not found.
+      content:
+        application/vnd.com.nsn.cumulocity.error+json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            error: tenants/Not Found
+            message: Cannot find inventory access mapping with id 5e7b7568-1f85-4e89-ae98-d7fbf4852fad
+            info: https://www.cumulocity.com/guides/reference-guide/#error_reporting
+    loginOptionCollectionResourceFound:
+      description: The request has succeeded and the login options are sent in the response.
+      content:
+        application/vnd.com.nsn.cumulocity.loginoptioncollection+json:
+          schema:
+            $ref: '#/components/schemas/LoginOptionCollection'
+          example:
+            self: https://<TENANT_DOMAIN>/tenant/loginOptions/
+            loginOptions":
+            - enforceStrength: true
+              greenMinLength: 8
+              id: 924997e5-863c-4532-96f9-cbe6dc5f8902
+              self: https://<TENANT_DOMAIN>/tenant/loginOptions/924997e5-863c-4532-96f9-cbe6dc5f8902
+              strengthValidity: false
+              tfaStrategy: SMS
+              type: OAUTH2_INTERNAL
+              _type: OAuth2Config
+              userManagementSource: INTERNAL
+              visibleOnLoginPage: true
+              initRequest: https://<TENANT_DOMAIN>/tenant/oauth?tenant_id=management
+              loginRedirectDomain: <TENANT_DOMAIN>
+              grantType: PASSWORD
+              sessionConfiguration:
+                absoluteTimeoutMillis: 1209600000
+                renewalTimeoutMillis: 86400000
+                userAgentValidationRequired: false
+                maximumNumberOfParallelSessions: 5
+            - enforceStrength: true
+              greenMinLength: 8
+              id: 4b62-a8f1-a00ba63c89ce
+              self: https://<TENANT_DOMAIN>/tenant/loginOptions/4b62-a8f1-a00ba63c89ce
+              strengthValidity: false
+              tfaStrategy: SMS
+              type: BASIC
+              _type: BasicAuthConfig
+              userManagementSource: INTERNAL
+              visibleOnLoginPage: false
+              authenticationRestrictions:
+                forbiddenClients: WEB_BROWSERS
+  securitySchemes:
+    Basic:
+      type: http
+      scheme: basic
+      description: 'The authorization header is formed as `Basic <Base64(<tenantID>/<c8yuser>:<password>)>`. For instance, if your tenantID, username and password are **t0071234**, **testuser** and **secret123** respectively, you can generate the Base64 string with the following command:
+
+
+        ```shell
+
+        $ echo -n t0071234/testuser:secret123 | base64
+
+        ```
+
+
+        and your authorization header would look like this:
+
+
+        ```
+
+        "Authorization": "Basic dDAwNzEyMzQvdGVzdHVzZXI6c2VjcmV0MTIz"
+
+        ```
+
+        '
+    OAI-Secure:
+      type: http
+      scheme: bearer
+      description: 'This is the recommended authorization method because it provides high security using authorization tokens to prove the identity of the user, and it is the default login mode on creating new tenants. This mode is an enhancement of the previous OAuth Internal authentication (available prior to 10.13.0).
+
+
+        For more details about OAI-Secure authentication, see [Platform administration > Authentication > Basic settings > Login settings](https://www.cumulocity.com/docs/authentication/basic-settings/#login-settings) in the Cumulocity user documentation.
+
+        '
+    SSO:
+      type: oauth2
+      description: "The login with SSO requires a correct configuration on the [Cumulocity side](https://www.cumulocity.com/docs/authentication/sso/). With the configuration, an additional button is available on the Login page. After clicking the button, the user is redirected to authenticate with the configured authorization server. On successful login, the user is redirected to Cumulocity.\n\nAuthentication details are exchanged using cookies. There are two parts to it, the first is the authentication cookie that is handled automatically by the Cumulocity platform. The second is the XSRF-TOKEN cookie. When a client receives the cookie, it should take the value and put it in the X-XSRF-TOKEN request header in all subsequent requests.\n\nThe flow of authenticating with authentication code grant is as follows:\n\n![Authentication flow](images/oauth-simple-flow.png)\n\nThe first request executed by the browser is:\n\n```http\nGET /tenant/loginOptions\nHost: https://<TENANT_DOMAIN>\nAccept: application/vnd.com.nsn.cumulocity.loginoptioncollection+json\n```\n\nResponse sample:\n\n```json\n{\n    \"loginOptions\": [\n        {\n            \"buttonName\": \"Login with oauth\",\n            \"grantType\": \"<AUTHORIZATION_CODE>\",\n            \"initRequest\": \"https://<TENANT_DOMAIN>/tenant/oauth?response_type=code&tenant_id=<TENANT_ID>\",\n            \"self\": \"https://<TENANT_DOMAIN>/tenant/loginOptions/oauth2\",\n            \"type\": \"oauth2\"\n        },\n        ...\n    ],\n    \"self\": \"http://<TENANT_DOMAIN>/tenant/loginOptions/\"\n}\n```\n\nThe browser must invoke the request provided in the initRequest parameter.\n\nThe initRequest initiates the redirect, in which the user is prompted for credentials. After successful login, the user is redirected back to the browser, where it must capture the code request parameter. Then the request to exchange the code for the token is as follows:\n\n```http\nPOST /tenant/oauth?grant_type=authorization_code&code=<CODE>\nHost: https://<TENANT_DOMAIN>\n```\n\nA successful response will have no body but the following response headers:\n\n```\nSet-Cookie: authorization=<TOKEN>;\nSet-Cookie: XSRF-TOKEN=<XSRF-TOKEN>;\n```\n\nThe authorization cookie is valid for two weeks.\n"
+      flows:
+        clientCredentials:
+          tokenUrl: /tenant/oauth?grant_type=authorization_code&code=<CODE>
+          scopes: {}
+    JWT-IAM:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'This kind of authentication substitutes the JWT authentication with OAuth2 access tokens from your Identity and Access Management (IAM).
+
+        You can enable this in the [SSO configuration](https://www.cumulocity.com/docs/authentication/sso/).
+
+
+        The HTTP header must include:
+
+
+        ```
+
+        "Authorization": "Bearer <Access token>"
+
+        ```
+
+
+        When a request with a bearer token in the header is received, Cumulocity checks if the access token is from your IAM (that is, if authentication is enabled in your SSO configuration), and verifies the authenticity of
+
+        the token remotely against the IAM.
+
+        '
+x-tagGroups:
+- name: Platform
+  tags:
+  - Platform API
+- name: Alarms
+  tags:
+  - Alarm API
+  - Alarm notification API
+  - Alarms
+- name: Applications
+  tags:
+  - Application API
+  - Applications
+  - Application versions
+  - Application binaries
+  - Bootstrap user
+  - Current application
+- name: Audits
+  tags:
+  - Audit API
+  - Audits
+- name: Device control
+  tags:
+  - Device control API
+  - Device control notification API
+  - Operations
+  - Bulk operations
+  - Device credentials
+  - New device requests
+  - Device control via SMS
+- name: Events
+  tags:
+  - Event API
+  - Event notification API
+  - Events
+  - Attachments
+- name: Feature toggles
+  tags:
+  - Feature toggles API
+- name: Identity
+  tags:
+  - Identity API
+  - External IDs
+- name: Inventory
+  tags:
+  - Inventory API
+  - Inventory notification API
+  - Managed objects
+  - Binaries
+  - Child operations
+  - Query language
+- name: Measurements
+  tags:
+  - Measurement API
+  - Measurement notification API
+  - Measurements
+  - Measurements specifics
+- name: Notifications 2.0
+  tags:
+  - About notifications 2.0
+  - Notification 2.0 API
+  - Subscriptions
+  - Tokens
+- name: Real-time notifications
+  tags:
+  - Real-time notification API
+- name: Retentions
+  tags:
+  - Retention rules
+- name: Tenants
+  tags:
+  - Tenant API
+  - Tenants
+  - Tenant applications
+  - Trusted certificates
+  - Device statistics
+  - Usage statistics
+  - Options
+  - Login options
+  - Login tokens
+  - System options
+- name: Users
+  tags:
+  - User API
+  - Current User
+  - Users
+  - Groups
+  - Roles
+  - Inventory Roles
+  - Device Permissions
+- name: Certificate
+  tags:
+  - Certificate authority
+  - Device enrollment

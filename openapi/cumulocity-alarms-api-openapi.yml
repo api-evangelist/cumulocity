@@ -1,188 +1,1126 @@
 openapi: 3.2.0
 info:
-  title: Cumulocity Alarm Alarms API
-  version: 10.20.0
-  description: 'Raise, query, acknowledge, clear, and bulk-update alarms with four severity levels (CRITICAL, MAJOR,
+  version: Latest
+  title: Cumulocity Alarms API
+  x-logo:
+    url: https://www.cumulocity.com/docs/images/logo-platform.svg
+    backgroundColor: '#F8F8F8'
+    altText: Cumulocity
+    href: https://www.cumulocity.com/api
+  description: '# REST implementation
 
-    MINOR, WARNING) and four statuses (ACTIVE, ACKNOWLEDGED, CLEARED). Cumulocity auto-deduplicates alarms
 
-    by source + type so repeated raises increment the count rather than creating duplicates.'
+    This section describes the aspects common to all REST-based interfaces of Cumulocity. The interfaces are based on the Hypertext Transfer Protocol 1.1 using HTTPS. ## HTTP usage
+
+
+    ### Application management
+
+
+    Cumulocity uses a so-called "application key" to distinguish requests coming from devices and traffic from applications. If you write an application, pass the following header as part of all requests:
+
+
+    ```markup
+
+    X-Cumulocity-Application-Key:
+
+    ```
+
+
+    For example, if you registered your application in the Cumulocity Administration application with the key "myapp", your requests should contain the header:
+
+
+    ```markup
+
+    X-Cumulocity-Application-Key: myapp
+
+    ```
+
+
+    This makes your application subscribable and billable. If you implement a device, do not pass the key. > **ⓘ Info:** Make sure that you pass the key in **all** requests coming from an application. If you leave out the key,
+
+    > the request will be considered as a device request, and the corresponding device will be marked as "available". ### Limited HTTP clients
+
+
+    If you use an HTTP client that can only perform GET and POST methods in HTTP, you can emulate the other methods through an additional "X-HTTP-METHOD" header. Simply issue a POST request and add the header, specifying the actual REST method to be executed. For example, to emulate the "PUT" (modify) method, you can use:
+
+
+    ```http
+
+    POST ... X-HTTP-METHOD: PUT
+
+    ```
+
+
+    ### Processing mode
+
+
+    Every update request (PUT, POST, DELETE) executes with a so-called *processing mode*. The processing modes are as follows:
+
+
+    |Processing mode|Description|
+
+    |---|---|
+
+    |PERSISTENT (default)|Stores data in the Cumulocity database and sends data to the Streaming Analytics engine. Afterwards, Cumulocity returns the result of the request. This is the default mode.|
+
+    |TRANSIENT|Sends data to the Streaming Analytics engine and immediately returns the results asynchronously but does not store data in Cumulocity’s database. This mode saves storage and processing costs and is useful for example when tracking devices in real time without requiring data to be stored.|
+
+    |QUIESCENT|Behaves similar to the persistent mode with the exception that no real-time notifications will be sent.|
+
+    |CEP|Behaves like the transient mode with the exception that no real-time notifications are sent.|
+
+
+    To explicitly control the processing mode of an update request, you can use the "X-Cumulocity-Processing-Mode" header with a value of either "PERSISTENT", "TRANSIENT", "QUIESCENT" or "CEP":
+
+
+    ```markup
+
+    X-Cumulocity-Processing-Mode: PERSISTENT
+
+    ```
+
+
+    > **ⓘ Info:** Events are always delivered to CEP/Apama for all processing modes. This is independent from real-time notifications. ### Authorization
+
+
+    All requests issued to Cumulocity are subject to authorization. To determine the required permissions, see the "Required role" entries for the individual requests. To learn more about the different permissions and the concept of ownership in Cumulocity, see Getting started > Technical concepts > Security aspects > Access control > Managing roles and assigning permissions in the Cumulocity user documentation. > **⚠️ Important:** In the Cumulocity API, each granular permission is identified by a unique “permission” string, which is prefixed with ROLE_ (for example, ROLE_ALARM_READ, ROLE_INVENTORY_ADMIN). Therefore, permissions are frequently referred to as “roles” throughout the API as well as in the configuration files. For example, the microservice manifest includes a requiredRoles field, which actually expects a permission string. See also the Glossary of the Cumulocity user documentation for the usage of the terms “permission” and “role” in the Cumulocity context. ### Media types
+
+
+    Each type of data is associated with an own media type. The general format of media types is:
+
+
+    ```markup
+
+    application/vnd.com.nsn.cumulocity.+json;ver=;charset=UTF-8
+
+    ```
+
+
+    Each media type contains a parameter `ver` indicating the version of the type.'
 servers:
-- url: https://{tenant}.cumulocity.com
-  variables:
-    tenant:
-      default: example
+- description: Cumulocity tenant
+  url: https://<TENANT_DOMAIN>
 security:
-- basicAuth: []
-- bearerAuth: []
+- Basic: []
+- OAI-Secure: []
+- SSO: []
+- JWT-IAM: []
 tags:
 - name: Alarms
+  description: 'An alarm represents an event that requires manual action, for example, when the temperature of a fridge increases above a particular threshold.
+
+
+    > **ⓘ Info:** The Accept header should be provided in all POST/PUT requests, otherwise an empty response body will be returned.'
 paths:
   /alarm/alarms:
-    get:
-      tags:
-      - Alarms
-      summary: List Alarms
-      operationId: listAlarms
-      parameters:
-      - name: source
-        in: query
-        schema:
-          type: string
-      - name: status
-        in: query
-        schema:
-          type: string
-          enum:
-          - ACTIVE
-          - ACKNOWLEDGED
-          - CLEARED
-      - name: severity
-        in: query
-        schema:
-          type: string
-          enum:
-          - CRITICAL
-          - MAJOR
-          - MINOR
-          - WARNING
-      - name: type
-        in: query
-        schema:
-          type: string
-      - name: dateFrom
-        in: query
-        schema:
-          type: string
-          format: date-time
-      - name: dateTo
-        in: query
-        schema:
-          type: string
-          format: date-time
-      - name: resolved
-        in: query
-        schema:
-          type: boolean
-      responses:
-        '200':
-          description: A collection of alarms.
-          content:
-            application/vnd.com.nsn.cumulocity.alarmCollection+json:
-              schema:
-                $ref: '#/components/schemas/AlarmCollection'
     post:
+      operationId: postAlarmCollectionResource
+      x-codegen-resource-name: createAlarm
+      parameters:
+      - $ref: '#/components/parameters/acceptHeader'
+      - $ref: '#/components/parameters/processingModeHeader'
       tags:
       - Alarms
-      summary: Raise an Alarm
-      operationId: createAlarm
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      - JWT-IAM: []
+      summary: Create an alarm
+      description: 'An alarm must be associated with a source (managed object) identified by ID.
+
+
+        In general, each alarm may consist of:
+
+
+        * A status showing whether the alarm is ACTIVE, ACKNOWLEDGED or CLEARED.
+
+        * A time stamp to indicate when the alarm was last updated.
+
+        * The severity of the alarm: CRITICAL, MAJOR, MINOR or WARNING.
+
+
+        ### Alarm suppression
+
+
+        If the source device is in maintenance mode, the alarm is not created and not reported to the Cumulocity event processing engine. When sending a POST request to create a new alarm and if the source device is in maintenance mode, the self link of the alarm will be:
+
+
+        ```json
+
+        "self": "https:///alarm/alarms/null"
+
+        ```
+
+
+        ### Alarm de-duplication
+
+
+        If an ACTIVE or ACKNOWLEDGED alarm with the same source and type exists, no new alarm is created.
+
+        Instead, the existing alarm is updated by incrementing the `count` property; the `time` property is also updated.
+
+        Any other changes are ignored, and the audit log is not created. Alarms with status CLEARED are not de-duplicated.
+
+        The first occurrence of the alarm is recorded in the `firstOccurrenceTime` property.
+
+
+        Required roles
+
+
+        ROLE_ALARM_ADMIN OR owner of the source OR ALARM_ADMIN permission on the source'
       requestBody:
         required: true
         content:
           application/vnd.com.nsn.cumulocity.alarm+json:
+            example:
+              source:
+                id: '251982'
+              type: c8y_UnavailabilityAlarm
+              text: No data received from the device within the required interval.
+              severity: MAJOR
+              status: ACTIVE
+              time: '2020-03-19T12:03:27.845Z'
             schema:
-              $ref: '#/components/schemas/Alarm'
+              allOf:
+              - $ref: '#/components/schemas/alarm'
+              - required:
+                - source
+                - type
+                - text
+                - severity
+                - time
+                properties:
+                  source:
+                    required:
+                    - id
+                    properties:
+                      name:
+                        readOnly: true
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request POST "https://<TENANT_DOMAIN>/alarm/alarms" \
+
+          --header "Authorization: Basic <AUTHORIZATION>" \
+
+          --header "Accept: application/json" \
+
+          --header "Content-Type: application/json" \
+
+          --data-raw ''<Payload>''
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/alarm/alarms");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.POST);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+          request.AddHeader("Content-Type", "application/json");
+
+          request.AddHeader("Accept", "application/json");
+
+          request.AddParameter("application/json", "<Payload>",  ParameterType.RequestBody);
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.post(\"https://<TENANT_DOMAIN>/alarm/alarms\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .header(\"Content-Type\", \"application/json\")\n    .header(\"Accept\", \"application/json\")\n    .body(\"<Payload>\")\n    .asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"POST\", \"https://<TENANT_DOMAIN>/alarm/alarms\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\",\n        \"Accept\": \"application/json\",\n        \"Content-Type\": \"application/json\"\n    })\n    .send(JSON.stringify( <Payload> ))\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\nimport json\n\nurl = \"https://<TENANT_DOMAIN>/alarm/alarms\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\",\n  \"Accept\": \"application/json\",\n  \"Content-Type\": \"application/json\"\n}\nresponse = requests.request(\"POST\", url, headers=headers, data = json.dumps(<Payload>))\nprint(response.text.encode(\"utf8\"))\n"
       responses:
         '201':
-          description: Alarm raised (or count incremented if duplicate).
+          description: An alarm was created.
           content:
             application/vnd.com.nsn.cumulocity.alarm+json:
               schema:
-                $ref: '#/components/schemas/Alarm'
-    put:
+                $ref: '#/components/schemas/alarm'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+        '422':
+          $ref: '#/components/responses/invalidPayload'
+    get:
+      operationId: getAlarmCollectionResource
+      x-codegen-resource-name: getAlarms
+      parameters:
+      - $ref: '#/components/parameters/queryParam_alarm_createdFrom'
+      - $ref: '#/components/parameters/queryParam_alarm_createdTo'
+      - $ref: '#/components/parameters/queryParam_currentPage'
+      - $ref: '#/components/parameters/queryParam_alarm_dateFrom'
+      - $ref: '#/components/parameters/queryParam_alarm_dateTo'
+      - $ref: '#/components/parameters/queryParam_lastUpdatedFrom'
+      - $ref: '#/components/parameters/queryParam_lastUpdatedTo'
+      - $ref: '#/components/parameters/queryParam_pageSize'
+      - $ref: '#/components/parameters/queryParam_alarm_resolved'
+      - $ref: '#/components/parameters/queryParam_alarm_severity'
+      - $ref: '#/components/parameters/queryParam_alarm_source'
+      - $ref: '#/components/parameters/queryParam_alarm_status'
+      - $ref: '#/components/parameters/queryParam_alarm_type'
+      - $ref: '#/components/parameters/queryParam_alarm_withSourceChildren'
+      - $ref: '#/components/parameters/queryParam_alarm_withSourceAssets'
+      - $ref: '#/components/parameters/queryParam_alarm_withSourceDevices'
+      - $ref: '#/components/parameters/queryParam_alarm_withSourceAdditions'
+      - $ref: '#/components/parameters/queryParam_withTotalElements'
+      - $ref: '#/components/parameters/queryParam_withTotalPages'
       tags:
       - Alarms
-      summary: Bulk Update Alarms
-      operationId: bulkUpdateAlarms
-      parameters:
-      - name: source
-        in: query
-        schema:
-          type: string
-      - name: status
-        in: query
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/vnd.com.nsn.cumulocity.alarm+json:
-            schema:
-              $ref: '#/components/schemas/Alarm'
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      - JWT-IAM: []
+      summary: Retrieve all alarms
+      description: 'Retrieve all alarms on your tenant, or a specific subset based on queries. The results are sorted by the newest alarms first.
+
+
+        #### Query parameters
+
+
+        The query parameter `withTotalPages` only works when the user has the ROLE_ALARM_READ role, otherwise it is ignored.
+
+
+        Required roles
+
+
+        The role ROLE_ALARM_READ is not required, but if a user has this role, all the alarms on the tenant are returned. If a user has access to alarms through inventory roles, only those alarms are returned.'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request GET "https://<TENANT_DOMAIN>/alarm/alarms" \
+
+          --header "Authorization: Basic <AUTHORIZATION>"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/alarm/alarms");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.GET);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.get(\"https://<TENANT_DOMAIN>/alarm/alarms\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\").asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"GET\", \"https://<TENANT_DOMAIN>/alarm/alarms\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\"\n    })\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://<TENANT_DOMAIN>/alarm/alarms\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\"\n}\nresponse = requests.request(\"GET\", url, headers=headers)\nprint(response.text.encode(\"utf8\"))\n"
       responses:
         '200':
-          description: Alarms updated.
-    delete:
+          $ref: '#/components/responses/alarmCollectionFound'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+    put:
+      operationId: putAlarmCollectionResource
+      x-codegen-resource-name: updateAlarms
+      parameters:
+      - $ref: '#/components/parameters/acceptHeader'
+      - $ref: '#/components/parameters/processingModeHeader'
+      - $ref: '#/components/parameters/queryParam_alarm_createdFrom'
+      - $ref: '#/components/parameters/queryParam_alarm_createdTo'
+      - $ref: '#/components/parameters/queryParam_alarm_dateFrom'
+      - $ref: '#/components/parameters/queryParam_alarm_dateTo'
+      - $ref: '#/components/parameters/queryParam_alarm_resolved'
+      - $ref: '#/components/parameters/queryParam_alarm_severity'
+      - $ref: '#/components/parameters/queryParam_alarm_source'
+      - $ref: '#/components/parameters/queryParam_alarm_status'
+      - $ref: '#/components/parameters/queryParam_alarm_withSourceChildren'
+      - $ref: '#/components/parameters/queryParam_alarm_withSourceAssets'
+      - $ref: '#/components/parameters/queryParam_alarm_withSourceDevices'
+      - $ref: '#/components/parameters/queryParam_alarm_withSourceAdditions'
       tags:
       - Alarms
-      summary: Delete Alarms by Filter
-      operationId: deleteAlarms
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      - JWT-IAM: []
+      summary: Update alarm collections
+      description: 'Update alarm collections specified by query parameters. At least one query parameter is required to avoid accidentally updating all existing alarms.
+
+
+        Currently, only the status of alarms can be modified.
+
+
+        > **ⓘ Info:** Since this operation can take considerable time, the request returns after maximum 0.5 seconds of processing, and the update operation continues as a background process in the platform.
+
+
+        Required roles
+
+
+        ROLE_ALARM_ADMIN'
+      requestBody:
+        required: true
+        content:
+          application/vnd.com.nsn.cumulocity.alarm+json:
+            example:
+              status: CLEARED
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/alarm'
+              - properties:
+                  severity:
+                    readOnly: true
+                  source:
+                    readOnly: true
+                  text:
+                    readOnly: true
+                  time:
+                    readOnly: true
+                  type:
+                    readOnly: true
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request PUT "https://<TENANT_DOMAIN>/alarm/alarms?resolved=false&source=<managedObjectId>" \
+
+          --header "Authorization: Basic <AUTHORIZATION>" \
+
+          --header "Accept: application/json" \
+
+          --header "Content-Type: application/json" \
+
+          --data-raw ''<Payload>''
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/alarm/alarms?resolved=false&source=<managedObjectId>");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.PUT);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+          request.AddHeader("Content-Type", "application/json");
+
+          request.AddHeader("Accept", "application/json");
+
+          request.AddParameter("application/json", "<Payload>",  ParameterType.RequestBody);
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.put(\"https://<TENANT_DOMAIN>/alarm/alarms?resolved=false&source=<managedObjectId>\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .header(\"Content-Type\", \"application/json\")\n    .header(\"Accept\", \"application/json\")\n    .body(\"<Payload>\")\n    .asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"PUT\", \"https://<TENANT_DOMAIN>/alarm/alarms?resolved=false&source=<managedObjectId>\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\",\n        \"Accept\": \"application/json\",\n        \"Content-Type\": \"application/json\"\n    })\n    .send(JSON.stringify( <Payload> ))\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\nimport json\n\nurl = \"https://<TENANT_DOMAIN>/alarm/alarms?resolved=false&source=<managedObjectId>\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\",\n  \"Accept\": \"application/json\",\n  \"Content-Type\": \"application/json\"\n}\nresponse = requests.request(\"PUT\", url, headers=headers, json.dumps(<Payload>))\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '200':
+          description: An alarm collection was updated.
+        '202':
+          description: An alarm collection is being updated in background.
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+        '422':
+          $ref: '#/components/responses/invalidPayload'
+    delete:
+      operationId: deleteAlarmCollectionResource
+      x-codegen-resource-name: deleteAlarms
+      parameters:
+      - $ref: '#/components/parameters/processingModeHeader'
+      - $ref: '#/components/parameters/queryParam_alarm_createdFrom'
+      - $ref: '#/components/parameters/queryParam_alarm_createdTo'
+      - $ref: '#/components/parameters/queryParam_alarm_dateFrom'
+      - $ref: '#/components/parameters/queryParam_alarm_dateTo'
+      - $ref: '#/components/parameters/queryParam_alarm_resolved'
+      - $ref: '#/components/parameters/queryParam_alarm_severity'
+      - $ref: '#/components/parameters/queryParam_alarm_source'
+      - $ref: '#/components/parameters/queryParam_alarm_status'
+      - $ref: '#/components/parameters/queryParam_alarm_type'
+      - $ref: '#/components/parameters/queryParam_alarm_withSourceChildren'
+      - $ref: '#/components/parameters/queryParam_alarm_withSourceAssets'
+      - $ref: '#/components/parameters/queryParam_alarm_withSourceDevices'
+      - $ref: '#/components/parameters/queryParam_alarm_withSourceAdditions'
+      tags:
+      - Alarms
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      - JWT-IAM: []
+      summary: Remove alarm collections
+      description: 'Remove alarm collections specified by query parameters.
+
+
+        > **⚠️ Important:** DELETE requires at least one of the following parameters: `source`, `dateFrom`, `dateTo`, `createdFrom`, `createdTo`.
+
+        > Also note that DELETE requests are not synchronous. The response could be returned before the delete request has been completed.
+
+
+        Required roles
+
+
+        ROLE_ALARM_ADMIN'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request DELETE "https://<TENANT_DOMAIN>/alarm/alarms?resolved=true&source=<managedObjectId>" \
+
+          --header "Authorization: Basic <AUTHORIZATION>"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/alarm/alarms?resolved=true&source=<managedObjectId>");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.DELETE);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.delete(\"https://<TENANT_DOMAIN>/alarm/alarms?resolved=true&source=<managedObjectId>\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\").asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"DELETE\", \"https://<TENANT_DOMAIN>/alarm/alarms?resolved=true&source=<managedObjectId>\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\"\n    })\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://<TENANT_DOMAIN>/alarm/alarms?resolved=true&source=<managedObjectId>\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\"\n}\nresponse = requests.request(\"DELETE\", url, headers=headers)\nprint(response.text.encode(\"utf8\"))\n"
       responses:
         '204':
-          description: Alarms deleted.
+          description: A collection of alarms was removed.
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
   /alarm/alarms/{id}:
     parameters:
-    - name: id
+    - $ref: '#/components/parameters/alarmId'
+    get:
+      operationId: getAlarmResource
+      x-codegen-resource-name: getAlarm
+      tags:
+      - Alarms
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      - JWT-IAM: []
+      summary: Retrieve a specific alarm
+      description: 'Retrieve a specific alarm by a given ID.
+
+
+        Required roles
+
+
+        ROLE_ALARM_READ OR owner of the source OR ALARM_READ permission on the source'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request GET "https://<TENANT_DOMAIN>/alarm/alarms/{id}" \
+
+          --header "Authorization: Basic <AUTHORIZATION>"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/alarm/alarms/{id}");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.GET);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.get(\"https://<TENANT_DOMAIN>/alarm/alarms/{id}\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\").asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"GET\", \"https://<TENANT_DOMAIN>/alarm/alarms/{id}\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\"\n    })\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://<TENANT_DOMAIN>/alarm/alarms/{id}\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\"\n}\nresponse = requests.request(\"GET\", url, headers=headers)\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '200':
+          $ref: '#/components/responses/alarmFound'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+        '404':
+          $ref: '#/components/responses/alarmNotFound'
+    put:
+      operationId: putAlarmResource
+      x-codegen-resource-name: updateAlarm
+      parameters:
+      - $ref: '#/components/parameters/acceptHeader'
+      - $ref: '#/components/parameters/processingModeHeader'
+      tags:
+      - Alarms
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      - JWT-IAM: []
+      summary: Update a specific alarm
+      description: 'Update a specific alarm by a given ID.
+
+        Only text, status, severity and custom properties can be modified. A request will be rejected when non-modifiable properties are provided in the request body.
+
+
+        > **ⓘ Info:** Changes to alarms will generate a new audit record. The audit record will include the username and application that triggered the update, if applicable. If the update operation doesn’t change anything (that is, the request body contains data that is identical to the already present in the database), there will be no audit record added and no notifications will be sent.
+
+
+        Required roles
+
+
+        ROLE_ALARM_ADMIN OR owner of the source OR ALARM_ADMIN permission on the source'
+      requestBody:
+        required: true
+        content:
+          application/vnd.com.nsn.cumulocity.alarm+json:
+            example:
+              severity: MAJOR
+              status: ACTIVE
+              text: No data received from the device within the required interval.
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/alarm'
+              - properties:
+                  source:
+                    readOnly: true
+                  time:
+                    readOnly: true
+                  type:
+                    readOnly: true
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request PUT "https://<TENANT_DOMAIN>/alarm/alarms/{id}" \
+
+          --header "Authorization: Basic <AUTHORIZATION>" \
+
+          --header "Accept: application/json" \
+
+          --header "Content-Type: application/json" \
+
+          --data-raw ''<Payload>''
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/alarm/alarms/{id}");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.PUT);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+          request.AddHeader("Content-Type", "application/json");
+
+          request.AddHeader("Accept", "application/json");
+
+          request.AddParameter("application/json", "<Payload>",  ParameterType.RequestBody);
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.put(\"https://<TENANT_DOMAIN>/alarm/alarms/{id}\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .header(\"Content-Type\", \"application/json\")\n    .header(\"Accept\", \"application/json\")\n    .body(\"<Payload>\")\n    .asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"PUT\", \"https://<TENANT_DOMAIN>/alarm/alarms/{id}\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\",\n        \"Accept\": \"application/json\",\n        \"Content-Type\": \"application/json\"\n    })\n    .send(JSON.stringify( <Payload> ))\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\nimport json\n\nurl = \"https://<TENANT_DOMAIN>/alarm/alarms/{id}\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\",\n  \"Accept\": \"application/json\",\n  \"Content-Type\": \"application/json\"\n}\nresponse = requests.request(\"PUT\", url, headers=headers, json.dumps(<Payload>))\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '200':
+          description: An alarm was updated.
+          content:
+            application/vnd.com.nsn.cumulocity.alarm+json:
+              schema:
+                $ref: '#/components/schemas/alarm'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+        '404':
+          $ref: '#/components/responses/alarmNotFound'
+        '422':
+          $ref: '#/components/responses/invalidPayload'
+  /alarm/alarms/upsert:
+    post:
+      operationId: postAlarmUpsertResource
+      x-codegen-resource-name: upsertAlarm
+      parameters:
+      - $ref: '#/components/parameters/acceptHeader'
+      - $ref: '#/components/parameters/processingModeHeader'
+      - $ref: '#/components/parameters/queryParam_alarm_incrementCount'
+      tags:
+      - Alarms
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      - JWT-IAM: []
+      summary: Create or update an alarm
+      description: 'Upserts an alarm based on the provided representation. If a non-cleared alarm with the same type and source already exists, it is updated; otherwise, a new alarm is created.
+
+
+        Required roles
+
+
+        ROLE_ALARM_ADMIN OR owner of the source OR ALARM_ADMIN permission on the source'
+      requestBody:
+        required: true
+        content:
+          application/vnd.com.nsn.cumulocity.alarm+json:
+            example:
+              source:
+                id: '251982'
+              type: c8y_UnavailabilityAlarm
+              text: No data received from the device within the required interval.
+              severity: MAJOR
+              status: ACTIVE
+              time: '2020-03-19T12:03:27.845Z'
+            schema:
+              $ref: '#/components/schemas/alarmUpsert'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request POST "https://<TENANT_DOMAIN>/alarm/alarms/upsert" \
+
+          --header "Authorization: Basic <AUTHORIZATION>" \
+
+          --header "Accept: application/json" \
+
+          --header "Content-Type: application/json" \
+
+          --data-raw ''<Payload>''
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/alarm/alarms/upsert");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.POST);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+          request.AddHeader("Content-Type", "application/json");
+
+          request.AddHeader("Accept", "application/json");
+
+          request.AddParameter("application/json", "<Payload>",  ParameterType.RequestBody);
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.post(\"https://<TENANT_DOMAIN>/alarm/alarms/upsert\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .header(\"Content-Type\", \"application/json\")\n    .header(\"Accept\", \"application/json\")\n    .body(\"<Payload>\")\n    .asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"POST\", \"https://<TENANT_DOMAIN>/alarm/alarms/upsert\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\",\n        \"Accept\": \"application/json\",\n        \"Content-Type\": \"application/json\"\n    })\n    .send(JSON.stringify( <Payload> ))\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\nimport json\n\nurl = \"https://<TENANT_DOMAIN>/alarm/alarms/upsert\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\",\n  \"Accept\": \"application/json\",\n  \"Content-Type\": \"application/json\"\n}\nresponse = requests.request(\"POST\", url, headers=headers, data = json.dumps(<Payload>))\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '200':
+          description: An existing alarm was updated.
+          content:
+            application/vnd.com.nsn.cumulocity.alarmUpsertResponse+json:
+              schema:
+                $ref: '#/components/schemas/alarmUpsertResponse'
+        '201':
+          description: An alarm was created.
+          content:
+            application/vnd.com.nsn.cumulocity.alarmUpsertResponse+json:
+              schema:
+                $ref: '#/components/schemas/alarmUpsertResponse'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+        '422':
+          $ref: '#/components/responses/invalidPayload'
+  /alarm/alarms/count:
+    get:
+      operationId: getAlarmCollectionCountResource
+      x-codegen-resource-name: getNumberOfAlarms
+      parameters:
+      - $ref: '#/components/parameters/queryParam_alarm_dateFrom'
+      - $ref: '#/components/parameters/queryParam_alarm_dateTo'
+      - $ref: '#/components/parameters/queryParam_alarm_resolved'
+      - $ref: '#/components/parameters/queryParam_alarm_severity'
+      - $ref: '#/components/parameters/queryParam_alarm_source'
+      - $ref: '#/components/parameters/queryParam_alarm_status'
+      - $ref: '#/components/parameters/queryParam_alarm_type'
+      - $ref: '#/components/parameters/queryParam_alarm_withSourceChildren'
+      - $ref: '#/components/parameters/queryParam_alarm_withSourceAssets'
+      - $ref: '#/components/parameters/queryParam_alarm_withSourceDevices'
+      - $ref: '#/components/parameters/queryParam_alarm_withSourceAdditions'
+      tags:
+      - Alarms
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      - JWT-IAM: []
+      summary: Retrieve the total number of alarms
+      description: 'Count the total number of active alarms on your tenant.
+
+
+        Required roles
+
+
+        The role ROLE_ALARM_READ is not required, but if a user has this role, all the alarms on the tenant are counted. Otherwise, inventory role permissions are used to count the alarms and the limit is 100.'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request GET "https://<TENANT_DOMAIN>/alarm/alarms/count" \
+
+          --header "Authorization: Basic <AUTHORIZATION>"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/alarm/alarms/count");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.GET);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.get(\"https://<TENANT_DOMAIN>/alarm/alarms/count\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\").asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"GET\", \"https://<TENANT_DOMAIN>/alarm/alarms/count\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\"\n    })\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://<TENANT_DOMAIN>/alarm/alarms/count\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\"\n}\nresponse = requests.request(\"GET\", url, headers=headers)\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '200':
+          description: The request has succeeded and the number of active alarms is sent in the response.
+          content:
+            text/plain, application/json:
+              schema:
+                type: integer
+                minimum: 0
+                example: 38
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+components:
+  parameters:
+    queryParam_alarm_withSourceChildren:
+      name: withSourceChildren
+      in: query
+      description: When set to `true`, alarms for related source assets, devices and additions will also be included in the response. When this parameter is provided a `source` must be specified.
+      schema:
+        type: boolean
+        default: false
+        example: true
+    processingModeHeader:
+      name: X-Cumulocity-Processing-Mode
+      in: header
+      description: Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+      required: false
+      schema:
+        type: string
+        default: PERSISTENT
+        enum:
+        - PERSISTENT
+        - TRANSIENT
+        - QUIESCENT
+        - CEP
+        example: PERSISTENT
+    queryParam_alarm_dateFrom:
+      name: dateFrom
+      in: query
+      description: Start date or date and time of the alarm occurrence.
+      schema:
+        type: string
+        format: date-time
+        minLength: 10
+        example: '2020-03-01'
+    queryParam_withTotalElements:
+      name: withTotalElements
+      in: query
+      description: 'When set to `true`, the returned result will contain in the statistics object the total number of elements. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
+
+        > **&#9432; Info:** To improve performance, the `totalElements` statistics are cached for 10 seconds.
+
+        '
+      schema:
+        type: boolean
+        default: false
+        example: true
+    queryParam_alarm_withSourceAssets:
+      name: withSourceAssets
+      in: query
+      description: When set to `true`, alarms for related source assets will also be included in the response. When this parameter is provided a `source` must be specified.
+      schema:
+        type: boolean
+        default: false
+        example: true
+    queryParam_alarm_dateTo:
+      name: dateTo
+      in: query
+      description: End date or date and time of the alarm occurrence.
+      schema:
+        type: string
+        format: date-time
+        minLength: 10
+        example: '2020-03-30'
+    queryParam_alarm_resolved:
+      name: resolved
+      in: query
+      description: When set to `true` only alarms with status CLEARED will be fetched, whereas `false` will fetch all alarms with status ACTIVE or ACKNOWLEDGED. Takes precedence over the `status` parameter.
+      schema:
+        type: boolean
+        default: false
+        example: true
+    queryParam_alarm_withSourceAdditions:
+      name: withSourceAdditions
+      in: query
+      description: When set to `true`, alarms for related source additions will also be included in the response. When this parameter is provided a `source` must be specified.
+      schema:
+        type: boolean
+        default: false
+        example: true
+    queryParam_alarm_withSourceDevices:
+      name: withSourceDevices
+      in: query
+      description: When set to `true`, alarms for related source devices will also be included in the response. When this parameter is provided a `source` must be specified.
+      schema:
+        type: boolean
+        default: false
+        example: true
+    queryParam_withTotalPages:
+      name: withTotalPages
+      in: query
+      description: 'When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
+
+        > **&#9432; Info:** To improve performance, the `totalPages` statistics are cached for 10 seconds.
+
+        '
+      schema:
+        type: boolean
+        default: false
+        example: true
+    queryParam_lastUpdatedTo:
+      name: lastUpdatedTo
+      in: query
+      description: End date or date and time of the last update made.
+      schema:
+        type: string
+        format: date-time
+        minLength: 10
+        example: '2020-03-30'
+    queryParam_alarm_createdFrom:
+      name: createdFrom
+      in: query
+      description: Start date or date and time of the alarm creation.
+      schema:
+        type: string
+        format: date-time
+        minLength: 10
+        example: '2021-03-01'
+    queryParam_currentPage:
+      name: currentPage
+      in: query
+      description: The current page of the paginated results.
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+        example: 3
+    queryParam_alarm_source:
+      name: source
+      in: query
+      description: The managed object ID to which the alarm is associated.
+      schema:
+        type: string
+        minLength: 1
+        example: '251994'
+    queryParam_alarm_severity:
+      name: severity
+      in: query
+      description: 'The severity of the alarm to search for.
+
+        >**&#9432; Info:** If you query for multiple alarm severities at once, comma-separate the values.
+
+        '
+      schema:
+        type: array
+        items:
+          type: string
+          minLength: 1
+        enum:
+        - CRITICAL
+        - MAJOR
+        - MINOR
+        - WARNING
+        example:
+        - CRITICAL
+        - MAJOR
+      explode: false
+    queryParam_lastUpdatedFrom:
+      name: lastUpdatedFrom
+      in: query
+      description: Start date or date and time of the last update made.
+      schema:
+        type: string
+        format: date-time
+        minLength: 10
+        example: '2020-03-01'
+    alarmId:
+      name: id
       in: path
+      description: Unique identifier of the alarm.
       required: true
       schema:
         type: string
-    get:
-      tags:
-      - Alarms
-      summary: Retrieve an Alarm
-      operationId: getAlarm
-      responses:
-        '200':
-          description: A single alarm.
-          content:
-            application/vnd.com.nsn.cumulocity.alarm+json:
-              schema:
-                $ref: '#/components/schemas/Alarm'
-    put:
-      tags:
-      - Alarms
-      summary: Update an Alarm
-      operationId: updateAlarm
-      requestBody:
-        required: true
-        content:
-          application/vnd.com.nsn.cumulocity.alarm+json:
-            schema:
-              $ref: '#/components/schemas/Alarm'
-      responses:
-        '200':
-          description: Alarm updated.
-components:
+        minLength: 1
+        example: '20200301'
+    queryParam_alarm_incrementCount:
+      name: incrementCount
+      in: query
+      description: When set to `true`, the `count` property of an existing alarm is incremented during upsert.
+      schema:
+        type: boolean
+        default: false
+        example: true
+    acceptHeader:
+      name: Accept
+      in: header
+      description: Advertises which content types, expressed as MIME types, the client is able to understand.
+      required: false
+      schema:
+        type: string
+        minLength: 1
+        example: application/json
+    queryParam_alarm_status:
+      name: status
+      in: query
+      description: 'The status of the alarm to search for. Should not be used when `resolved` parameter is provided.
+
+        >**&#9432; Info:** If you query for multiple alarm statuses at once, comma-separate the values.
+
+        '
+      schema:
+        type: array
+        items:
+          type: string
+          minLength: 1
+        enum:
+        - ACTIVE
+        - ACKNOWLEDGED
+        - CLEARED
+        example:
+        - ACTIVE
+        - ACKNOWLEDGED
+      explode: false
+    queryParam_alarm_type:
+      name: type
+      in: query
+      description: 'The types of alarm to search for.
+
+        >**&#9432; Info:** If you query for multiple alarm types at once, comma-separate the values. Space characters in alarm types must be escaped.
+
+        '
+      schema:
+        type: array
+        items:
+          type: string
+          minLength: 1
+        example:
+        - c8y_UnavailabilityAlarm
+        - c8y_TemperatureAlarm
+      explode: false
+    queryParam_pageSize:
+      name: pageSize
+      in: query
+      description: Indicates how many entries of the collection shall be returned. The upper limit for one page is 2,000 objects.
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 2000
+        default: 5
+        example: 10
+    queryParam_alarm_createdTo:
+      name: createdTo
+      in: query
+      description: End date or date and time of the alarm creation.
+      schema:
+        type: string
+        format: date-time
+        minLength: 10
+        example: '2021-03-30'
   schemas:
-    Alarm:
+    desc_self:
+      title: SelfURL
+      description: A URL linking to this resource.
+      type: string
+      format: uri
+      readOnly: true
+    desc_nextPage:
+      title: NextPageURL
+      description: A URI reference [[RFC3986](https://tools.ietf.org/html/rfc3986)] to a potential next page of managed objects.
+      type: string
+      readOnly: true
+    alarmUpsert:
       type: object
       required:
-      - time
-      - type
-      - text
       - source
-      - severity
-      - status
+      - type
       properties:
-        id:
-          type: string
-          readOnly: true
-        self:
-          type: string
-          format: uri
-          readOnly: true
-        time:
-          type: string
-          format: date-time
-        creationTime:
-          type: string
-          format: date-time
-          readOnly: true
+        source:
+          description: The managed object to which the alarm is associated.
+          type: object
+          required:
+          - id
+          properties:
+            id:
+              $ref: '#/components/schemas/desc_objectId'
         type:
-          type: string
-        text:
+          description: Identifies the type of this alarm.
           type: string
         severity:
+          description: The severity of the alarm. If not specified, a new alarm will be created as MAJOR.
           type: string
           enum:
           - CRITICAL
@@ -190,42 +1128,450 @@ components:
           - MINOR
           - WARNING
         status:
+          description: The status of the alarm. If not specified, a new alarm will be created as ACTIVE.
           type: string
           enum:
           - ACTIVE
           - ACKNOWLEDGED
           - CLEARED
-        count:
-          type: integer
-          readOnly: true
-        firstOccurrenceTime:
+        time:
+          description: The date and time when the alarm is triggered. Only applied when the alarm is created; ignored on update. If not provided, defaults to the current time.
           type: string
           format: date-time
-          readOnly: true
-        source:
-          type: object
-          properties:
-            id:
-              type: string
-            self:
-              type: string
-              format: uri
-      additionalProperties: true
+        text:
+          description: Description of the alarm. If not specified, a new alarm will be created with an empty string.
+          type: string
+      additionalProperties:
+        description: 'It is possible to add an arbitrary number of additional properties as a list of key-value pairs, for example, `"property1": {}`, `"property2": "value"`. These properties are known as custom fragments and can be of any type, for example, object or string. Each custom fragment is identified by a unique name.
+
+
+          Review [Getting started > Technical concepts > Cumulocity''s domain model > Inventory > Fragments > Naming conventions of fragments](https://www.cumulocity.com/docs/concepts/domain-model/#naming-conventions-of-fragments) in the Cumulocity user documentation as there are characters that can not be used when naming custom fragments.
+
+          '
+        x-additionalPropertiesName: customFragments
+    error:
+      type: object
+      properties:
+        error:
+          description: The type of error returned.
+          type: string
+        message:
+          description: A human-readable message providing more details about the error.
+          type: string
+        info:
+          description: A URI reference [[RFC3986](https://tools.ietf.org/html/rfc3986)] that identifies the error code reported.
+          type: string
+    desc_objectName:
+      title: ObjectName
+      description: Human-readable name that is used for representing the object in user interfaces.
+      type: string
+    pageStatistics:
+      description: Information about paging statistics.
+      type: object
+      readOnly: true
+      properties:
+        currentPage:
+          description: The current page of the paginated results.
+          type: integer
+          minimum: 1
+          example: 2
+        pageSize:
+          description: Indicates the number of objects that the collection may contain per page. The upper limit for one page is 2,000 objects.
+          type: integer
+          minimum: 1
+          maximum: 2000
+          example: 5
+        totalElements:
+          description: The total number of results (elements).
+          type: integer
+          minimum: 0
+          example: 12
+        totalPages:
+          description: 'The total number of paginated results (pages).
+
+
+            > **&#9432; Info:** This property is returned by default except when an operation retrieves all records where values are between an upper and lower boundary, for example, querying ranges using `dateFrom`–`dateTo`. In such cases, the query parameter `withTotalPages=true` should be used to include the total number of pages (at the expense of slightly slower performance).
+
+            '
+          type: integer
+          minimum: 0
+          example: 3
+    desc_objectId:
+      title: ObjectId
+      description: Unique identifier of the object.
+      type: string
+      minLength: 1
+    desc_prevPage:
+      title: PreviousPageURL
+      description: A URI reference [[RFC3986](https://tools.ietf.org/html/rfc3986)] to a potential previous page of managed objects.
+      type: string
+      readOnly: true
     AlarmCollection:
       type: object
       properties:
-        self:
-          type: string
-          format: uri
         alarms:
+          description: An array containing the results (alarms) of the request.
           type: array
           items:
-            $ref: '#/components/schemas/Alarm'
+            $ref: '#/components/schemas/alarm'
+        next:
+          $ref: '#/components/schemas/desc_nextPage'
+        prev:
+          $ref: '#/components/schemas/desc_prevPage'
+        self:
+          $ref: '#/components/schemas/desc_self'
+        statistics:
+          $ref: '#/components/schemas/pageStatistics'
+      example:
+        prev: https://<TENANT_DOMAIN>/alarm/alarms?pageSize=1&currentPage=1
+        self: https://<TENANT_DOMAIN>/alarm/alarms?pageSize=1&currentPage=2
+        next: https://<TENANT_DOMAIN>/alarm/alarms?pageSize=1&currentPage=3
+        alarms:
+        - count: 1
+          creationTime: '2020-03-19T12:16:31.586Z'
+          lastUpdated: '2020-03-20T13:41:39.678Z'
+          id: '20200301'
+          self: https://<TENANT_DOMAIN>/alarm/alarms/20200301
+          severity: MAJOR
+          source:
+            id: '251982'
+            name: My tracking device
+            self: https://<TENANT_DOMAIN>/inventory/managedObjects/251982
+          status: ACTIVE
+          text: No data received from the device within the required interval.
+          time: '2020-03-19T00:00:00.000Z'
+          type: c8y_UnavailabilityAlarm
+        statistics:
+          totalPages: 10
+          pageSize: 1
+          currentPage: 2
+    alarmUpsertResponse:
+      type: object
+      required:
+      - alarm
+      - previousState
+      properties:
+        alarm:
+          description: The alarm as it exists after the upsert operation.
+          allOf:
+          - $ref: '#/components/schemas/alarm'
+        previousState:
+          description: 'A snapshot of the alarm as it existed immediately before the upsert. This field is `null` when the upsert
+
+            created a new alarm, and a full alarm representation when an existing alarm was updated.
+
+            '
+          allOf:
+          - $ref: '#/components/schemas/alarm'
+      example:
+        alarm:
+          count: 1
+          creationTime: '2020-03-19T12:16:31.586Z'
+          lastUpdated: '2020-03-20T13:41:39.678Z'
+          id: '20200301'
+          self: https://<TENANT_DOMAIN>/alarm/alarms/20200301
+          severity: MAJOR
+          source:
+            id: '251982'
+            name: My tracking device
+            self: https://<TENANT_DOMAIN>/inventory/managedObjects/251982
+          status: ACTIVE
+          text: No data received from the device within the required interval.
+          time: '2020-03-19T00:00:00.000Z'
+          type: c8y_UnavailabilityAlarm
+        previousState:
+          count: 1
+          creationTime: '2020-03-19T12:16:31.586Z'
+          lastUpdated: '2020-03-19T12:16:31.586Z'
+          id: '20200301'
+          self: https://<TENANT_DOMAIN>/alarm/alarms/20200301
+          severity: MINOR
+          source:
+            id: '251982'
+            name: My tracking device
+            self: https://<TENANT_DOMAIN>/inventory/managedObjects/251982
+          status: ACKNOWLEDGED
+          text: No data received from the device within the required interval.
+          time: '2020-03-19T00:00:00.000Z'
+          type: c8y_UnavailabilityAlarm
+    alarm:
+      type: object
+      properties:
+        count:
+          description: Number of times that this alarm has been triggered.
+          type: integer
+          readOnly: true
+        creationTime:
+          description: The date and time when the alarm was created.
+          type: string
+          format: date-time
+          readOnly: true
+        firstOccurrenceTime:
+          description: The time at which the alarm occurred for the first time. Only present when `count` is greater than 1.
+          type: string
+          format: date-time
+          readOnly: true
+        id:
+          description: Unique identifier of the alarm.
+          type: string
+          readOnly: true
+        lastUpdated:
+          description: The date and time when the alarm was last updated.
+          type: string
+          format: date-time
+          readOnly: true
+        self:
+          $ref: '#/components/schemas/desc_self'
+        severity:
+          description: The severity of the alarm.
+          type: string
+          enum:
+          - CRITICAL
+          - MAJOR
+          - MINOR
+          - WARNING
+        source:
+          description: The managed object to which the alarm is associated.
+          type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/desc_objectId'
+            name:
+              $ref: '#/components/schemas/desc_objectName'
+            self:
+              $ref: '#/components/schemas/desc_self'
+        status:
+          description: The status of the alarm. If not specified, a new alarm will be created as ACTIVE.
+          type: string
+          enum:
+          - ACTIVE
+          - ACKNOWLEDGED
+          - CLEARED
+        text:
+          description: Description of the alarm.
+          type: string
+        time:
+          description: The date and time when the alarm is triggered.
+          type: string
+          format: date-time
+        type:
+          description: Identifies the type of this alarm.
+          type: string
+      additionalProperties:
+        description: 'It is possible to add an arbitrary number of additional properties as a list of key-value pairs, for example, `"property1": {}`, `"property2": "value"`. These properties are known as custom fragments and can be of any type, for example, object or string. Each custom fragment is identified by a unique name.
+
+
+          Review [Getting started > Technical concepts > Cumulocity''s domain model > Inventory > Fragments > Naming conventions of fragments](https://www.cumulocity.com/docs/concepts/domain-model/#naming-conventions-of-fragments) in the Cumulocity user documentation as there are characters that can not be used when naming custom fragments.
+
+          '
+        x-additionalPropertiesName: customFragments
+      example:
+        count: 1
+        creationTime: '2020-03-19T12:16:31.586Z'
+        lastUpdated: '2020-03-20T13:41:39.678Z'
+        id: '20200301'
+        self: https://<TENANT_DOMAIN>/alarm/alarms/20200301
+        severity: MAJOR
+        source:
+          id: '251982'
+          name: My tracking device
+          self: https://<TENANT_DOMAIN>/inventory/managedObjects/251982
+        status: ACTIVE
+        text: No data received from the device within the required interval.
+        time: '2020-03-19T00:00:00.000Z'
+        type: c8y_UnavailabilityAlarm
+  responses:
+    alarmFound:
+      description: The request has succeeded and the alarm is sent in the response.
+      content:
+        application/vnd.com.nsn.cumulocity.alarm+json:
+          schema:
+            $ref: '#/components/schemas/alarm'
+    invalidPayload:
+      description: Unprocessable Entity – invalid payload.
+    alarmCollectionFound:
+      description: The request has succeeded and all alarms are sent in the response.
+      content:
+        application/vnd.com.nsn.cumulocity.alarmcollection+json:
+          schema:
+            $ref: '#/components/schemas/AlarmCollection'
+    alarmNotFound:
+      description: Alarm not found.
+      content:
+        application/vnd.com.nsn.cumulocity.error+json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            error: alarm/Not Found
+            message: Finding alarm from database failed
+            info: https://www.cumulocity.com/guides/reference-guide/#error_reporting
+    unauthorizedError:
+      description: Authentication information is missing or invalid.
+      content:
+        application/vnd.com.nsn.cumulocity.error+json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            error: security/Unauthorized
+            message: 'Invalid credentials! : Bad credentials'
+            info: https://www.cumulocity.com/guides/reference-guide/#error_reporting
+    operationNotAuthorized:
+      description: Not authorized to perform this operation.
   securitySchemes:
-    basicAuth:
+    Basic:
       type: http
       scheme: basic
-    bearerAuth:
+      description: 'The authorization header is formed as `Basic <Base64(<tenantID>/<c8yuser>:<password>)>`. For instance, if your tenantID, username and password are **t0071234**, **testuser** and **secret123** respectively, you can generate the Base64 string with the following command:
+
+
+        ```shell
+
+        $ echo -n t0071234/testuser:secret123 | base64
+
+        ```
+
+
+        and your authorization header would look like this:
+
+
+        ```
+
+        "Authorization": "Basic dDAwNzEyMzQvdGVzdHVzZXI6c2VjcmV0MTIz"
+
+        ```
+
+        '
+    OAI-Secure:
+      type: http
+      scheme: bearer
+      description: 'This is the recommended authorization method because it provides high security using authorization tokens to prove the identity of the user, and it is the default login mode on creating new tenants. This mode is an enhancement of the previous OAuth Internal authentication (available prior to 10.13.0).
+
+
+        For more details about OAI-Secure authentication, see [Platform administration > Authentication > Basic settings > Login settings](https://www.cumulocity.com/docs/authentication/basic-settings/#login-settings) in the Cumulocity user documentation.
+
+        '
+    SSO:
+      type: oauth2
+      description: "The login with SSO requires a correct configuration on the [Cumulocity side](https://www.cumulocity.com/docs/authentication/sso/). With the configuration, an additional button is available on the Login page. After clicking the button, the user is redirected to authenticate with the configured authorization server. On successful login, the user is redirected to Cumulocity.\n\nAuthentication details are exchanged using cookies. There are two parts to it, the first is the authentication cookie that is handled automatically by the Cumulocity platform. The second is the XSRF-TOKEN cookie. When a client receives the cookie, it should take the value and put it in the X-XSRF-TOKEN request header in all subsequent requests.\n\nThe flow of authenticating with authentication code grant is as follows:\n\n![Authentication flow](images/oauth-simple-flow.png)\n\nThe first request executed by the browser is:\n\n```http\nGET /tenant/loginOptions\nHost: https://<TENANT_DOMAIN>\nAccept: application/vnd.com.nsn.cumulocity.loginoptioncollection+json\n```\n\nResponse sample:\n\n```json\n{\n    \"loginOptions\": [\n        {\n            \"buttonName\": \"Login with oauth\",\n            \"grantType\": \"<AUTHORIZATION_CODE>\",\n            \"initRequest\": \"https://<TENANT_DOMAIN>/tenant/oauth?response_type=code&tenant_id=<TENANT_ID>\",\n            \"self\": \"https://<TENANT_DOMAIN>/tenant/loginOptions/oauth2\",\n            \"type\": \"oauth2\"\n        },\n        ...\n    ],\n    \"self\": \"http://<TENANT_DOMAIN>/tenant/loginOptions/\"\n}\n```\n\nThe browser must invoke the request provided in the initRequest parameter.\n\nThe initRequest initiates the redirect, in which the user is prompted for credentials. After successful login, the user is redirected back to the browser, where it must capture the code request parameter. Then the request to exchange the code for the token is as follows:\n\n```http\nPOST /tenant/oauth?grant_type=authorization_code&code=<CODE>\nHost: https://<TENANT_DOMAIN>\n```\n\nA successful response will have no body but the following response headers:\n\n```\nSet-Cookie: authorization=<TOKEN>;\nSet-Cookie: XSRF-TOKEN=<XSRF-TOKEN>;\n```\n\nThe authorization cookie is valid for two weeks.\n"
+      flows:
+        clientCredentials:
+          tokenUrl: /tenant/oauth?grant_type=authorization_code&code=<CODE>
+          scopes: {}
+    JWT-IAM:
       type: http
       scheme: bearer
       bearerFormat: JWT
+      description: 'This kind of authentication substitutes the JWT authentication with OAuth2 access tokens from your Identity and Access Management (IAM).
+
+        You can enable this in the [SSO configuration](https://www.cumulocity.com/docs/authentication/sso/).
+
+
+        The HTTP header must include:
+
+
+        ```
+
+        "Authorization": "Bearer <Access token>"
+
+        ```
+
+
+        When a request with a bearer token in the header is received, Cumulocity checks if the access token is from your IAM (that is, if authentication is enabled in your SSO configuration), and verifies the authenticity of
+
+        the token remotely against the IAM.
+
+        '
+x-tagGroups:
+- name: Platform
+  tags:
+  - Platform API
+- name: Alarms
+  tags:
+  - Alarm API
+  - Alarm notification API
+  - Alarms
+- name: Applications
+  tags:
+  - Application API
+  - Applications
+  - Application versions
+  - Application binaries
+  - Bootstrap user
+  - Current application
+- name: Audits
+  tags:
+  - Audit API
+  - Audits
+- name: Device control
+  tags:
+  - Device control API
+  - Device control notification API
+  - Operations
+  - Bulk operations
+  - Device credentials
+  - New device requests
+  - Device control via SMS
+- name: Events
+  tags:
+  - Event API
+  - Event notification API
+  - Events
+  - Attachments
+- name: Feature toggles
+  tags:
+  - Feature toggles API
+- name: Identity
+  tags:
+  - Identity API
+  - External IDs
+- name: Inventory
+  tags:
+  - Inventory API
+  - Inventory notification API
+  - Managed objects
+  - Binaries
+  - Child operations
+  - Query language
+- name: Measurements
+  tags:
+  - Measurement API
+  - Measurement notification API
+  - Measurements
+  - Measurements specifics
+- name: Notifications 2.0
+  tags:
+  - About notifications 2.0
+  - Notification 2.0 API
+  - Subscriptions
+  - Tokens
+- name: Real-time notifications
+  tags:
+  - Real-time notification API
+- name: Retentions
+  tags:
+  - Retention rules
+- name: Tenants
+  tags:
+  - Tenant API
+  - Tenants
+  - Tenant applications
+  - Trusted certificates
+  - Device statistics
+  - Usage statistics
+  - Options
+  - Login options
+  - Login tokens
+  - System options
+- name: Users
+  tags:
+  - User API
+  - Current User
+  - Users
+  - Groups
+  - Roles
+  - Inventory Roles
+  - Device Permissions
+- name: Certificate
+  tags:
+  - Certificate authority
+  - Device enrollment

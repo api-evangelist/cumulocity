@@ -1,182 +1,1146 @@
 openapi: 3.2.0
 info:
-  title: Cumulocity Event Events API
-  version: 10.20.0
-  description: 'Create, query, and delete events emitted by devices and applications. Events capture discrete happenings
+  version: Latest
+  title: Cumulocity Events API
+  x-logo:
+    url: https://www.cumulocity.com/docs/images/logo-platform.svg
+    backgroundColor: '#F8F8F8'
+    altText: Cumulocity
+    href: https://www.cumulocity.com/api
+  description: '# REST implementation
 
-    (door opened, geofence crossed, image captured) with a type, time, text, source device, and arbitrary
 
-    custom fragments. Binary attachments are supported via the events/{id}/binaries sub-resource.'
+    This section describes the aspects common to all REST-based interfaces of Cumulocity. The interfaces are based on the Hypertext Transfer Protocol 1.1 using HTTPS. ## HTTP usage
+
+
+    ### Application management
+
+
+    Cumulocity uses a so-called "application key" to distinguish requests coming from devices and traffic from applications. If you write an application, pass the following header as part of all requests:
+
+
+    ```markup
+
+    X-Cumulocity-Application-Key:
+
+    ```
+
+
+    For example, if you registered your application in the Cumulocity Administration application with the key "myapp", your requests should contain the header:
+
+
+    ```markup
+
+    X-Cumulocity-Application-Key: myapp
+
+    ```
+
+
+    This makes your application subscribable and billable. If you implement a device, do not pass the key. > **ⓘ Info:** Make sure that you pass the key in **all** requests coming from an application. If you leave out the key,
+
+    > the request will be considered as a device request, and the corresponding device will be marked as "available". ### Limited HTTP clients
+
+
+    If you use an HTTP client that can only perform GET and POST methods in HTTP, you can emulate the other methods through an additional "X-HTTP-METHOD" header. Simply issue a POST request and add the header, specifying the actual REST method to be executed. For example, to emulate the "PUT" (modify) method, you can use:
+
+
+    ```http
+
+    POST ... X-HTTP-METHOD: PUT
+
+    ```
+
+
+    ### Processing mode
+
+
+    Every update request (PUT, POST, DELETE) executes with a so-called *processing mode*. The processing modes are as follows:
+
+
+    |Processing mode|Description|
+
+    |---|---|
+
+    |PERSISTENT (default)|Stores data in the Cumulocity database and sends data to the Streaming Analytics engine. Afterwards, Cumulocity returns the result of the request. This is the default mode.|
+
+    |TRANSIENT|Sends data to the Streaming Analytics engine and immediately returns the results asynchronously but does not store data in Cumulocity’s database. This mode saves storage and processing costs and is useful for example when tracking devices in real time without requiring data to be stored.|
+
+    |QUIESCENT|Behaves similar to the persistent mode with the exception that no real-time notifications will be sent.|
+
+    |CEP|Behaves like the transient mode with the exception that no real-time notifications are sent.|
+
+
+    To explicitly control the processing mode of an update request, you can use the "X-Cumulocity-Processing-Mode" header with a value of either "PERSISTENT", "TRANSIENT", "QUIESCENT" or "CEP":
+
+
+    ```markup
+
+    X-Cumulocity-Processing-Mode: PERSISTENT
+
+    ```
+
+
+    > **ⓘ Info:** Events are always delivered to CEP/Apama for all processing modes. This is independent from real-time notifications. ### Authorization
+
+
+    All requests issued to Cumulocity are subject to authorization. To determine the required permissions, see the "Required role" entries for the individual requests. To learn more about the different permissions and the concept of ownership in Cumulocity, see Getting started > Technical concepts > Security aspects > Access control > Managing roles and assigning permissions in the Cumulocity user documentation. > **⚠️ Important:** In the Cumulocity API, each granular permission is identified by a unique “permission” string, which is prefixed with ROLE_ (for example, ROLE_ALARM_READ, ROLE_INVENTORY_ADMIN). Therefore, permissions are frequently referred to as “roles” throughout the API as well as in the configuration files. For example, the microservice manifest includes a requiredRoles field, which actually expects a permission string. See also the Glossary of the Cumulocity user documentation for the usage of the terms “permission” and “role” in the Cumulocity context. ### Media types
+
+
+    Each type of data is associated with an own media type. The general format of media types is:
+
+
+    ```markup
+
+    application/vnd.com.nsn.cumulocity.+json;ver=;charset=UTF-8
+
+    ```
+
+
+    Each media type contains a parameter `ver` indicating the version of the type.'
 servers:
-- url: https://{tenant}.cumulocity.com
-  variables:
-    tenant:
-      default: example
+- description: Cumulocity tenant
+  url: https://<TENANT_DOMAIN>
 security:
-- basicAuth: []
-- bearerAuth: []
+- Basic: []
+- OAI-Secure: []
+- SSO: []
+- JWT-IAM: []
 tags:
 - name: Events
+  description: 'Events are used to pass real-time information through Cumulocity.
+
+
+    > **ⓘ Info:** The Accept header should be provided in all POST/PUT requests, otherwise an empty response body will be returned.'
 paths:
   /event/events:
-    get:
-      tags:
-      - Events
-      summary: List Events
-      operationId: listEvents
-      parameters:
-      - name: source
-        in: query
-        schema:
-          type: string
-      - name: type
-        in: query
-        schema:
-          type: string
-      - name: fragmentType
-        in: query
-        schema:
-          type: string
-      - name: dateFrom
-        in: query
-        schema:
-          type: string
-          format: date-time
-      - name: dateTo
-        in: query
-        schema:
-          type: string
-          format: date-time
-      - name: revert
-        in: query
-        schema:
-          type: boolean
-      responses:
-        '200':
-          description: A collection of events.
-          content:
-            application/vnd.com.nsn.cumulocity.eventCollection+json:
-              schema:
-                $ref: '#/components/schemas/EventCollection'
     post:
+      operationId: postEventCollectionResource
+      x-codegen-resource-name: createEvent
+      parameters:
+      - $ref: '#/components/parameters/acceptHeader'
+      - $ref: '#/components/parameters/processingModeHeader'
       tags:
       - Events
-      summary: Create an Event
-      operationId: createEvent
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Create an event
+      description: 'An event must be associated with a source (managed object) identified by an ID.
+
+
+        In general, each event consists of:
+
+
+        * A type to identify the nature of the event.
+
+        * A time stamp to indicate when the event was last updated.
+
+        * A description of the event.
+
+        * The managed object which originated the event.
+
+
+        Required roles
+
+
+        ROLE_EVENT_ADMIN OR owner of the source OR EVENT_ADMIN permission on the source'
       requestBody:
         required: true
         content:
           application/vnd.com.nsn.cumulocity.event+json:
+            example:
+              source:
+                id: '251982'
+              text: 'Sms sent: Alarm occurred'
+              time: '2020-03-19T12:03:27.845Z'
+              type: c8y_OutgoingSmsLog
             schema:
-              $ref: '#/components/schemas/Event'
+              allOf:
+              - $ref: '#/components/schemas/event'
+              - required:
+                - source
+                - type
+                - text
+                - time
+                properties:
+                  source:
+                    required:
+                    - id
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request POST "https://<TENANT_DOMAIN>/event/events" \
+
+          --header "Authorization: Basic <AUTHORIZATION>" \
+
+          --header "Accept: application/json" \
+
+          --header "Content-Type: application/json" \
+
+          --data-raw ''<Payload>''
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/event/events");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.POST);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+          request.AddHeader("Content-Type", "application/json");
+
+          request.AddHeader("Accept", "application/json");
+
+          request.AddParameter("application/json", "<Payload>",  ParameterType.RequestBody);
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.post(\"https://<TENANT_DOMAIN>/event/events\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .header(\"Content-Type\", \"application/json\")\n    .header(\"Accept\", \"application/json\")\n    .body(\"<Payload>\")\n    .asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"POST\", \"https://<TENANT_DOMAIN>/event/events\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\",\n        \"Accept\": \"application/json\",\n        \"Content-Type\": \"application/json\"\n    })\n    .send(JSON.stringify( <Payload> ))\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\nimport json\n\nurl = \"https://<TENANT_DOMAIN>/event/events\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\",\n  \"Accept\": \"application/json\",\n  \"Content-Type\": \"application/json\"\n}\nresponse = requests.request(\"POST\", url, headers=headers, data = json.dumps(<Payload>))\nprint(response.text.encode(\"utf8\"))\n"
       responses:
         '201':
-          description: Event created.
+          description: An event was created.
           content:
             application/vnd.com.nsn.cumulocity.event+json:
               schema:
-                $ref: '#/components/schemas/Event'
-    delete:
+                $ref: '#/components/schemas/event'
+              example:
+                source:
+                  id: '251982'
+                  self: https://<TENANT_DOMAIN>/inventory/managedObjects/251982
+                text: 'Sms sent: Alarm occurred'
+                time: '2020-03-19T12:03:27.845Z'
+                type: c8y_OutgoingSmsLog
+                creationTime: '2020-03-19T22:09:06.881+01:00'
+                lastUpdated: '2020-03-19T22:09:06.881+01:00'
+                id: '51994'
+                self: https://<TENANT_DOMAIN>/event/events/51994
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+        '422':
+          $ref: '#/components/responses/invalidPayload'
+    get:
+      operationId: getEventCollectionResource
+      x-codegen-resource-name: getEvents
+      parameters:
+      - $ref: '#/components/parameters/queryParam_event_createdFrom'
+      - $ref: '#/components/parameters/queryParam_event_createdTo'
+      - $ref: '#/components/parameters/queryParam_currentPage'
+      - $ref: '#/components/parameters/queryParam_event_dateFrom'
+      - $ref: '#/components/parameters/queryParam_event_dateTo'
+      - $ref: '#/components/parameters/queryParam_fragmentType'
+      - $ref: '#/components/parameters/queryParam_fragmentValue'
+      - $ref: '#/components/parameters/queryParam_lastUpdatedFrom'
+      - $ref: '#/components/parameters/queryParam_lastUpdatedTo'
+      - $ref: '#/components/parameters/queryParam_pageSize'
+      - $ref: '#/components/parameters/queryParam_event_revert'
+      - $ref: '#/components/parameters/queryParam_event_source'
+      - $ref: '#/components/parameters/queryParam_event_type'
+      - $ref: '#/components/parameters/queryParam_event_withSourceChildren'
+      - $ref: '#/components/parameters/queryParam_event_withSourceAssets'
+      - $ref: '#/components/parameters/queryParam_event_withSourceDevices'
+      - $ref: '#/components/parameters/queryParam_event_withSourceAdditions'
+      - $ref: '#/components/parameters/queryParam_withTotalElements'
+      - $ref: '#/components/parameters/queryParam_withTotalPages'
       tags:
       - Events
-      summary: Delete Events by Filter
-      operationId: deleteEvents
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Retrieve all events
+      description: 'Retrieve all events on your tenant.
+
+
+        In case of executing range queries) between an upper and lower boundary, for example, querying using `dateFrom`–`dateTo` or `createdFrom`–`createdTo`, the newest registered events are returned first. It is possible to change the order using the query parameter `revert=true`.
+
+
+        Required roles
+
+
+        ROLE_EVENT_READ'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request GET "https://<TENANT_DOMAIN>/event/events" \
+
+          --header "Authorization: Basic <AUTHORIZATION>"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/event/events");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.GET);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.get(\"https://<TENANT_DOMAIN>/event/events\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\").asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"GET\", \"https://<TENANT_DOMAIN>/event/events\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\"\n    })\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://<TENANT_DOMAIN>/event/events\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\"\n}\nresponse = requests.request(\"GET\", url, headers=headers)\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '200':
+          $ref: '#/components/responses/eventCollectionFound'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+    delete:
+      operationId: deleteEventCollectionResource
+      x-codegen-resource-name: deleteEvents
+      parameters:
+      - $ref: '#/components/parameters/processingModeHeader'
+      - $ref: '#/components/parameters/queryParam_event_createdFrom'
+      - $ref: '#/components/parameters/queryParam_event_createdTo'
+      - $ref: '#/components/parameters/queryParam_event_dateFrom'
+      - $ref: '#/components/parameters/queryParam_event_dateTo'
+      - $ref: '#/components/parameters/queryParam_fragmentType'
+      - $ref: '#/components/parameters/queryParam_event_source'
+      - $ref: '#/components/parameters/queryParam_event_type'
+      tags:
+      - Events
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Remove event collections
+      description: 'Remove event collections specified by query parameters.
+
+
+        DELETE requests are not synchronous. The response could be returned before the delete request has been completed. This may happen especially when the deleted event has a lot of associated data. After sending the request, the platform starts deleting the associated data in an asynchronous way. Finally, the requested event is deleted after all associated data has been deleted.
+
+
+        > **⚠️ Important:** DELETE requires at least one of the following parameters: `source`, `dateFrom`, `dateTo`, `createdFrom`, `createdTo`.
+
+
+        Required roles
+
+
+        ROLE_EVENT_ADMIN'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request DELETE "https://<TENANT_DOMAIN>/event/events?source=<managedObjectId>" \
+
+          --header "Authorization: Basic <AUTHORIZATION>"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/event/events?source=<managedObjectId>");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.DELETE);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.delete(\"https://<TENANT_DOMAIN>/event/events?source=<managedObjectId>\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\").asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"DELETE\", \"https://<TENANT_DOMAIN>/event/events?source=<managedObjectId>\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\"\n    })\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://<TENANT_DOMAIN>/event/events?source=<managedObjectId>\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\"\n}\nresponse = requests.request(\"DELETE\", url, headers=headers)\nprint(response.text.encode(\"utf8\"))\n"
       responses:
         '204':
-          description: Events deleted.
+          description: A collection of events was removed.
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
   /event/events/{id}:
     parameters:
-    - name: id
+    - $ref: '#/components/parameters/eventId'
+    get:
+      operationId: getEventResource
+      x-codegen-resource-name: getEvent
+      tags:
+      - Events
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Retrieve a specific event
+      description: 'Retrieve a specific event by a given ID.
+
+
+        Required roles
+
+
+        ROLE_EVENT_READ OR owner of the source OR EVENT_READ permission on the source'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request GET "https://<TENANT_DOMAIN>/event/events/{id}" \
+
+          --header "Authorization: Basic <AUTHORIZATION>"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/event/events/{id}");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.GET);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.get(\"https://<TENANT_DOMAIN>/event/events/{id}\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\").asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"GET\", \"https://<TENANT_DOMAIN>/event/events/{id}\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\"\n    })\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://<TENANT_DOMAIN>/event/events/{id}\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\"\n}\nresponse = requests.request(\"GET\", url, headers=headers)\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '200':
+          $ref: '#/components/responses/eventFound'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+        '404':
+          $ref: '#/components/responses/eventNotFound'
+    put:
+      operationId: putEventResource
+      x-codegen-resource-name: updateEvent
+      parameters:
+      - $ref: '#/components/parameters/acceptHeader'
+      - $ref: '#/components/parameters/processingModeHeader'
+      tags:
+      - Events
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Update a specific event
+      description: 'Update a specific event by a given ID. Only its text description and custom fragments can be updated.
+
+
+        Required roles
+
+
+        ROLE_EVENT_ADMIN OR owner of the source OR EVENT_ADMIN permission on the source'
+      requestBody:
+        required: true
+        content:
+          application/vnd.com.nsn.cumulocity.event+json:
+            example:
+              text: Location update.
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/event'
+              - properties:
+                  source:
+                    readOnly: true
+                  time:
+                    readOnly: true
+                  type:
+                    readOnly: true
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request PUT "https://<TENANT_DOMAIN>/event/events/{id}" \
+
+          --header "Authorization: Basic <AUTHORIZATION>" \
+
+          --header "Accept: application/json" \
+
+          --header "Content-Type: application/json" \
+
+          --data-raw ''<Payload>''
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/event/events/{id}");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.PUT);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+          request.AddHeader("Content-Type", "application/json");
+
+          request.AddHeader("Accept", "application/json");
+
+          request.AddParameter("application/json", "<Payload>",  ParameterType.RequestBody);
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.put(\"https://<TENANT_DOMAIN>/event/events/{id}\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .header(\"Content-Type\", \"application/json\")\n    .header(\"Accept\", \"application/json\")\n    .body(\"<Payload>\")\n    .asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"PUT\", \"https://<TENANT_DOMAIN>/event/events/{id}\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\",\n        \"Accept\": \"application/json\",\n        \"Content-Type\": \"application/json\"\n    })\n    .send(JSON.stringify( <Payload> ))\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\nimport json\n\nurl = \"https://<TENANT_DOMAIN>/event/events/{id}\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\",\n  \"Accept\": \"application/json\",\n  \"Content-Type\": \"application/json\"\n}\nresponse = requests.request(\"PUT\", url, headers=headers, json.dumps(<Payload>))\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '200':
+          description: An event was updated.
+          content:
+            application/vnd.com.nsn.cumulocity.event+json:
+              schema:
+                $ref: '#/components/schemas/event'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+        '404':
+          $ref: '#/components/responses/eventNotFound'
+        '422':
+          $ref: '#/components/responses/invalidPayload'
+    delete:
+      operationId: deleteEventResource
+      x-codegen-resource-name: deleteEvent
+      parameters:
+      - $ref: '#/components/parameters/processingModeHeader'
+      tags:
+      - Events
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Remove a specific event
+      description: 'Remove a specific event by a given ID.
+
+
+        Required roles
+
+
+        ROLE_EVENT_ADMIN OR owner of the source OR EVENT_ADMIN permission on the source'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request DELETE "https://<TENANT_DOMAIN>/event/events/{id}" \
+
+          --header "Authorization: Basic <AUTHORIZATION>"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/event/events/{id}");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.DELETE);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.delete(\"https://<TENANT_DOMAIN>/event/events/{id}\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\").asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"DELETE\", \"https://<TENANT_DOMAIN>/event/events/{id}\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\"\n    })\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://<TENANT_DOMAIN>/event/events/{id}\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\"\n}\nresponse = requests.request(\"DELETE\", url, headers=headers)\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '204':
+          description: An event was removed.
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+        '404':
+          $ref: '#/components/responses/eventNotFound'
+components:
+  parameters:
+    queryParam_event_withSourceChildren:
+      name: withSourceChildren
+      in: query
+      description: When set to `true`, events for related source assets, devices and additions will also be included in the response. When this parameter is provided a `source` must be specified.
+      schema:
+        type: boolean
+        default: false
+        example: true
+    processingModeHeader:
+      name: X-Cumulocity-Processing-Mode
+      in: header
+      description: Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+      required: false
+      schema:
+        type: string
+        default: PERSISTENT
+        enum:
+        - PERSISTENT
+        - TRANSIENT
+        - QUIESCENT
+        - CEP
+        example: PERSISTENT
+    queryParam_withTotalElements:
+      name: withTotalElements
+      in: query
+      description: 'When set to `true`, the returned result will contain in the statistics object the total number of elements. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
+
+        > **&#9432; Info:** To improve performance, the `totalElements` statistics are cached for 10 seconds.
+
+        '
+      schema:
+        type: boolean
+        default: false
+        example: true
+    queryParam_event_withSourceAdditions:
+      name: withSourceAdditions
+      in: query
+      description: When set to `true`, events for related source additions will also be included in the response. When this parameter is provided a `source` must be specified.
+      schema:
+        type: boolean
+        default: false
+        example: true
+    queryParam_withTotalPages:
+      name: withTotalPages
+      in: query
+      description: 'When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
+
+        > **&#9432; Info:** To improve performance, the `totalPages` statistics are cached for 10 seconds.
+
+        '
+      schema:
+        type: boolean
+        default: false
+        example: true
+    queryParam_lastUpdatedTo:
+      name: lastUpdatedTo
+      in: query
+      description: End date or date and time of the last update made.
+      schema:
+        type: string
+        format: date-time
+        minLength: 10
+        example: '2020-03-30'
+    queryParam_event_dateFrom:
+      name: dateFrom
+      in: query
+      description: Start date or date and time of the event occurrence (provided by the device).
+      schema:
+        type: string
+        format: date-time
+        minLength: 10
+        example: '2020-03-01'
+    queryParam_currentPage:
+      name: currentPage
+      in: query
+      description: The current page of the paginated results.
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+        example: 3
+    queryParam_event_withSourceDevices:
+      name: withSourceDevices
+      in: query
+      description: When set to `true`, events for related source devices will also be included in the response. When this parameter is provided a `source` must be specified.
+      schema:
+        type: boolean
+        default: false
+        example: true
+    eventId:
+      name: id
       in: path
+      description: Unique identifier of the event.
       required: true
       schema:
         type: string
-    get:
-      tags:
-      - Events
-      summary: Retrieve an Event
-      operationId: getEvent
-      responses:
-        '200':
-          description: A single event.
-          content:
-            application/vnd.com.nsn.cumulocity.event+json:
-              schema:
-                $ref: '#/components/schemas/Event'
-    put:
-      tags:
-      - Events
-      summary: Update an Event
-      operationId: updateEvent
-      requestBody:
-        required: true
-        content:
-          application/vnd.com.nsn.cumulocity.event+json:
-            schema:
-              $ref: '#/components/schemas/Event'
-      responses:
-        '200':
-          description: Event updated.
-    delete:
-      tags:
-      - Events
-      summary: Delete an Event
-      operationId: deleteEvent
-      responses:
-        '204':
-          description: Event deleted.
-components:
+        minLength: 1
+        example: '20200301'
+    queryParam_fragmentValue:
+      name: fragmentValue
+      in: query
+      description: 'Allows filtering events by the fragment''s value, but only when provided together with `fragmentType`.
+
+
+        > **⚠️ Important:** Only fragments with a string value are supported.
+
+        '
+      schema:
+        type: string
+        minLength: 1
+        example: lorem
+    queryParam_lastUpdatedFrom:
+      name: lastUpdatedFrom
+      in: query
+      description: Start date or date and time of the last update made.
+      schema:
+        type: string
+        format: date-time
+        minLength: 10
+        example: '2020-03-01'
+    queryParam_fragmentType:
+      name: fragmentType
+      in: query
+      description: A characteristic which identifies a managed object or event, for example, geolocation, electricity sensor, relay state.
+      schema:
+        type: string
+        minLength: 1
+        example: c8y_IsDevice
+    queryParam_event_createdTo:
+      name: createdTo
+      in: query
+      description: End date or date and time of the event's creation (set by the platform during creation).
+      schema:
+        type: string
+        format: date-time
+        minLength: 10
+        example: '2020-03-30'
+    queryParam_event_type:
+      name: type
+      in: query
+      description: The type of event to search for.
+      schema:
+        type: string
+        minLength: 1
+        example: c8y_OutgoingSmsLog
+    queryParam_event_createdFrom:
+      name: createdFrom
+      in: query
+      description: Start date or date and time of the event's creation (set by the platform during creation).
+      schema:
+        type: string
+        format: date-time
+        minLength: 10
+        example: '2020-03-01'
+    queryParam_event_source:
+      name: source
+      in: query
+      description: The managed object ID to which the event is associated.
+      schema:
+        type: string
+        minLength: 1
+        example: '251994'
+    acceptHeader:
+      name: Accept
+      in: header
+      description: Advertises which content types, expressed as MIME types, the client is able to understand.
+      required: false
+      schema:
+        type: string
+        minLength: 1
+        example: application/json
+    queryParam_event_dateTo:
+      name: dateTo
+      in: query
+      description: End date or date and time of the event occurrence (provided by the device).
+      schema:
+        type: string
+        format: date-time
+        minLength: 10
+        example: '2020-03-30'
+    queryParam_event_withSourceAssets:
+      name: withSourceAssets
+      in: query
+      description: When set to `true`, events for related source assets will also be included in the response. When this parameter is provided a `source` must be specified.
+      schema:
+        type: boolean
+        default: false
+        example: true
+    queryParam_pageSize:
+      name: pageSize
+      in: query
+      description: Indicates how many entries of the collection shall be returned. The upper limit for one page is 2,000 objects.
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 2000
+        default: 5
+        example: 10
+    queryParam_event_revert:
+      name: revert
+      in: query
+      description: 'If you are using a range query (that is, at least one of the `dateFrom` or `dateTo` parameters is included in the request), then setting `revert=true` will sort the results by the oldest events first.
+
+        By default, the results are sorted by the newest events first.
+
+        '
+      schema:
+        type: boolean
+        default: false
+        example: true
   schemas:
-    EventCollection:
+    event:
       type: object
       properties:
-        self:
-          type: string
-          format: uri
-        events:
-          type: array
-          items:
-            $ref: '#/components/schemas/Event'
-    Event:
-      type: object
-      required:
-      - time
-      - type
-      - text
-      - source
-      properties:
-        id:
-          type: string
-          readOnly: true
-        self:
-          type: string
-          format: uri
-          readOnly: true
-        time:
-          type: string
-          format: date-time
         creationTime:
+          description: The date and time when the event was created.
           type: string
           format: date-time
           readOnly: true
-        type:
+        lastUpdated:
+          description: The date and time when the event was last updated.
           type: string
-        text:
+          format: date-time
+          readOnly: true
+        id:
+          description: Unique identifier of the event.
           type: string
+          readOnly: true
+        self:
+          $ref: '#/components/schemas/desc_self'
         source:
+          description: The managed object to which the event is associated.
           type: object
           properties:
             id:
-              type: string
+              $ref: '#/components/schemas/desc_objectId'
             self:
-              type: string
-              format: uri
-      additionalProperties: true
+              $ref: '#/components/schemas/desc_self'
+        text:
+          description: Description of the event.
+          type: string
+        time:
+          description: The date and time when the event is updated.
+          type: string
+          format: date-time
+        type:
+          description: Identifies the type of this event.
+          type: string
+      additionalProperties:
+        description: 'It is possible to add an arbitrary number of additional properties as a list of key-value pairs, for example, `"property1": {}`, `"property2": "value"`. These properties are known as custom fragments and can be of any type, for example, object or string. Each custom fragment is identified by a unique name.
+
+
+          Review [Getting started > Technical concepts > Cumulocity''s domain model > Inventory > Fragments > Naming conventions of fragments](https://www.cumulocity.com/docs/concepts/domain-model/#naming-conventions-of-fragments) in the Cumulocity user documentation as there are characters that can not be used when naming custom fragments.
+
+          '
+        x-additionalPropertiesName: customFragments
+      example:
+        creationTime: '2020-03-19T12:16:31.586Z'
+        lastUpdated: '2020-03-20T13:46:11.526Z'
+        id: '20200301'
+        self: https://<TENANT_DOMAIN>/event/events/20200301
+        source:
+          id: '251982'
+          self: https://<TENANT_DOMAIN>/inventory/managedObjects/251982
+        text: Location update.
+        time: '2020-03-19T00:00:00.000Z'
+        type: c8y_LocationUpdate
+    desc_self:
+      title: SelfURL
+      description: A URL linking to this resource.
+      type: string
+      format: uri
+      readOnly: true
+    desc_nextPage:
+      title: NextPageURL
+      description: A URI reference [[RFC3986](https://tools.ietf.org/html/rfc3986)] to a potential next page of managed objects.
+      type: string
+      readOnly: true
+    error:
+      type: object
+      properties:
+        error:
+          description: The type of error returned.
+          type: string
+        message:
+          description: A human-readable message providing more details about the error.
+          type: string
+        info:
+          description: A URI reference [[RFC3986](https://tools.ietf.org/html/rfc3986)] that identifies the error code reported.
+          type: string
+    EventCollection:
+      type: object
+      properties:
+        events:
+          description: An array containing the results (events) of the request.
+          type: array
+          items:
+            $ref: '#/components/schemas/event'
+        next:
+          $ref: '#/components/schemas/desc_nextPage'
+        prev:
+          $ref: '#/components/schemas/desc_prevPage'
+        self:
+          $ref: '#/components/schemas/desc_self'
+        statistics:
+          $ref: '#/components/schemas/pageStatistics'
+      example:
+        self: https://<TENANT_DOMAIN>/event/events?pageSize=5&currentPage=1
+        events:
+        - creationTime: '2020-03-19T12:16:31.586Z'
+          lastUpdated: '2020-03-20T13:46:11.526Z'
+          id: '20200301'
+          self: https://<TENANT_DOMAIN>/event/events/20200301
+          source:
+            id: '251982'
+            self: https://<TENANT_DOMAIN>/inventory/managedObjects/251982
+          text: Location update.
+          time: '2020-03-19T00:00:00.000Z'
+          type: c8y_LocationUpdate
+        statistics:
+          totalPages: 1
+          pageSize: 5
+          currentPage: 1
+    pageStatistics:
+      description: Information about paging statistics.
+      type: object
+      readOnly: true
+      properties:
+        currentPage:
+          description: The current page of the paginated results.
+          type: integer
+          minimum: 1
+          example: 2
+        pageSize:
+          description: Indicates the number of objects that the collection may contain per page. The upper limit for one page is 2,000 objects.
+          type: integer
+          minimum: 1
+          maximum: 2000
+          example: 5
+        totalElements:
+          description: The total number of results (elements).
+          type: integer
+          minimum: 0
+          example: 12
+        totalPages:
+          description: 'The total number of paginated results (pages).
+
+
+            > **&#9432; Info:** This property is returned by default except when an operation retrieves all records where values are between an upper and lower boundary, for example, querying ranges using `dateFrom`–`dateTo`. In such cases, the query parameter `withTotalPages=true` should be used to include the total number of pages (at the expense of slightly slower performance).
+
+            '
+          type: integer
+          minimum: 0
+          example: 3
+    desc_objectId:
+      title: ObjectId
+      description: Unique identifier of the object.
+      type: string
+      minLength: 1
+    desc_prevPage:
+      title: PreviousPageURL
+      description: A URI reference [[RFC3986](https://tools.ietf.org/html/rfc3986)] to a potential previous page of managed objects.
+      type: string
+      readOnly: true
+  responses:
+    invalidPayload:
+      description: Unprocessable Entity – invalid payload.
+    eventNotFound:
+      description: Event not found.
+      content:
+        application/vnd.com.nsn.cumulocity.error+json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            error: event/Not Found
+            message: Finding event from database failed
+            info: https://www.cumulocity.com/guides/reference-guide/#error_reporting
+    unauthorizedError:
+      description: Authentication information is missing or invalid.
+      content:
+        application/vnd.com.nsn.cumulocity.error+json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            error: security/Unauthorized
+            message: 'Invalid credentials! : Bad credentials'
+            info: https://www.cumulocity.com/guides/reference-guide/#error_reporting
+    eventFound:
+      description: The request has succeeded and the event is sent in the response.
+      content:
+        application/vnd.com.nsn.cumulocity.event+json:
+          schema:
+            $ref: '#/components/schemas/event'
+    operationNotAuthorized:
+      description: Not authorized to perform this operation.
+    eventCollectionFound:
+      description: The request has succeeded and all events are sent in the response.
+      content:
+        application/vnd.com.nsn.cumulocity.eventcollection+json:
+          schema:
+            $ref: '#/components/schemas/EventCollection'
   securitySchemes:
-    basicAuth:
+    Basic:
       type: http
       scheme: basic
-    bearerAuth:
+      description: 'The authorization header is formed as `Basic <Base64(<tenantID>/<c8yuser>:<password>)>`. For instance, if your tenantID, username and password are **t0071234**, **testuser** and **secret123** respectively, you can generate the Base64 string with the following command:
+
+
+        ```shell
+
+        $ echo -n t0071234/testuser:secret123 | base64
+
+        ```
+
+
+        and your authorization header would look like this:
+
+
+        ```
+
+        "Authorization": "Basic dDAwNzEyMzQvdGVzdHVzZXI6c2VjcmV0MTIz"
+
+        ```
+
+        '
+    OAI-Secure:
+      type: http
+      scheme: bearer
+      description: 'This is the recommended authorization method because it provides high security using authorization tokens to prove the identity of the user, and it is the default login mode on creating new tenants. This mode is an enhancement of the previous OAuth Internal authentication (available prior to 10.13.0).
+
+
+        For more details about OAI-Secure authentication, see [Platform administration > Authentication > Basic settings > Login settings](https://www.cumulocity.com/docs/authentication/basic-settings/#login-settings) in the Cumulocity user documentation.
+
+        '
+    SSO:
+      type: oauth2
+      description: "The login with SSO requires a correct configuration on the [Cumulocity side](https://www.cumulocity.com/docs/authentication/sso/). With the configuration, an additional button is available on the Login page. After clicking the button, the user is redirected to authenticate with the configured authorization server. On successful login, the user is redirected to Cumulocity.\n\nAuthentication details are exchanged using cookies. There are two parts to it, the first is the authentication cookie that is handled automatically by the Cumulocity platform. The second is the XSRF-TOKEN cookie. When a client receives the cookie, it should take the value and put it in the X-XSRF-TOKEN request header in all subsequent requests.\n\nThe flow of authenticating with authentication code grant is as follows:\n\n![Authentication flow](images/oauth-simple-flow.png)\n\nThe first request executed by the browser is:\n\n```http\nGET /tenant/loginOptions\nHost: https://<TENANT_DOMAIN>\nAccept: application/vnd.com.nsn.cumulocity.loginoptioncollection+json\n```\n\nResponse sample:\n\n```json\n{\n    \"loginOptions\": [\n        {\n            \"buttonName\": \"Login with oauth\",\n            \"grantType\": \"<AUTHORIZATION_CODE>\",\n            \"initRequest\": \"https://<TENANT_DOMAIN>/tenant/oauth?response_type=code&tenant_id=<TENANT_ID>\",\n            \"self\": \"https://<TENANT_DOMAIN>/tenant/loginOptions/oauth2\",\n            \"type\": \"oauth2\"\n        },\n        ...\n    ],\n    \"self\": \"http://<TENANT_DOMAIN>/tenant/loginOptions/\"\n}\n```\n\nThe browser must invoke the request provided in the initRequest parameter.\n\nThe initRequest initiates the redirect, in which the user is prompted for credentials. After successful login, the user is redirected back to the browser, where it must capture the code request parameter. Then the request to exchange the code for the token is as follows:\n\n```http\nPOST /tenant/oauth?grant_type=authorization_code&code=<CODE>\nHost: https://<TENANT_DOMAIN>\n```\n\nA successful response will have no body but the following response headers:\n\n```\nSet-Cookie: authorization=<TOKEN>;\nSet-Cookie: XSRF-TOKEN=<XSRF-TOKEN>;\n```\n\nThe authorization cookie is valid for two weeks.\n"
+      flows:
+        clientCredentials:
+          tokenUrl: /tenant/oauth?grant_type=authorization_code&code=<CODE>
+          scopes: {}
+    JWT-IAM:
       type: http
       scheme: bearer
       bearerFormat: JWT
+      description: 'This kind of authentication substitutes the JWT authentication with OAuth2 access tokens from your Identity and Access Management (IAM).
+
+        You can enable this in the [SSO configuration](https://www.cumulocity.com/docs/authentication/sso/).
+
+
+        The HTTP header must include:
+
+
+        ```
+
+        "Authorization": "Bearer <Access token>"
+
+        ```
+
+
+        When a request with a bearer token in the header is received, Cumulocity checks if the access token is from your IAM (that is, if authentication is enabled in your SSO configuration), and verifies the authenticity of
+
+        the token remotely against the IAM.
+
+        '
+x-tagGroups:
+- name: Platform
+  tags:
+  - Platform API
+- name: Alarms
+  tags:
+  - Alarm API
+  - Alarm notification API
+  - Alarms
+- name: Applications
+  tags:
+  - Application API
+  - Applications
+  - Application versions
+  - Application binaries
+  - Bootstrap user
+  - Current application
+- name: Audits
+  tags:
+  - Audit API
+  - Audits
+- name: Device control
+  tags:
+  - Device control API
+  - Device control notification API
+  - Operations
+  - Bulk operations
+  - Device credentials
+  - New device requests
+  - Device control via SMS
+- name: Events
+  tags:
+  - Event API
+  - Event notification API
+  - Events
+  - Attachments
+- name: Feature toggles
+  tags:
+  - Feature toggles API
+- name: Identity
+  tags:
+  - Identity API
+  - External IDs
+- name: Inventory
+  tags:
+  - Inventory API
+  - Inventory notification API
+  - Managed objects
+  - Binaries
+  - Child operations
+  - Query language
+- name: Measurements
+  tags:
+  - Measurement API
+  - Measurement notification API
+  - Measurements
+  - Measurements specifics
+- name: Notifications 2.0
+  tags:
+  - About notifications 2.0
+  - Notification 2.0 API
+  - Subscriptions
+  - Tokens
+- name: Real-time notifications
+  tags:
+  - Real-time notification API
+- name: Retentions
+  tags:
+  - Retention rules
+- name: Tenants
+  tags:
+  - Tenant API
+  - Tenants
+  - Tenant applications
+  - Trusted certificates
+  - Device statistics
+  - Usage statistics
+  - Options
+  - Login options
+  - Login tokens
+  - System options
+- name: Users
+  tags:
+  - User API
+  - Current User
+  - Users
+  - Groups
+  - Roles
+  - Inventory Roles
+  - Device Permissions
+- name: Certificate
+  tags:
+  - Certificate authority
+  - Device enrollment

@@ -1,0 +1,38 @@
+openapi: 3.2.0
+info:
+  title: Cumulocity User Roles API
+  version: 10.20.0
+  description: 'Manage users, user groups, global roles, inventory roles, and device permissions. Cumulocity uses an
+
+    RBAC model where global roles grant API access and inventory roles grant access to specific managed-object
+
+    subtrees. Supports SSO via SAML/OIDC and SCIM provisioning for enterprise tenants.'
+servers:
+- url: https://{tenant}.cumulocity.com
+  variables:
+    tenant:
+      default: example
+security:
+- basicAuth: []
+- bearerAuth: []
+tags:
+- name: Roles
+paths:
+  /user/roles:
+    get:
+      tags:
+      - Roles
+      summary: List Global Roles
+      operationId: listRoles
+      responses:
+        '200':
+          description: A collection of global roles.
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

@@ -1,0 +1,282 @@
+openapi: 3.2.0
+info:
+  title: Cumulocity Inventory Managed Objects API
+  version: 10.20.0
+  description: 'Manage Cumulocity managed objects — the universal representation of any IoT-relevant asset including
+
+    devices, groups, assets, and digital twins. Managed objects are fragment-extensible documents
+
+    addressed by Cumulocity-assigned IDs and linked via parent/child references.'
+  contact:
+    name: Cumulocity
+    url: https://cumulocity.com
+  license:
+    name: Cumulocity Terms of Service
+    url: https://cumulocity.com/legal/terms/
+servers:
+- url: https://{tenant}.cumulocity.com
+  variables:
+    tenant:
+      default: example
+security:
+- basicAuth: []
+- bearerAuth: []
+tags:
+- name: Managed Objects
+  description: Inventory documents representing devices, assets, groups, and digital twins.
+paths:
+  /inventory/managedObjects:
+    get:
+      tags:
+      - Managed Objects
+      summary: List Managed Objects
+      operationId: listManagedObjects
+      parameters:
+      - $ref: '#/components/parameters/PageSize'
+      - $ref: '#/components/parameters/CurrentPage'
+      - $ref: '#/components/parameters/WithTotalPages'
+      - name: type
+        in: query
+        schema:
+          type: string
+      - name: fragmentType
+        in: query
+        schema:
+          type: string
+      - name: text
+        in: query
+        schema:
+          type: string
+      - name: ids
+        in: query
+        schema:
+          type: string
+      - name: owner
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: A collection of managed objects.
+          content:
+            application/vnd.com.nsn.cumulocity.managedObjectCollection+json:
+              schema:
+                $ref: '#/components/schemas/ManagedObjectCollection'
+    post:
+      tags:
+      - Managed Objects
+      summary: Create a Managed Object
+      operationId: createManagedObject
+      requestBody:
+        required: true
+        content:
+          application/vnd.com.nsn.cumulocity.managedObject+json:
+            schema:
+              $ref: '#/components/schemas/ManagedObject'
+      responses:
+        '201':
+          description: Managed object created.
+          content:
+            application/vnd.com.nsn.cumulocity.managedObject+json:
+              schema:
+                $ref: '#/components/schemas/ManagedObject'
+  /inventory/managedObjects/{id}:
+    parameters:
+    - $ref: '#/components/parameters/ManagedObjectId'
+    get:
+      tags:
+      - Managed Objects
+      summary: Retrieve a Managed Object
+      operationId: getManagedObject
+      parameters:
+      - name: withChildren
+        in: query
+        schema:
+          type: boolean
+      - name: withParents
+        in: query
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: A single managed object.
+          content:
+            application/vnd.com.nsn.cumulocity.managedObject+json:
+              schema:
+                $ref: '#/components/schemas/ManagedObject'
+    put:
+      tags:
+      - Managed Objects
+      summary: Update a Managed Object
+      operationId: updateManagedObject
+      requestBody:
+        required: true
+        content:
+          application/vnd.com.nsn.cumulocity.managedObject+json:
+            schema:
+              $ref: '#/components/schemas/ManagedObject'
+      responses:
+        '200':
+          description: Managed object updated.
+          content:
+            application/vnd.com.nsn.cumulocity.managedObject+json:
+              schema:
+                $ref: '#/components/schemas/ManagedObject'
+    delete:
+      tags:
+      - Managed Objects
+      summary: Delete a Managed Object
+      operationId: deleteManagedObject
+      parameters:
+      - name: cascade
+        in: query
+        schema:
+          type: boolean
+      responses:
+        '204':
+          description: Managed object deleted.
+components:
+  parameters:
+    ManagedObjectId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    PageSize:
+      name: pageSize
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 2000
+        default: 5
+    CurrentPage:
+      name: currentPage
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+    WithTotalPages:
+      name: withTotalPages
+      in: query
+      schema:
+        type: boolean
+        default: false
+  schemas:
+    ManagedObjectReferenceCollection:
+      type: object
+      properties:
+        self:
+          type: string
+          format: uri
+        references:
+          type: array
+          items:
+            $ref: '#/components/schemas/ManagedObjectReference'
+    ManagedObjectCollection:
+      type: object
+      properties:
+        self:
+          type: string
+          format: uri
+        managedObjects:
+          type: array
+          items:
+            $ref: '#/components/schemas/ManagedObject'
+        statistics:
+          $ref: '#/components/schemas/PageStatistics'
+        next:
+          type: string
+          format: uri
+        prev:
+          type: string
+          format: uri
+    ManagedObjectReference:
+      type: object
+      properties:
+        self:
+          type: string
+          format: uri
+        managedObject:
+          type: object
+          properties:
+            id:
+              type: string
+            self:
+              type: string
+              format: uri
+            name:
+              type: string
+    ManagedObject:
+      type: object
+      properties:
+        id:
+          type: string
+          readOnly: true
+        self:
+          type: string
+          format: uri
+          readOnly: true
+        type:
+          type: string
+        name:
+          type: string
+        owner:
+          type: string
+        creationTime:
+          type: string
+          format: date-time
+        lastUpdated:
+          type: string
+          format: date-time
+        c8y_IsDevice:
+          type: object
+        c8y_IsDeviceGroup:
+          type: object
+        c8y_Hardware:
+          type: object
+          properties:
+            model:
+              type: string
+            revision:
+              type: string
+            serialNumber:
+              type: string
+        c8y_Firmware:
+          type: object
+          properties:
+            name:
+              type: string
+            version:
+              type: string
+            url:
+              type: string
+        childDevices:
+          $ref: '#/components/schemas/ManagedObjectReferenceCollection'
+        childAssets:
+          $ref: '#/components/schemas/ManagedObjectReferenceCollection'
+        childAdditions:
+          $ref: '#/components/schemas/ManagedObjectReferenceCollection'
+        deviceParents:
+          $ref: '#/components/schemas/ManagedObjectReferenceCollection'
+        assetParents:
+          $ref: '#/components/schemas/ManagedObjectReferenceCollection'
+    PageStatistics:
+      type: object
+      properties:
+        pageSize:
+          type: integer
+        currentPage:
+          type: integer
+        totalPages:
+          type: integer
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

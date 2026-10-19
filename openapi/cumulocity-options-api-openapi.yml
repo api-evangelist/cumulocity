@@ -1,0 +1,1175 @@
+openapi: 3.2.0
+info:
+  version: Latest
+  title: Cumulocity Options API
+  x-logo:
+    url: https://www.cumulocity.com/docs/images/logo-platform.svg
+    backgroundColor: '#F8F8F8'
+    altText: Cumulocity
+    href: https://www.cumulocity.com/api
+  description: '# REST implementation
+
+
+    This section describes the aspects common to all REST-based interfaces of Cumulocity. The interfaces are based on the Hypertext Transfer Protocol 1.1 using HTTPS. ## HTTP usage
+
+
+    ### Application management
+
+
+    Cumulocity uses a so-called "application key" to distinguish requests coming from devices and traffic from applications. If you write an application, pass the following header as part of all requests:
+
+
+    ```markup
+
+    X-Cumulocity-Application-Key:
+
+    ```
+
+
+    For example, if you registered your application in the Cumulocity Administration application with the key "myapp", your requests should contain the header:
+
+
+    ```markup
+
+    X-Cumulocity-Application-Key: myapp
+
+    ```
+
+
+    This makes your application subscribable and billable. If you implement a device, do not pass the key. > **ⓘ Info:** Make sure that you pass the key in **all** requests coming from an application. If you leave out the key,
+
+    > the request will be considered as a device request, and the corresponding device will be marked as "available". ### Limited HTTP clients
+
+
+    If you use an HTTP client that can only perform GET and POST methods in HTTP, you can emulate the other methods through an additional "X-HTTP-METHOD" header. Simply issue a POST request and add the header, specifying the actual REST method to be executed. For example, to emulate the "PUT" (modify) method, you can use:
+
+
+    ```http
+
+    POST ... X-HTTP-METHOD: PUT
+
+    ```
+
+
+    ### Processing mode
+
+
+    Every update request (PUT, POST, DELETE) executes with a so-called *processing mode*. The processing modes are as follows:
+
+
+    |Processing mode|Description|
+
+    |---|---|
+
+    |PERSISTENT (default)|Stores data in the Cumulocity database and sends data to the Streaming Analytics engine. Afterwards, Cumulocity returns the result of the request. This is the default mode.|
+
+    |TRANSIENT|Sends data to the Streaming Analytics engine and immediately returns the results asynchronously but does not store data in Cumulocity’s database. This mode saves storage and processing costs and is useful for example when tracking devices in real time without requiring data to be stored.|
+
+    |QUIESCENT|Behaves similar to the persistent mode with the exception that no real-time notifications will be sent.|
+
+    |CEP|Behaves like the transient mode with the exception that no real-time notifications are sent.|
+
+
+    To explicitly control the processing mode of an update request, you can use the "X-Cumulocity-Processing-Mode" header with a value of either "PERSISTENT", "TRANSIENT", "QUIESCENT" or "CEP":
+
+
+    ```markup
+
+    X-Cumulocity-Processing-Mode: PERSISTENT
+
+    ```
+
+
+    > **ⓘ Info:** Events are always delivered to CEP/Apama for all processing modes. This is independent from real-time notifications. ### Authorization
+
+
+    All requests issued to Cumulocity are subject to authorization. To determine the required permissions, see the "Required role" entries for the individual requests. To learn more about the different permissions and the concept of ownership in Cumulocity, see Getting started > Technical concepts > Security aspects > Access control > Managing roles and assigning permissions in the Cumulocity user documentation. > **⚠️ Important:** In the Cumulocity API, each granular permission is identified by a unique “permission” string, which is prefixed with ROLE_ (for example, ROLE_ALARM_READ, ROLE_INVENTORY_ADMIN). Therefore, permissions are frequently referred to as “roles” throughout the API as well as in the configuration files. For example, the microservice manifest includes a requiredRoles field, which actually expects a permission string. See also the Glossary of the Cumulocity user documentation for the usage of the terms “permission” and “role” in the Cumulocity context. ### Media types
+
+
+    Each type of data is associated with an own media type. The general format of media types is:
+
+
+    ```markup
+
+    application/vnd.com.nsn.cumulocity.+json;ver=;charset=UTF-8
+
+    ```
+
+
+    Each media type contains a parameter `ver` indicating the version of the type.'
+servers:
+- description: Cumulocity tenant
+  url: https://<TENANT_DOMAIN>
+security:
+- Basic: []
+- OAI-Secure: []
+- SSO: []
+- JWT-IAM: []
+tags:
+- name: Options
+  description: 'API methods to retrieve the options configured in the tenant.
+
+
+    > **ⓘ Info:** The Accept header should be provided in all POST/PUT requests, otherwise an empty response body will be returned.'
+paths:
+  /tenant/options:
+    post:
+      operationId: postOptionCollectionResource
+      x-codegen-resource-name: createOption
+      parameters:
+      - $ref: '#/components/parameters/acceptHeader'
+      tags:
+      - Options
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Create an option
+      description: 'Create an option on your tenant.
+
+
+        Options are category-key-value tuples which store tenant configurations. Some categories of options allow the creation of new ones, while others are limited to predefined set of keys.
+
+
+        Any option of any tenant can be defined as "non-editable" by the "management" tenant; once done, any PUT or DELETE requests made on that option by the tenant owner will result in a 403 error (Unauthorized).
+
+
+        > **⚠️ Important:** Category names must not contain whitespaces nor the special characters ``` $ & + , / : ; = ? @ " # % { } | \ ^ ~ [ ] ` ```. This is necessary to ensure the new tenant option is processed correctly and saved successfully.
+
+
+        ### Default option categories
+
+
+        **access.control**
+
+
+        | Key | Default value | Predefined | Description |
+
+        |--|--|--|--|
+
+        | allow.origin | * | Yes | Comma separated list of domains allowed for execution of CORS. Wildcards are allowed (for example, `*.cumulocity.com`) |
+
+
+        **alarm.type.mapping**
+
+
+        | Key | Predefined | Description |
+
+        |--|--|--|
+
+        | <ALARM_TYPE> | No | Overrides the severity and alarm text for the alarm with type <ALARM_TYPE>. The severity and text are specified as `\|`. If either part is empty, the value will not be overridden. If the severity is NONE, the alarm will be suppressed. Example: `"CRITICAL\|temperature too high"`|
+
+
+        ### Encrypted credentials
+
+
+        Adding a `credentials.` prefix to the key causes the value of the option to be stored in an encrypted form. When the option is retrieved from a microservice, the `credentials.` prefix is removed, and the value is decrypted only if the microservice is the owner of the option. A microservice is considered the owner when the tenant option category matches its own category, which is determined based on the first non-blank value from the following, in order of priority:
+
+        * the `settingsCategory` defined in the microservice manifest
+
+        * the microservice''s context path
+
+        * the microservice name
+
+
+        A microservice can retrieve all the options of its own category at once through Retrieve the current application settings.
+
+
+        Decryption is performed only for system users (such as service users or the bootstrap user) who are the owners of the option. For example:
+
+        ```json
+
+        {
+
+        "category": "microservice1",
+
+        "key": "secret",
+
+        "value": "secret-content"
+
+        }
+
+        ```
+
+
+        If the tenant option category does not match any of these values, the encrypted value will not be decrypted, and static string will be returned. For example:
+
+
+        ```json
+
+        {
+
+        "category": "microservice2",
+
+        "key": "credentials.secret",
+
+        "value": ">"
+
+        }
+
+        ```
+
+
+        Required roles
+
+
+        ROLE_OPTION_MANAGEMENT_ADMIN'
+      requestBody:
+        required: true
+        content:
+          application/vnd.com.nsn.cumulocity.option+json:
+            example:
+              category: alarm.type.mapping
+              key: temp_too_high
+              value: CRITICAL|temperature too high
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/option'
+              - required:
+                - category
+                - key
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request POST "https://<TENANT_DOMAIN>/tenant/options" \
+
+          --header "Authorization: Basic <AUTHORIZATION>" \
+
+          --header "Accept: application/json" \
+
+          --header "Content-Type: application/json" \
+
+          --data-raw ''<Payload>''
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/tenant/options");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.POST);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+          request.AddHeader("Content-Type", "application/json");
+
+          request.AddHeader("Accept", "application/json");
+
+          request.AddParameter("application/json", "<Payload>",  ParameterType.RequestBody);
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.post(\"https://<TENANT_DOMAIN>/tenant/options\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .header(\"Content-Type\", \"application/json\")\n    .header(\"Accept\", \"application/json\")\n    .body(\"<Payload>\")\n    .asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"POST\", \"https://<TENANT_DOMAIN>/tenant/options\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\",\n        \"Accept\": \"application/json\",\n        \"Content-Type\": \"application/json\"\n    })\n    .send(JSON.stringify( <Payload> ))\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\nimport json\n\nurl = \"https://<TENANT_DOMAIN>/tenant/options\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\",\n  \"Accept\": \"application/json\",\n  \"Content-Type\": \"application/json\"\n}\nresponse = requests.request(\"POST\", url, headers=headers, data = json.dumps(<Payload>))\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '200':
+          description: An option was created.
+          content:
+            application/vnd.com.nsn.cumulocity.option+json:
+              schema:
+                $ref: '#/components/schemas/option'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+        '422':
+          $ref: '#/components/responses/invalidPayload'
+    get:
+      operationId: getOptionCollectionResource
+      x-codegen-resource-name: getOptions
+      parameters:
+      - $ref: '#/components/parameters/queryParam_currentPage'
+      - $ref: '#/components/parameters/queryParam_pageSize'
+      - $ref: '#/components/parameters/queryParam_withTotalPages'
+      tags:
+      - Options
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Retrieve all options
+      description: 'Retrieve all the options available on the tenant.
+
+
+        > **⚠️ Important:** Note that Enterprise Tenants are also allowed to read inherited tenant options from the management tenant.
+
+
+        Required roles
+
+
+        ROLE_OPTION_MANAGEMENT_READ'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request GET "https://<TENANT_DOMAIN>/tenant/options"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/tenant/options");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.GET);
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: 'Unirest.setTimeouts(0, 0);
+
+          HttpResponse<String> response = Unirest.get("https://<TENANT_DOMAIN>/tenant/options").asString();
+
+          '
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"GET\", \"https://<TENANT_DOMAIN>/tenant/options\")\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: 'import requests
+
+
+          response = requests.request("GET", "https://<TENANT_DOMAIN>/tenant/options")
+
+          print(response.text.encode("utf8"))
+
+          '
+      responses:
+        '200':
+          $ref: '#/components/responses/optionCollectionResourceFound'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+  /tenant/options/{category}:
+    parameters:
+    - $ref: '#/components/parameters/optionCategory'
+    get:
+      operationId: getCategoryOptionResource
+      x-codegen-resource-name: getOptionsByCategory
+      tags:
+      - Options
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Retrieve all options by category
+      description: 'Retrieve all the options (by a specified category) on your tenant.
+
+        > **⚠️ Important:** Note that Enterprise Tenants are also allowed to read inherited tenant options from the management tenant.
+
+
+        A microservice can read the options of its own category through Retrieve the current application settings.
+
+
+        Required roles
+
+
+        ROLE_OPTION_MANAGEMENT_READ'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request GET "https://<TENANT_DOMAIN>/tenant/options/{category}"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/tenant/options/{category}");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.GET);
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: 'Unirest.setTimeouts(0, 0);
+
+          HttpResponse<String> response = Unirest.get("https://<TENANT_DOMAIN>/tenant/options/{category}").asString();
+
+          '
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"GET\", \"https://<TENANT_DOMAIN>/tenant/options/{category}\")\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: 'import requests
+
+
+          response = requests.request("GET", "https://<TENANT_DOMAIN>/tenant/options/{category}")
+
+          print(response.text.encode("utf8"))
+
+          '
+      responses:
+        '200':
+          $ref: '#/components/responses/categoryOptionsFound'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+    put:
+      operationId: putCategoryOptionResource
+      x-codegen-resource-name: updateOptionsByCategory
+      parameters:
+      - $ref: '#/components/parameters/acceptHeader'
+      tags:
+      - Options
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Update options by category
+      description: 'Update one or more options (by a specified category) on your tenant.
+
+
+        Required roles
+
+
+        ROLE_OPTION_MANAGEMENT_ADMIN'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoryOptions'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request PUT "https://<TENANT_DOMAIN>/tenant/options/{category}" \
+
+          --header "Authorization: Basic <AUTHORIZATION>" \
+
+          --header "Accept: application/json" \
+
+          --header "Content-Type: application/json" \
+
+          --data-raw ''<Payload>''
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/tenant/options/{category}");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.PUT);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+          request.AddHeader("Content-Type", "application/json");
+
+          request.AddHeader("Accept", "application/json");
+
+          request.AddParameter("application/json", "<Payload>",  ParameterType.RequestBody);
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.put(\"https://<TENANT_DOMAIN>/tenant/options/{category}\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .header(\"Content-Type\", \"application/json\")\n    .header(\"Accept\", \"application/json\")\n    .body(\"<Payload>\")\n    .asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"PUT\", \"https://<TENANT_DOMAIN>/tenant/options/{category}\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\",\n        \"Accept\": \"application/json\",\n        \"Content-Type\": \"application/json\"\n    })\n    .send(JSON.stringify( <Payload> ))\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\nimport json\n\nurl = \"https://<TENANT_DOMAIN>/tenant/options/{category}\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\",\n  \"Accept\": \"application/json\",\n  \"Content-Type\": \"application/json\"\n}\nresponse = requests.request(\"PUT\", url, headers=headers, json.dumps(<Payload>))\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '200':
+          description: A collection of options was updated.
+          content:
+            application/vnd.com.nsn.cumulocity.option+json:
+              schema:
+                $ref: '#/components/schemas/CategoryOptions'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+        '422':
+          $ref: '#/components/responses/invalidPayload'
+  /tenant/options/{category}/{key}:
+    parameters:
+    - $ref: '#/components/parameters/optionCategory'
+    - $ref: '#/components/parameters/optionKey'
+    get:
+      operationId: getOptionResource
+      x-codegen-resource-name: getOption
+      tags:
+      - Options
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Retrieve a specific option
+      description: 'Retrieve a specific option (by a given category and key) on your tenant.
+
+        > **⚠️ Important:** Note that Enterprise Tenants are also allowed to read inherited tenant options from the management tenant.
+
+
+        Required roles
+
+
+        ROLE_OPTION_MANAGEMENT_READ'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request GET "https://<TENANT_DOMAIN>/tenant/options/{category}/{key}"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/tenant/options/{category}/{key}");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.GET);
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: 'Unirest.setTimeouts(0, 0);
+
+          HttpResponse<String> response = Unirest.get("https://<TENANT_DOMAIN>/tenant/options/{category}/{key}").asString();
+
+          '
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"GET\", \"https://<TENANT_DOMAIN>/tenant/options/{category}/{key}\")\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: 'import requests
+
+
+          response = requests.request("GET", "https://<TENANT_DOMAIN>/tenant/options/{category}/{key}")
+
+          print(response.text.encode("utf8"))
+
+          '
+      responses:
+        '200':
+          $ref: '#/components/responses/optionFound'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+        '404':
+          description: Option not found.
+    put:
+      operationId: putOptionResource
+      x-codegen-resource-name: updateOption
+      parameters:
+      - $ref: '#/components/parameters/acceptHeader'
+      tags:
+      - Options
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Update a specific option
+      description: 'Update the value of a specific option (by a given category and key) on your tenant.
+
+
+        Required roles
+
+
+        ROLE_OPTION_MANAGEMENT_ADMIN AND the option is editable'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoryKeyOption'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request PUT "https://<TENANT_DOMAIN>/tenant/options/{category}/{key}" \
+
+          --header "Authorization: Basic <AUTHORIZATION>" \
+
+          --header "Accept: application/json" \
+
+          --header "Content-Type: application/json" \
+
+          --data-raw ''<Payload>''
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/tenant/options/{category}/{key}");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.PUT);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+          request.AddHeader("Content-Type", "application/json");
+
+          request.AddHeader("Accept", "application/json");
+
+          request.AddParameter("application/json", "<Payload>",  ParameterType.RequestBody);
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.put(\"https://<TENANT_DOMAIN>/tenant/options/{category}/{key}\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .header(\"Content-Type\", \"application/json\")\n    .header(\"Accept\", \"application/json\")\n    .body(\"<Payload>\")\n    .asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"PUT\", \"https://<TENANT_DOMAIN>/tenant/options/{category}/{key}\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\",\n        \"Accept\": \"application/json\",\n        \"Content-Type\": \"application/json\"\n    })\n    .send(JSON.stringify( <Payload> ))\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\nimport json\n\nurl = \"https://<TENANT_DOMAIN>/tenant/options/{category}/{key}\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\",\n  \"Accept\": \"application/json\",\n  \"Content-Type\": \"application/json\"\n}\nresponse = requests.request(\"PUT\", url, headers=headers, json.dumps(<Payload>))\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '200':
+          description: An option was updated.
+          content:
+            application/vnd.com.nsn.cumulocity.option+json:
+              schema:
+                $ref: '#/components/schemas/option'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+        '404':
+          description: Option not found.
+        '422':
+          $ref: '#/components/responses/invalidPayload'
+    delete:
+      operationId: deleteOptionResource
+      x-codegen-resource-name: deleteOption
+      tags:
+      - Options
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Remove a specific option
+      description: 'Remove a specific option (by a given category and key) on your tenant.
+
+
+        Required roles
+
+
+        ROLE_OPTION_MANAGEMENT_ADMIN'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request DELETE "https://<TENANT_DOMAIN>/tenant/options/{category}/{key}" \
+
+          --header "Authorization: Basic <AUTHORIZATION>"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/tenant/options/{category}/{key}");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.DELETE);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.delete(\"https://<TENANT_DOMAIN>/tenant/options/{category}/{key}\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\").asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"DELETE\", \"https://<TENANT_DOMAIN>/tenant/options/{category}/{key}\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\"\n    })\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://<TENANT_DOMAIN>/tenant/options/{category}/{key}\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\"\n}\nresponse = requests.request(\"DELETE\", url, headers=headers)\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '204':
+          description: An option was removed.
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '404':
+          description: Option not found.
+  /tenant/options/{category}/{key}/editable:
+    parameters:
+    - $ref: '#/components/parameters/optionCategory'
+    - $ref: '#/components/parameters/optionKey'
+    - $ref: '#/components/parameters/queryParam_targetTenant'
+    put:
+      operationId: putOptionEditableResource
+      x-codegen-resource-name: updateOption
+      tags:
+      - Options
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Update a specific option editable flag
+      description: 'Updates the editable flag of a specific option (by a given category and key) on target tenant which determines if the option can be edited.
+
+
+        Required roles
+
+
+        ROLE_OPTION_MANAGEMENT_ADMIN AND is the management tenant'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EditableOption'
+        x-code-samples:
+        - lang: cURL
+          source: 'curl --location --request PUT "https://<TENANT_DOMAIN>/tenant/options/{category}/{key}/editable?targetTenant={targetTenant}" \
+
+            --header "Authorization: Basic <AUTHORIZATION>" \
+
+            --header "Accept: application/json" \
+
+            --header "Content-Type: application/json" \
+
+            --data-raw ''<Payload>''
+
+            '
+        - lang: C#
+          source: 'var client = new RestClient("https://<TENANT_DOMAIN>/tenant/options/{category}/{key}/editable");
+
+            client.Timeout = -1;
+
+
+            var request = new RestRequest(Method.PUT);
+
+            request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+            request.AddHeader("Content-Type", "application/json");
+
+            request.AddHeader("Accept", "application/json");
+
+            request.AddParameter("application/json", "<Payload>",  ParameterType.RequestBody);
+
+
+            IRestResponse response = client.Execute(request);
+
+            Console.WriteLine(response.Content);
+
+            '
+        - lang: Java
+          source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.put(\"https://<TENANT_DOMAIN>/tenant/options/{category}/{key}/editable?targetTenant={targetTenant}\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .header(\"Content-Type\", \"application/json\")\n    .header(\"Accept\", \"application/json\")\n    .body(\"<Payload>\")\n    .asString();\nSystem.out.println(response);\n"
+        - lang: Node.js
+          source: "var unirest = require(\"unirest\");\nvar req = unirest(\"PUT\", \"https://<TENANT_DOMAIN>/tenant/options/{category}/{key}/editable?targetTenant={targetTenant}\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\",\n        \"Accept\": \"application/json\",\n        \"Content-Type\": \"application/json\"\n    })\n    .send(JSON.stringify( <Payload> ))\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+        - lang: Python
+          source: "import requests\nimport json\n\nurl = \"https://<TENANT_DOMAIN>/tenant/options/{category}/{key}/editable?targetTenant={targetTenant}\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\",\n  \"Accept\": \"application/json\",\n  \"Content-Type\": \"application/json\"\n}\nresponse = requests.request(\"PUT\", url, headers=headers, json.dumps(<Payload>))\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '200':
+          description: An option was updated.
+        '400':
+          description: Could not parse JSON request.
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+        '404':
+          description: Option not found.
+components:
+  schemas:
+    desc_self:
+      title: SelfURL
+      description: A URL linking to this resource.
+      type: string
+      format: uri
+      readOnly: true
+    desc_nextPage:
+      title: NextPageURL
+      description: A URI reference [[RFC3986](https://tools.ietf.org/html/rfc3986)] to a potential next page of managed objects.
+      type: string
+      readOnly: true
+    error:
+      type: object
+      properties:
+        error:
+          description: The type of error returned.
+          type: string
+        message:
+          description: A human-readable message providing more details about the error.
+          type: string
+        info:
+          description: A URI reference [[RFC3986](https://tools.ietf.org/html/rfc3986)] that identifies the error code reported.
+          type: string
+    pageStatistics:
+      description: Information about paging statistics.
+      type: object
+      readOnly: true
+      properties:
+        currentPage:
+          description: The current page of the paginated results.
+          type: integer
+          minimum: 1
+          example: 2
+        pageSize:
+          description: Indicates the number of objects that the collection may contain per page. The upper limit for one page is 2,000 objects.
+          type: integer
+          minimum: 1
+          maximum: 2000
+          example: 5
+        totalElements:
+          description: The total number of results (elements).
+          type: integer
+          minimum: 0
+          example: 12
+        totalPages:
+          description: 'The total number of paginated results (pages).
+
+
+            > **&#9432; Info:** This property is returned by default except when an operation retrieves all records where values are between an upper and lower boundary, for example, querying ranges using `dateFrom`–`dateTo`. In such cases, the query parameter `withTotalPages=true` should be used to include the total number of pages (at the expense of slightly slower performance).
+
+            '
+          type: integer
+          minimum: 0
+          example: 3
+    option:
+      description: A tuple storing tenant configuration.
+      type: object
+      properties:
+        category:
+          description: Name of the option category.
+          type: string
+          minLength: 1
+        key:
+          description: A unique identifier for this option.
+          type: string
+          minLength: 1
+        value:
+          description: Value of this option.
+          type: string
+        self:
+          $ref: '#/components/schemas/desc_self'
+      example:
+        category: alarm.type.mapping
+        key: temp_too_high
+        value: CRITICAL|temperature too high
+        self: https://<TENANT_DOMAIN>/tenant/options/alarm.type.mapping/temp_too_high
+    CategoryOptions:
+      type: object
+      additionalProperties:
+        description: 'It is possible to specify an arbitrary number of existing options as a list of key-value pairs, for example, `"key1": "value1"`, `"key2": "value2"`.'
+        x-additionalPropertiesName: keyValuePairs
+      example:
+        temp_too_high: '120'
+        temp_too_low": '0'
+    desc_prevPage:
+      title: PreviousPageURL
+      description: A URI reference [[RFC3986](https://tools.ietf.org/html/rfc3986)] to a potential previous page of managed objects.
+      type: string
+      readOnly: true
+    CategoryKeyOption:
+      type: object
+      properties:
+        value:
+          description: The value of this option.
+          type: string
+          example: CRITICAL|temperature too high
+    EditableOption:
+      type: object
+      properties:
+        editable:
+          description: Indicates if option can be edited.
+          type: boolean
+    OptionCollection:
+      description: All available options of the tenant.
+      type: object
+      properties:
+        next:
+          $ref: '#/components/schemas/desc_nextPage'
+        prev:
+          $ref: '#/components/schemas/desc_prevPage'
+        self:
+          $ref: '#/components/schemas/desc_self'
+        statistics:
+          $ref: '#/components/schemas/pageStatistics'
+        options:
+          description: An array containing the available options.
+          type: array
+          items:
+            $ref: '#/components/schemas/option'
+      example:
+        self: https://<TENANT_DOMAIN>/tenant/options?pageSize=5&currentPage=2
+        options:
+        - self: https://<TENANT_DOMAIN>/tenant/options/password/limit.validity
+          category: password
+          key: limit.validity
+          value": '0'
+        - self: https://<TENANT_DOMAIN>/tenant/options/password/strength.validity
+          category: password
+          key: strength.validity
+          value": 'false'
+        statistics:
+          totalPages: 1
+          currentPage: 1
+          pageSize: 5
+  responses:
+    invalidPayload:
+      description: Unprocessable Entity – invalid payload.
+    unauthorizedError:
+      description: Authentication information is missing or invalid.
+      content:
+        application/vnd.com.nsn.cumulocity.error+json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            error: security/Unauthorized
+            message: 'Invalid credentials! : Bad credentials'
+            info: https://www.cumulocity.com/guides/reference-guide/#error_reporting
+    operationNotAuthorized:
+      description: Not authorized to perform this operation.
+    optionFound:
+      description: The request has succeeded and the option is sent in the response.
+      content:
+        application/vnd.com.nsn.cumulocity.option+json:
+          schema:
+            $ref: '#/components/schemas/option'
+    categoryOptionsFound:
+      description: The request has succeeded and the options are sent in the response.
+      content:
+        application/vnd.com.nsn.cumulocity.option+json:
+          schema:
+            $ref: '#/components/schemas/CategoryOptions'
+    optionCollectionResourceFound:
+      description: The request has succeeded and the options are sent in the response.
+      content:
+        application/vnd.com.nsn.cumulocity.optioncollection+json:
+          schema:
+            $ref: '#/components/schemas/OptionCollection'
+  parameters:
+    queryParam_withTotalPages:
+      name: withTotalPages
+      in: query
+      description: 'When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
+
+        > **&#9432; Info:** To improve performance, the `totalPages` statistics are cached for 10 seconds.
+
+        '
+      schema:
+        type: boolean
+        default: false
+        example: true
+    queryParam_currentPage:
+      name: currentPage
+      in: query
+      description: The current page of the paginated results.
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+        example: 3
+    queryParam_targetTenant:
+      name: targetTenant
+      in: query
+      description: Unique identifier of a Cumulocity tenant.
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        example: t07007007
+    optionKey:
+      name: key
+      in: path
+      description: The key of an option.
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        example: temp_too_high
+    optionCategory:
+      name: category
+      in: path
+      description: The category of the options.
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        example: alarm.type.mapping
+    acceptHeader:
+      name: Accept
+      in: header
+      description: Advertises which content types, expressed as MIME types, the client is able to understand.
+      required: false
+      schema:
+        type: string
+        minLength: 1
+        example: application/json
+    queryParam_pageSize:
+      name: pageSize
+      in: query
+      description: Indicates how many entries of the collection shall be returned. The upper limit for one page is 2,000 objects.
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 2000
+        default: 5
+        example: 10
+  securitySchemes:
+    Basic:
+      type: http
+      scheme: basic
+      description: 'The authorization header is formed as `Basic <Base64(<tenantID>/<c8yuser>:<password>)>`. For instance, if your tenantID, username and password are **t0071234**, **testuser** and **secret123** respectively, you can generate the Base64 string with the following command:
+
+
+        ```shell
+
+        $ echo -n t0071234/testuser:secret123 | base64
+
+        ```
+
+
+        and your authorization header would look like this:
+
+
+        ```
+
+        "Authorization": "Basic dDAwNzEyMzQvdGVzdHVzZXI6c2VjcmV0MTIz"
+
+        ```
+
+        '
+    OAI-Secure:
+      type: http
+      scheme: bearer
+      description: 'This is the recommended authorization method because it provides high security using authorization tokens to prove the identity of the user, and it is the default login mode on creating new tenants. This mode is an enhancement of the previous OAuth Internal authentication (available prior to 10.13.0).
+
+
+        For more details about OAI-Secure authentication, see [Platform administration > Authentication > Basic settings > Login settings](https://www.cumulocity.com/docs/authentication/basic-settings/#login-settings) in the Cumulocity user documentation.
+
+        '
+    SSO:
+      type: oauth2
+      description: "The login with SSO requires a correct configuration on the [Cumulocity side](https://www.cumulocity.com/docs/authentication/sso/). With the configuration, an additional button is available on the Login page. After clicking the button, the user is redirected to authenticate with the configured authorization server. On successful login, the user is redirected to Cumulocity.\n\nAuthentication details are exchanged using cookies. There are two parts to it, the first is the authentication cookie that is handled automatically by the Cumulocity platform. The second is the XSRF-TOKEN cookie. When a client receives the cookie, it should take the value and put it in the X-XSRF-TOKEN request header in all subsequent requests.\n\nThe flow of authenticating with authentication code grant is as follows:\n\n![Authentication flow](images/oauth-simple-flow.png)\n\nThe first request executed by the browser is:\n\n```http\nGET /tenant/loginOptions\nHost: https://<TENANT_DOMAIN>\nAccept: application/vnd.com.nsn.cumulocity.loginoptioncollection+json\n```\n\nResponse sample:\n\n```json\n{\n    \"loginOptions\": [\n        {\n            \"buttonName\": \"Login with oauth\",\n            \"grantType\": \"<AUTHORIZATION_CODE>\",\n            \"initRequest\": \"https://<TENANT_DOMAIN>/tenant/oauth?response_type=code&tenant_id=<TENANT_ID>\",\n            \"self\": \"https://<TENANT_DOMAIN>/tenant/loginOptions/oauth2\",\n            \"type\": \"oauth2\"\n        },\n        ...\n    ],\n    \"self\": \"http://<TENANT_DOMAIN>/tenant/loginOptions/\"\n}\n```\n\nThe browser must invoke the request provided in the initRequest parameter.\n\nThe initRequest initiates the redirect, in which the user is prompted for credentials. After successful login, the user is redirected back to the browser, where it must capture the code request parameter. Then the request to exchange the code for the token is as follows:\n\n```http\nPOST /tenant/oauth?grant_type=authorization_code&code=<CODE>\nHost: https://<TENANT_DOMAIN>\n```\n\nA successful response will have no body but the following response headers:\n\n```\nSet-Cookie: authorization=<TOKEN>;\nSet-Cookie: XSRF-TOKEN=<XSRF-TOKEN>;\n```\n\nThe authorization cookie is valid for two weeks.\n"
+      flows:
+        clientCredentials:
+          tokenUrl: /tenant/oauth?grant_type=authorization_code&code=<CODE>
+          scopes: {}
+    JWT-IAM:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'This kind of authentication substitutes the JWT authentication with OAuth2 access tokens from your Identity and Access Management (IAM).
+
+        You can enable this in the [SSO configuration](https://www.cumulocity.com/docs/authentication/sso/).
+
+
+        The HTTP header must include:
+
+
+        ```
+
+        "Authorization": "Bearer <Access token>"
+
+        ```
+
+
+        When a request with a bearer token in the header is received, Cumulocity checks if the access token is from your IAM (that is, if authentication is enabled in your SSO configuration), and verifies the authenticity of
+
+        the token remotely against the IAM.
+
+        '
+x-tagGroups:
+- name: Platform
+  tags:
+  - Platform API
+- name: Alarms
+  tags:
+  - Alarm API
+  - Alarm notification API
+  - Alarms
+- name: Applications
+  tags:
+  - Application API
+  - Applications
+  - Application versions
+  - Application binaries
+  - Bootstrap user
+  - Current application
+- name: Audits
+  tags:
+  - Audit API
+  - Audits
+- name: Device control
+  tags:
+  - Device control API
+  - Device control notification API
+  - Operations
+  - Bulk operations
+  - Device credentials
+  - New device requests
+  - Device control via SMS
+- name: Events
+  tags:
+  - Event API
+  - Event notification API
+  - Events
+  - Attachments
+- name: Feature toggles
+  tags:
+  - Feature toggles API
+- name: Identity
+  tags:
+  - Identity API
+  - External IDs
+- name: Inventory
+  tags:
+  - Inventory API
+  - Inventory notification API
+  - Managed objects
+  - Binaries
+  - Child operations
+  - Query language
+- name: Measurements
+  tags:
+  - Measurement API
+  - Measurement notification API
+  - Measurements
+  - Measurements specifics
+- name: Notifications 2.0
+  tags:
+  - About notifications 2.0
+  - Notification 2.0 API
+  - Subscriptions
+  - Tokens
+- name: Real-time notifications
+  tags:
+  - Real-time notification API
+- name: Retentions
+  tags:
+  - Retention rules
+- name: Tenants
+  tags:
+  - Tenant API
+  - Tenants
+  - Tenant applications
+  - Trusted certificates
+  - Device statistics
+  - Usage statistics
+  - Options
+  - Login options
+  - Login tokens
+  - System options
+- name: Users
+  tags:
+  - User API
+  - Current User
+  - Users
+  - Groups
+  - Roles
+  - Inventory Roles
+  - Device Permissions
+- name: Certificate
+  tags:
+  - Certificate authority
+  - Device enrollment

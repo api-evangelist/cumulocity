@@ -1,38 +1,1074 @@
 openapi: 3.2.0
 info:
-  title: Cumulocity User Roles API
-  version: 10.20.0
-  description: 'Manage users, user groups, global roles, inventory roles, and device permissions. Cumulocity uses an
+  version: Latest
+  title: Cumulocity Roles API
+  x-logo:
+    url: https://www.cumulocity.com/docs/images/logo-platform.svg
+    backgroundColor: '#F8F8F8'
+    altText: Cumulocity
+    href: https://www.cumulocity.com/api
+  description: '# REST implementation
 
-    RBAC model where global roles grant API access and inventory roles grant access to specific managed-object
 
-    subtrees. Supports SSO via SAML/OIDC and SCIM provisioning for enterprise tenants.'
+    This section describes the aspects common to all REST-based interfaces of Cumulocity. The interfaces are based on the Hypertext Transfer Protocol 1.1 using HTTPS. ## HTTP usage
+
+
+    ### Application management
+
+
+    Cumulocity uses a so-called "application key" to distinguish requests coming from devices and traffic from applications. If you write an application, pass the following header as part of all requests:
+
+
+    ```markup
+
+    X-Cumulocity-Application-Key:
+
+    ```
+
+
+    For example, if you registered your application in the Cumulocity Administration application with the key "myapp", your requests should contain the header:
+
+
+    ```markup
+
+    X-Cumulocity-Application-Key: myapp
+
+    ```
+
+
+    This makes your application subscribable and billable. If you implement a device, do not pass the key. > **ⓘ Info:** Make sure that you pass the key in **all** requests coming from an application. If you leave out the key,
+
+    > the request will be considered as a device request, and the corresponding device will be marked as "available". ### Limited HTTP clients
+
+
+    If you use an HTTP client that can only perform GET and POST methods in HTTP, you can emulate the other methods through an additional "X-HTTP-METHOD" header. Simply issue a POST request and add the header, specifying the actual REST method to be executed. For example, to emulate the "PUT" (modify) method, you can use:
+
+
+    ```http
+
+    POST ... X-HTTP-METHOD: PUT
+
+    ```
+
+
+    ### Processing mode
+
+
+    Every update request (PUT, POST, DELETE) executes with a so-called *processing mode*. The processing modes are as follows:
+
+
+    |Processing mode|Description|
+
+    |---|---|
+
+    |PERSISTENT (default)|Stores data in the Cumulocity database and sends data to the Streaming Analytics engine. Afterwards, Cumulocity returns the result of the request. This is the default mode.|
+
+    |TRANSIENT|Sends data to the Streaming Analytics engine and immediately returns the results asynchronously but does not store data in Cumulocity’s database. This mode saves storage and processing costs and is useful for example when tracking devices in real time without requiring data to be stored.|
+
+    |QUIESCENT|Behaves similar to the persistent mode with the exception that no real-time notifications will be sent.|
+
+    |CEP|Behaves like the transient mode with the exception that no real-time notifications are sent.|
+
+
+    To explicitly control the processing mode of an update request, you can use the "X-Cumulocity-Processing-Mode" header with a value of either "PERSISTENT", "TRANSIENT", "QUIESCENT" or "CEP":
+
+
+    ```markup
+
+    X-Cumulocity-Processing-Mode: PERSISTENT
+
+    ```
+
+
+    > **ⓘ Info:** Events are always delivered to CEP/Apama for all processing modes. This is independent from real-time notifications. ### Authorization
+
+
+    All requests issued to Cumulocity are subject to authorization. To determine the required permissions, see the "Required role" entries for the individual requests. To learn more about the different permissions and the concept of ownership in Cumulocity, see Getting started > Technical concepts > Security aspects > Access control > Managing roles and assigning permissions in the Cumulocity user documentation. > **⚠️ Important:** In the Cumulocity API, each granular permission is identified by a unique “permission” string, which is prefixed with ROLE_ (for example, ROLE_ALARM_READ, ROLE_INVENTORY_ADMIN). Therefore, permissions are frequently referred to as “roles” throughout the API as well as in the configuration files. For example, the microservice manifest includes a requiredRoles field, which actually expects a permission string. See also the Glossary of the Cumulocity user documentation for the usage of the terms “permission” and “role” in the Cumulocity context. ### Media types
+
+
+    Each type of data is associated with an own media type. The general format of media types is:
+
+
+    ```markup
+
+    application/vnd.com.nsn.cumulocity.+json;ver=;charset=UTF-8
+
+    ```
+
+
+    Each media type contains a parameter `ver` indicating the version of the type.'
 servers:
-- url: https://{tenant}.cumulocity.com
-  variables:
-    tenant:
-      default: example
+- description: Cumulocity tenant
+  url: https://<TENANT_DOMAIN>
 security:
-- basicAuth: []
-- bearerAuth: []
+- Basic: []
+- OAI-Secure: []
+- SSO: []
+- JWT-IAM: []
 tags:
 - name: Roles
+  description: 'API methods to create, retrieve, update and delete user roles.
+
+
+    > **ⓘ Info:** The Accept header should be provided in all POST requests, otherwise an empty response body will be returned.'
 paths:
   /user/roles:
     get:
+      operationId: getRoleCollectionResource
+      x-codegen-resource-name: getUserRoles
+      parameters:
+      - $ref: '#/components/parameters/queryParam_currentPage'
+      - $ref: '#/components/parameters/queryParam_pageSize'
+      - $ref: '#/components/parameters/queryParam_withTotalElements'
+      - $ref: '#/components/parameters/queryParam_withTotalPages'
       tags:
       - Roles
-      summary: List Global Roles
-      operationId: listRoles
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Retrieve all user roles
+      description: 'Retrieve all user roles.
+
+
+        Required roles
+
+
+        ROLE_USER_MANAGEMENT_READ OR ROLE_USER_MANAGEMENT_CREATE AND has access to the user role'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request GET "https://<TENANT_DOMAIN>/user/roles" \
+
+          --header "Authorization: Basic <AUTHORIZATION>"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/user/roles");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.GET);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.get(\"https://<TENANT_DOMAIN>/user/roles\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"GET\", \"https://<TENANT_DOMAIN>/user/roles\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\"\n    })\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://<TENANT_DOMAIN>/user/roles\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\"\n}\nresponse = requests.request(\"GET\", url, headers = headers)\nprint(response.text.encode(\"utf8\"))\n"
       responses:
         '200':
-          description: A collection of global roles.
+          description: The request has succeeded and all user roles are sent in the response.
+          content:
+            application/vnd.com.nsn.cumulocity.rolecollection+json:
+              schema:
+                $ref: '#/components/schemas/UserRoleCollection'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+  /user/roles/{name}:
+    parameters:
+    - $ref: '#/components/parameters/roleName'
+    get:
+      operationId: getRoleCollectionResourceByName
+      x-codegen-resource-name: getUserRole
+      tags:
+      - Roles
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Retrieve a user role by name
+      description: 'Retrieve a user role by name.
+
+
+        Required roles
+
+
+        ROLE_USER_MANAGEMENT_READ OR ROLE_USER_MANAGEMENT_CREATE AND current user has access to the role with this name'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request GET "https://<TENANT_DOMAIN>/user/roles/{name}" \
+
+          --header "Authorization: Basic <AUTHORIZATION>"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/user/roles/{name}");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.GET);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.get(\"https://<TENANT_DOMAIN>/user/roles/{name}\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .asString();\n  System.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"GET\", \"https://<TENANT_DOMAIN>/user/roles/{name}\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\"\n    })\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://<TENANT_DOMAIN>/user/roles/{name}\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\"\n}\nresponse = requests.request(\"GET\", url, headers = headers)\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '200':
+          description: The request has succeeded and the user role is sent in the response.
+          content:
+            application/vnd.com.nsn.cumulocity.role+json:
+              schema:
+                $ref: '#/components/schemas/role'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+        '404':
+          $ref: '#/components/responses/roleNotFound'
+  /user/{tenantId}/groups/{groupId}/roles:
+    parameters:
+    - $ref: '#/components/parameters/tenantId'
+    - $ref: '#/components/parameters/groupId'
+    post:
+      operationId: postGroupsRoleReferenceCollectionResource
+      x-codegen-resource-name: assignGroupRole
+      parameters:
+      - $ref: '#/components/parameters/acceptHeader'
+      tags:
+      - Roles
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Assign a role to a specific user group in a specific tenant
+      description: 'Assign a role to a specific user group (by a given user group ID) in a specific tenant (by a given tenant ID).
+
+
+        Required roles
+
+
+        ROLE_USER_MANAGEMENT_ADMIN'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request POST "https://<TENANT_DOMAIN>/user/{tenantId}/groups/{groupId}/roles" \
+
+          --header "Authorization: Basic <AUTHORIZATION>" \
+
+          --header "Accept: application/json" \
+
+          --header "Content-Type: application/json" \
+
+          --data-raw "<Payload>"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/user/{tenantId}/groups/{groupId}/roles");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.POST);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+          request.AddHeader("Content-Type", "application/json");
+
+          request.AddHeader("Accept", "application/json");
+
+          request.AddParameter("application/json", "<Payload>",  ParameterType.RequestBody);
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.post(\"https://<TENANT_DOMAIN>/user/{tenantId}/groups/{groupId}/roles\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .header(\"Content-Type\", \"application/json\")\n    .header(\"Accept\", \"application/json\")\n    .body(\"<Payload>\")\n    .asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"POST\", \"https://<TENANT_DOMAIN>/user/{tenantId}/groups/{groupId}/roles\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\",\n        \"Accept\": \"application/json\",\n        \"Content-Type\": \"application/json\"\n    })\n    .send(JSON.stringify( <Payload> ))\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://<TENANT_DOMAIN>/user/{tenantId}/groups/{groupId}/roles\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\",\n  \"Accept\": \"application/json\",\n  \"Content-Type\": \"application/json\"\n}\nresponse = requests.request(\"POST\", url, headers=headers, data = json.dumps(<Payload>))\nprint(response.text.encode(\"utf8\"))\n"
+      requestBody:
+        required: true
+        content:
+          application/vnd.com.nsn.cumulocity.rolereference+json:
+            schema:
+              $ref: '#/components/schemas/SubscribedRole'
+      responses:
+        '201':
+          description: A user role was assigned to a user group.
+          content:
+            application/vnd.com.nsn.cumulocity.rolereference+json:
+              schema:
+                $ref: '#/components/schemas/roleReference'
+              example:
+                self: https://<TENANT_DOMAIN>/user/{tenantId}/groups/2/roles/ROLE_ALARM_ADMIN
+                role:
+                  id: ROLE_ALARM_ADMIN
+                  name: ROLE_ALARM_ADMIN
+                  self: https://<TENANT_DOMAIN>/user/roles/ROLE_ALARM_ADMIN
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+        '404':
+          $ref: '#/components/responses/groupNotFound'
+        '409':
+          description: Conflict – Role already assigned to the user group.
+        '422':
+          $ref: '#/components/responses/invalidPayload'
+    get:
+      operationId: getGroupsRoleReferenceCollectionResource
+      x-codegen-resource-name: getGroupRoles
+      parameters:
+      - $ref: '#/components/parameters/queryParam_currentPage'
+      - $ref: '#/components/parameters/queryParam_pageSize'
+      tags:
+      - Roles
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Retrieve all roles assigned to a specific user group in a specific tenant
+      description: 'Retrieve all roles assigned to a specific user group (by a given user group ID) in a specific tenant (by a given tenant ID).
+
+
+        Required roles
+
+
+        ROLE_USER_MANAGEMENT_READ'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request GET "https://<TENANT_DOMAIN>/user/{tenantId}/groups/{groupId}/roles" \
+
+          --header "Authorization: Basic <AUTHORIZATION>"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/user/{tenantId}/groups/{groupId}/roles");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.GET);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.get(\"https://<TENANT_DOMAIN>/user/{tenantId}/groups/{groupId}/roles\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\").asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"GET\", \"https://<TENANT_DOMAIN>/user/{tenantId}/groups/{groupId}/roles\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\"\n    })\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://<TENANT_DOMAIN>/user/{tenantId}/groups/{groupId}/roles\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\"\n}\nresponse = requests.request(\"GET\", url, headers = headers)\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '200':
+          description: The request succeeded and the roles are sent in the response.
+          content:
+            application/vnd.com.nsn.cumulocity.rolereferencecollection+json:
+              schema:
+                $ref: '#/components/schemas/RoleReferenceCollection'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/accessDenied'
+        '404':
+          $ref: '#/components/responses/groupNotFound'
+  /user/{tenantId}/groups/{groupId}/roles/{roleId}:
+    parameters:
+    - $ref: '#/components/parameters/tenantId'
+    - $ref: '#/components/parameters/groupId'
+    - $ref: '#/components/parameters/roleId'
+    delete:
+      operationId: deleteGroupRoleReferenceResource
+      x-codegen-resource-name: unassignGroupRole
+      tags:
+      - Roles
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Unassign a specific role for a specific user group in a specific tenant
+      description: 'Unassign a specific role (given by a role ID) for a specific user group (by a given user group ID) in a specific tenant (by a given tenant ID).
+
+
+        Required roles
+
+
+        ROLE_USER_MANAGEMENT_ADMIN'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request DELETE "https://<TENANT_DOMAIN>/user/{tenantId}/groups/{groupId}/roles/{roleId}" \
+
+          --header "Authorization: Basic <AUTHORIZATION>"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/user/{tenantId}/groups/{groupId}/roles/{roleId}");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.DELETE);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.delete(\"https://<TENANT_DOMAIN>/user/{tenantId}/groups/{groupId}/roles/{roleId}\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"DELETE\", \"https://<TENANT_DOMAIN>/user/{tenantId}/groups/{groupId}/roles/{roleId}\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\"\n    })\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://<TENANT_DOMAIN>/user/{tenantId}/groups/{groupId}/roles/{roleId}\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\"\n}\nresponse = requests.request(\"DELETE\", url, headers = headers)\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '204':
+          description: A role was unassigned from a user group.
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+        '404':
+          $ref: '#/components/responses/roleNotFound'
+  /user/{tenantId}/users/{userId}/roles:
+    parameters:
+    - $ref: '#/components/parameters/tenantId'
+    - $ref: '#/components/parameters/userId'
+    post:
+      operationId: postUsersRoleReferenceCollectionResource
+      x-codegen-resource-name: assignUserRole
+      parameters:
+      - $ref: '#/components/parameters/acceptHeader'
+      tags:
+      - Roles
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Assign a role to specific user in a specific tenant
+      description: 'Assign a role to a specific user (by a given user ID) in a specific tenant (by a given tenant ID).
+
+
+        When a role is assigned to a user, a corresponding audit record is created with type "User" and activity "User updated".
+
+
+        Required roles
+
+
+        ROLE_USER_MANAGEMENT_ADMIN to assign any role to root users in a user hierarchy OR users that are not in any hierarchy
+
+
+        ROLE_USER_MANAGEMENT_ADMIN to assign roles accessible by the parent of assigned user to non-root users in a user hierarchy
+
+
+        ROLE_USER_MANAGEMENT_CREATE to assign roles accessible by the current user AND accessible by the parent of the assigned user to the descendants of the current user in a user hierarchy'
+      requestBody:
+        required: true
+        content:
+          application/vnd.com.nsn.cumulocity.rolereference+json:
+            schema:
+              $ref: '#/components/schemas/SubscribedRole'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request POST "https://<TENANT_DOMAIN>/user/{tenantId}/users/{userId}/roles" \
+
+          --header "Authorization: Basic <AUTHORIZATION>" \
+
+          --header "Accept: application/json" \
+
+          --header "Content-Type: application/json" \
+
+          --data-raw "<Payload>"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/user/{tenantId}/users/{userId}/roles");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.POST);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+          request.AddHeader("Content-Type", "application/json");
+
+          request.AddHeader("Accept", "application/json");
+
+          request.AddParameter("application/json", "<Payload>",  ParameterType.RequestBody);
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.post(\"https://<TENANT_DOMAIN>/user/{tenantId}/users/{userId}/roles\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .header(\"Content-Type\", \"application/json\")\n    .header(\"Accept\", \"application/json\")\n    .body(\"<Payload>\")\n    .asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"POST\", \"https://<TENANT_DOMAIN>/user/{tenantId}/users/{userId}/roles\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\",\n        \"Accept\": \"application/json\",\n        \"Content-Type\": \"application/json\"\n    })\n    .send(JSON.stringify( <Payload> ))\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://<TENANT_DOMAIN>/user/{tenantId}/users/{userId}/roles\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\",\n  \"Accept\": \"application/json\",\n  \"Content-Type\": \"application/json\"\n}\nresponse = requests.request(\"POST\", url, headers=headers, data = json.dumps(<Payload>))\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '201':
+          description: A user role was assigned to a user.
+          content:
+            application/vnd.com.nsn.cumulocity.rolereference+json:
+              schema:
+                $ref: '#/components/schemas/roleReference'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/accessDenied'
+        '404':
+          $ref: '#/components/responses/userNotFound'
+        '422':
+          $ref: '#/components/responses/invalidPayload'
+  /user/{tenantId}/users/{userId}/roles/{roleId}:
+    parameters:
+    - $ref: '#/components/parameters/tenantId'
+    - $ref: '#/components/parameters/userId'
+    - $ref: '#/components/parameters/roleId'
+    delete:
+      operationId: deleteUserRoleReferenceResource
+      x-codegen-resource-name: unassignUserRole
+      tags:
+      - Roles
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Unassign a specific role from a specific user in a specific tenant
+      description: 'Unassign a specific role (by a given role ID) from a specific user (by a given user ID) in a specific tenant (by a given tenant ID).
+
+
+        Required roles
+
+
+        ROLE_USER_MANAGEMENT_READ OR ROLE_USER_MANAGEMENT_CREATE AND is parent of the user AND has access to roles'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request DELETE "https://<TENANT_DOMAIN>/user/{tenantId}/users/{id}/roles/{roleId}" \
+
+          --header "Authorization: Basic <AUTHORIZATION>"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/user/{tenantId}/users/{id}/roles/{roleId}");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.DELETE);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.delete(\"https://<TENANT_DOMAIN>/user/{tenantId}/users/{id}/roles/{roleId}\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"DELETE\", \"https://<TENANT_DOMAIN>/user/{tenantId}/users/{id}/roles/{roleId}\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\"\n    })\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://<TENANT_DOMAIN>/user/{tenantId}/users/{id}/roles/{roleId}\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\"\n}\nresponse = requests.request(\"DELETE\", url, headers = headers)\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '204':
+          description: A user role was unassigned from a user.
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+        '404':
+          $ref: '#/components/responses/userNotFound'
 components:
+  parameters:
+    userId:
+      name: userId
+      in: path
+      description: Unique identifier of the a user.
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        example: jdoe
+    queryParam_withTotalElements:
+      name: withTotalElements
+      in: query
+      description: 'When set to `true`, the returned result will contain in the statistics object the total number of elements. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
+
+        > **&#9432; Info:** To improve performance, the `totalElements` statistics are cached for 10 seconds.
+
+        '
+      schema:
+        type: boolean
+        default: false
+        example: true
+    tenantId:
+      name: tenantId
+      in: path
+      description: Unique identifier of a Cumulocity tenant.
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        example: t07007007
+    queryParam_withTotalPages:
+      name: withTotalPages
+      in: query
+      description: 'When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
+
+        > **&#9432; Info:** To improve performance, the `totalPages` statistics are cached for 10 seconds.
+
+        '
+      schema:
+        type: boolean
+        default: false
+        example: true
+    queryParam_currentPage:
+      name: currentPage
+      in: query
+      description: The current page of the paginated results.
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+        example: 3
+    roleId:
+      name: roleId
+      in: path
+      description: Unique identifier of the user role.
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        example: ROLE_ALARM_ADMIN
+    roleName:
+      name: name
+      in: path
+      description: The name of the user role.
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        example: ROLE_ALARM_ADMIN
+    acceptHeader:
+      name: Accept
+      in: header
+      description: Advertises which content types, expressed as MIME types, the client is able to understand.
+      required: false
+      schema:
+        type: string
+        minLength: 1
+        example: application/json
+    groupId:
+      name: groupId
+      in: path
+      description: Unique identifier of the user group.
+      required: true
+      schema:
+        type: integer
+        example: 2
+    queryParam_pageSize:
+      name: pageSize
+      in: query
+      description: Indicates how many entries of the collection shall be returned. The upper limit for one page is 2,000 objects.
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 2000
+        default: 5
+        example: 10
+  schemas:
+    UserRoleCollection:
+      type: object
+      properties:
+        next:
+          $ref: '#/components/schemas/desc_nextPage'
+        prev:
+          $ref: '#/components/schemas/desc_prevPage'
+        roles:
+          description: An array of user roles.
+          type: array
+          items:
+            $ref: '#/components/schemas/role'
+        self:
+          $ref: '#/components/schemas/desc_self'
+        statistics:
+          $ref: '#/components/schemas/pageStatistics'
+      example:
+        prev: https://<TENANT_DOMAIN>/user/roles?pageSize=1&currentPage=1
+        self: https://<TENANT_DOMAIN>/user/roles?pageSize=1&currentPage=2
+        next: https://<TENANT_DOMAIN>/user/roles?pageSize=1&currentPage=3
+        roles:
+        - id: ROLE_ALARM_ADMIN
+          name: ROLE_ALARM_ADMIN
+          self: https://<TENANT_DOMAIN>/user/roles/ROLE_ALARM_ADMIN
+        statistics:
+          totalPages: 3
+          currentPage: 2
+          pageSize: 1
+    desc_self:
+      title: SelfURL
+      description: A URL linking to this resource.
+      type: string
+      format: uri
+      readOnly: true
+    SubscribedRole:
+      type: object
+      properties:
+        role:
+          type: object
+          description: An object with a role reference URL.
+          properties:
+            self:
+              type: string
+              description: A URL linking to this resource.
+              example: https://<TENANT_DOMAIN>/user/roles/ROLE_ALARM_ADMIN
+    desc_nextPage:
+      title: NextPageURL
+      description: A URI reference [[RFC3986](https://tools.ietf.org/html/rfc3986)] to a potential next page of managed objects.
+      type: string
+      readOnly: true
+    roleReference:
+      type: object
+      properties:
+        role:
+          $ref: '#/components/schemas/role'
+        self:
+          $ref: '#/components/schemas/desc_self'
+      example:
+        self: https://<TENANT_DOMAIN>/user/{tenantId}/users/jdoe/roles/ROLE_ALARM_ADMIN
+        role:
+          id: ROLE_ALARM_ADMIN
+          name: ROLE_ALARM_ADMIN
+          self: https://<TENANT_DOMAIN>/user/roles/ROLE_ALARM_ADMIN
+    error:
+      type: object
+      properties:
+        error:
+          description: The type of error returned.
+          type: string
+        message:
+          description: A human-readable message providing more details about the error.
+          type: string
+        info:
+          description: A URI reference [[RFC3986](https://tools.ietf.org/html/rfc3986)] that identifies the error code reported.
+          type: string
+    pageStatistics:
+      description: Information about paging statistics.
+      type: object
+      readOnly: true
+      properties:
+        currentPage:
+          description: The current page of the paginated results.
+          type: integer
+          minimum: 1
+          example: 2
+        pageSize:
+          description: Indicates the number of objects that the collection may contain per page. The upper limit for one page is 2,000 objects.
+          type: integer
+          minimum: 1
+          maximum: 2000
+          example: 5
+        totalElements:
+          description: The total number of results (elements).
+          type: integer
+          minimum: 0
+          example: 12
+        totalPages:
+          description: 'The total number of paginated results (pages).
+
+
+            > **&#9432; Info:** This property is returned by default except when an operation retrieves all records where values are between an upper and lower boundary, for example, querying ranges using `dateFrom`–`dateTo`. In such cases, the query parameter `withTotalPages=true` should be used to include the total number of pages (at the expense of slightly slower performance).
+
+            '
+          type: integer
+          minimum: 0
+          example: 3
+    desc_prevPage:
+      title: PreviousPageURL
+      description: A URI reference [[RFC3986](https://tools.ietf.org/html/rfc3986)] to a potential previous page of managed objects.
+      type: string
+      readOnly: true
+    role:
+      description: A user role.
+      type: object
+      properties:
+        id:
+          description: A unique identifier for this user role.
+          type: string
+        name:
+          description: The name of this user role.
+          type: string
+        self:
+          $ref: '#/components/schemas/desc_self'
+      example:
+        id: ROLE_ALARM_ADMIN
+        name: ROLE_ALARM_ADMIN
+        self: https://<TENANT_DOMAIN>/user/roles/ROLE_ALARM_ADMIN
+    RoleReferenceCollection:
+      type: object
+      properties:
+        next:
+          $ref: '#/components/schemas/desc_nextPage'
+        prev:
+          $ref: '#/components/schemas/desc_prevPage'
+        references:
+          $ref: '#/components/schemas/roleReference'
+        self:
+          $ref: '#/components/schemas/desc_self'
+        statistics:
+          $ref: '#/components/schemas/pageStatistics'
+      example:
+        prev: https://<TENANT_DOMAIN>/user/{tenantId}/groups/2/roles?pageSize=5&currentPage=1
+        self: https://<TENANT_DOMAIN>/user/{tenantId}/groups/2/roles?pageSize=5&currentPage=2
+        next: https://<TENANT_DOMAIN>/user/{tenantId}/groups/2/roles?pageSize=5&currentPage=3
+        references:
+        - self: https://<TENANT_DOMAIN>/user/{tenantId}/groups/2/roles/ROLE_ALARM_ADMIN
+          role:
+            id: ROLE_ALARM_ADMIN
+            name: ROLE_ALARM_ADMIN
+            self: https://<TENANT_DOMAIN>/user/roles/ROLE_ALARM_ADMIN
+        statistics:
+          total: 3
+          currentPage: 2
+          pageSize: 5
+  responses:
+    groupNotFound:
+      description: Group not found.
+      content:
+        application/vnd.com.nsn.cumulocity.error+json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            error: groups/Not Found
+            message: 'Error retrieving group with id 2! : Cannot find document with ID ID [type=com_cumulocity_model_idtype_GId, value=2]!'
+            info: https://www.cumulocity.com/guides/reference-guide/#error_reporting
+    invalidPayload:
+      description: Unprocessable Entity – invalid payload.
+    roleNotFound:
+      description: Role not found.
+      content:
+        application/vnd.com.nsn.cumulocity.error+json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            error: Not Found
+            message: Cannot find the specified role.
+            info: https://www.cumulocity.com/guides/reference-guide/#error_reporting
+    unauthorizedError:
+      description: Authentication information is missing or invalid.
+      content:
+        application/vnd.com.nsn.cumulocity.error+json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            error: security/Unauthorized
+            message: 'Invalid credentials! : Bad credentials'
+            info: https://www.cumulocity.com/guides/reference-guide/#error_reporting
+    userNotFound:
+      description: User not found.
+      content:
+        application/vnd.com.nsn.cumulocity.error+json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            error: users/Not Found
+            message: 'Error retrieving user 123! : Cannot find document with ID ID [type=com_cumulocity_model_idtype_GId, value=123]!'
+            info: https://www.cumulocity.com/guides/reference-guide/#error_reporting
+    operationNotAuthorized:
+      description: Not authorized to perform this operation.
+    accessDenied:
+      description: Not enough permissions/roles to perform this operation.
+      content:
+        application/vnd.com.nsn.cumulocity.error+json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            error: security/Forbidden
+            message: Access is denied.
+            info: https://www.cumulocity.com/guides/reference-guide/#error_reporting
   securitySchemes:
-    basicAuth:
+    Basic:
       type: http
       scheme: basic
-    bearerAuth:
+      description: 'The authorization header is formed as `Basic <Base64(<tenantID>/<c8yuser>:<password>)>`. For instance, if your tenantID, username and password are **t0071234**, **testuser** and **secret123** respectively, you can generate the Base64 string with the following command:
+
+
+        ```shell
+
+        $ echo -n t0071234/testuser:secret123 | base64
+
+        ```
+
+
+        and your authorization header would look like this:
+
+
+        ```
+
+        "Authorization": "Basic dDAwNzEyMzQvdGVzdHVzZXI6c2VjcmV0MTIz"
+
+        ```
+
+        '
+    OAI-Secure:
+      type: http
+      scheme: bearer
+      description: 'This is the recommended authorization method because it provides high security using authorization tokens to prove the identity of the user, and it is the default login mode on creating new tenants. This mode is an enhancement of the previous OAuth Internal authentication (available prior to 10.13.0).
+
+
+        For more details about OAI-Secure authentication, see [Platform administration > Authentication > Basic settings > Login settings](https://www.cumulocity.com/docs/authentication/basic-settings/#login-settings) in the Cumulocity user documentation.
+
+        '
+    SSO:
+      type: oauth2
+      description: "The login with SSO requires a correct configuration on the [Cumulocity side](https://www.cumulocity.com/docs/authentication/sso/). With the configuration, an additional button is available on the Login page. After clicking the button, the user is redirected to authenticate with the configured authorization server. On successful login, the user is redirected to Cumulocity.\n\nAuthentication details are exchanged using cookies. There are two parts to it, the first is the authentication cookie that is handled automatically by the Cumulocity platform. The second is the XSRF-TOKEN cookie. When a client receives the cookie, it should take the value and put it in the X-XSRF-TOKEN request header in all subsequent requests.\n\nThe flow of authenticating with authentication code grant is as follows:\n\n![Authentication flow](images/oauth-simple-flow.png)\n\nThe first request executed by the browser is:\n\n```http\nGET /tenant/loginOptions\nHost: https://<TENANT_DOMAIN>\nAccept: application/vnd.com.nsn.cumulocity.loginoptioncollection+json\n```\n\nResponse sample:\n\n```json\n{\n    \"loginOptions\": [\n        {\n            \"buttonName\": \"Login with oauth\",\n            \"grantType\": \"<AUTHORIZATION_CODE>\",\n            \"initRequest\": \"https://<TENANT_DOMAIN>/tenant/oauth?response_type=code&tenant_id=<TENANT_ID>\",\n            \"self\": \"https://<TENANT_DOMAIN>/tenant/loginOptions/oauth2\",\n            \"type\": \"oauth2\"\n        },\n        ...\n    ],\n    \"self\": \"http://<TENANT_DOMAIN>/tenant/loginOptions/\"\n}\n```\n\nThe browser must invoke the request provided in the initRequest parameter.\n\nThe initRequest initiates the redirect, in which the user is prompted for credentials. After successful login, the user is redirected back to the browser, where it must capture the code request parameter. Then the request to exchange the code for the token is as follows:\n\n```http\nPOST /tenant/oauth?grant_type=authorization_code&code=<CODE>\nHost: https://<TENANT_DOMAIN>\n```\n\nA successful response will have no body but the following response headers:\n\n```\nSet-Cookie: authorization=<TOKEN>;\nSet-Cookie: XSRF-TOKEN=<XSRF-TOKEN>;\n```\n\nThe authorization cookie is valid for two weeks.\n"
+      flows:
+        clientCredentials:
+          tokenUrl: /tenant/oauth?grant_type=authorization_code&code=<CODE>
+          scopes: {}
+    JWT-IAM:
       type: http
       scheme: bearer
       bearerFormat: JWT
+      description: 'This kind of authentication substitutes the JWT authentication with OAuth2 access tokens from your Identity and Access Management (IAM).
+
+        You can enable this in the [SSO configuration](https://www.cumulocity.com/docs/authentication/sso/).
+
+
+        The HTTP header must include:
+
+
+        ```
+
+        "Authorization": "Bearer <Access token>"
+
+        ```
+
+
+        When a request with a bearer token in the header is received, Cumulocity checks if the access token is from your IAM (that is, if authentication is enabled in your SSO configuration), and verifies the authenticity of
+
+        the token remotely against the IAM.
+
+        '
+x-tagGroups:
+- name: Platform
+  tags:
+  - Platform API
+- name: Alarms
+  tags:
+  - Alarm API
+  - Alarm notification API
+  - Alarms
+- name: Applications
+  tags:
+  - Application API
+  - Applications
+  - Application versions
+  - Application binaries
+  - Bootstrap user
+  - Current application
+- name: Audits
+  tags:
+  - Audit API
+  - Audits
+- name: Device control
+  tags:
+  - Device control API
+  - Device control notification API
+  - Operations
+  - Bulk operations
+  - Device credentials
+  - New device requests
+  - Device control via SMS
+- name: Events
+  tags:
+  - Event API
+  - Event notification API
+  - Events
+  - Attachments
+- name: Feature toggles
+  tags:
+  - Feature toggles API
+- name: Identity
+  tags:
+  - Identity API
+  - External IDs
+- name: Inventory
+  tags:
+  - Inventory API
+  - Inventory notification API
+  - Managed objects
+  - Binaries
+  - Child operations
+  - Query language
+- name: Measurements
+  tags:
+  - Measurement API
+  - Measurement notification API
+  - Measurements
+  - Measurements specifics
+- name: Notifications 2.0
+  tags:
+  - About notifications 2.0
+  - Notification 2.0 API
+  - Subscriptions
+  - Tokens
+- name: Real-time notifications
+  tags:
+  - Real-time notification API
+- name: Retentions
+  tags:
+  - Retention rules
+- name: Tenants
+  tags:
+  - Tenant API
+  - Tenants
+  - Tenant applications
+  - Trusted certificates
+  - Device statistics
+  - Usage statistics
+  - Options
+  - Login options
+  - Login tokens
+  - System options
+- name: Users
+  tags:
+  - User API
+  - Current User
+  - Users
+  - Groups
+  - Roles
+  - Inventory Roles
+  - Device Permissions
+- name: Certificate
+  tags:
+  - Certificate authority
+  - Device enrollment

@@ -265,94 +265,6 @@ apis:
     url: https://cumulocity.com/api/edge/
   - type: Documentation
     url: https://cumulocity.com/docs/edge/edge-overview/
-- aid: cumulocity:cumulocity-audit-records-api
-  name: Cumulocity Audit Records API
-  description: The Audit Records API from Cumulocity — 2 operation(s) for audit records.
-  humanURL: https://cumulocity.com/api/core/
-  baseURL: https://{tenant}.cumulocity.com/inventory
-  tags:
-  - Audit Records
-  properties:
-  - type: OpenAPI
-    url: openapi/cumulocity-audit-records-api-openapi.yml
-  - type: Documentation
-    url: https://cumulocity.com/api/core/
-  - type: Documentation
-    url: https://cumulocity.com/docs/concepts/domain-model/
-  - type: JSONSchema
-    url: json-schema/cumulocity-managed-object-schema.json
-  - type: JSONLD
-    url: json-ld/cumulocity-context.jsonld
-  - type: JSONSchema
-    url: json-schema/cumulocity-measurement-schema.json
-  - type: JSONSchema
-    url: json-schema/cumulocity-event-schema.json
-  - type: JSONSchema
-    url: json-schema/cumulocity-alarm-schema.json
-  - type: Documentation
-    url: https://cumulocity.com/docs/device-integration/device-integration-introduction/
-  - type: Documentation
-    url: https://cumulocity.com/docs/microservice-sdk/
-  - type: Documentation
-    url: https://cumulocity.com/docs/reference/notifications/
-  - type: AsyncAPI
-    url: asyncapi/cumulocity-notification2-asyncapi.yml
-  - type: Documentation
-    url: https://cumulocity.com/api/datahub/
-  - type: Documentation
-    url: https://cumulocity.com/docs/datahub/datahub-overview/
-  - type: Documentation
-    url: https://cumulocity.com/api/dtm/
-  - type: Documentation
-    url: https://cumulocity.com/docs/digital-twin-manager/dtm-overview/
-  - type: Documentation
-    url: https://cumulocity.com/api/edge/
-  - type: Documentation
-    url: https://cumulocity.com/docs/edge/edge-overview/
-- aid: cumulocity:cumulocity-bayeux-handshake-api
-  name: Cumulocity Bayeux Handshake API
-  description: The Bayeux Handshake API from Cumulocity — 1 operation(s) for bayeux handshake.
-  humanURL: https://cumulocity.com/api/core/
-  baseURL: https://{tenant}.cumulocity.com/inventory
-  tags:
-  - Bayeux Handshake
-  properties:
-  - type: OpenAPI
-    url: openapi/cumulocity-bayeux-handshake-api-openapi.yml
-  - type: Documentation
-    url: https://cumulocity.com/api/core/
-  - type: Documentation
-    url: https://cumulocity.com/docs/concepts/domain-model/
-  - type: JSONSchema
-    url: json-schema/cumulocity-managed-object-schema.json
-  - type: JSONLD
-    url: json-ld/cumulocity-context.jsonld
-  - type: JSONSchema
-    url: json-schema/cumulocity-measurement-schema.json
-  - type: JSONSchema
-    url: json-schema/cumulocity-event-schema.json
-  - type: JSONSchema
-    url: json-schema/cumulocity-alarm-schema.json
-  - type: Documentation
-    url: https://cumulocity.com/docs/device-integration/device-integration-introduction/
-  - type: Documentation
-    url: https://cumulocity.com/docs/microservice-sdk/
-  - type: Documentation
-    url: https://cumulocity.com/docs/reference/notifications/
-  - type: AsyncAPI
-    url: asyncapi/cumulocity-notification2-asyncapi.yml
-  - type: Documentation
-    url: https://cumulocity.com/api/datahub/
-  - type: Documentation
-    url: https://cumulocity.com/docs/datahub/datahub-overview/
-  - type: Documentation
-    url: https://cumulocity.com/api/dtm/
-  - type: Documentation
-    url: https://cumulocity.com/docs/digital-twin-manager/dtm-overview/
-  - type: Documentation
-    url: https://cumulocity.com/api/edge/
-  - type: Documentation
-    url: https://cumulocity.com/docs/edge/edge-overview/
 - aid: cumulocity:cumulocity-binaries-api
   name: Cumulocity Binaries API
   description: Binary attachments associated with managed objects.
@@ -397,50 +309,6 @@ apis:
     url: https://cumulocity.com/api/edge/
   - type: Documentation
     url: https://cumulocity.com/docs/edge/edge-overview/
-- aid: cumulocity:cumulocity-bootstrap-users-api
-  name: Cumulocity Bootstrap Users API
-  description: The Bootstrap Users API from Cumulocity — 1 operation(s) for bootstrap users.
-  humanURL: https://cumulocity.com/api/core/
-  baseURL: https://{tenant}.cumulocity.com/inventory
-  tags:
-  - Bootstrap Users
-  properties:
-  - type: OpenAPI
-    url: openapi/cumulocity-bootstrap-users-api-openapi.yml
-  - type: Documentation
-    url: https://cumulocity.com/api/core/
-  - type: Documentation
-    url: https://cumulocity.com/docs/concepts/domain-model/
-  - type: JSONSchema
-    url: json-schema/cumulocity-managed-object-schema.json
-  - type: JSONLD
-    url: json-ld/cumulocity-context.jsonld
-  - type: JSONSchema
-    url: json-schema/cumulocity-measurement-schema.json
-  - type: JSONSchema
-    url: json-schema/cumulocity-event-schema.json
-  - type: JSONSchema
-    url: json-schema/cumulocity-alarm-schema.json
-  - type: Documentation
-    url: https://cumulocity.com/docs/device-integration/device-integration-introduction/
-  - type: Documentation
-    url: https://cumulocity.com/docs/microservice-sdk/
-  - type: Documentation
-    url: https://cumulocity.com/docs/reference/notifications/
-  - type: AsyncAPI
-    url: asyncapi/cumulocity-notification2-asyncapi.yml
-  - type: Documentation
-    url: https://cumulocity.com/api/datahub/
-  - type: Documentation
-    url: https://cumulocity.com/docs/datahub/datahub-overview/
-  - type: Documentation
-    url: https://cumulocity.com/api/dtm/
-  - type: Documentation
-    url: https://cumulocity.com/docs/digital-twin-manager/dtm-overview/
-  - type: Documentation
-    url: https://cumulocity.com/api/edge/
-  - type: Documentation
-    url: https://cumulocity.com/docs/edge/edge-overview/
 - aid: cumulocity:cumulocity-bulk-operations-api
   name: Cumulocity Bulk Operations API
   description: The Bulk Operations API from Cumulocity — 2 operation(s) for bulk operations.
@@ -451,50 +319,6 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/cumulocity-bulk-operations-api-openapi.yml
-  - type: Documentation
-    url: https://cumulocity.com/api/core/
-  - type: Documentation
-    url: https://cumulocity.com/docs/concepts/domain-model/
-  - type: JSONSchema
-    url: json-schema/cumulocity-managed-object-schema.json
-  - type: JSONLD
-    url: json-ld/cumulocity-context.jsonld
-  - type: JSONSchema
-    url: json-schema/cumulocity-measurement-schema.json
-  - type: JSONSchema
-    url: json-schema/cumulocity-event-schema.json
-  - type: JSONSchema
-    url: json-schema/cumulocity-alarm-schema.json
-  - type: Documentation
-    url: https://cumulocity.com/docs/device-integration/device-integration-introduction/
-  - type: Documentation
-    url: https://cumulocity.com/docs/microservice-sdk/
-  - type: Documentation
-    url: https://cumulocity.com/docs/reference/notifications/
-  - type: AsyncAPI
-    url: asyncapi/cumulocity-notification2-asyncapi.yml
-  - type: Documentation
-    url: https://cumulocity.com/api/datahub/
-  - type: Documentation
-    url: https://cumulocity.com/docs/datahub/datahub-overview/
-  - type: Documentation
-    url: https://cumulocity.com/api/dtm/
-  - type: Documentation
-    url: https://cumulocity.com/docs/digital-twin-manager/dtm-overview/
-  - type: Documentation
-    url: https://cumulocity.com/api/edge/
-  - type: Documentation
-    url: https://cumulocity.com/docs/edge/edge-overview/
-- aid: cumulocity:cumulocity-child-references-api
-  name: Cumulocity Child References API
-  description: Hierarchical relationships between managed objects.
-  humanURL: https://cumulocity.com/api/core/
-  baseURL: https://{tenant}.cumulocity.com/inventory
-  tags:
-  - Child References
-  properties:
-  - type: OpenAPI
-    url: openapi/cumulocity-child-references-api-openapi.yml
   - type: Documentation
     url: https://cumulocity.com/api/core/
   - type: Documentation
@@ -627,50 +451,6 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/cumulocity-device-credentials-api-openapi.yml
-  - type: Documentation
-    url: https://cumulocity.com/api/core/
-  - type: Documentation
-    url: https://cumulocity.com/docs/concepts/domain-model/
-  - type: JSONSchema
-    url: json-schema/cumulocity-managed-object-schema.json
-  - type: JSONLD
-    url: json-ld/cumulocity-context.jsonld
-  - type: JSONSchema
-    url: json-schema/cumulocity-measurement-schema.json
-  - type: JSONSchema
-    url: json-schema/cumulocity-event-schema.json
-  - type: JSONSchema
-    url: json-schema/cumulocity-alarm-schema.json
-  - type: Documentation
-    url: https://cumulocity.com/docs/device-integration/device-integration-introduction/
-  - type: Documentation
-    url: https://cumulocity.com/docs/microservice-sdk/
-  - type: Documentation
-    url: https://cumulocity.com/docs/reference/notifications/
-  - type: AsyncAPI
-    url: asyncapi/cumulocity-notification2-asyncapi.yml
-  - type: Documentation
-    url: https://cumulocity.com/api/datahub/
-  - type: Documentation
-    url: https://cumulocity.com/docs/datahub/datahub-overview/
-  - type: Documentation
-    url: https://cumulocity.com/api/dtm/
-  - type: Documentation
-    url: https://cumulocity.com/docs/digital-twin-manager/dtm-overview/
-  - type: Documentation
-    url: https://cumulocity.com/api/edge/
-  - type: Documentation
-    url: https://cumulocity.com/docs/edge/edge-overview/
-- aid: cumulocity:cumulocity-event-binaries-api
-  name: Cumulocity Event Binaries API
-  description: The Event Binaries API from Cumulocity — 1 operation(s) for event binaries.
-  humanURL: https://cumulocity.com/api/core/
-  baseURL: https://{tenant}.cumulocity.com/inventory
-  tags:
-  - Event Binaries
-  properties:
-  - type: OpenAPI
-    url: openapi/cumulocity-event-binaries-api-openapi.yml
   - type: Documentation
     url: https://cumulocity.com/api/core/
   - type: Documentation
@@ -1241,50 +1021,6 @@ apis:
     url: https://cumulocity.com/api/edge/
   - type: Documentation
     url: https://cumulocity.com/docs/edge/edge-overview/
-- aid: cumulocity:cumulocity-series-api
-  name: Cumulocity Series API
-  description: The Series API from Cumulocity — 1 operation(s) for series.
-  humanURL: https://cumulocity.com/api/core/
-  baseURL: https://{tenant}.cumulocity.com/inventory
-  tags:
-  - Series
-  properties:
-  - type: OpenAPI
-    url: openapi/cumulocity-series-api-openapi.yml
-  - type: Documentation
-    url: https://cumulocity.com/api/core/
-  - type: Documentation
-    url: https://cumulocity.com/docs/concepts/domain-model/
-  - type: JSONSchema
-    url: json-schema/cumulocity-managed-object-schema.json
-  - type: JSONLD
-    url: json-ld/cumulocity-context.jsonld
-  - type: JSONSchema
-    url: json-schema/cumulocity-measurement-schema.json
-  - type: JSONSchema
-    url: json-schema/cumulocity-event-schema.json
-  - type: JSONSchema
-    url: json-schema/cumulocity-alarm-schema.json
-  - type: Documentation
-    url: https://cumulocity.com/docs/device-integration/device-integration-introduction/
-  - type: Documentation
-    url: https://cumulocity.com/docs/microservice-sdk/
-  - type: Documentation
-    url: https://cumulocity.com/docs/reference/notifications/
-  - type: AsyncAPI
-    url: asyncapi/cumulocity-notification2-asyncapi.yml
-  - type: Documentation
-    url: https://cumulocity.com/api/datahub/
-  - type: Documentation
-    url: https://cumulocity.com/docs/datahub/datahub-overview/
-  - type: Documentation
-    url: https://cumulocity.com/api/dtm/
-  - type: Documentation
-    url: https://cumulocity.com/docs/digital-twin-manager/dtm-overview/
-  - type: Documentation
-    url: https://cumulocity.com/api/edge/
-  - type: Documentation
-    url: https://cumulocity.com/docs/edge/edge-overview/
 - aid: cumulocity:cumulocity-software-updates-api
   name: Cumulocity Software Updates API
   description: The Software Updates API from Cumulocity — 1 operation(s) for software updates.
@@ -1375,50 +1111,6 @@ apis:
     url: https://cumulocity.com/api/edge/
   - type: Documentation
     url: https://cumulocity.com/docs/edge/edge-overview/
-- aid: cumulocity:cumulocity-supported-measurements-api
-  name: Cumulocity Supported Measurements API
-  description: Discover the measurement types reported against a managed object.
-  humanURL: https://cumulocity.com/api/core/
-  baseURL: https://{tenant}.cumulocity.com/inventory
-  tags:
-  - Supported Measurements
-  properties:
-  - type: OpenAPI
-    url: openapi/cumulocity-supported-measurements-api-openapi.yml
-  - type: Documentation
-    url: https://cumulocity.com/api/core/
-  - type: Documentation
-    url: https://cumulocity.com/docs/concepts/domain-model/
-  - type: JSONSchema
-    url: json-schema/cumulocity-managed-object-schema.json
-  - type: JSONLD
-    url: json-ld/cumulocity-context.jsonld
-  - type: JSONSchema
-    url: json-schema/cumulocity-measurement-schema.json
-  - type: JSONSchema
-    url: json-schema/cumulocity-event-schema.json
-  - type: JSONSchema
-    url: json-schema/cumulocity-alarm-schema.json
-  - type: Documentation
-    url: https://cumulocity.com/docs/device-integration/device-integration-introduction/
-  - type: Documentation
-    url: https://cumulocity.com/docs/microservice-sdk/
-  - type: Documentation
-    url: https://cumulocity.com/docs/reference/notifications/
-  - type: AsyncAPI
-    url: asyncapi/cumulocity-notification2-asyncapi.yml
-  - type: Documentation
-    url: https://cumulocity.com/api/datahub/
-  - type: Documentation
-    url: https://cumulocity.com/docs/datahub/datahub-overview/
-  - type: Documentation
-    url: https://cumulocity.com/api/dtm/
-  - type: Documentation
-    url: https://cumulocity.com/docs/digital-twin-manager/dtm-overview/
-  - type: Documentation
-    url: https://cumulocity.com/api/edge/
-  - type: Documentation
-    url: https://cumulocity.com/docs/edge/edge-overview/
 - aid: cumulocity:cumulocity-system-api
   name: Cumulocity System API
   description: The System API from Cumulocity — 2 operation(s) for system.
@@ -1429,94 +1121,6 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/cumulocity-system-api-openapi.yml
-  - type: Documentation
-    url: https://cumulocity.com/api/core/
-  - type: Documentation
-    url: https://cumulocity.com/docs/concepts/domain-model/
-  - type: JSONSchema
-    url: json-schema/cumulocity-managed-object-schema.json
-  - type: JSONLD
-    url: json-ld/cumulocity-context.jsonld
-  - type: JSONSchema
-    url: json-schema/cumulocity-measurement-schema.json
-  - type: JSONSchema
-    url: json-schema/cumulocity-event-schema.json
-  - type: JSONSchema
-    url: json-schema/cumulocity-alarm-schema.json
-  - type: Documentation
-    url: https://cumulocity.com/docs/device-integration/device-integration-introduction/
-  - type: Documentation
-    url: https://cumulocity.com/docs/microservice-sdk/
-  - type: Documentation
-    url: https://cumulocity.com/docs/reference/notifications/
-  - type: AsyncAPI
-    url: asyncapi/cumulocity-notification2-asyncapi.yml
-  - type: Documentation
-    url: https://cumulocity.com/api/datahub/
-  - type: Documentation
-    url: https://cumulocity.com/docs/datahub/datahub-overview/
-  - type: Documentation
-    url: https://cumulocity.com/api/dtm/
-  - type: Documentation
-    url: https://cumulocity.com/docs/digital-twin-manager/dtm-overview/
-  - type: Documentation
-    url: https://cumulocity.com/api/edge/
-  - type: Documentation
-    url: https://cumulocity.com/docs/edge/edge-overview/
-- aid: cumulocity:cumulocity-tenant-options-api
-  name: Cumulocity Tenant Options API
-  description: The Tenant Options API from Cumulocity — 2 operation(s) for tenant options.
-  humanURL: https://cumulocity.com/api/core/
-  baseURL: https://{tenant}.cumulocity.com/inventory
-  tags:
-  - Tenant Options
-  properties:
-  - type: OpenAPI
-    url: openapi/cumulocity-tenant-options-api-openapi.yml
-  - type: Documentation
-    url: https://cumulocity.com/api/core/
-  - type: Documentation
-    url: https://cumulocity.com/docs/concepts/domain-model/
-  - type: JSONSchema
-    url: json-schema/cumulocity-managed-object-schema.json
-  - type: JSONLD
-    url: json-ld/cumulocity-context.jsonld
-  - type: JSONSchema
-    url: json-schema/cumulocity-measurement-schema.json
-  - type: JSONSchema
-    url: json-schema/cumulocity-event-schema.json
-  - type: JSONSchema
-    url: json-schema/cumulocity-alarm-schema.json
-  - type: Documentation
-    url: https://cumulocity.com/docs/device-integration/device-integration-introduction/
-  - type: Documentation
-    url: https://cumulocity.com/docs/microservice-sdk/
-  - type: Documentation
-    url: https://cumulocity.com/docs/reference/notifications/
-  - type: AsyncAPI
-    url: asyncapi/cumulocity-notification2-asyncapi.yml
-  - type: Documentation
-    url: https://cumulocity.com/api/datahub/
-  - type: Documentation
-    url: https://cumulocity.com/docs/datahub/datahub-overview/
-  - type: Documentation
-    url: https://cumulocity.com/api/dtm/
-  - type: Documentation
-    url: https://cumulocity.com/docs/digital-twin-manager/dtm-overview/
-  - type: Documentation
-    url: https://cumulocity.com/api/edge/
-  - type: Documentation
-    url: https://cumulocity.com/docs/edge/edge-overview/
-- aid: cumulocity:cumulocity-tenant-statistics-api
-  name: Cumulocity Tenant Statistics API
-  description: The Tenant Statistics API from Cumulocity — 1 operation(s) for tenant statistics.
-  humanURL: https://cumulocity.com/api/core/
-  baseURL: https://{tenant}.cumulocity.com/inventory
-  tags:
-  - Tenant Statistics
-  properties:
-  - type: OpenAPI
-    url: openapi/cumulocity-tenant-statistics-api-openapi.yml
   - type: Documentation
     url: https://cumulocity.com/api/core/
   - type: Documentation
@@ -1651,6 +1255,2200 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/cumulocity-users-api-openapi.yml
+  - type: Documentation
+    url: https://cumulocity.com/api/core/
+  - type: Documentation
+    url: https://cumulocity.com/docs/concepts/domain-model/
+  - type: JSONSchema
+    url: json-schema/cumulocity-managed-object-schema.json
+  - type: JSONLD
+    url: json-ld/cumulocity-context.jsonld
+  - type: JSONSchema
+    url: json-schema/cumulocity-measurement-schema.json
+  - type: JSONSchema
+    url: json-schema/cumulocity-event-schema.json
+  - type: JSONSchema
+    url: json-schema/cumulocity-alarm-schema.json
+  - type: Documentation
+    url: https://cumulocity.com/docs/device-integration/device-integration-introduction/
+  - type: Documentation
+    url: https://cumulocity.com/docs/microservice-sdk/
+  - type: Documentation
+    url: https://cumulocity.com/docs/reference/notifications/
+  - type: AsyncAPI
+    url: asyncapi/cumulocity-notification2-asyncapi.yml
+  - type: Documentation
+    url: https://cumulocity.com/api/datahub/
+  - type: Documentation
+    url: https://cumulocity.com/docs/datahub/datahub-overview/
+  - type: Documentation
+    url: https://cumulocity.com/api/dtm/
+  - type: Documentation
+    url: https://cumulocity.com/docs/digital-twin-manager/dtm-overview/
+  - type: Documentation
+    url: https://cumulocity.com/api/edge/
+  - type: Documentation
+    url: https://cumulocity.com/docs/edge/edge-overview/
+- aid: cumulocity:cumulocity-alarm-api-api
+  name: Cumulocity Alarm API
+  description: >-
+    The alarm API resource returns URIs and URI templates to collections of alarms, so that all alarms
+    or alarms of a specified source device and/or status can be retrieved.
+  humanURL: https://cumulocity.com/docs/device-integration/mqtt/
+  baseURL: mqtt://{tenant}.cumulocity.com:1883
+  tags:
+  - Alarm API
+  properties:
+  - type: OpenAPI
+    url: openapi/cumulocity-alarm-api-api-openapi.yml
+  - type: Documentation
+    url: https://cumulocity.com/api/core/
+  - type: Documentation
+    url: https://cumulocity.com/docs/concepts/domain-model/
+  - type: JSONSchema
+    url: json-schema/cumulocity-managed-object-schema.json
+  - type: JSONLD
+    url: json-ld/cumulocity-context.jsonld
+  - type: JSONSchema
+    url: json-schema/cumulocity-measurement-schema.json
+  - type: JSONSchema
+    url: json-schema/cumulocity-event-schema.json
+  - type: JSONSchema
+    url: json-schema/cumulocity-alarm-schema.json
+  - type: Documentation
+    url: https://cumulocity.com/docs/device-integration/device-integration-introduction/
+  - type: Documentation
+    url: https://cumulocity.com/docs/microservice-sdk/
+  - type: Documentation
+    url: https://cumulocity.com/docs/reference/notifications/
+  - type: AsyncAPI
+    url: asyncapi/cumulocity-notification2-asyncapi.yml
+  - type: Documentation
+    url: https://cumulocity.com/api/datahub/
+  - type: Documentation
+    url: https://cumulocity.com/docs/datahub/datahub-overview/
+  - type: Documentation
+    url: https://cumulocity.com/api/dtm/
+  - type: Documentation
+    url: https://cumulocity.com/docs/digital-twin-manager/dtm-overview/
+  - type: Documentation
+    url: https://cumulocity.com/api/edge/
+  - type: Documentation
+    url: https://cumulocity.com/docs/edge/edge-overview/
+- aid: cumulocity:cumulocity-application-api-api
+  name: Cumulocity Application API
+  description: >-
+    The application API resource returns URIs and URI templates to collections of applications so that
+    all applications with a particular name and all applications owned by particular tenant can be queried.
+  humanURL: https://cumulocity.com/docs/device-integration/mqtt/
+  baseURL: mqtt://{tenant}.cumulocity.com:1883
+  tags:
+  - Application API
+  properties:
+  - type: OpenAPI
+    url: openapi/cumulocity-application-api-api-openapi.yml
+  - type: Documentation
+    url: https://cumulocity.com/api/core/
+  - type: Documentation
+    url: https://cumulocity.com/docs/concepts/domain-model/
+  - type: JSONSchema
+    url: json-schema/cumulocity-managed-object-schema.json
+  - type: JSONLD
+    url: json-ld/cumulocity-context.jsonld
+  - type: JSONSchema
+    url: json-schema/cumulocity-measurement-schema.json
+  - type: JSONSchema
+    url: json-schema/cumulocity-event-schema.json
+  - type: JSONSchema
+    url: json-schema/cumulocity-alarm-schema.json
+  - type: Documentation
+    url: https://cumulocity.com/docs/device-integration/device-integration-introduction/
+  - type: Documentation
+    url: https://cumulocity.com/docs/microservice-sdk/
+  - type: Documentation
+    url: https://cumulocity.com/docs/reference/notifications/
+  - type: AsyncAPI
+    url: asyncapi/cumulocity-notification2-asyncapi.yml
+  - type: Documentation
+    url: https://cumulocity.com/api/datahub/
+  - type: Documentation
+    url: https://cumulocity.com/docs/datahub/datahub-overview/
+  - type: Documentation
+    url: https://cumulocity.com/api/dtm/
+  - type: Documentation
+    url: https://cumulocity.com/docs/digital-twin-manager/dtm-overview/
+  - type: Documentation
+    url: https://cumulocity.com/api/edge/
+  - type: Documentation
+    url: https://cumulocity.com/docs/edge/edge-overview/
+- aid: cumulocity:cumulocity-application-versions-api
+  name: Cumulocity Application versions API
+  description: API methods to retrieve, create, update and delete application versions.
+  humanURL: https://cumulocity.com/docs/device-integration/mqtt/
+  baseURL: mqtt://{tenant}.cumulocity.com:1883
+  tags:
+  - Application versions
+  properties:
+  - type: OpenAPI
+    url: openapi/cumulocity-application-versions-api-openapi.yml
+  - type: Documentation
+    url: https://cumulocity.com/api/core/
+  - type: Documentation
+    url: https://cumulocity.com/docs/concepts/domain-model/
+  - type: JSONSchema
+    url: json-schema/cumulocity-managed-object-schema.json
+  - type: JSONLD
+    url: json-ld/cumulocity-context.jsonld
+  - type: JSONSchema
+    url: json-schema/cumulocity-measurement-schema.json
+  - type: JSONSchema
+    url: json-schema/cumulocity-event-schema.json
+  - type: JSONSchema
+    url: json-schema/cumulocity-alarm-schema.json
+  - type: Documentation
+    url: https://cumulocity.com/docs/device-integration/device-integration-introduction/
+  - type: Documentation
+    url: https://cumulocity.com/docs/microservice-sdk/
+  - type: Documentation
+    url: https://cumulocity.com/docs/reference/notifications/
+  - type: AsyncAPI
+    url: asyncapi/cumulocity-notification2-asyncapi.yml
+  - type: Documentation
+    url: https://cumulocity.com/api/datahub/
+  - type: Documentation
+    url: https://cumulocity.com/docs/datahub/datahub-overview/
+  - type: Documentation
+    url: https://cumulocity.com/api/dtm/
+  - type: Documentation
+    url: https://cumulocity.com/docs/digital-twin-manager/dtm-overview/
+  - type: Documentation
+    url: https://cumulocity.com/api/edge/
+  - type: Documentation
+    url: https://cumulocity.com/docs/edge/edge-overview/
+- aid: cumulocity:cumulocity-attachments-api
+  name: Cumulocity Attachments API
+  description: >-
+    It is possible to store, retrieve and delete binaries for events. Each event can have only one binary
+    attached.
+  humanURL: https://cumulocity.com/docs/device-integration/mqtt/
+  baseURL: mqtt://{tenant}.cumulocity.com:1883
+  tags:
+  - Attachments
+  properties:
+  - type: OpenAPI
+    url: openapi/cumulocity-attachments-api-openapi.yml
+  - type: Documentation
+    url: https://cumulocity.com/api/core/
+  - type: Documentation
+    url: https://cumulocity.com/docs/concepts/domain-model/
+  - type: JSONSchema
+    url: json-schema/cumulocity-managed-object-schema.json
+  - type: JSONLD
+    url: json-ld/cumulocity-context.jsonld
+  - type: JSONSchema
+    url: json-schema/cumulocity-measurement-schema.json
+  - type: JSONSchema
+    url: json-schema/cumulocity-event-schema.json
+  - type: JSONSchema
+    url: json-schema/cumulocity-alarm-schema.json
+  - type: Documentation
+    url: https://cumulocity.com/docs/device-integration/device-integration-introduction/
+  - type: Documentation
+    url: https://cumulocity.com/docs/microservice-sdk/
+  - type: Documentation
+    url: https://cumulocity.com/docs/reference/notifications/
+  - type: AsyncAPI
+    url: asyncapi/cumulocity-notification2-asyncapi.yml
+  - type: Documentation
+    url: https://cumulocity.com/api/datahub/
+  - type: Documentation
+    url: https://cumulocity.com/docs/datahub/datahub-overview/
+  - type: Documentation
+    url: https://cumulocity.com/api/dtm/
+  - type: Documentation
+    url: https://cumulocity.com/docs/digital-twin-manager/dtm-overview/
+  - type: Documentation
+    url: https://cumulocity.com/api/edge/
+  - type: Documentation
+    url: https://cumulocity.com/docs/edge/edge-overview/
+- aid: cumulocity:cumulocity-audit-api-api
+  name: Cumulocity Audit API
+  description: >-
+    The audit API resource returns URIs and URI templates to collections of audit records, so that they
+    can be retrieved by criteria such as “all records from a particular user”, or “all records from a
+    particular application”.
+
+
+    ### Audited information:
+
+
+    * Alarm modifications
+
+    * Operation modifications
+
+    * Two-factor authentication login attempts
+
+    * Smart rule modifications
+
+    * Complex Event Processing (CEP) module modifications
+
+    * User and group permissions modifications
+
+    * SSO and OAuth Internal logout and login attempts
+  humanURL: https://cumulocity.com/docs/device-integration/mqtt/
+  baseURL: mqtt://{tenant}.cumulocity.com:1883
+  tags:
+  - Audit API
+  properties:
+  - type: OpenAPI
+    url: openapi/cumulocity-audit-api-api-openapi.yml
+  - type: Documentation
+    url: https://cumulocity.com/api/core/
+  - type: Documentation
+    url: https://cumulocity.com/docs/concepts/domain-model/
+  - type: JSONSchema
+    url: json-schema/cumulocity-managed-object-schema.json
+  - type: JSONLD
+    url: json-ld/cumulocity-context.jsonld
+  - type: JSONSchema
+    url: json-schema/cumulocity-measurement-schema.json
+  - type: JSONSchema
+    url: json-schema/cumulocity-event-schema.json
+  - type: JSONSchema
+    url: json-schema/cumulocity-alarm-schema.json
+  - type: Documentation
+    url: https://cumulocity.com/docs/device-integration/device-integration-introduction/
+  - type: Documentation
+    url: https://cumulocity.com/docs/microservice-sdk/
+  - type: Documentation
+    url: https://cumulocity.com/docs/reference/notifications/
+  - type: AsyncAPI
+    url: asyncapi/cumulocity-notification2-asyncapi.yml
+  - type: Documentation
+    url: https://cumulocity.com/api/datahub/
+  - type: Documentation
+    url: https://cumulocity.com/docs/datahub/datahub-overview/
+  - type: Documentation
+    url: https://cumulocity.com/api/dtm/
+  - type: Documentation
+    url: https://cumulocity.com/docs/digital-twin-manager/dtm-overview/
+  - type: Documentation
+    url: https://cumulocity.com/api/edge/
+  - type: Documentation
+    url: https://cumulocity.com/docs/edge/edge-overview/
+- aid: cumulocity:cumulocity-audits-api
+  name: Cumulocity Audits API
+  description: >-
+    An audit log stores events that are security-relevant and should be stored for auditing. For example,
+    an audit log should be generated when a user logs into a gateway.
+
+
+    An audit log extends an event through:
+
+
+    * A username of the user that carried out the activity.
+
+    * An application that was used to carry out the activity.
+
+    * The actual activity.
+
+    * A severity.
+
+
+    > **&#9432; Info:** The Accept header should be provided in all POST requests, otherwise an empty
+    response body will be returned.
+  humanURL: https://cumulocity.com/docs/device-integration/mqtt/
+  baseURL: mqtt://{tenant}.cumulocity.com:1883
+  tags:
+  - Audits
+  properties:
+  - type: OpenAPI
+    url: openapi/cumulocity-audits-api-openapi.yml
+  - type: Documentation
+    url: https://cumulocity.com/api/core/
+  - type: Documentation
+    url: https://cumulocity.com/docs/concepts/domain-model/
+  - type: JSONSchema
+    url: json-schema/cumulocity-managed-object-schema.json
+  - type: JSONLD
+    url: json-ld/cumulocity-context.jsonld
+  - type: JSONSchema
+    url: json-schema/cumulocity-measurement-schema.json
+  - type: JSONSchema
+    url: json-schema/cumulocity-event-schema.json
+  - type: JSONSchema
+    url: json-schema/cumulocity-alarm-schema.json
+  - type: Documentation
+    url: https://cumulocity.com/docs/device-integration/device-integration-introduction/
+  - type: Documentation
+    url: https://cumulocity.com/docs/microservice-sdk/
+  - type: Documentation
+    url: https://cumulocity.com/docs/reference/notifications/
+  - type: AsyncAPI
+    url: asyncapi/cumulocity-notification2-asyncapi.yml
+  - type: Documentation
+    url: https://cumulocity.com/api/datahub/
+  - type: Documentation
+    url: https://cumulocity.com/docs/datahub/datahub-overview/
+  - type: Documentation
+    url: https://cumulocity.com/api/dtm/
+  - type: Documentation
+    url: https://cumulocity.com/docs/digital-twin-manager/dtm-overview/
+  - type: Documentation
+    url: https://cumulocity.com/api/edge/
+  - type: Documentation
+    url: https://cumulocity.com/docs/edge/edge-overview/
+- aid: cumulocity:cumulocity-bootstrap-user-api
+  name: Cumulocity Bootstrap user API
+  description: API methods to retrieve the bootstrap user of an application.
+  humanURL: https://cumulocity.com/docs/device-integration/mqtt/
+  baseURL: mqtt://{tenant}.cumulocity.com:1883
+  tags:
+  - Bootstrap user
+  properties:
+  - type: OpenAPI
+    url: openapi/cumulocity-bootstrap-user-api-openapi.yml
+  - type: Documentation
+    url: https://cumulocity.com/api/core/
+  - type: Documentation
+    url: https://cumulocity.com/docs/concepts/domain-model/
+  - type: JSONSchema
+    url: json-schema/cumulocity-managed-object-schema.json
+  - type: JSONLD
+    url: json-ld/cumulocity-context.jsonld
+  - type: JSONSchema
+    url: json-schema/cumulocity-measurement-schema.json
+  - type: JSONSchema
+    url: json-schema/cumulocity-event-schema.json
+  - type: JSONSchema
+    url: json-schema/cumulocity-alarm-schema.json
+  - type: Documentation
+    url: https://cumulocity.com/docs/device-integration/device-integration-introduction/
+  - type: Documentation
+    url: https://cumulocity.com/docs/microservice-sdk/
+  - type: Documentation
+    url: https://cumulocity.com/docs/reference/notifications/
+  - type: AsyncAPI
+    url: asyncapi/cumulocity-notification2-asyncapi.yml
+  - type: Documentation
+    url: https://cumulocity.com/api/datahub/
+  - type: Documentation
+    url: https://cumulocity.com/docs/datahub/datahub-overview/
+  - type: Documentation
+    url: https://cumulocity.com/api/dtm/
+  - type: Documentation
+    url: https://cumulocity.com/docs/digital-twin-manager/dtm-overview/
+  - type: Documentation
+    url: https://cumulocity.com/api/edge/
+  - type: Documentation
+    url: https://cumulocity.com/docs/edge/edge-overview/
+- aid: cumulocity:cumulocity-certificate-authority-api
+  name: Cumulocity Certificate authority API
+  description: API to create a new CA certificate for tenant in Cumulocity.
+  humanURL: https://cumulocity.com/docs/device-integration/mqtt/
+  baseURL: mqtt://{tenant}.cumulocity.com:1883
+  tags:
+  - Certificate authority
+  properties:
+  - type: OpenAPI
+    url: openapi/cumulocity-certificate-authority-api-openapi.yml
+  - type: Documentation
+    url: https://cumulocity.com/api/core/
+  - type: Documentation
+    url: https://cumulocity.com/docs/concepts/domain-model/
+  - type: JSONSchema
+    url: json-schema/cumulocity-managed-object-schema.json
+  - type: JSONLD
+    url: json-ld/cumulocity-context.jsonld
+  - type: JSONSchema
+    url: json-schema/cumulocity-measurement-schema.json
+  - type: JSONSchema
+    url: json-schema/cumulocity-event-schema.json
+  - type: JSONSchema
+    url: json-schema/cumulocity-alarm-schema.json
+  - type: Documentation
+    url: https://cumulocity.com/docs/device-integration/device-integration-introduction/
+  - type: Documentation
+    url: https://cumulocity.com/docs/microservice-sdk/
+  - type: Documentation
+    url: https://cumulocity.com/docs/reference/notifications/
+  - type: AsyncAPI
+    url: asyncapi/cumulocity-notification2-asyncapi.yml
+  - type: Documentation
+    url: https://cumulocity.com/api/datahub/
+  - type: Documentation
+    url: https://cumulocity.com/docs/datahub/datahub-overview/
+  - type: Documentation
+    url: https://cumulocity.com/api/dtm/
+  - type: Documentation
+    url: https://cumulocity.com/docs/digital-twin-manager/dtm-overview/
+  - type: Documentation
+    url: https://cumulocity.com/api/edge/
+  - type: Documentation
+    url: https://cumulocity.com/docs/edge/edge-overview/
+- aid: cumulocity:cumulocity-child-operations-api
+  name: Cumulocity Child operations API
+  description: >-
+    Managed objects can contain collections of references to child devices, additions and assets.
+
+
+    > **&#9432; Info:** The Accept header should be provided in all POST requests, otherwise an empty
+    response body will be returned.
+  humanURL: https://cumulocity.com/docs/device-integration/mqtt/
+  baseURL: mqtt://{tenant}.cumulocity.com:1883
+  tags:
+  - Child operations
+  properties:
+  - type: OpenAPI
+    url: openapi/cumulocity-child-operations-api-openapi.yml
+  - type: Documentation
+    url: https://cumulocity.com/api/core/
+  - type: Documentation
+    url: https://cumulocity.com/docs/concepts/domain-model/
+  - type: JSONSchema
+    url: json-schema/cumulocity-managed-object-schema.json
+  - type: JSONLD
+    url: json-ld/cumulocity-context.jsonld
+  - type: JSONSchema
+    url: json-schema/cumulocity-measurement-schema.json
+  - type: JSONSchema
+    url: json-schema/cumulocity-event-schema.json
+  - type: JSONSchema
+    url: json-schema/cumulocity-alarm-schema.json
+  - type: Documentation
+    url: https://cumulocity.com/docs/device-integration/device-integration-introduction/
+  - type: Documentation
+    url: https://cumulocity.com/docs/microservice-sdk/
+  - type: Documentation
+    url: https://cumulocity.com/docs/reference/notifications/
+  - type: AsyncAPI
+    url: asyncapi/cumulocity-notification2-asyncapi.yml
+  - type: Documentation
+    url: https://cumulocity.com/api/datahub/
+  - type: Documentation
+    url: https://cumulocity.com/docs/datahub/datahub-overview/
+  - type: Documentation
+    url: https://cumulocity.com/api/dtm/
+  - type: Documentation
+    url: https://cumulocity.com/docs/digital-twin-manager/dtm-overview/
+  - type: Documentation
+    url: https://cumulocity.com/api/edge/
+  - type: Documentation
+    url: https://cumulocity.com/docs/edge/edge-overview/
+- aid: cumulocity:cumulocity-current-application-api
+  name: Cumulocity Current application API
+  description: >-
+    API methods to retrieve and update the current application and to retrieve its subscribers.
+
+    It is the authenticated microservice user's application.
+  humanURL: https://cumulocity.com/docs/device-integration/mqtt/
+  baseURL: mqtt://{tenant}.cumulocity.com:1883
+  tags:
+  - Current application
+  properties:
+  - type: OpenAPI
+    url: openapi/cumulocity-current-application-api-openapi.yml
+  - type: Documentation
+    url: https://cumulocity.com/api/core/
+  - type: Documentation
+    url: https://cumulocity.com/docs/concepts/domain-model/
+  - type: JSONSchema
+    url: json-schema/cumulocity-managed-object-schema.json
+  - type: JSONLD
+    url: json-ld/cumulocity-context.jsonld
+  - type: JSONSchema
+    url: json-schema/cumulocity-measurement-schema.json
+  - type: JSONSchema
+    url: json-schema/cumulocity-event-schema.json
+  - type: JSONSchema
+    url: json-schema/cumulocity-alarm-schema.json
+  - type: Documentation
+    url: https://cumulocity.com/docs/device-integration/device-integration-introduction/
+  - type: Documentation
+    url: https://cumulocity.com/docs/microservice-sdk/
+  - type: Documentation
+    url: https://cumulocity.com/docs/reference/notifications/
+  - type: AsyncAPI
+    url: asyncapi/cumulocity-notification2-asyncapi.yml
+  - type: Documentation
+    url: https://cumulocity.com/api/datahub/
+  - type: Documentation
+    url: https://cumulocity.com/docs/datahub/datahub-overview/
+  - type: Documentation
+    url: https://cumulocity.com/api/dtm/
+  - type: Documentation
+    url: https://cumulocity.com/docs/digital-twin-manager/dtm-overview/
+  - type: Documentation
+    url: https://cumulocity.com/api/edge/
+  - type: Documentation
+    url: https://cumulocity.com/docs/edge/edge-overview/
+- aid: cumulocity:cumulocity-device-control-api-api
+  name: Cumulocity Device control API
+  description: >-
+    The device control API resource returns URIs and URI templates to collections of operations so that
+    they can be retrieved.
+
+
+    > **&#9432; Info:** In order to create/retrieve/update an operation for a device, the device must
+    be in the “childDevices” hierarchy of an existing agent. To create an agent in the inventory, you
+    should create a managed object with a fragment `com_cumulocity_model_Agent`.
+  humanURL: https://cumulocity.com/docs/device-integration/mqtt/
+  baseURL: mqtt://{tenant}.cumulocity.com:1883
+  tags:
+  - Device control API
+  properties:
+  - type: OpenAPI
+    url: openapi/cumulocity-device-control-api-api-openapi.yml
+  - type: Documentation
+    url: https://cumulocity.com/api/core/
+  - type: Documentation
+    url: https://cumulocity.com/docs/concepts/domain-model/
+  - type: JSONSchema
+    url: json-schema/cumulocity-managed-object-schema.json
+  - type: JSONLD
+    url: json-ld/cumulocity-context.jsonld
+  - type: JSONSchema
+    url: json-schema/cumulocity-measurement-schema.json
+  - type: JSONSchema
+    url: json-schema/cumulocity-event-schema.json
+  - type: JSONSchema
+    url: json-schema/cumulocity-alarm-schema.json
+  - type: Documentation
+    url: https://cumulocity.com/docs/device-integration/device-integration-introduction/
+  - type: Documentation
+    url: https://cumulocity.com/docs/microservice-sdk/
+  - type: Documentation
+    url: https://cumulocity.com/docs/reference/notifications/
+  - type: AsyncAPI
+    url: asyncapi/cumulocity-notification2-asyncapi.yml
+  - type: Documentation
+    url: https://cumulocity.com/api/datahub/
+  - type: Documentation
+    url: https://cumulocity.com/docs/datahub/datahub-overview/
+  - type: Documentation
+    url: https://cumulocity.com/api/dtm/
+  - type: Documentation
+    url: https://cumulocity.com/docs/digital-twin-manager/dtm-overview/
+  - type: Documentation
+    url: https://cumulocity.com/api/edge/
+  - type: Documentation
+    url: https://cumulocity.com/docs/edge/edge-overview/
+- aid: cumulocity:cumulocity-device-enrollment-api
+  name: Cumulocity Device enrollment API
+  description: >-
+    Device enroll API to be used by a device to issue an X509 certificate signed by tenant's [certificate
+    authority](#operation/postBulkNewDeviceRequestCollectionResource). The identifier and enrollment OTP
+    for a device must be first shared as a pre-shared-key (PSK) with Cumulocity using the [bulkNewDeviceRequests](#operation/postBulkNewDeviceRequestCollectionResource)
+    endpoint or [NewDeviceRequests](#operation/postNewDeviceRequestCollectionResource) endpoint for certificate
+    provisioning. Internally, ID and ENROLLMENT_OTP fields will be added to the NewDeviceRegistration
+    list with a status of Accepted, serving as temporary device credentials for device authentication.
+
+
+    Device re-enroll API to be used by a device to renew its certificate or replace its certificate with
+    its current credentials (being a password or a JWT token).
+  humanURL: https://cumulocity.com/docs/device-integration/mqtt/
+  baseURL: mqtt://{tenant}.cumulocity.com:1883
+  tags:
+  - Device enrollment
+  properties:
+  - type: OpenAPI
+    url: openapi/cumulocity-device-enrollment-api-openapi.yml
+  - type: Documentation
+    url: https://cumulocity.com/api/core/
+  - type: Documentation
+    url: https://cumulocity.com/docs/concepts/domain-model/
+  - type: JSONSchema
+    url: json-schema/cumulocity-managed-object-schema.json
+  - type: JSONLD
+    url: json-ld/cumulocity-context.jsonld
+  - type: JSONSchema
+    url: json-schema/cumulocity-measurement-schema.json
+  - type: JSONSchema
+    url: json-schema/cumulocity-event-schema.json
+  - type: JSONSchema
+    url: json-schema/cumulocity-alarm-schema.json
+  - type: Documentation
+    url: https://cumulocity.com/docs/device-integration/device-integration-introduction/
+  - type: Documentation
+    url: https://cumulocity.com/docs/microservice-sdk/
+  - type: Documentation
+    url: https://cumulocity.com/docs/reference/notifications/
+  - type: AsyncAPI
+    url: asyncapi/cumulocity-notification2-asyncapi.yml
+  - type: Documentation
+    url: https://cumulocity.com/api/datahub/
+  - type: Documentation
+    url: https://cumulocity.com/docs/datahub/datahub-overview/
+  - type: Documentation
+    url: https://cumulocity.com/api/dtm/
+  - type: Documentation
+    url: https://cumulocity.com/docs/digital-twin-manager/dtm-overview/
+  - type: Documentation
+    url: https://cumulocity.com/api/edge/
+  - type: Documentation
+    url: https://cumulocity.com/docs/edge/edge-overview/
+- aid: cumulocity:cumulocity-device-permissions-api
+  name: Cumulocity Device Permissions API
+  description: >-
+    API methods to retrieve and update device permissions assignments.
+
+
+    Device permissions enable users to access and manipulate devices.
+
+
+    The device permission structure is **[API:fragment_name:permission]** where:
+
+
+    * **API** is one of the following values: OPERATION, ALARM, AUDIT, EVENT, MANAGED_OBJECT, MEASUREMENT
+    or "*"
+
+    * **fragment_name** can be the name of any fragment, for example, "c8y_Restart" or "*"
+
+    * **permission** is ADMIN, READ or "*"
+
+
+    Required permission per HTTP method:
+
+
+    + GET - READ or "*"
+
+    + PUT - ADMIN or "*"
+
+
+    The wildcard "*" enables you to access every API and stored object regardless of the fragments that
+    are inside it.
+
+
+    > **⚠️ Important:** If there is no fragment in an object, for example, to read the object, you must
+    use the wildcard "*" for the **fragment_name** part of the device permission (see the structure above).
+    For example: `"10200":["MEASUREMENT:*:READ"]`.
+  humanURL: https://cumulocity.com/docs/device-integration/mqtt/
+  baseURL: mqtt://{tenant}.cumulocity.com:1883
+  tags:
+  - Device Permissions
+  properties:
+  - type: OpenAPI
+    url: openapi/cumulocity-device-permissions-api-openapi.yml
+  - type: Documentation
+    url: https://cumulocity.com/api/core/
+  - type: Documentation
+    url: https://cumulocity.com/docs/concepts/domain-model/
+  - type: JSONSchema
+    url: json-schema/cumulocity-managed-object-schema.json
+  - type: JSONLD
+    url: json-ld/cumulocity-context.jsonld
+  - type: JSONSchema
+    url: json-schema/cumulocity-measurement-schema.json
+  - type: JSONSchema
+    url: json-schema/cumulocity-event-schema.json
+  - type: JSONSchema
+    url: json-schema/cumulocity-alarm-schema.json
+  - type: Documentation
+    url: https://cumulocity.com/docs/device-integration/device-integration-introduction/
+  - type: Documentation
+    url: https://cumulocity.com/docs/microservice-sdk/
+  - type: Documentation
+    url: https://cumulocity.com/docs/reference/notifications/
+  - type: AsyncAPI
+    url: asyncapi/cumulocity-notification2-asyncapi.yml
+  - type: Documentation
+    url: https://cumulocity.com/api/datahub/
+  - type: Documentation
+    url: https://cumulocity.com/docs/datahub/datahub-overview/
+  - type: Documentation
+    url: https://cumulocity.com/api/dtm/
+  - type: Documentation
+    url: https://cumulocity.com/docs/digital-twin-manager/dtm-overview/
+  - type: Documentation
+    url: https://cumulocity.com/api/edge/
+  - type: Documentation
+    url: https://cumulocity.com/docs/edge/edge-overview/
+- aid: cumulocity:cumulocity-device-statistics-api
+  name: Cumulocity Device statistics API
+  description: "Device statistics are collected for each inventory object with at least one measurement,\
+    \ event or alarm. There are no additional checks if the inventory object is marked as device using\
+    \ the `c8y_IsDevice` fragment. When the first measurement, event or alarm is created for a specific\
+    \ inventory object, Cumulocity is always considering this as a device and starts counting.\n\nDevice\
+    \ statistics are counted with daily and monthy rate. All requests are considered when counting device\
+    \ statistics, no matter which processing mode is used.\n\nThe following requests are counted:\n\n\
+    * Alarm creation and update\n* Event creation and update\n* Measurement creation\n* Bulk measurement\
+    \ creation is counted as multiple requests\n* Bulk alarm status update is counted as multiple requests\n\
+    * MQTT and SmartREST requests with multiple rows are counted as multiple requests\n\n### Frequently\
+    \ asked questions\n\n#### Are operations on device firmware counted?\n\n**No**, device configuration\
+    \ and firmware update operate on inventory objects, hence they are not counted.\n\n#### Are requests\
+    \ done by the UI applications, for example, when browsing device details, counted?\n\n**No**, viewing\
+    \ device details performs only GET requests which are not counted.\n\n#### Is the clear alarm operation\
+    \ done from the UI counted?\n\n**Yes**, a clear alarm operation in fact performs an alarm update operation\
+    \ and it will be counted as device request.\n\n#### Is there any operation performed on the device\
+    \ which is counted?\n\n**Yes**, retrieving device logs requires from the device to create an event\
+    \ and attach a binary with logs to it. Those are two separate requests and both are counted.\n\n####\
+    \ When I have a device with children are the requests counted always to the root device or separately\
+    \ for each child?\n\nSeparately for each child.\n\n#### Why do device statistics show significantly\
+    \ smaller request numbers than the total number of created and updated request from usage statistics?\n\
+    \nThe important aspect here is the moment of recording values for the counters. For inbound data usage\
+    \ statistics we count every request that passed authorization, including invalid requests, as stated\
+    \ in usage statistics description.\n\nFor device statistics it is different. We count requests after\
+    \ data is successfully stored in the database (or transient), which means the request was valid and\
+    \ there was no problem with persistence. \n\nIn summary, if you observe that your usage statistics\
+    \ counters are significantly larger than your device statistics counters, there is a good chance that\
+    \ some devices or microservices in your tenant are constantly sending invalid requests. In such a\
+    \ situation, the client should check the state of theirs tenant."
+  humanURL: https://cumulocity.com/docs/device-integration/mqtt/
+  baseURL: mqtt://{tenant}.cumulocity.com:1883
+  tags:
+  - Device statistics
+  properties:
+  - type: OpenAPI
+    url: openapi/cumulocity-device-statistics-api-openapi.yml
+  - type: Documentation
+    url: https://cumulocity.com/api/core/
+  - type: Documentation
+    url: https://cumulocity.com/docs/concepts/domain-model/
+  - type: JSONSchema
+    url: json-schema/cumulocity-managed-object-schema.json
+  - type: JSONLD
+    url: json-ld/cumulocity-context.jsonld
+  - type: JSONSchema
+    url: json-schema/cumulocity-measurement-schema.json
+  - type: JSONSchema
+    url: json-schema/cumulocity-event-schema.json
+  - type: JSONSchema
+    url: json-schema/cumulocity-alarm-schema.json
+  - type: Documentation
+    url: https://cumulocity.com/docs/device-integration/device-integration-introduction/
+  - type: Documentation
+    url: https://cumulocity.com/docs/microservice-sdk/
+  - type: Documentation
+    url: https://cumulocity.com/docs/reference/notifications/
+  - type: AsyncAPI
+    url: asyncapi/cumulocity-notification2-asyncapi.yml
+  - type: Documentation
+    url: https://cumulocity.com/api/datahub/
+  - type: Documentation
+    url: https://cumulocity.com/docs/datahub/datahub-overview/
+  - type: Documentation
+    url: https://cumulocity.com/api/dtm/
+  - type: Documentation
+    url: https://cumulocity.com/docs/digital-twin-manager/dtm-overview/
+  - type: Documentation
+    url: https://cumulocity.com/api/edge/
+  - type: Documentation
+    url: https://cumulocity.com/docs/edge/edge-overview/
+- aid: cumulocity:cumulocity-event-api-api
+  name: Cumulocity Event API
+  description: >-
+    The event API resource returns URIs and URI templates to collections of events, so that all events
+    or events of a specified type and/or source device can be retrieved.
+  humanURL: https://cumulocity.com/docs/device-integration/mqtt/
+  baseURL: mqtt://{tenant}.cumulocity.com:1883
+  tags:
+  - Event API
+  properties:
+  - type: OpenAPI
+    url: openapi/cumulocity-event-api-api-openapi.yml
+  - type: Documentation
+    url: https://cumulocity.com/api/core/
+  - type: Documentation
+    url: https://cumulocity.com/docs/concepts/domain-model/
+  - type: JSONSchema
+    url: json-schema/cumulocity-managed-object-schema.json
+  - type: JSONLD
+    url: json-ld/cumulocity-context.jsonld
+  - type: JSONSchema
+    url: json-schema/cumulocity-measurement-schema.json
+  - type: JSONSchema
+    url: json-schema/cumulocity-event-schema.json
+  - type: JSONSchema
+    url: json-schema/cumulocity-alarm-schema.json
+  - type: Documentation
+    url: https://cumulocity.com/docs/device-integration/device-integration-introduction/
+  - type: Documentation
+    url: https://cumulocity.com/docs/microservice-sdk/
+  - type: Documentation
+    url: https://cumulocity.com/docs/reference/notifications/
+  - type: AsyncAPI
+    url: asyncapi/cumulocity-notification2-asyncapi.yml
+  - type: Documentation
+    url: https://cumulocity.com/api/datahub/
+  - type: Documentation
+    url: https://cumulocity.com/docs/datahub/datahub-overview/
+  - type: Documentation
+    url: https://cumulocity.com/api/dtm/
+  - type: Documentation
+    url: https://cumulocity.com/docs/digital-twin-manager/dtm-overview/
+  - type: Documentation
+    url: https://cumulocity.com/api/edge/
+  - type: Documentation
+    url: https://cumulocity.com/docs/edge/edge-overview/
+- aid: cumulocity:cumulocity-feature-toggles-api-api
+  name: Cumulocity Feature toggles API
+  description: The Feature toggles API API from Cumulocity — 4 operation(s) for feature toggles api.
+  humanURL: https://cumulocity.com/docs/device-integration/mqtt/
+  baseURL: mqtt://{tenant}.cumulocity.com:1883
+  tags:
+  - Feature toggles API
+  properties:
+  - type: OpenAPI
+    url: openapi/cumulocity-feature-toggles-api-api-openapi.yml
+  - type: Documentation
+    url: https://cumulocity.com/api/core/
+  - type: Documentation
+    url: https://cumulocity.com/docs/concepts/domain-model/
+  - type: JSONSchema
+    url: json-schema/cumulocity-managed-object-schema.json
+  - type: JSONLD
+    url: json-ld/cumulocity-context.jsonld
+  - type: JSONSchema
+    url: json-schema/cumulocity-measurement-schema.json
+  - type: JSONSchema
+    url: json-schema/cumulocity-event-schema.json
+  - type: JSONSchema
+    url: json-schema/cumulocity-alarm-schema.json
+  - type: Documentation
+    url: https://cumulocity.com/docs/device-integration/device-integration-introduction/
+  - type: Documentation
+    url: https://cumulocity.com/docs/microservice-sdk/
+  - type: Documentation
+    url: https://cumulocity.com/docs/reference/notifications/
+  - type: AsyncAPI
+    url: asyncapi/cumulocity-notification2-asyncapi.yml
+  - type: Documentation
+    url: https://cumulocity.com/api/datahub/
+  - type: Documentation
+    url: https://cumulocity.com/docs/datahub/datahub-overview/
+  - type: Documentation
+    url: https://cumulocity.com/api/dtm/
+  - type: Documentation
+    url: https://cumulocity.com/docs/digital-twin-manager/dtm-overview/
+  - type: Documentation
+    url: https://cumulocity.com/api/edge/
+  - type: Documentation
+    url: https://cumulocity.com/docs/edge/edge-overview/
+- aid: cumulocity:cumulocity-identity-api-api
+  name: Cumulocity Identity API
+  description: >-
+    Cumulocity can associate devices and assets with multiple external identities.
+
+    For instance, devices can often be identified by the IMEI of their modem, by a micro-controller serial
+    number or by an asset tag.
+
+    This is useful, for example, when you have non-functional hardware and must replace the hardware without
+    losing the data that was recorded.
+
+
+    The identity API resource returns URIs and URI templates for associating external identifiers with
+    unique identifiers.
+  humanURL: https://cumulocity.com/docs/device-integration/mqtt/
+  baseURL: mqtt://{tenant}.cumulocity.com:1883
+  tags:
+  - Identity API
+  properties:
+  - type: OpenAPI
+    url: openapi/cumulocity-identity-api-api-openapi.yml
+  - type: Documentation
+    url: https://cumulocity.com/api/core/
+  - type: Documentation
+    url: https://cumulocity.com/docs/concepts/domain-model/
+  - type: JSONSchema
+    url: json-schema/cumulocity-managed-object-schema.json
+  - type: JSONLD
+    url: json-ld/cumulocity-context.jsonld
+  - type: JSONSchema
+    url: json-schema/cumulocity-measurement-schema.json
+  - type: JSONSchema
+    url: json-schema/cumulocity-event-schema.json
+  - type: JSONSchema
+    url: json-schema/cumulocity-alarm-schema.json
+  - type: Documentation
+    url: https://cumulocity.com/docs/device-integration/device-integration-introduction/
+  - type: Documentation
+    url: https://cumulocity.com/docs/microservice-sdk/
+  - type: Documentation
+    url: https://cumulocity.com/docs/reference/notifications/
+  - type: AsyncAPI
+    url: asyncapi/cumulocity-notification2-asyncapi.yml
+  - type: Documentation
+    url: https://cumulocity.com/api/datahub/
+  - type: Documentation
+    url: https://cumulocity.com/docs/datahub/datahub-overview/
+  - type: Documentation
+    url: https://cumulocity.com/api/dtm/
+  - type: Documentation
+    url: https://cumulocity.com/docs/digital-twin-manager/dtm-overview/
+  - type: Documentation
+    url: https://cumulocity.com/api/edge/
+  - type: Documentation
+    url: https://cumulocity.com/docs/edge/edge-overview/
+- aid: cumulocity:cumulocity-inventory-api-api
+  name: Cumulocity Inventory API
+  description: >-
+    The inventory stores all master data related to devices, their configuration and their connections.
+    It also contains all related assets (for example, vehicles, machines, buildings) and their structure.
+    The inventory API resource returns URIs and URI templates to collections of managed objects.
+  humanURL: https://cumulocity.com/docs/device-integration/mqtt/
+  baseURL: mqtt://{tenant}.cumulocity.com:1883
+  tags:
+  - Inventory API
+  properties:
+  - type: OpenAPI
+    url: openapi/cumulocity-inventory-api-api-openapi.yml
+  - type: Documentation
+    url: https://cumulocity.com/api/core/
+  - type: Documentation
+    url: https://cumulocity.com/docs/concepts/domain-model/
+  - type: JSONSchema
+    url: json-schema/cumulocity-managed-object-schema.json
+  - type: JSONLD
+    url: json-ld/cumulocity-context.jsonld
+  - type: JSONSchema
+    url: json-schema/cumulocity-measurement-schema.json
+  - type: JSONSchema
+    url: json-schema/cumulocity-event-schema.json
+  - type: JSONSchema
+    url: json-schema/cumulocity-alarm-schema.json
+  - type: Documentation
+    url: https://cumulocity.com/docs/device-integration/device-integration-introduction/
+  - type: Documentation
+    url: https://cumulocity.com/docs/microservice-sdk/
+  - type: Documentation
+    url: https://cumulocity.com/docs/reference/notifications/
+  - type: AsyncAPI
+    url: asyncapi/cumulocity-notification2-asyncapi.yml
+  - type: Documentation
+    url: https://cumulocity.com/api/datahub/
+  - type: Documentation
+    url: https://cumulocity.com/docs/datahub/datahub-overview/
+  - type: Documentation
+    url: https://cumulocity.com/api/dtm/
+  - type: Documentation
+    url: https://cumulocity.com/docs/digital-twin-manager/dtm-overview/
+  - type: Documentation
+    url: https://cumulocity.com/api/edge/
+  - type: Documentation
+    url: https://cumulocity.com/docs/edge/edge-overview/
+- aid: cumulocity:cumulocity-inventory-roles-api
+  name: Cumulocity Inventory Roles API
+  description: >-
+    API methods to create, retrieve, update and delete inventory roles.
+
+
+    > **&#9432; Info:** The Accept header should be provided in all POST/PUT requests, otherwise an empty
+    response body will be returned.
+  humanURL: https://cumulocity.com/docs/device-integration/mqtt/
+  baseURL: mqtt://{tenant}.cumulocity.com:1883
+  tags:
+  - Inventory Roles
+  properties:
+  - type: OpenAPI
+    url: openapi/cumulocity-inventory-roles-api-openapi.yml
+  - type: Documentation
+    url: https://cumulocity.com/api/core/
+  - type: Documentation
+    url: https://cumulocity.com/docs/concepts/domain-model/
+  - type: JSONSchema
+    url: json-schema/cumulocity-managed-object-schema.json
+  - type: JSONLD
+    url: json-ld/cumulocity-context.jsonld
+  - type: JSONSchema
+    url: json-schema/cumulocity-measurement-schema.json
+  - type: JSONSchema
+    url: json-schema/cumulocity-event-schema.json
+  - type: JSONSchema
+    url: json-schema/cumulocity-alarm-schema.json
+  - type: Documentation
+    url: https://cumulocity.com/docs/device-integration/device-integration-introduction/
+  - type: Documentation
+    url: https://cumulocity.com/docs/microservice-sdk/
+  - type: Documentation
+    url: https://cumulocity.com/docs/reference/notifications/
+  - type: AsyncAPI
+    url: asyncapi/cumulocity-notification2-asyncapi.yml
+  - type: Documentation
+    url: https://cumulocity.com/api/datahub/
+  - type: Documentation
+    url: https://cumulocity.com/docs/datahub/datahub-overview/
+  - type: Documentation
+    url: https://cumulocity.com/api/dtm/
+  - type: Documentation
+    url: https://cumulocity.com/docs/digital-twin-manager/dtm-overview/
+  - type: Documentation
+    url: https://cumulocity.com/api/edge/
+  - type: Documentation
+    url: https://cumulocity.com/docs/edge/edge-overview/
+- aid: cumulocity:cumulocity-login-options-api
+  name: Cumulocity Login options API
+  description: >-
+    API methods to retrieve the login options configured in the tenant.
+
+
+    More detailed information about the parameters and their meaning can be found in [Platform administration
+    > Authentication](https://www.cumulocity.com/docs/authentication/basic-settings/) in the Cumulocity
+    user documentation.
+
+
+    > **&#9432; Info:** If OAuth external is the only login option shown in the response, the user will
+    be automatically redirected to the SSO login screen.
+  humanURL: https://cumulocity.com/docs/device-integration/mqtt/
+  baseURL: mqtt://{tenant}.cumulocity.com:1883
+  tags:
+  - Login options
+  properties:
+  - type: OpenAPI
+    url: openapi/cumulocity-login-options-api-openapi.yml
+  - type: Documentation
+    url: https://cumulocity.com/api/core/
+  - type: Documentation
+    url: https://cumulocity.com/docs/concepts/domain-model/
+  - type: JSONSchema
+    url: json-schema/cumulocity-managed-object-schema.json
+  - type: JSONLD
+    url: json-ld/cumulocity-context.jsonld
+  - type: JSONSchema
+    url: json-schema/cumulocity-measurement-schema.json
+  - type: JSONSchema
+    url: json-schema/cumulocity-event-schema.json
+  - type: JSONSchema
+    url: json-schema/cumulocity-alarm-schema.json
+  - type: Documentation
+    url: https://cumulocity.com/docs/device-integration/device-integration-introduction/
+  - type: Documentation
+    url: https://cumulocity.com/docs/microservice-sdk/
+  - type: Documentation
+    url: https://cumulocity.com/docs/reference/notifications/
+  - type: AsyncAPI
+    url: asyncapi/cumulocity-notification2-asyncapi.yml
+  - type: Documentation
+    url: https://cumulocity.com/api/datahub/
+  - type: Documentation
+    url: https://cumulocity.com/docs/datahub/datahub-overview/
+  - type: Documentation
+    url: https://cumulocity.com/api/dtm/
+  - type: Documentation
+    url: https://cumulocity.com/docs/digital-twin-manager/dtm-overview/
+  - type: Documentation
+    url: https://cumulocity.com/api/edge/
+  - type: Documentation
+    url: https://cumulocity.com/docs/edge/edge-overview/
+- aid: cumulocity:cumulocity-login-tokens-api
+  name: Cumulocity Login tokens API
+  description: >-
+    API methods to obtain access tokens to the Cumulocity platform in case of OAI-Secure or SSO authentication.
+  humanURL: https://cumulocity.com/docs/device-integration/mqtt/
+  baseURL: mqtt://{tenant}.cumulocity.com:1883
+  tags:
+  - Login tokens
+  properties:
+  - type: OpenAPI
+    url: openapi/cumulocity-login-tokens-api-openapi.yml
+  - type: Documentation
+    url: https://cumulocity.com/api/core/
+  - type: Documentation
+    url: https://cumulocity.com/docs/concepts/domain-model/
+  - type: JSONSchema
+    url: json-schema/cumulocity-managed-object-schema.json
+  - type: JSONLD
+    url: json-ld/cumulocity-context.jsonld
+  - type: JSONSchema
+    url: json-schema/cumulocity-measurement-schema.json
+  - type: JSONSchema
+    url: json-schema/cumulocity-event-schema.json
+  - type: JSONSchema
+    url: json-schema/cumulocity-alarm-schema.json
+  - type: Documentation
+    url: https://cumulocity.com/docs/device-integration/device-integration-introduction/
+  - type: Documentation
+    url: https://cumulocity.com/docs/microservice-sdk/
+  - type: Documentation
+    url: https://cumulocity.com/docs/reference/notifications/
+  - type: AsyncAPI
+    url: asyncapi/cumulocity-notification2-asyncapi.yml
+  - type: Documentation
+    url: https://cumulocity.com/api/datahub/
+  - type: Documentation
+    url: https://cumulocity.com/docs/datahub/datahub-overview/
+  - type: Documentation
+    url: https://cumulocity.com/api/dtm/
+  - type: Documentation
+    url: https://cumulocity.com/docs/digital-twin-manager/dtm-overview/
+  - type: Documentation
+    url: https://cumulocity.com/api/edge/
+  - type: Documentation
+    url: https://cumulocity.com/docs/edge/edge-overview/
+- aid: cumulocity:cumulocity-measurement-api-api
+  name: Cumulocity Measurement API
+  description: >-
+    The measurement API resource returns URIs and URI templates to collections of measurements, so that
+    all measurements can be filtered and retrieved. Querying without filters can be slow, hence it is
+    recommended to narrow the scope by using time [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
+    Moreover, the scope can be significantly reduced by querying by source.
+  humanURL: https://cumulocity.com/docs/device-integration/mqtt/
+  baseURL: mqtt://{tenant}.cumulocity.com:1883
+  tags:
+  - Measurement API
+  properties:
+  - type: OpenAPI
+    url: openapi/cumulocity-measurement-api-api-openapi.yml
+  - type: Documentation
+    url: https://cumulocity.com/api/core/
+  - type: Documentation
+    url: https://cumulocity.com/docs/concepts/domain-model/
+  - type: JSONSchema
+    url: json-schema/cumulocity-managed-object-schema.json
+  - type: JSONLD
+    url: json-ld/cumulocity-context.jsonld
+  - type: JSONSchema
+    url: json-schema/cumulocity-measurement-schema.json
+  - type: JSONSchema
+    url: json-schema/cumulocity-event-schema.json
+  - type: JSONSchema
+    url: json-schema/cumulocity-alarm-schema.json
+  - type: Documentation
+    url: https://cumulocity.com/docs/device-integration/device-integration-introduction/
+  - type: Documentation
+    url: https://cumulocity.com/docs/microservice-sdk/
+  - type: Documentation
+    url: https://cumulocity.com/docs/reference/notifications/
+  - type: AsyncAPI
+    url: asyncapi/cumulocity-notification2-asyncapi.yml
+  - type: Documentation
+    url: https://cumulocity.com/api/datahub/
+  - type: Documentation
+    url: https://cumulocity.com/docs/datahub/datahub-overview/
+  - type: Documentation
+    url: https://cumulocity.com/api/dtm/
+  - type: Documentation
+    url: https://cumulocity.com/docs/digital-twin-manager/dtm-overview/
+  - type: Documentation
+    url: https://cumulocity.com/api/edge/
+  - type: Documentation
+    url: https://cumulocity.com/docs/edge/edge-overview/
+- aid: cumulocity:cumulocity-notification-2-0-api-api
+  name: Cumulocity Notification 2.0 API
+  description: >-
+    The notification 2.0 API resource returns URIs and URI templates to collections of notifications,
+    so that all notifications or notifications of a specified context and/or source device can be retrieved.
+  humanURL: https://cumulocity.com/docs/device-integration/mqtt/
+  baseURL: mqtt://{tenant}.cumulocity.com:1883
+  tags:
+  - Notification 2.0 API
+  properties:
+  - type: OpenAPI
+    url: openapi/cumulocity-notification-2-0-api-api-openapi.yml
+  - type: Documentation
+    url: https://cumulocity.com/api/core/
+  - type: Documentation
+    url: https://cumulocity.com/docs/concepts/domain-model/
+  - type: JSONSchema
+    url: json-schema/cumulocity-managed-object-schema.json
+  - type: JSONLD
+    url: json-ld/cumulocity-context.jsonld
+  - type: JSONSchema
+    url: json-schema/cumulocity-measurement-schema.json
+  - type: JSONSchema
+    url: json-schema/cumulocity-event-schema.json
+  - type: JSONSchema
+    url: json-schema/cumulocity-alarm-schema.json
+  - type: Documentation
+    url: https://cumulocity.com/docs/device-integration/device-integration-introduction/
+  - type: Documentation
+    url: https://cumulocity.com/docs/microservice-sdk/
+  - type: Documentation
+    url: https://cumulocity.com/docs/reference/notifications/
+  - type: AsyncAPI
+    url: asyncapi/cumulocity-notification2-asyncapi.yml
+  - type: Documentation
+    url: https://cumulocity.com/api/datahub/
+  - type: Documentation
+    url: https://cumulocity.com/docs/datahub/datahub-overview/
+  - type: Documentation
+    url: https://cumulocity.com/api/dtm/
+  - type: Documentation
+    url: https://cumulocity.com/docs/digital-twin-manager/dtm-overview/
+  - type: Documentation
+    url: https://cumulocity.com/api/edge/
+  - type: Documentation
+    url: https://cumulocity.com/docs/edge/edge-overview/
+- aid: cumulocity:cumulocity-options-api
+  name: Cumulocity Options API
+  description: >-
+    API methods to retrieve the options configured in the tenant.
+
+
+    > **&#9432; Info:** The Accept header should be provided in all POST/PUT requests, otherwise an empty
+    response body will be returned.
+  humanURL: https://cumulocity.com/docs/device-integration/mqtt/
+  baseURL: mqtt://{tenant}.cumulocity.com:1883
+  tags:
+  - Options
+  properties:
+  - type: OpenAPI
+    url: openapi/cumulocity-options-api-openapi.yml
+  - type: Documentation
+    url: https://cumulocity.com/api/core/
+  - type: Documentation
+    url: https://cumulocity.com/docs/concepts/domain-model/
+  - type: JSONSchema
+    url: json-schema/cumulocity-managed-object-schema.json
+  - type: JSONLD
+    url: json-ld/cumulocity-context.jsonld
+  - type: JSONSchema
+    url: json-schema/cumulocity-measurement-schema.json
+  - type: JSONSchema
+    url: json-schema/cumulocity-event-schema.json
+  - type: JSONSchema
+    url: json-schema/cumulocity-alarm-schema.json
+  - type: Documentation
+    url: https://cumulocity.com/docs/device-integration/device-integration-introduction/
+  - type: Documentation
+    url: https://cumulocity.com/docs/microservice-sdk/
+  - type: Documentation
+    url: https://cumulocity.com/docs/reference/notifications/
+  - type: AsyncAPI
+    url: asyncapi/cumulocity-notification2-asyncapi.yml
+  - type: Documentation
+    url: https://cumulocity.com/api/datahub/
+  - type: Documentation
+    url: https://cumulocity.com/docs/datahub/datahub-overview/
+  - type: Documentation
+    url: https://cumulocity.com/api/dtm/
+  - type: Documentation
+    url: https://cumulocity.com/docs/digital-twin-manager/dtm-overview/
+  - type: Documentation
+    url: https://cumulocity.com/api/edge/
+  - type: Documentation
+    url: https://cumulocity.com/docs/edge/edge-overview/
+- aid: cumulocity:cumulocity-platform-api-api
+  name: Cumulocity Platform API
+  description: >-
+    To discover the URIs of the various interfaces of Cumulocity, a platform interface is provided. This
+    interface aggregates all the underlying API resources.
+  humanURL: https://cumulocity.com/docs/device-integration/mqtt/
+  baseURL: mqtt://{tenant}.cumulocity.com:1883
+  tags:
+  - Platform API
+  properties:
+  - type: OpenAPI
+    url: openapi/cumulocity-platform-api-api-openapi.yml
+  - type: Documentation
+    url: https://cumulocity.com/api/core/
+  - type: Documentation
+    url: https://cumulocity.com/docs/concepts/domain-model/
+  - type: JSONSchema
+    url: json-schema/cumulocity-managed-object-schema.json
+  - type: JSONLD
+    url: json-ld/cumulocity-context.jsonld
+  - type: JSONSchema
+    url: json-schema/cumulocity-measurement-schema.json
+  - type: JSONSchema
+    url: json-schema/cumulocity-event-schema.json
+  - type: JSONSchema
+    url: json-schema/cumulocity-alarm-schema.json
+  - type: Documentation
+    url: https://cumulocity.com/docs/device-integration/device-integration-introduction/
+  - type: Documentation
+    url: https://cumulocity.com/docs/microservice-sdk/
+  - type: Documentation
+    url: https://cumulocity.com/docs/reference/notifications/
+  - type: AsyncAPI
+    url: asyncapi/cumulocity-notification2-asyncapi.yml
+  - type: Documentation
+    url: https://cumulocity.com/api/datahub/
+  - type: Documentation
+    url: https://cumulocity.com/docs/datahub/datahub-overview/
+  - type: Documentation
+    url: https://cumulocity.com/api/dtm/
+  - type: Documentation
+    url: https://cumulocity.com/docs/digital-twin-manager/dtm-overview/
+  - type: Documentation
+    url: https://cumulocity.com/api/edge/
+  - type: Documentation
+    url: https://cumulocity.com/docs/edge/edge-overview/
+- aid: cumulocity:cumulocity-real-time-notification-api-api
+  name: Cumulocity Real-time notification API
+  description: >-
+    # Real-time operations
+
+
+    Real-time notification services of Cumulocity have their own subscription channel name format and
+    URL. The real-time notifications are available for [Alarms](#tag/Alarm-notification-API), [Device
+    control](#tag/Device-control-notification-API), [Events](#tag/Event-notification-API), [Inventory](#tag/Inventory-notification-API)
+    and [Measurements](#tag/Measurement-notification-API).
+
+
+    Note that when using long-polling, all POST requests must contain the Accept header, otherwise an
+    empty response body will be returned.
+
+    All requests are sent to the <kbd>/notification/realtime</kbd> endpoint.
+
+
+    > **&#9432; Info:** The long-polling interface is designed as a mechanism for custom applications
+    to poll infrequent events from Cumulocity. The long-polling interface is not designed as a mechanism
+    to stream large data volumes (>100kB/sec) or frequent data (>50 events/sec) out of Cumulocity. The
+    usage of long-polling is not supported for such use cases.
+
+
+    > **⚠️ Important:** Real-time notification is based on the Bayeux protocol where idle clients will
+    have their sessions terminated after a set interval, defaulting to 2 hours.
+
+    > An idle client is one that has not received any messages from the server, nor polled the `/meta/connect`
+    endpoint.
+
+    > To avoid session termination clients should poll `/meta/connect` and follow the instructions for
+    [Long-running connections](#tag/Real-time-notification-API/).
+
+    > Additional information regarding the Bayeux protocol can be found in the CometD documentation under
+    [Appendix C: The Bayeux Protocol Specification 1.0](https://docs.cometd.org/current3/reference/#_bayeux).
+
+
+    ## Handshake
+
+
+    A real-time notifications client initiates the connection negotiation by sending a message to the
+    `/meta/handshake` channel. In response, the client receives a `clientId` which identifies a conversation
+    and must be passed in every non-handshake request.
+
+
+    > **&#9432; Info:** The number of parallel connections that can be opened at the same time by a single
+    user is limited. After exceeding this limit when a new connection is created, the oldest one will
+    be closed and the newly created one will be added in its place. This limit is configurable and managed
+    per installation. Its default value is 10 connections per user, subscription channel and server node.
+
+
+    When using WebSockets, a property `ext` containing an authentication object must be sent. In case
+    of basic authentication, the token is used with Base64 encoded credentials. In case of OAuth authentication,
+    the request must have the cookie with the authorization name, holding the access token. Moreover,
+    the XSRF token must be forwarded as part of the handshake message.
+
+
+    ### Request example
+
+
+    ```http
+
+    POST /notification/realtime
+
+    Authorization: <AUTHORIZATION>
+
+    Content-Type: application/json
+
+
+    [
+      {
+        "channel": "/meta/handshake",
+        "version": "1.0"
+      }
+    ]
+
+    ```
+
+
+    ### Response example
+
+
+    A successful response looks like:
+
+
+    ```json
+
+    [
+      {
+        "channel": "/meta/handshake",
+        "clientId": "69wzith4teyensmz6zyk516um4yum0mvp",
+        "minimumVersion": "1.0",
+        "successful": true,
+        "supportedConnectionTypes": [
+          "long-polling",
+          "smartrest-long-polling",
+          "websocket"
+        ],
+        "version": "1.0"
+      }
+    ]
+
+    ```
+
+
+    When an error occurs, the response looks like:
+
+
+    ```json
+
+    [
+      {
+        "channel": "/meta/handshake",
+        "error": "403::Handshake denied",
+        "successful": false
+      }
+    ]
+
+    ```
+
+
+    ## Subscribe
+
+
+    A notification client can send subscribe messages and specify the desired channel to receive output
+    messages from the Cumulocity server. The client will receive the messages in succeeding connect requests.
+
+
+    Each REST API that uses the real-time notification service has its own format for channel names. See
+    [Device control](#tag/Device-control-notification-API) for more details.
+
+
+    ### Request example
+
+
+    ```http
+
+    POST /notification/realtime
+
+    Authorization: <AUTHORIZATION>
+
+    Content-Type: application/json
+
+
+    [
+      {
+        "channel": "/meta/subscribe",
+        "clientId": "69wzith4teyensmz6zyk516um4yum0mvp",
+        "subscription": "/alarms/<DEVICE_ID>"
+      }
+    ]
+
+    ```
+
+
+    ### Response example
+
+
+    ```json
+
+    [
+      {
+        "channel": "/meta/subscribe",
+        "clientId": "69wzith4teyensmz6zyk516um4yum0mvp",
+        "subscription": "/alarms/<DEVICE_ID>",
+        "successful": true
+      }
+    ]
+
+    ```
+
+
+    ## Unsubscribe
+
+
+    To stop receiving notifications from a channel, send a message to the channel `/meta/unsubscribe`
+    in the same format as used during subscription.
+
+
+    ### Request example
+
+
+    Example Request:
+
+
+    ```http
+
+    POST /notification/realtime
+
+    Authorization: <AUTHORIZATION>
+
+    Content-Type: application/json
+
+
+    [
+      {
+        "channel": "/meta/unsubscribe",
+        "clientId": "69wzith4teyensmz6zyk516um4yum0mvp",
+        "subscription": "/alarms/<DEVICE_ID>"
+      }
+    ]
+
+    ```
+
+
+    ### Response example
+
+
+    ```json
+
+    [
+      {
+        "channel": "/meta/unsubscribe",
+        "subscription": "/alarms/<DEVICE_ID>",
+        "successful": true
+      }
+    ]
+
+    ```
+
+
+    ## Connect
+
+
+    After a Bayeux client has discovered the server's capabilities with a handshake exchange and subscribed
+    to the desired channels, a connection is established by sending a message to the `/meta/connect` channel.
+    This message may be transported over any of the transports returned by the server in the handshake
+    response. Requests to the connect channel must be immediately repeated after every response to receive
+    the next batch of notifications.
+
+
+    ### Request example
+
+
+    ```http
+
+    POST /notification/realtime
+
+    Authorization: <AUTHORIZATION>
+
+    Content-Type: application/json
+
+
+    [
+      {
+        "channel": "/meta/connect",
+        "clientId": "69wzith4teyensmz6zyk516um4yum0mvp",
+        "connectionType": "long-polling",
+        "advice": {
+          "timeout": 5400000,
+          "interval": 3000
+        }
+      }
+    ]
+
+    ```
+
+
+    ### Response example
+
+
+    ```json
+
+    [
+      {
+        "channel": "/meta/connect",
+        "data": null,
+        "advice": {
+          "interval": 3000,
+          "timeout": 5400000
+        },
+        "successful": true
+      }
+    ]
+
+    ```
+
+
+    ## Disconnect
+
+
+    To stop receiving notifications from all channels and close the conversation, send a message to the
+    `/meta/disconnect` channel.
+
+
+    ### Request example
+
+
+    ```http
+
+    POST /notification/realtime
+
+    Authorization: <AUTHORIZATION>
+
+    Content-Type: application/json
+
+
+    [
+      {
+        "channel": "/meta/disconnect",
+        "clientId": "69wzith4teyensmz6zyk516um4yum0mvp"
+      }
+    ]
+
+    ```
+
+
+    ### Response example
+
+
+    ```json
+
+    [
+      {
+        "channel": "/meta/disconnect",
+        "successful": true
+      }
+    ]
+
+    ```
+
+
+    ## Long-running connections
+
+
+    To keep a long-running connection alive when there are no new notifications to deliver, the server
+    will periodically send an empty `/meta/connect` response to the client.
+
+    The client should send a new `/meta/connect` request immediately after receiving such a response,
+    to ensure that the connection remains active and future notifications are delivered.
+  humanURL: https://cumulocity.com/docs/device-integration/mqtt/
+  baseURL: mqtt://{tenant}.cumulocity.com:1883
+  tags:
+  - Real-time notification API
+  properties:
+  - type: OpenAPI
+    url: openapi/cumulocity-real-time-notification-api-api-openapi.yml
+  - type: Documentation
+    url: https://cumulocity.com/api/core/
+  - type: Documentation
+    url: https://cumulocity.com/docs/concepts/domain-model/
+  - type: JSONSchema
+    url: json-schema/cumulocity-managed-object-schema.json
+  - type: JSONLD
+    url: json-ld/cumulocity-context.jsonld
+  - type: JSONSchema
+    url: json-schema/cumulocity-measurement-schema.json
+  - type: JSONSchema
+    url: json-schema/cumulocity-event-schema.json
+  - type: JSONSchema
+    url: json-schema/cumulocity-alarm-schema.json
+  - type: Documentation
+    url: https://cumulocity.com/docs/device-integration/device-integration-introduction/
+  - type: Documentation
+    url: https://cumulocity.com/docs/microservice-sdk/
+  - type: Documentation
+    url: https://cumulocity.com/docs/reference/notifications/
+  - type: AsyncAPI
+    url: asyncapi/cumulocity-notification2-asyncapi.yml
+  - type: Documentation
+    url: https://cumulocity.com/api/datahub/
+  - type: Documentation
+    url: https://cumulocity.com/docs/datahub/datahub-overview/
+  - type: Documentation
+    url: https://cumulocity.com/api/dtm/
+  - type: Documentation
+    url: https://cumulocity.com/docs/digital-twin-manager/dtm-overview/
+  - type: Documentation
+    url: https://cumulocity.com/api/edge/
+  - type: Documentation
+    url: https://cumulocity.com/docs/edge/edge-overview/
+- aid: cumulocity:cumulocity-system-options-api
+  name: Cumulocity System options API
+  description: >-
+    API methods to retrieve the read-only properties predefined in the platform's configuration.
+
+
+    For security reasons, a few system options are considered secured, which means the user must have
+    the required role **ROLE_OPTION_MANAGEMENT_ADMIN** to read their values.
+
+
+    List of options:
+
+
+    |         Category          | Key                           | Considered as secured |
+
+    |:-------------------------:|:------------------------------|:----------------------|
+
+    |         password          | green.min-length              | yes                   |
+
+    | two-factor-authentication | pin.validity                  | yes                   |
+
+    | two-factor-authentication | token.length                  | yes                   |
+
+    | two-factor-authentication | token.validity                | yes                   |
+
+    |      authentication       | badRequestCounter             | yes                   |
+
+    |           files           | microservice.zipped.max.size  | yes                   |
+
+    |           files           | microservice.unzipped.max.size| yes                   |
+
+    |           files           | webapp.zipped.max.size        | yes                   |
+
+    |           files           | webapp.unzipped.max.size      | yes                   |
+
+    | two-factor-authentication | enforced                      | no                    |
+
+    |       reportMailer        | available                     | no                    |
+
+    |          system           | version                       | no                    |
+
+    |          plugin           | eventprocessing.enabled       | no                    |
+
+    |         password          | limit.validity                | no                    |
+
+    |         password          | enforce.strength              | no                    |
+
+    | two-factor-authentication | strategy                      | no                    |
+
+    | two-factor-authentication | pin.length                    | no                    |
+
+    | two-factor-authentication | enabled                       | no                    |
+
+    | two-factor-authentication | enforced.group                | no                    |
+
+    | two-factor-authentication | tenant-scope-settings.enabled | no                    |
+
+    | two-factor-authentication | logout-on-browser-termination | no                    |
+
+    |       connectivity        | microservice.url              | no                    |
+
+    |       support-user        | enabled                       | no                    |
+
+    |          support          | url                           | no                    |
+
+    |         trackers          | supported.models              | no                    |
+
+    |         encoding          | test                          | no                    |
+
+    |        data-broker        | bootstrap.period              | no                    |
+
+    |           files           | max.size                      | no                    |
+
+    |      device-control       | bulkoperation.creationramp    | no                    |
+
+    |         gainsight         | api.key                       | no                    |
+
+    |            cep            | deprecation.alarm             | no                    |
+
+    |       remoteaccess        | pass-through.enabled          | no                    |
+
+    |    device-registration    | security-token.policy         | no                    |
+  humanURL: https://cumulocity.com/docs/device-integration/mqtt/
+  baseURL: mqtt://{tenant}.cumulocity.com:1883
+  tags:
+  - System options
+  properties:
+  - type: OpenAPI
+    url: openapi/cumulocity-system-options-api-openapi.yml
+  - type: Documentation
+    url: https://cumulocity.com/api/core/
+  - type: Documentation
+    url: https://cumulocity.com/docs/concepts/domain-model/
+  - type: JSONSchema
+    url: json-schema/cumulocity-managed-object-schema.json
+  - type: JSONLD
+    url: json-ld/cumulocity-context.jsonld
+  - type: JSONSchema
+    url: json-schema/cumulocity-measurement-schema.json
+  - type: JSONSchema
+    url: json-schema/cumulocity-event-schema.json
+  - type: JSONSchema
+    url: json-schema/cumulocity-alarm-schema.json
+  - type: Documentation
+    url: https://cumulocity.com/docs/device-integration/device-integration-introduction/
+  - type: Documentation
+    url: https://cumulocity.com/docs/microservice-sdk/
+  - type: Documentation
+    url: https://cumulocity.com/docs/reference/notifications/
+  - type: AsyncAPI
+    url: asyncapi/cumulocity-notification2-asyncapi.yml
+  - type: Documentation
+    url: https://cumulocity.com/api/datahub/
+  - type: Documentation
+    url: https://cumulocity.com/docs/datahub/datahub-overview/
+  - type: Documentation
+    url: https://cumulocity.com/api/dtm/
+  - type: Documentation
+    url: https://cumulocity.com/docs/digital-twin-manager/dtm-overview/
+  - type: Documentation
+    url: https://cumulocity.com/api/edge/
+  - type: Documentation
+    url: https://cumulocity.com/docs/edge/edge-overview/
+- aid: cumulocity:cumulocity-tenant-api-api
+  name: Cumulocity Tenant API
+  description: >-
+    The tenant API resource returns URIs and URI templates to collections of tenants, so that all tenants
+    can be filtered and retrieved.
+  humanURL: https://cumulocity.com/docs/device-integration/mqtt/
+  baseURL: mqtt://{tenant}.cumulocity.com:1883
+  tags:
+  - Tenant API
+  properties:
+  - type: OpenAPI
+    url: openapi/cumulocity-tenant-api-api-openapi.yml
+  - type: Documentation
+    url: https://cumulocity.com/api/core/
+  - type: Documentation
+    url: https://cumulocity.com/docs/concepts/domain-model/
+  - type: JSONSchema
+    url: json-schema/cumulocity-managed-object-schema.json
+  - type: JSONLD
+    url: json-ld/cumulocity-context.jsonld
+  - type: JSONSchema
+    url: json-schema/cumulocity-measurement-schema.json
+  - type: JSONSchema
+    url: json-schema/cumulocity-event-schema.json
+  - type: JSONSchema
+    url: json-schema/cumulocity-alarm-schema.json
+  - type: Documentation
+    url: https://cumulocity.com/docs/device-integration/device-integration-introduction/
+  - type: Documentation
+    url: https://cumulocity.com/docs/microservice-sdk/
+  - type: Documentation
+    url: https://cumulocity.com/docs/reference/notifications/
+  - type: AsyncAPI
+    url: asyncapi/cumulocity-notification2-asyncapi.yml
+  - type: Documentation
+    url: https://cumulocity.com/api/datahub/
+  - type: Documentation
+    url: https://cumulocity.com/docs/datahub/datahub-overview/
+  - type: Documentation
+    url: https://cumulocity.com/api/dtm/
+  - type: Documentation
+    url: https://cumulocity.com/docs/digital-twin-manager/dtm-overview/
+  - type: Documentation
+    url: https://cumulocity.com/api/edge/
+  - type: Documentation
+    url: https://cumulocity.com/docs/edge/edge-overview/
+- aid: cumulocity:cumulocity-tenant-applications-api
+  name: Cumulocity Tenant applications API
+  description: >-
+    References to the tenant subscribed applications.
+
+    > **&#9432; Info:** The Accept header should be provided in all POST requests, otherwise an empty
+    response body will be returned.
+  humanURL: https://cumulocity.com/docs/device-integration/mqtt/
+  baseURL: mqtt://{tenant}.cumulocity.com:1883
+  tags:
+  - Tenant applications
+  properties:
+  - type: OpenAPI
+    url: openapi/cumulocity-tenant-applications-api-openapi.yml
+  - type: Documentation
+    url: https://cumulocity.com/api/core/
+  - type: Documentation
+    url: https://cumulocity.com/docs/concepts/domain-model/
+  - type: JSONSchema
+    url: json-schema/cumulocity-managed-object-schema.json
+  - type: JSONLD
+    url: json-ld/cumulocity-context.jsonld
+  - type: JSONSchema
+    url: json-schema/cumulocity-measurement-schema.json
+  - type: JSONSchema
+    url: json-schema/cumulocity-event-schema.json
+  - type: JSONSchema
+    url: json-schema/cumulocity-alarm-schema.json
+  - type: Documentation
+    url: https://cumulocity.com/docs/device-integration/device-integration-introduction/
+  - type: Documentation
+    url: https://cumulocity.com/docs/microservice-sdk/
+  - type: Documentation
+    url: https://cumulocity.com/docs/reference/notifications/
+  - type: AsyncAPI
+    url: asyncapi/cumulocity-notification2-asyncapi.yml
+  - type: Documentation
+    url: https://cumulocity.com/api/datahub/
+  - type: Documentation
+    url: https://cumulocity.com/docs/datahub/datahub-overview/
+  - type: Documentation
+    url: https://cumulocity.com/api/dtm/
+  - type: Documentation
+    url: https://cumulocity.com/docs/digital-twin-manager/dtm-overview/
+  - type: Documentation
+    url: https://cumulocity.com/api/edge/
+  - type: Documentation
+    url: https://cumulocity.com/docs/edge/edge-overview/
+- aid: cumulocity:cumulocity-trusted-certificates-api
+  name: Cumulocity Trusted certificates API
+  description: >-
+    API methods for managing trusted certificates used to establish device connections via MQTT.
+
+
+    More detailed information about trusted certificates and their role can be found in [Device management
+    > Device management application > Managing device data](https://www.cumulocity.com/docs/device-management-application/managing-device-data/)
+    in the Cumulocity user documentation.
+
+
+    > **&#9432; Info:** The Accept header must be provided in all POST/PUT requests, otherwise an empty
+    response body will be returned.
+  humanURL: https://cumulocity.com/docs/device-integration/mqtt/
+  baseURL: mqtt://{tenant}.cumulocity.com:1883
+  tags:
+  - Trusted certificates
+  properties:
+  - type: OpenAPI
+    url: openapi/cumulocity-trusted-certificates-api-openapi.yml
+  - type: Documentation
+    url: https://cumulocity.com/api/core/
+  - type: Documentation
+    url: https://cumulocity.com/docs/concepts/domain-model/
+  - type: JSONSchema
+    url: json-schema/cumulocity-managed-object-schema.json
+  - type: JSONLD
+    url: json-ld/cumulocity-context.jsonld
+  - type: JSONSchema
+    url: json-schema/cumulocity-measurement-schema.json
+  - type: JSONSchema
+    url: json-schema/cumulocity-event-schema.json
+  - type: JSONSchema
+    url: json-schema/cumulocity-alarm-schema.json
+  - type: Documentation
+    url: https://cumulocity.com/docs/device-integration/device-integration-introduction/
+  - type: Documentation
+    url: https://cumulocity.com/docs/microservice-sdk/
+  - type: Documentation
+    url: https://cumulocity.com/docs/reference/notifications/
+  - type: AsyncAPI
+    url: asyncapi/cumulocity-notification2-asyncapi.yml
+  - type: Documentation
+    url: https://cumulocity.com/api/datahub/
+  - type: Documentation
+    url: https://cumulocity.com/docs/datahub/datahub-overview/
+  - type: Documentation
+    url: https://cumulocity.com/api/dtm/
+  - type: Documentation
+    url: https://cumulocity.com/docs/digital-twin-manager/dtm-overview/
+  - type: Documentation
+    url: https://cumulocity.com/api/edge/
+  - type: Documentation
+    url: https://cumulocity.com/docs/edge/edge-overview/
+- aid: cumulocity:cumulocity-usage-statistics-api
+  name: Cumulocity Usage statistics API
+  description: "Days are counted according to server timezone, so be aware that the tenant usage statistics\
+    \ displaying/filtering may not work correctly when the client is not in the same timezone as the server.\
+    \ However, it is possible to send a request with a time range (using the query parameters `dateFrom`\
+    \ and `dateTo`) in zoned format (for example, `2020-10-26T03:00:00%2B01:00`). Statistics from past\
+    \ days are stored with daily aggregations, which means that for a specific day you get either the\
+    \ statistics for the whole day or none at all.\n\n### Request counting in SmartREST and MQTT\n\n*\
+    \ SmartREST: Each row in a SmartREST request is transformed into a separate HTTP request. For example,\
+    \ if one SmartREST request contains 10 rows, then 10 separate calls are executed, meaning that request\
+    \ count is increased by 10.\n* MQTT: Each row/line counts as a separate request. Creating custom template\
+    \ counts as a single request.\n\n### REST specific counting details\n\n* All counters increase also\
+    \ when the request is invalid, for example, wrong payload or missing permissions.\n* Bulk measurements\
+    \ creation and bulk alarm status update are counted as a single \"requestCount\"/\"deviceRequestCount\"\
+    \ and multiple inbound data transfer count.\n\n### SmartREST 1.0 specific counting details\n\n* Invalid\
+    \ SmartREST requests are not counted, for example, when the template doesn't exist.\n* A new template\
+    \ registration is treated as two separate requests. Create a new inventory object which increases\
+    \ \"requestCount\", \"deviceRequestCount\" and \"inventoriesCreatedCount\". There is also a second\
+    \ request which binds the template with X-ID, this increases \"requestCount\" and \"deviceRequestCount\"\
+    .\n* Each row in a SmartREST request is transformed into a separate HTTP request. For example, if\
+    \ one SmartREST request contains 10 rows, then 10 separate calls are executed, meaning that both \"\
+    requestCount\" and \"deviceRequestCount\" are increased by 10.\n\n### MQTT specific counting details\n\
+    \n* Invalid requests are counted, for example, when sending a message with a wrong template ID.\n\
+    * Device creation request and automatic device creation are counted.\n* Each row/line counts as a\
+    \ separate request.\n* Creating a custom template counts as a single request, no matter how many rows\
+    \ are sent in the request.\n* There is one special SmartREST 2.0 template (402 Create location update\
+    \ event with device update) which is doing two things in one call, that is, create a new location\
+    \ event and update the location of the device. It is counted as two separate requests.\n\n### JSON\
+    \ via MQTT specific counting details\n\n* Invalid requests are counted, for example, when the message\
+    \ payload is invalid.\n* Bulk creation requests are counted as a single \"requestCount\"/\"deviceRequestCount\"\
+    \ and multiple inbound data transfer count.\n* Bulk creation requests with a wrong payload are not\
+    \ counted for inbound data transfer count.\n\n### Notifications 2.0 specific counting details\n\n\
+    * Invalid requests are counted, for example, unsuccessful subscription.\n* All Notifications 2.0 subscription\
+    \ API requests are counted.\n* All Notifications 2.0 token API requests are counted.\n* Notifications\
+    \ 2.0 WebSocket consumer connection requests are not counted.\n* Messages delivered over Notifications\
+    \ 2.0 WebSocket connections are not counted.\n\n### Total inbound data transfer\n\nInbound data transfer\
+    \ refers to the total number of inbound requests performed to transfer data into the Cumulocity platform.\
+    \ This includes sensor readings, alarms, events, commands and alike that are transferred between devices\
+    \ and the Cumulocity platform using the REST and/or MQTT interfaces. Such an inbound request could\
+    \ also originate from a custom microservice, website or any other client.\n\nSee the table below for\
+    \ more information on how the counters are increased. Additionally, it shows how inbound data transfers\
+    \ are handled for both MQTT and REST:\n\n| Type of transfer                                      \
+    \                                         | MQTT counter information                             \
+    \                                                                                                \
+    \                              | REST counter information                                        \
+    \                                                                                                \
+    \                                                                                                \
+    \                                                                                                \
+    \                                   |\n|:-----------------------------------------------------------------------------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|\n\
+    | Creation of an **alarm** in one request                                                        |\
+    \ One alarm creation is counted.                                                                 \
+    \                                                                                    | One alarm creation\
+    \ is counted via REST.                                                                           \
+    \                                                                                                \
+    \                                                                                                \
+    \                                                                                 |\n| Update of an\
+    \ **alarm** (for example, status change)                                            | One alarm update\
+    \ is counted.                                                                                    \
+    \                                                                   | One alarm update is counted\
+    \ via REST.                                                                                      \
+    \                                                                                                \
+    \                                                                                                \
+    \                                                                        |\n| Creation of **multiple\
+    \ alarms** in one request                                                 | Each alarm creation in\
+    \ a single MQTT request will be counted.                                                         \
+    \                                                             | Not supported by C8Y (REST does not\
+    \ support creating multiple alarms in one call).                                                 \
+    \                                                                                                \
+    \                                                                                                \
+    \                                                                |\n| Update of **multiple alarms**\
+    \ (for example, status change) in one request                      | Each alarm update in a single\
+    \ MQTT request will be counted.                                                                  \
+    \                                                      | Each alarm that matches the filter is counted\
+    \ as an alarm update (causing multiple updates).                                                 \
+    \                                                                                                \
+    \                                                                                                \
+    \                                                      |\n| Creation of an **event** in one request\
+    \                                                        | One event creation is counted.        \
+    \                                                                                                \
+    \                                             | One event creation is counted.                   \
+    \                                                                                                \
+    \                                                                                                \
+    \                                                                                                \
+    \                                                  |\n| Update of an **event** (for example, text\
+    \ change)                                              | One event update is counted.            \
+    \                                                                                                \
+    \                                           | One event update is counted.                       \
+    \                                                                                                \
+    \                                                                                                \
+    \                                                                                                \
+    \                                                |\n| Creation of **multiple events** in one request\
+    \                                                 | Each event creation in a single MQTT request will\
+    \ be counted.                                                                                    \
+    \                                  | Not supported by C8Y (REST does not support creating multiple\
+    \ events in one call).                                                                           \
+    \                                                                                                \
+    \                                                                                                \
+    \                                      |\n| Update of **multiple events** (for example, text change)\
+    \ in one request                        | Each event update in a single MQTT request will be counted.\
+    \                                                                                                \
+    \                        | Not supported by C8Y (REST does not support updating multiple events in\
+    \ one call).                                                                                     \
+    \                                                                                                \
+    \                                                                                                \
+    \                            |\n| Creation of a **measurement** in one request                   \
+    \                                | One measurement creation is counted.                          \
+    \                                                                                                \
+    \                     | One measurement creation is counted.                                     \
+    \                                                                                                \
+    \                                                                                                \
+    \                                                                                                \
+    \                          |\n| Creation of **multiple measurements** in one request             \
+    \                              | Each measurement creation in a single MQTT request will be counted.\
+    \ Example: If MQTT is used to report 5 measurements, the measurementCreated counter will be incremented\
+    \ by five. | REST allows multiple measurements to be created by sending multiple measurements in one\
+    \ call. In this case, each measurement sent via REST is counted individually. The call itself is not\
+    \ counted. For example, if somebody sends 5 measurements via REST in one call, the corresponding counter\
+    \ will be increased by 5. Measurements with multiple series are counted as a singular measurement.\
+    \ |\n| Creation of a **managed object** in one request                                           \
+    \     | One managed object creation is counted.                                                  \
+    \                                                                                          | One managed\
+    \ object creation is counted.                                                                    \
+    \                                                                                                \
+    \                                                                                                \
+    \                                                                                        |\n| Update\
+    \ of one **managed object** (for example, status change)                                  | One managed\
+    \ object update is counted.                                                                      \
+    \                                                                        | One managed object update\
+    \ is counted.                                                                                    \
+    \                                                                                                \
+    \                                                                                                \
+    \                                                                          |\n| Update of **multiple\
+    \ managed objects** in one request                                          | Each managed object\
+    \ update in a single MQTT request will be counted.                                               \
+    \                                                                | Not supported by C8Y (REST does\
+    \ not support updating multiple managed objects in one call).                                    \
+    \                                                                                                \
+    \                                                                                                \
+    \                                                                    |\n| Creation/update of **multiple\
+    \ alarms/measurements/events/inventories** mixed in a single call. | Each MQTT line is processed separately.\
+    \ If it is a creation/update of an event/alarm/measurement/inventory, the corresponding counter is\
+    \ increased by one.                         | Not supported by the REST API.                     \
+    \                                                                                                \
+    \                                                                                                \
+    \                                                                                                \
+    \                                                |\n| Assign/unassign of **child devices and child\
+    \ assets** in one request                           | One managed object update is counted.      \
+    \                                                                                                \
+    \                                        | One managed object update is counted.                 \
+    \                                                                                                \
+    \                                                                                                \
+    \                                                                                                \
+    \                                             |\n| Creation of an **operation** in one request   \
+    \                                                 | One operation creation is counted.           \
+    \                                                                                                \
+    \                                      | One operation creation is counted.                      \
+    \                                                                                                \
+    \                                                                                                \
+    \                                                                                                \
+    \                                           |\n| Update of an **operation** (for example, status change)\
+    \                                        | One operation update is counted.                      \
+    \                                                                                                \
+    \                             | One operation update is counted.                                 \
+    \                                                                                                \
+    \                                                                                                \
+    \                                                                                                \
+    \                                  |\n\n### Microservice usage statistics\n\nThe microservice usage\
+    \ statistics gathers information on the resource usage for tenants for each subscribed application\
+    \ which are collected on a daily base.\n\nThe microservice usage's information is stored in the `resources`\
+    \ object.\n\n### Frequently asked questions\n\n#### Which requests are counted as general \"requestCount\"\
+    ?\n\nAll requests which the platform receives are counted, including,for example, UI requests, microservices\
+    \ requests, device requests and agents requests. Only a few internal endpoints are not counted:\n\
+    * `/health` (and all endpoints including this URI fragment, like `/tenant/health`)\n* `/application/currentApplication`\
+    \ (and all subresources, like `/application/currentApplication/subscriptions`)\n* `/tenant/limit`\n\
+    * `/devicecontrol/deviceCredentials`\n* `/inventory/templates` (and all subresources)\n\n#### My devices\
+    \ are not sending any data, but \"requestCount\" is increasing, and the total number is really big.\
+    \ Why is this happening?\n\nNot only device requests are counted. Every user interaction with UI applications\
+    \ generates some requests to the backend API. Additionally you may have subscribed standard or custom\
+    \ microservices, which also regularly send requests to the platform.\n\nExample: If you have four\
+    \ microservices and each microservice sends five requests per minute, this setup creates `4 * 5 *\
+    \ 60 * 24 = 28800` requests per day. Similar numbers arise if there are multiple users working with\
+    \ the given tenant UI concurrently. \n\n#### Which requests are counted as \"deviceRequestCount\"\
+    ?\n\nAll requests from \"requestCount\" except the following:\n\n* Tenant API requests\n* Application\
+    \ API requests\n* User API requests\n* Requests with the proper HTTP header `X-Cumulocity-Application-Key`,\
+    \ matching the application key of one of the applications used by a particular tenant \n\nThe exclusion\
+    \ of the APIs in the list above means that requests to endpoints which start with the mentioned API\
+    \ prefixes are not counted. For example, for the Tenant API the following endpoints are not counted\
+    \ (the list is incomplete):\n* `/tenant/tenants`\n* `/tenant/currentTenant`\n* `/tenant/statistics`\n\
+    * `/tenant/options`\n\n> **&#9432; Info:** Each microservice and web application must include the\
+    \ `X-Cumulocity-Application-Key` header in all requests.\n> Otherwise such requests are counted as\
+    \ device requests which incorrectly affects the \"deviceRequestCount\" usage metric."
+  humanURL: https://cumulocity.com/docs/device-integration/mqtt/
+  baseURL: mqtt://{tenant}.cumulocity.com:1883
+  tags:
+  - Usage statistics
+  properties:
+  - type: OpenAPI
+    url: openapi/cumulocity-usage-statistics-api-openapi.yml
+  - type: Documentation
+    url: https://cumulocity.com/api/core/
+  - type: Documentation
+    url: https://cumulocity.com/docs/concepts/domain-model/
+  - type: JSONSchema
+    url: json-schema/cumulocity-managed-object-schema.json
+  - type: JSONLD
+    url: json-ld/cumulocity-context.jsonld
+  - type: JSONSchema
+    url: json-schema/cumulocity-measurement-schema.json
+  - type: JSONSchema
+    url: json-schema/cumulocity-event-schema.json
+  - type: JSONSchema
+    url: json-schema/cumulocity-alarm-schema.json
+  - type: Documentation
+    url: https://cumulocity.com/docs/device-integration/device-integration-introduction/
+  - type: Documentation
+    url: https://cumulocity.com/docs/microservice-sdk/
+  - type: Documentation
+    url: https://cumulocity.com/docs/reference/notifications/
+  - type: AsyncAPI
+    url: asyncapi/cumulocity-notification2-asyncapi.yml
+  - type: Documentation
+    url: https://cumulocity.com/api/datahub/
+  - type: Documentation
+    url: https://cumulocity.com/docs/datahub/datahub-overview/
+  - type: Documentation
+    url: https://cumulocity.com/api/dtm/
+  - type: Documentation
+    url: https://cumulocity.com/docs/digital-twin-manager/dtm-overview/
+  - type: Documentation
+    url: https://cumulocity.com/api/edge/
+  - type: Documentation
+    url: https://cumulocity.com/docs/edge/edge-overview/
+- aid: cumulocity:cumulocity-user-api-api
+  name: Cumulocity User API
+  description: >-
+    The user API resource returns URIs and URI templates to collections of users, groups, and roles, so
+    that they can be queried.
+  humanURL: https://cumulocity.com/docs/device-integration/mqtt/
+  baseURL: mqtt://{tenant}.cumulocity.com:1883
+  tags:
+  - User API
+  properties:
+  - type: OpenAPI
+    url: openapi/cumulocity-user-api-api-openapi.yml
   - type: Documentation
     url: https://cumulocity.com/api/core/
   - type: Documentation

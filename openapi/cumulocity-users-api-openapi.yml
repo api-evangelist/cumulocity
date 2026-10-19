@@ -1,167 +1,2262 @@
 openapi: 3.2.0
 info:
-  title: Cumulocity User Users API
-  version: 10.20.0
-  description: 'Manage users, user groups, global roles, inventory roles, and device permissions. Cumulocity uses an
+  version: Latest
+  title: Cumulocity Users API
+  x-logo:
+    url: https://www.cumulocity.com/docs/images/logo-platform.svg
+    backgroundColor: '#F8F8F8'
+    altText: Cumulocity
+    href: https://www.cumulocity.com/api
+  description: '# REST implementation
 
-    RBAC model where global roles grant API access and inventory roles grant access to specific managed-object
 
-    subtrees. Supports SSO via SAML/OIDC and SCIM provisioning for enterprise tenants.'
+    This section describes the aspects common to all REST-based interfaces of Cumulocity. The interfaces are based on the Hypertext Transfer Protocol 1.1 using HTTPS. ## HTTP usage
+
+
+    ### Application management
+
+
+    Cumulocity uses a so-called "application key" to distinguish requests coming from devices and traffic from applications. If you write an application, pass the following header as part of all requests:
+
+
+    ```markup
+
+    X-Cumulocity-Application-Key:
+
+    ```
+
+
+    For example, if you registered your application in the Cumulocity Administration application with the key "myapp", your requests should contain the header:
+
+
+    ```markup
+
+    X-Cumulocity-Application-Key: myapp
+
+    ```
+
+
+    This makes your application subscribable and billable. If you implement a device, do not pass the key. > **ⓘ Info:** Make sure that you pass the key in **all** requests coming from an application. If you leave out the key,
+
+    > the request will be considered as a device request, and the corresponding device will be marked as "available". ### Limited HTTP clients
+
+
+    If you use an HTTP client that can only perform GET and POST methods in HTTP, you can emulate the other methods through an additional "X-HTTP-METHOD" header. Simply issue a POST request and add the header, specifying the actual REST method to be executed. For example, to emulate the "PUT" (modify) method, you can use:
+
+
+    ```http
+
+    POST ... X-HTTP-METHOD: PUT
+
+    ```
+
+
+    ### Processing mode
+
+
+    Every update request (PUT, POST, DELETE) executes with a so-called *processing mode*. The processing modes are as follows:
+
+
+    |Processing mode|Description|
+
+    |---|---|
+
+    |PERSISTENT (default)|Stores data in the Cumulocity database and sends data to the Streaming Analytics engine. Afterwards, Cumulocity returns the result of the request. This is the default mode.|
+
+    |TRANSIENT|Sends data to the Streaming Analytics engine and immediately returns the results asynchronously but does not store data in Cumulocity’s database. This mode saves storage and processing costs and is useful for example when tracking devices in real time without requiring data to be stored.|
+
+    |QUIESCENT|Behaves similar to the persistent mode with the exception that no real-time notifications will be sent.|
+
+    |CEP|Behaves like the transient mode with the exception that no real-time notifications are sent.|
+
+
+    To explicitly control the processing mode of an update request, you can use the "X-Cumulocity-Processing-Mode" header with a value of either "PERSISTENT", "TRANSIENT", "QUIESCENT" or "CEP":
+
+
+    ```markup
+
+    X-Cumulocity-Processing-Mode: PERSISTENT
+
+    ```
+
+
+    > **ⓘ Info:** Events are always delivered to CEP/Apama for all processing modes. This is independent from real-time notifications. ### Authorization
+
+
+    All requests issued to Cumulocity are subject to authorization. To determine the required permissions, see the "Required role" entries for the individual requests. To learn more about the different permissions and the concept of ownership in Cumulocity, see Getting started > Technical concepts > Security aspects > Access control > Managing roles and assigning permissions in the Cumulocity user documentation. > **⚠️ Important:** In the Cumulocity API, each granular permission is identified by a unique “permission” string, which is prefixed with ROLE_ (for example, ROLE_ALARM_READ, ROLE_INVENTORY_ADMIN). Therefore, permissions are frequently referred to as “roles” throughout the API as well as in the configuration files. For example, the microservice manifest includes a requiredRoles field, which actually expects a permission string. See also the Glossary of the Cumulocity user documentation for the usage of the terms “permission” and “role” in the Cumulocity context. ### Media types
+
+
+    Each type of data is associated with an own media type. The general format of media types is:
+
+
+    ```markup
+
+    application/vnd.com.nsn.cumulocity.+json;ver=;charset=UTF-8
+
+    ```
+
+
+    Each media type contains a parameter `ver` indicating the version of the type.'
 servers:
-- url: https://{tenant}.cumulocity.com
-  variables:
-    tenant:
-      default: example
+- description: Cumulocity tenant
+  url: https://<TENANT_DOMAIN>
 security:
-- basicAuth: []
-- bearerAuth: []
+- Basic: []
+- OAI-Secure: []
+- SSO: []
+- JWT-IAM: []
 tags:
 - name: Users
+  description: 'API methods to create, retrieve, update and delete users in Cumulocity.
+
+
+    > **ⓘ Info:** The Accept header should be provided in all POST/PUT requests, otherwise an empty response body will be returned.'
 paths:
   /user/{tenantId}/users:
     parameters:
-    - name: tenantId
-      in: path
-      required: true
-      schema:
-        type: string
-    get:
-      tags:
-      - Users
-      summary: List Users
-      operationId: listUsers
-      responses:
-        '200':
-          description: A collection of users.
-          content:
-            application/vnd.com.nsn.cumulocity.userCollection+json:
-              schema:
-                $ref: '#/components/schemas/UserCollection'
+    - $ref: '#/components/parameters/tenantId'
     post:
+      operationId: postUserCollectionResource
+      x-codegen-resource-name: createUser
+      parameters:
+      - $ref: '#/components/parameters/acceptHeader'
       tags:
       - Users
-      summary: Create a User
-      operationId: createUser
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Create a user for a specific tenant
+      description: 'Create a user for a specific tenant (by a given tenant ID).
+
+
+        Required roles
+
+
+        ROLE_USER_MANAGEMENT_ADMIN OR ROLE_USER_MANAGEMENT_CREATE AND has access to roles, groups, device permissions and applications'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request POST "https://<TENANT_DOMAIN>/user/{tenantId}/users" \
+
+          --header "Authorization: Basic <AUTHORIZATION>" \
+
+          --header "Accept: application/json" \
+
+          --header "Content-Type: application/json" \
+
+          --data-raw "<Payload>"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/user/{tenantId}/users");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.POST);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+          request.AddHeader("Content-Type", "application/json");
+
+          request.AddHeader("Accept", "application/json");
+
+          request.AddParameter("application/json", "<Payload>",  ParameterType.RequestBody);
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.post(\"https://<TENANT_DOMAIN>/user/{tenantId}/users\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .header(\"Content-Type\", \"application/json\")\n    .header(\"Accept\", \"application/json\")\n    .body(\"<Payload>\")\n    .asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"POST\", \"https://<TENANT_DOMAIN>/user/{tenantId}/users\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\",\n        \"Accept\": \"application/json\",\n        \"Content-Type\": \"application/json\"\n    })\n    .send(JSON.stringify( <Payload> ))\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://<TENANT_DOMAIN>/user/{tenantId}/users\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\",\n  \"Accept\": \"application/json\",\n  \"Content-Type\": \"application/json\"\n}\nresponse = requests.request(\"POST\", url, headers=headers, data = json.dumps(<Payload>))\nprint(response.text.encode(\"utf8\"))\n"
       requestBody:
         required: true
         content:
           application/vnd.com.nsn.cumulocity.user+json:
+            example:
+              firstName: John
+              lastName: Doe
+              userName: jdoe
+              phone: +1-541-754-3010
+              email: johndoe@example.com
+              password: S3cur3P4sswd.
             schema:
-              $ref: '#/components/schemas/User'
+              allOf:
+              - $ref: '#/components/schemas/user'
+              - properties:
+                  devicePermissions:
+                    readOnly: true
+              - required:
+                - userName
+                - email
       responses:
         '201':
-          description: User created.
-  /user/{tenantId}/users/{userId}:
-    parameters:
-    - name: tenantId
-      in: path
-      required: true
-      schema:
-        type: string
-    - name: userId
-      in: path
-      required: true
-      schema:
-        type: string
-    get:
-      tags:
-      - Users
-      summary: Retrieve a User
-      operationId: getUser
-      responses:
-        '200':
-          description: A single user.
+          description: A user was created.
           content:
             application/vnd.com.nsn.cumulocity.user+json:
               schema:
-                $ref: '#/components/schemas/User'
-    put:
+                $ref: '#/components/schemas/user'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/accessDenied'
+        '409':
+          description: Duplicate – The userName or alias already exists.
+        '422':
+          $ref: '#/components/responses/invalidPayload'
+    get:
+      operationId: getUserCollectionResource
+      x-codegen-resource-name: getUsers
+      parameters:
+      - $ref: '#/components/parameters/queryParam_currentPage'
+      - $ref: '#/components/parameters/queryParam_users_groups'
+      - $ref: '#/components/parameters/queryParam_users_onlyDevices'
+      - $ref: '#/components/parameters/queryParam_users_owner'
+      - $ref: '#/components/parameters/queryParam_pageSize'
+      - $ref: '#/components/parameters/queryParam_users_username'
+      - $ref: '#/components/parameters/queryParam_users_usernameContains'
+      - $ref: '#/components/parameters/queryParam_users_withApps'
+      - $ref: '#/components/parameters/queryParam_users_withGroups'
+      - $ref: '#/components/parameters/queryParam_users_withSubusersCount'
+      - $ref: '#/components/parameters/queryParam_withTotalElements'
+      - $ref: '#/components/parameters/queryParam_withTotalPages'
       tags:
       - Users
-      summary: Update a User
-      operationId: updateUser
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Retrieve all users for a specific tenant
+      description: 'Retrieve all users for a specific tenant (by a given tenant ID).
+
+
+        On tenants with complex user objects, this request can be slow. Set `withApps=false` and/or `withGroups=false`
+
+        to reduce the response payload and improve response times.
+
+
+        Required roles
+
+
+        ROLE_USER_MANAGEMENT_READ OR ROLE_USER_MANAGEMENT_CREATE'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request GET "https://<TENANT_DOMAIN>/user/{tenantId}/users" \
+
+          --header "Authorization: Basic <AUTHORIZATION>"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/user/{tenantId}/users");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.GET);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.get(\"https://<TENANT_DOMAIN>/user/{tenantId}/users\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"GET\", \"https://<TENANT_DOMAIN>/user/{tenantId}/users\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\"\n    })\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://<TENANT_DOMAIN>/user/{tenantId}/users\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\"\n}\nresponse = requests.request(\"GET\", url, headers = headers)\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '200':
+          description: The request has succeeded and all users are sent in the response.
+          content:
+            application/vnd.com.nsn.cumulocity.usercollection+json:
+              schema:
+                $ref: '#/components/schemas/UserCollection'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/accessDenied'
+        '422':
+          $ref: '#/components/responses/invalidData'
+  /user/{tenantId}/users/{userId}:
+    parameters:
+    - $ref: '#/components/parameters/tenantId'
+    - $ref: '#/components/parameters/userId'
+    get:
+      operationId: getUserResource
+      x-codegen-resource-name: getUser
+      tags:
+      - Users
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Retrieve a specific user for a specific tenant
+      description: 'Retrieve a specific user (by a given user ID) for a specific tenant (by a given tenant ID).
+
+
+        Users in the response are sorted by username in ascending order.
+
+        Only objects which the user is allowed to see are returned to the user.
+
+        The user password is never returned in a GET response. Authentication mechanism is provided by another interface.
+
+
+        Required roles
+
+
+        ROLE_USER_MANAGEMENT_READ OR ROLE_USER_MANAGEMENT_CREATE AND is parent of the user'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request GET "https://<TENANT_DOMAIN>/user/{tenantId}/users/{id}" \
+
+          --header "Authorization: Basic <AUTHORIZATION>"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/user/{tenantId}/users/{id}");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.GET);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.get(\"https://<TENANT_DOMAIN>/user/{tenantId}/users/{id}\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\").asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"GET\", \"https://<TENANT_DOMAIN>/user/{tenantId}/users/{id}\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\"\n    })\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://<TENANT_DOMAIN>/user/{tenantId}/users/{id}\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\"\n}\nresponse = requests.request(\"GET\", url, headers = headers)\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '200':
+          description: The request has succeeded and the user is sent in the response.
+          content:
+            application/vnd.com.nsn.cumulocity.user+json:
+              schema:
+                $ref: '#/components/schemas/user'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/accessDenied'
+        '404':
+          $ref: '#/components/responses/userNotFound'
+    put:
+      operationId: putUserResource
+      x-codegen-resource-name: updateUser
+      parameters:
+      - $ref: '#/components/parameters/acceptHeader'
+      tags:
+      - Users
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Update a specific user for a specific tenant
+      description: 'Update a specific user (by a given user ID) for a specific tenant (by a given tenant ID).
+
+
+        Any change in user''s roles, device permissions and groups creates corresponding audit records with type "User" and activity "User updated" with information which properties have been changed.
+
+
+        When the user is updated with changed permissions or groups, a corresponding audit record is created with type "User" and activity "User updated".
+
+
+        Note that you cannot update the password or email of another user, they can only be updated for the current user.
+
+
+        The certificate authentication opt-in (`requiredAuthType`) is not part of this representation and cannot be set here, for any user. A regular user opts in for themselves through Update the current user. A service user opts in for itself through Update the authentication method required for the current service user; a tenant administrator can only reset that value back to `NONE` through Reset the authentication method required for a service user.
+
+
+        Required roles
+
+
+        ROLE_USER_MANAGEMENT_ADMIN to update root users in a user hierarchy OR users that are not in any hierarchy
+
+
+        ROLE_USER_MANAGEMENT_ADMIN to update non-root users in a user hierarchy AND whose parents have access to roles, groups, device permissions and applications being assigned
+
+
+        ROLE_USER_MANAGEMENT_CREATE to update descendants of the current user in a user hierarchy AND whose parents have access to roles, groups, device permissions and applications being assigned'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request PUT "https://<TENANT_DOMAIN>/user/{tenantId}/users/{id}" \
+
+          --header "Authorization: Basic <AUTHORIZATION>" \
+
+          --header "Accept: application/json" \
+
+          --header "Content-Type: application/json" \
+
+          --data-raw "<Payload>"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/user/{tenantId}/users/{id}");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.PUT);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+          request.AddHeader("Content-Type", "application/json");
+
+          request.AddHeader("Accept", "application/json");
+
+          request.AddParameter("application/json", "<Payload>",  ParameterType.RequestBody);
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.put(\"https://<TENANT_DOMAIN>/user/{tenantId}/users/{id}\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .header(\"Content-Type\", \"application/json\")\n    .header(\"Accept\", \"application/json\")\n    .body(\"<Payload>\")\n    .asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"PUT\", \"https://<TENANT_DOMAIN>/user/{tenantId}/users/{id}\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\",\n        \"Accept\": \"application/json\",\n        \"Content-Type\": \"application/json\"\n    })\n    .send(JSON.stringify( <Payload> ))\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://<TENANT_DOMAIN>/user/{tenantId}/users/{id}\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\",\n  \"Accept\": \"application/json\",\n  \"Content-Type\": \"application/json\"\n}\nresponse = requests.request(\"GET\", url, headers = headers, json.dumps(<Payload>))\nprint(response.text.encode(\"utf8\"))\n"
       requestBody:
         required: true
         content:
           application/vnd.com.nsn.cumulocity.user+json:
+            example:
+              displayName: John Doe
+              phone: +1-541-754-3010
             schema:
-              $ref: '#/components/schemas/User'
+              allOf:
+              - properties:
+                  password:
+                    format: password
+                    type: string
+                    description: 'The user''s password. Allowed characters are: Latin letters (a–z, A–Z), digits (0–9), and the following special characters: ` ~ ! @ # $ % ^ & * ( ) _ | + - = ? ; : '' " , . < > { } [ ] \ /
+
+                      The password can only be updated for the current user.
+
+                      '
+                  email:
+                    type: string
+                    format: email
+                    description: 'The user''s email address.
+
+                      The email address can only be updated for the current user.
+
+                      '
+                  userName:
+                    readOnly: true
+                  devicePermissions:
+                    readOnly: true
+              - $ref: '#/components/schemas/user'
       responses:
         '200':
-          description: User updated.
+          description: A user was updated.
+          content:
+            application/vnd.com.nsn.cumulocity.user+json:
+              schema:
+                $ref: '#/components/schemas/user'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/accessDenied'
+        '404':
+          $ref: '#/components/responses/userNotFound'
+        '422':
+          $ref: '#/components/responses/invalidPayload'
     delete:
+      operationId: deleteUserResource
+      x-codegen-resource-name: deleteUser
       tags:
       - Users
-      summary: Delete a User
-      operationId: deleteUser
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Delete a specific user for a specific tenant
+      description: 'Delete a specific user (by a given user ID) for a specific tenant (by a given tenant ID).
+
+
+        Required roles
+
+
+        ROLE_USER_MANAGEMENT_ADMIN OR ROLE_USER_MANAGEMENT_CREATE AND is parent of the user AND not the current user'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request DELETE "https://<TENANT_DOMAIN>/user/{tenantId}/users/{id}" \
+
+          --header "Authorization: Basic <AUTHORIZATION>"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/user/{tenantId}/users/{id}");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.DELETE);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.delete(\"https://<TENANT_DOMAIN>/user/{tenantId}/users/{id}\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"DELETE\", \"https://<TENANT_DOMAIN>/user/{tenantId}/users/{id}\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\"\n    })\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://<TENANT_DOMAIN>/user/{tenantId}/users/{id}\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\"\n}\nresponse = requests.request(\"DELETE\", url, headers = headers)\nprint(response.text.encode(\"utf8\"))\n"
       responses:
         '204':
-          description: User deleted.
+          description: A user was removed.
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+        '404':
+          $ref: '#/components/responses/userNotFound'
+  /user/{tenantId}/users/{userId}/tfa:
+    parameters:
+    - $ref: '#/components/parameters/tenantId'
+    - $ref: '#/components/parameters/userId'
+    get:
+      operationId: getUsersTfaResource
+      x-codegen-resource-name: getUserTfaSettings
+      tags:
+      - Users
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Retrieve the TFA settings of a specific user
+      description: 'Retrieve the two-factor authentication settings for the specified user.
+
+
+        Required roles
+
+
+        ROLE_USER_MANAGEMENT_READ OR (ROLE_USER_MANAGEMENT_CREATE AND is parent of the user) OR is the current user'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request GET "https://<TENANT_DOMAIN>/user/{tenantId}/users/{userId}/tfa" \
+
+          --header "Authorization: Basic <AUTHORIZATION>"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/user/{tenantId}/users/{userId}/tfa");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.GET);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.get(\"https://<TENANT_DOMAIN>/user/{tenantId}/users/{userId}/tfa\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"GET\", \"https://<TENANT_DOMAIN>/user/{tenantId}/users/{userId}/tfa\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\"\n    })\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://<TENANT_DOMAIN>/user/{tenantId}/users/{userId}/tfa\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\"\n}\nresponse = requests.request(\"GET\", url, headers = headers)\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '200':
+          description: The request has succeeded and the TFA settings are sent in the response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userTfaData'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/accessDenied'
+        '404':
+          $ref: '#/components/responses/userNotFound'
+  /user/{tenantId}/userByName/{username}:
+    parameters:
+    - $ref: '#/components/parameters/tenantId'
+    - $ref: '#/components/parameters/username'
+    get:
+      operationId: getUsersByNameResource
+      x-codegen-resource-name: getUserByUsername
+      tags:
+      - Users
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Retrieve a user by username in a specific tenant
+      description: 'Retrieve a user by username in a specific tenant (by a given tenant ID).
+
+
+        Required roles
+
+
+        ROLE_USER_MANAGEMENT_ADMIN OR ROLE_USER_MANAGEMENT_CREATE AND is parent of the user'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request GET "https://<TENANT_DOMAIN>/user/{tenantId}/userByName/{username}" \
+
+          --header "Authorization: Basic <AUTHORIZATION>"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/user/{tenantId}/userByName/{username}");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.GET);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.get(\"https://<TENANT_DOMAIN>/user/{tenantId}/userByName/{username}\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"GET\", \"https://<TENANT_DOMAIN>/user/{tenantId}/userByName/{username}\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\"\n    })\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://<TENANT_DOMAIN>/user/{tenantId}/userByName/{username}\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\"\n}\nresponse = requests.request(\"GET\", url, headers = headers)\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '200':
+          description: The request has succeeded and the user is sent in the response.
+          content:
+            application/vnd.com.nsn.cumulocity.user+json:
+              schema:
+                $ref: '#/components/schemas/user'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/accessDenied'
+        '404':
+          $ref: '#/components/responses/userNotFound'
+  /user/{tenantId}/groups/{groupId}/users:
+    parameters:
+    - $ref: '#/components/parameters/tenantId'
+    - $ref: '#/components/parameters/groupId'
+    post:
+      operationId: postUserReferenceCollectionResource
+      x-codegen-resource-name: assignUserToUserGroup
+      parameters:
+      - $ref: '#/components/parameters/acceptHeader'
+      tags:
+      - Users
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Add a user to a specific user group of a specific tenant
+      description: 'Add a user to a specific user group (by a given user group ID) of a specific tenant (by a given tenant ID).
+
+
+        Required roles
+
+
+        ROLE_USER_MANAGEMENT_ADMIN to assign root users in a user hierarchy OR users that are not in any hierarchy to any group
+
+
+        ROLE_USER_MANAGEMENT_ADMIN to assign non-root users in a user hierarchy to groups accessible by the parent of assigned user
+
+
+        ROLE_USER_MANAGEMENT_CREATE to assign descendants of the current user in a user hierarchy to groups accessible by current user AND accessible by the parent of assigned user'
+      requestBody:
+        required: true
+        content:
+          application/vnd.com.nsn.cumulocity.userreference+json:
+            schema:
+              $ref: '#/components/schemas/SubscribedUser'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request POST "https://<TENANT_DOMAIN>/user/{tenantId}/groups/{groupId}/users" \
+
+          --header "Authorization: Basic <AUTHORIZATION>" \
+
+          --header "Accept: application/json" \
+
+          --header "Content-Type: application/json" \
+
+          --data-raw "<Payload>"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/user/{tenantId}/groups/{groupId}/users");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.POST);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+          request.AddHeader("Content-Type", "application/json");
+
+          request.AddHeader("Accept", "application/json");
+
+          request.AddParameter("application/json", "<Payload>",  ParameterType.RequestBody);
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.post(\"https://<TENANT_DOMAIN>/user/{tenantId}/groups/{groupId}/users\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .header(\"Content-Type\", \"application/json\")\n    .header(\"Accept\", \"application/json\")\n    .body(\"<Payload>\")\n    .asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"POST\", \"https://<TENANT_DOMAIN>/user/{tenantId}/groups/{groupId}/users\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\",\n        \"Accept\": \"application/json\",\n        \"Content-Type\": \"application/json\"\n    })\n    .send(JSON.stringify( <Payload> ))\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://<TENANT_DOMAIN>/user/{tenantId}/groups/{groupId}/users\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\",\n  \"Accept\": \"application/json\",\n  \"Content-Type\": \"application/json\"\n}\nresponse = requests.request(\"POST\", url, headers=headers, data = json.dumps(<Payload>))\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '201':
+          description: The user was added to the group.
+          content:
+            application/vnd.com.nsn.cumulocity.userreference+json:
+              schema:
+                $ref: '#/components/schemas/userReference'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/accessDenied'
+        '404':
+          $ref: '#/components/responses/groupNotFound'
+        '422':
+          $ref: '#/components/responses/invalidPayload'
+    get:
+      operationId: getUserReferenceCollectionResource
+      x-codegen-resource-name: getUsersFromUserGroup
+      parameters:
+      - $ref: '#/components/parameters/queryParam_currentPage'
+      - $ref: '#/components/parameters/queryParam_pageSize'
+      - $ref: '#/components/parameters/queryParam_users_withApps'
+      - $ref: '#/components/parameters/queryParam_users_withGroups'
+      - $ref: '#/components/parameters/queryParam_withTotalElements'
+      tags:
+      - Users
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Retrieve the users of a specific user group of a specific tenant
+      description: 'Retrieve the users of a specific user group (by a given user group ID) of a specific tenant (by a given tenant ID).
+
+
+        On tenants with complex user objects, this request can be slow. Set `withApps=false` and/or `withGroups=false`
+
+        to reduce the response payload and improve response times.
+
+
+        Required roles
+
+
+        ROLE_USER_MANAGEMENT_READ OR (ROLE_USER_MANAGEMENT_CREATE AND has access to the user group)'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request GET "https://<TENANT_DOMAIN>/user/{tenantId}/groups/{groupId}/users" \
+
+          --header "Authorization: Basic <AUTHORIZATION>"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/user/{tenantId}/groups/{groupId}/users");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.GET);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.get(\"https://<TENANT_DOMAIN>/user/{tenantId}/groups/{groupId}/users\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\").asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"GET\", \"https://<TENANT_DOMAIN>/user/{tenantId}/groups/{groupId}/users\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\"\n    })\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://<TENANT_DOMAIN>/user/{tenantId}/groups/{groupId}/users\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\"\n}\nresponse = requests.request(\"GET\", url, headers = headers)\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '200':
+          description: The request has succeeded and the users are sent in the response.
+          content:
+            application/vnd.com.nsn.cumulocity.userreferencecollection+json:
+              schema:
+                $ref: '#/components/schemas/UserReferenceCollection'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/accessDenied'
+        '404':
+          $ref: '#/components/responses/groupNotFound'
+  /user/{tenantId}/groups/{groupId}/users/{userId}:
+    parameters:
+    - $ref: '#/components/parameters/tenantId'
+    - $ref: '#/components/parameters/groupId'
+    - $ref: '#/components/parameters/userId'
+    delete:
+      operationId: deleteUserReferenceResource
+      x-codegen-resource-name: removeUserFromUserGroup
+      tags:
+      - Users
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Remove a specific user from a specific user group of a specific tenant
+      description: 'Remove a specific user (by a given user ID) from a specific user group (by a given user group ID) of a specific tenant (by a given tenant ID).
+
+
+        Required roles
+
+
+        ROLE_USER_MANAGEMENT_ADMIN OR ROLE_USER_MANAGEMENT_CREATE AND is parent of the user AND is not the current user'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request DELETE "https://<TENANT_DOMAIN>/user/{tenantId}/groups/{groupId}/users/{userId}" \
+
+          --header "Authorization: Basic <AUTHORIZATION>"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/user/{tenantId}/groups/{groupId}/users/{userId}");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.DELETE);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.delete(\"https://<TENANT_DOMAIN>/user/{tenantId}/groups/{groupId}/users/{userId}\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"DELETE\", \"https://<TENANT_DOMAIN>/user/{tenantId}/groups/{groupId}/users/{userId}\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\"\n    })\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://<TENANT_DOMAIN>/user/{tenantId}/groups/{groupId}/users/{userId}\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\"\n}\nresponse = requests.request(\"DELETE\", url, headers = headers)\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '204':
+          description: A user was removed from a group.
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+        '404':
+          $ref: '#/components/responses/userNotFound'
+  /user/logout:
+    post:
+      operationId: postLogoutUser
+      x-codegen-resource-name: logout
+      parameters:
+      - $ref: '#/components/parameters/authorizationCookieHeader'
+      - $ref: '#/components/parameters/xsrfTokenHeader'
+      tags:
+      - Users
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Terminate a user's session
+      description: 'After logging out, a user has to enter valid credentials again to get access to the platform.
+
+
+        The request is responsible for removing cookies from the browser and invalidating internal platform access tokens.'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request POST "https://<TENANT_DOMAIN>/user/logout" \
+
+          --header "Cookie: authorization=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...BOiNQET-ECbOkC5-9PpPK35A" \
+
+          --header "X-XSRF-TOKEN: cLHSyflFRXBwOpjzXqAg"\
+
+          --header "Accept: application/json" \
+
+          --header "Content-Type: application/json"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/user/logout");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.POST);
+
+          request.AddHeader("Cookie", "authorization=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...BOiNQET-ECbOkC5-9PpPK35A");
+
+          request.AddHeader("X-XSRF-TOKEN", "cLHSyflFRXBwOpjzXqAg")
+
+          request.AddHeader("Content-Type", "application/json");
+
+          request.AddHeader("Accept", "application/json");
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.post(\"https://<TENANT_DOMAIN>/user/logout\")\n    .header(\"Cookie\", \"authorization=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...BOiNQET-ECbOkC5-9PpPK35A\")\n    .header(\"X-XSRF-TOKEN\", \"cLHSyflFRXBwOpjzXqAg\")\n    .header(\"Content-Type\", \"application/json\")\n    .header(\"Accept\", \"application/json\")\n    .asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"POST\", \"https://<TENANT_DOMAIN>/user/logout\")\n    .headers({\n        \"Cookie\": \"authorization=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...BOiNQET-ECbOkC5-9PpPK35A\"\n        \"X-XSRF-TOKEN\": \"cLHSyflFRXBwOpjzXqAg\",\n        \"Accept\": \"application/json\",\n        \"Content-Type\": \"application/json\"\n    })\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://<TENANT_DOMAIN>/user/logout\"\nheaders = {\n  \"Cookie\": \"authorization=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...BOiNQET-ECbOkC5-9PpPK35A\"\n  \"X-XSRF-TOKEN\": \"cLHSyflFRXBwOpjzXqAg\",\n  \"Accept\": \"application/json\",\n  \"Content-Type\": \"application/json\"\n}\nresponse = requests.request(\"POST\", url, headers=headers, data = { })\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '200':
+          description: The request has succeeded and the user is logged out.
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+  /user/logout/{tenantId}/allUsers:
+    post:
+      operationId: postLogoutAllTenantUsers
+      x-codegen-resource-name: logoutAllUsers
+      parameters:
+      - $ref: '#/components/parameters/tenantId'
+      tags:
+      - Users
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Terminate all tenant users' sessions and invalidate tokens
+      description: 'The user with the role ROLE_USER_MANAGEMENT_ADMIN is authorized to log out all tenant users with a toked based access.
+
+
+        The request is responsible for terminating all tenant users'' toked based sessions and invalidating internal platform access tokens.
+
+
+        Required roles
+
+
+        ROLE_USER_MANAGEMENT_ADMIN AND is the current tenant'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request POST "https://<TENANT_DOMAIN>/user/logout/{tenantId}/allUsers" \
+
+          --header "Authorization: Basic <AUTHORIZATION>" \
+
+          --header "Accept: application/json" \
+
+          --header "Content-Type: application/json" \
+
+          --data-raw ""
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/user/logout/{tenantId}/allUsers");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.POST);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+          request.AddHeader("Content-Type", "application/json");
+
+          request.AddHeader("Accept", "application/json");
+
+          request.AddParameter("application/json", "",  ParameterType.RequestBody);
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.post(\"https://<TENANT_DOMAIN>/user/logout/{tenantId}/allUsers\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .header(\"Content-Type\", \"application/json\")\n    .header(\"Accept\", \"application/json\")\n    .body(\"\")\n    .asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"POST\", \"https://<TENANT_DOMAIN>/user/logout/{tenantId}/allUsers\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\",\n        \"Accept\": \"application/json\",\n        \"Content-Type\": \"application/json\"\n    })\n    .send(\"\")\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://<TENANT_DOMAIN>/user/logout/{tenantId}/allUsers\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\",\n  \"Accept\": \"application/json\",\n  \"Content-Type\": \"application/json\"\n}\nresponse = requests.request(\"POST\", url, headers = headers, \"\")\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '200':
+          description: The request has succeeded and the users (with a token based access) are logged out.
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/accessDenied'
 components:
+  parameters:
+    userId:
+      name: userId
+      in: path
+      description: Unique identifier of the a user.
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        example: jdoe
+    queryParam_withTotalElements:
+      name: withTotalElements
+      in: query
+      description: 'When set to `true`, the returned result will contain in the statistics object the total number of elements. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
+
+        > **&#9432; Info:** To improve performance, the `totalElements` statistics are cached for 10 seconds.
+
+        '
+      schema:
+        type: boolean
+        default: false
+        example: true
+    tenantId:
+      name: tenantId
+      in: path
+      description: Unique identifier of a Cumulocity tenant.
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        example: t07007007
+    username:
+      name: username
+      in: path
+      description: The username of the a user.
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        example: jdoe
+    xsrfTokenHeader:
+      name: X-XSRF-TOKEN
+      in: header
+      description: Prevents XRSF attack of the authenticated user. This parameter is specific to OAI-Secure authentication.
+      required: false
+      schema:
+        type: string
+        example: <X-XSRF-TOKEN>
+    authorizationCookieHeader:
+      name: Cookie
+      in: header
+      description: The authorization cookie storing the access token of the user. This parameter is specific to OAI-Secure authentication.
+      required: false
+      schema:
+        type: string
+        example: authorization=<ACCESS_TOKEN>
+    queryParam_withTotalPages:
+      name: withTotalPages
+      in: query
+      description: 'When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
+
+        > **&#9432; Info:** To improve performance, the `totalPages` statistics are cached for 10 seconds.
+
+        '
+      schema:
+        type: boolean
+        default: false
+        example: true
+    queryParam_currentPage:
+      name: currentPage
+      in: query
+      description: The current page of the paginated results.
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+        example: 3
+    queryParam_users_withSubusersCount:
+      name: withSubusersCount
+      in: query
+      description: 'If set to `true`, then each of returned user will contain an additional field “subusersCount”.
+
+        It is the number of direct subusers (users with corresponding “owner”).
+
+        '
+      schema:
+        type: boolean
+        default: false
+        example: true
+    queryParam_users_withApps:
+      name: withApps
+      in: query
+      description: 'If set to `false`, the applications of each returned user are reduced to references containing only `id` and `self`,
+
+        instead of the full application objects. Use it to speed up the request when the application details are not needed.
+
+        '
+      schema:
+        type: boolean
+        default: true
+        example: false
+    queryParam_users_usernameContains:
+      name: usernameContains
+      in: query
+      description: Allows to search for users whose username (or alias) contains the provided string. The search is case-insensitive. Only one parameter (`username` or `usernameContains`) can be used in the request.
+      schema:
+        type: string
+        minLength: 3
+        example: doe
+    queryParam_users_withGroups:
+      name: withGroups
+      in: query
+      description: 'If set to `false`, the applications assigned to the user groups of each returned user are omitted.
+
+        The groups themselves and their roles are still returned. Use it to reduce the response payload.
+
+        '
+      schema:
+        type: boolean
+        default: true
+        example: false
+    acceptHeader:
+      name: Accept
+      in: header
+      description: Advertises which content types, expressed as MIME types, the client is able to understand.
+      required: false
+      schema:
+        type: string
+        minLength: 1
+        example: application/json
+    queryParam_users_owner:
+      name: owner
+      in: query
+      description: Exact username of the owner of the user
+      schema:
+        type: string
+        minLength: 1
+        example: admin
+    queryParam_users_username:
+      name: username
+      in: query
+      description: Prefix or full username (or alias). The search is case-insensitive.
+      schema:
+        type: string
+        minLength: 1
+        example: jdoe
+    queryParam_users_onlyDevices:
+      name: onlyDevices
+      in: query
+      description: 'If set to `true`, the response will only contain users created during bootstrap process (starting with “device_”).
+
+        If the flag is absent or `false` the result will not contain “device_” users.
+
+        '
+      schema:
+        type: boolean
+        default: false
+        example: true
+    queryParam_users_groups:
+      name: groups
+      in: query
+      description: 'Numeric group identifiers. The response will contain only users which belong to at least one of the specified groups.
+
+        >**&#9432; Info:** If you query for multiple user groups at once, comma-separate the values.
+
+        '
+      schema:
+        type: array
+        items:
+          type: string
+          minLength: 1
+        example:
+        - '2'
+        - '3'
+        - '4'
+      style: form
+      explode: false
+    groupId:
+      name: groupId
+      in: path
+      description: Unique identifier of the user group.
+      required: true
+      schema:
+        type: integer
+        example: 2
+    queryParam_pageSize:
+      name: pageSize
+      in: query
+      description: Indicates how many entries of the collection shall be returned. The upper limit for one page is 2,000 objects.
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 2000
+        default: 5
+        example: 10
   schemas:
+    customProperties:
+      description: An object with a list of custom properties.
+      type: object
+      properties:
+        language:
+          description: The preferred language to be used in the platform.
+          type: string
+      additionalProperties:
+        description: 'It is possible to add an arbitrary number of custom properties as a list of key-value pairs, for example, `"property": "value"`.
+
+          '
+        x-additionalPropertiesName: customProperties
+      example:
+        language: en
+        userOrigin: BASIC
+    application_required_roles:
+      description: List of permissions required by a microservice to work.
+      type: array
+      items:
+        description: A required role name.
+        type: string
+        example: ROLE_INVENTORY_READ
+    UserReferenceCollection:
+      type: object
+      properties:
+        next:
+          $ref: '#/components/schemas/desc_nextPage'
+        prev:
+          $ref: '#/components/schemas/desc_prevPage'
+        references:
+          description: An array of user references.
+          type: array
+          items:
+            $ref: '#/components/schemas/userReference'
+        self:
+          $ref: '#/components/schemas/desc_self'
+        statistics:
+          $ref: '#/components/schemas/pageStatistics'
+      example:
+        self: https://<TENANT_DOMAIN>/user/{tenantId}/groups/{groupId}/users?pageSize=5&currentPage=1
+        references:
+        - self: https://<TENANT_DOMAIN>/user/{tenantId}/groups/{groupId}/users/jdoe
+          user:
+            self: https://<TENANT_DOMAIN>/user/{tenantId}/users/jdoe
+            firstName: John
+            lastName: Doe
+            userName: jdoe
+            id: jdoe
+            displayName: John Doe
+            phone: +1-541-754-3010
+            email: johndoe@example.com
+            newsletter: true
+            lastPasswordChange: '2020-06-09T09:48:40.008Z'
+            shouldResetPassword: false
+            passwordStrength: GREEN
+            enabled: true
+        statistics:
+          totalPages: 1
+          pageSize: 5
+          currentPage: 1
+    desc_self:
+      title: SelfURL
+      description: A URL linking to this resource.
+      type: string
+      format: uri
+      readOnly: true
+    application:
+      type: object
+      properties:
+        availability:
+          description: Application access level for other tenants.
+          type: string
+          enum:
+          - MARKET
+          - PRIVATE
+          default: PRIVATE
+        contextPath:
+          description: The context path in the URL makes the application accessible. Mandatory when the type of the application is `HOSTED`.
+          type: string
+          minLength: 1
+        description:
+          description: Description of the application.
+          type: string
+        id:
+          description: Unique identifier of the application.
+          type: string
+          readOnly: true
+        key:
+          description: Applications, regardless of their form, are identified by an application key.
+          type: string
+          minLength: 1
+        name:
+          description: Name of the application.
+          type: string
+          minLength: 1
+        owner:
+          $ref: '#/components/schemas/application_owner'
+        self:
+          $ref: '#/components/schemas/desc_self'
+        type:
+          description: The type of the application.
+          type: string
+          enum:
+          - EXTERNAL
+          - HOSTED
+          - MICROSERVICE
+        manifest:
+          oneOf:
+          - $ref: '#/components/schemas/microservice_application_manifest'
+          - $ref: '#/components/schemas/web_application_manifest'
+        roles:
+          $ref: '#/components/schemas/application_roles'
+        requiredRoles:
+          $ref: '#/components/schemas/application_required_roles'
+        breadcrumbs:
+          description: 'A flag to indicate if the application has a breadcrumbs navigation on the UI.
+
+            > **&#9432; Info:** This property is specific to the web application type.
+
+            '
+          type: boolean
+        contentSecurityPolicy:
+          description: 'The content security policy of the application.
+
+            > **&#9432; Info:** This property is specific to the web application type.
+
+            '
+          type: string
+        dynamicOptionsUrl:
+          description: 'A URL to a JSON object with dynamic content options.
+
+            > **&#9432; Info:** This property is specific to the web application type.
+
+            '
+          type: string
+          example: /apps/public/public-options/options.json
+        globalTitle:
+          description: 'The global title of the application.
+
+            > **&#9432; Info:** This property is specific to the web application type.
+
+            '
+          type: string
+          example: Cumulocity
+        legacy:
+          description: 'A flag that shows if the application is a legacy application or not.
+
+            > **&#9432; Info:** This property is specific to the web application type.
+
+            '
+          type: boolean
+        rightDrawer:
+          description: 'A flag to indicate if the application uses the UI context menu on the right side.
+
+            > **&#9432; Info:** This property is specific to the web application type.
+
+            '
+          type: boolean
+        upgrade:
+          description: 'A flag that shows if the application is hybrid and using Angular and AngularJS simultaneously.
+
+            > **&#9432; Info:** This property is specific to the web application type.
+
+            '
+          type: boolean
+        activeVersionId:
+          description: The active version ID of the application. For microservice applications the active version ID is the microservice manifest version ID.
+          type: string
+          readOnly: true
+        resourcesUrl:
+          description: URL to the application base directory hosted on an external server. Only present in legacy hosted applications.
+          type: string
+          deprecated: true
+          readOnly: true
+      example:
+        availability: PRIVATE
+        contextPath: myapplication
+        id: '20200301'
+        key: my-application-key
+        name: my-application
+        owner:
+          self: https://<TENANT_DOMAIN>/tenant/tenants/t07007007
+          tenant:
+            id: t07007007
+        self: https://<TENANT_DOMAIN>/application/applications/20200301
+        type: HOSTED
+    application_settings:
+      description: 'A map of settings for this microservice application.
+
+        The settings are stored as tenant options in the application''s settings category.
+
+        '
+      type: object
+      additionalProperties:
+        type: string
+      example:
+        hostkey-autosave: 'true'
+        jwt.cache.guava.expireInSeconds: '10'
+    microservice_application_manifest:
+      description: The manifest of the microservice application.
+      type: object
+      properties:
+        apiVersion:
+          description: Document type format discriminator, for future changes in format.
+          type: string
+          example: '1'
+        billingMode:
+          description: 'The billing mode of the application.
+
+
+            In case of RESOURCES, the number of resources used is exposed for billing calculation per usage.
+
+            In case of SUBSCRIPTION, all resources usage is counted for the microservice owner and the subtenant is charged for subscription.
+
+            '
+          type: string
+          enum:
+          - RESOURCES
+          - SUBSCRIPTION
+          default: RESOURCES
+          example: RESOURCES
+        contextPath:
+          description: The context path in the URL makes the application accessible.
+          type: string
+          example: devicemanagement
+        extensions:
+          description: A list of URL extensions for this microservice application.
+          type: array
+          items:
+            type: object
+            properties:
+              path:
+                description: The relative path in Cumulocity for this microservice application.
+                type: string
+                example: /cep/myapplication
+              type:
+                description: The type of this extension.
+                type: string
+                example: myapplication.io
+        isolation:
+          description: 'Deployment isolation.
+
+            In case of PER_TENANT, there is a separate instance for each tenant.
+
+            Otherwise, there is one single instance for all subscribed tenants.
+
+            This will affect billing.
+
+            '
+          type: string
+          enum:
+          - MULTI_TENANT
+          - PER_TENANT
+          example: PER_TENANT
+        livenessProbe:
+          allOf:
+          - description: Defines the strategy used to verify if a microservice is alive or requires a restart.
+          - $ref: '#/components/schemas/application_manifest_probe'
+        provider:
+          description: 'Application provider information.
+
+            Simple name allowed for predefined providers, for example, c8y.
+
+            Detailed object for external provider.
+
+            '
+          type: object
+          properties:
+            name:
+              description: The name of the application provider.
+              type: string
+              example: Cumulocity GmbH
+        readinessProbe:
+          allOf:
+          - description: Defines the strategy used to verify if a microservice is ready to accept traffic.
+          - $ref: '#/components/schemas/application_manifest_probe'
+        requestResources:
+          description: The minimum required resources for the microservice application.
+          type: object
+          properties:
+            cpu:
+              description: The required CPU resource for this microservice application.
+              type: string
+              example: 250m
+            memory:
+              description: The required memory resource for this microservice application.
+              type: string
+              example: 256Mi
+        resources:
+          description: The recommended resources for this microservice application.
+          type: object
+          properties:
+            cpu:
+              description: The required CPU resource for this microservice application.
+              type: string
+              example: 6000m
+            memory:
+              description: The required memory resource for this microservice application.
+              type: string
+              example: 28Gi
+        roles:
+          $ref: '#/components/schemas/application_roles'
+        requiredRoles:
+          $ref: '#/components/schemas/application_required_roles'
+        scale:
+          description: 'Allows to configure a microservice auto scaling policy.
+
+            If the microservice uses a lot of CPU resources, a second instance will be created automatically when this is set to `AUTO`.
+
+            The default is `NONE`, meaning auto scaling will not happen.
+
+            '
+          type: string
+          enum:
+          - NONE
+          - AUTO
+          default: NONE
+          example: AUTO
+        settings:
+          $ref: '#/components/schemas/application_settings'
+        settingsCategory:
+          description: 'Allows to specify a custom category for microservice settings.
+
+            By default, `contextPath` is used.
+
+            '
+          type: string
+          example: null
+        version:
+          description: 'Application version.
+
+            Must be a correct [SemVer](https://semver.org/) value but the "+" sign is disallowed.
+
+            '
+          type: string
+          example: 1006.6.8
+    desc_nextPage:
+      title: NextPageURL
+      description: A URI reference [[RFC3986](https://tools.ietf.org/html/rfc3986)] to a potential next page of managed objects.
+      type: string
+      readOnly: true
+    userReference:
+      type: object
+      properties:
+        self:
+          $ref: '#/components/schemas/desc_self'
+        user:
+          $ref: '#/components/schemas/user'
+      example:
+        self: https://<TENANT_DOMAIN>/user/{tenantId}/groups/{groupId}/users/jdoe
+        user:
+          self: https://<TENANT_DOMAIN>/user/{tenantId}/users/jdoe
+          firstName: John
+          lastName: Doe
+          userName: jdoe
+          id: jdoe
+          displayName: John Doe
+          phone: +1-541-754-3010
+          email: johndoe@example.com
+          newsletter: true
+          lastPasswordChange: '2020-06-09T09:48:40.008Z'
+          shouldResetPassword: false
+          passwordStrength: GREEN
+          enabled: true
+    roleReference:
+      type: object
+      properties:
+        role:
+          $ref: '#/components/schemas/role'
+        self:
+          $ref: '#/components/schemas/desc_self'
+      example:
+        self: https://<TENANT_DOMAIN>/user/{tenantId}/users/jdoe/roles/ROLE_ALARM_ADMIN
+        role:
+          id: ROLE_ALARM_ADMIN
+          name: ROLE_ALARM_ADMIN
+          self: https://<TENANT_DOMAIN>/user/roles/ROLE_ALARM_ADMIN
+    error:
+      type: object
+      properties:
+        error:
+          description: The type of error returned.
+          type: string
+        message:
+          description: A human-readable message providing more details about the error.
+          type: string
+        info:
+          description: A URI reference [[RFC3986](https://tools.ietf.org/html/rfc3986)] that identifies the error code reported.
+          type: string
+    group:
+      type: object
+      required:
+      - name
+      properties:
+        applications:
+          type: array
+          description: A list of applications.
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/application'
+        customProperties:
+          $ref: '#/components/schemas/customProperties'
+        description:
+          description: A description of the group.
+          type: string
+        devicePermissions:
+          $ref: '#/components/schemas/desc_user_devicepermissions'
+        id:
+          description: A unique identifier for this group.
+          type: integer
+          readOnly: true
+        name:
+          description: The name of the group.
+          type: string
+          minLength: 1
+        roles:
+          description: An object containing user roles for this group.
+          type: object
+          readOnly: true
+          properties:
+            self:
+              $ref: '#/components/schemas/desc_self'
+            references:
+              description: A list of user role references.
+              type: array
+              items:
+                $ref: '#/components/schemas/roleReference'
+            statistics:
+              $ref: '#/components/schemas/pageStatistics'
+        self:
+          $ref: '#/components/schemas/desc_self'
+        users:
+          description: The list of users in this group.
+          type: object
+          readOnly: true
+          properties:
+            self:
+              $ref: '#/components/schemas/desc_self'
+            references:
+              type: array
+              description: The list of users in this group.
+              items:
+                $ref: '#/components/schemas/user'
+      example:
+        id: 2
+        name: Global Watchers
+        description: Can watch all events
+        self: https://<TENANT_DOMAIN>/user/{tenantId}/groups/2
+        roles:
+          self: https://<TENANT_DOMAIN>/user/{tenantId}/groups/2/roles
+          references: []
+        users:
+          self: https://<TENANT_DOMAIN>/user/{tenantId}/groups/2/users
+          references: []
+        applications: []
+        customProperties: {}
+        devicePermissions:
+          '647100':
+          - MANAGED_OBJECT:*:ADMIN
+    pageStatistics:
+      description: Information about paging statistics.
+      type: object
+      readOnly: true
+      properties:
+        currentPage:
+          description: The current page of the paginated results.
+          type: integer
+          minimum: 1
+          example: 2
+        pageSize:
+          description: Indicates the number of objects that the collection may contain per page. The upper limit for one page is 2,000 objects.
+          type: integer
+          minimum: 1
+          maximum: 2000
+          example: 5
+        totalElements:
+          description: The total number of results (elements).
+          type: integer
+          minimum: 0
+          example: 12
+        totalPages:
+          description: 'The total number of paginated results (pages).
+
+
+            > **&#9432; Info:** This property is returned by default except when an operation retrieves all records where values are between an upper and lower boundary, for example, querying ranges using `dateFrom`–`dateTo`. In such cases, the query parameter `withTotalPages=true` should be used to include the total number of pages (at the expense of slightly slower performance).
+
+            '
+          type: integer
+          minimum: 0
+          example: 3
+    desc_user_devicepermissions:
+      title: DevicePermissions
+      description: An object with a list of the user's device permissions.
+      type: object
+      deprecated: true
+      additionalProperties:
+        type: array
+        items:
+          type: string
+      example:
+        '647100':
+        - MANAGED_OBJECT:*:ADMIN
+    web_application_manifest:
+      description: The manifest of the web application.
+      type: object
+      deprecated: true
+      properties:
+        _webpaas:
+          deprecated: true
+          description: 'A legacy flag that identified a certain type of web application that would control the behavior of plugin tab in the application details view.
+
+            It is no longer used.
+
+            '
+          type: boolean
+          example: true
+        contentSecurityPolicy:
+          description: The content security policy of the application.
+          type: string
+          example: 'base-uri ''none''; default-src ''self'' ''unsafe-inline'' http: https: ws: wss:; connect-src ''self'' *.billwerk.com http: https: ws: wss:;  script-src ''self'' open.mapquestapi.com *.twitter.com *.twimg.com ''unsafe-inline'' ''unsafe-eval'' data:; style-src * ''unsafe-inline'' blob:; img-src * data:; font-src * data:; frame-src *;'
+        noAppSwitcher:
+          description: A flag that decides if the application is shown in the app switcher on the UI.
+          type: boolean
+          example: true
+        tabsHorizontal:
+          description: A flag that decides if the application tabs are displayed horizontally or not.
+          type: boolean
+          example: true
+    userTfaData:
+      type: object
+      properties:
+        lastTfaRequestTime:
+          description: Latest date and time when the user has used two-factor authentication to log in.
+          type: string
+          format: date-time
+          readOnly: true
+        strategy:
+          description: Two-factor authentication strategy.
+          type: string
+          enum:
+          - SMS
+          - TOTP
+        tfaEnabled:
+          description: Indicates whether the user has enabled two-factor authentication or not.
+          type: boolean
+        tfaEnforced:
+          description: Indicates whether two-factor authentication is enforced by the tenant admin or not.
+          type: boolean
+      example:
+        tfaEnabled: false
+        tfaEnforced: false
+        strategy: TOTP
+        lastTfaRequestTime: '2022-08-01T20:00:00.123Z'
+    SubscribedUser:
+      type: object
+      properties:
+        user:
+          type: object
+          description: An object with a user reference URL.
+          properties:
+            self:
+              type: string
+              description: A URL linking to this resource.
+              example: https://<TENANT_DOMAIN>/user/{tenantId}/users/jdoe
     UserCollection:
       type: object
       properties:
+        next:
+          $ref: '#/components/schemas/desc_nextPage'
+        prev:
+          $ref: '#/components/schemas/desc_prevPage'
         self:
-          type: string
-          format: uri
+          $ref: '#/components/schemas/desc_self'
+        statistics:
+          $ref: '#/components/schemas/pageStatistics'
         users:
+          description: An array of users.
           type: array
           items:
-            $ref: '#/components/schemas/User'
-    User:
+            $ref: '#/components/schemas/user'
+      example:
+        self: https://<TENANT_DOMAIN>/user/{tenantId}/users?pageSize=5&currentPage=1
+        users:
+        - self: https://<TENANT_DOMAIN>/user/{tenantId}/users/jdoe
+          firstName: John
+          lastName: Doe
+          userName: jdoe
+          id: jdoe
+          displayName: John Doe
+          phone: +1-541-754-3010
+          email: johndoe@example.com
+          lastPasswordChange: '2020-06-09T09:48:40.008Z'
+          shouldResetPassword: false
+          passwordStrength: GREEN
+          enabled: true
+        statistics:
+          totalPages: 1
+          pageSize: 5
+          currentPage: 1
+    application_owner:
+      description: Reference to the tenant owning this application. The default value is a reference to the current tenant.
+      type: object
+      readOnly: true
+      properties:
+        self:
+          $ref: '#/components/schemas/desc_self'
+        tenant:
+          type: object
+          properties:
+            id:
+              description: The tenant ID.
+              type: string
+    desc_prevPage:
+      title: PreviousPageURL
+      description: A URI reference [[RFC3986](https://tools.ietf.org/html/rfc3986)] to a potential previous page of managed objects.
+      type: string
+      readOnly: true
+    role:
+      description: A user role.
       type: object
       properties:
         id:
+          description: A unique identifier for this user role.
+          type: string
+        name:
+          description: The name of this user role.
           type: string
         self:
-          type: string
-          format: uri
-        userName:
+          $ref: '#/components/schemas/desc_self'
+      example:
+        id: ROLE_ALARM_ADMIN
+        name: ROLE_ALARM_ADMIN
+        self: https://<TENANT_DOMAIN>/user/roles/ROLE_ALARM_ADMIN
+    user:
+      type: object
+      properties:
+        applications:
+          type: array
+          description: A list of applications for this user.
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/application'
+        customProperties:
+          $ref: '#/components/schemas/customProperties'
+        displayName:
+          description: The user's display name in Cumulocity.
           type: string
         email:
+          description: The user's email address.
           type: string
-        firstName:
-          type: string
-        lastName:
-          type: string
-        displayName:
-          type: string
-        phone:
-          type: string
+          format: email
         enabled:
+          description: Indicates whether the user is enabled or not. Disabled users cannot log in or perform API requests.
           type: boolean
-        password:
+          default: true
+        firstName:
+          description: The user's first name.
           type: string
-          writeOnly: true
-        shouldResetPassword:
-          type: boolean
+        groups:
+          description: An object with a list of user groups.
+          type: object
+          readOnly: true
+          properties:
+            self:
+              $ref: '#/components/schemas/desc_self'
+            references:
+              description: A list of user group references.
+              type: array
+              items:
+                $ref: '#/components/schemas/groupReference'
+              example: []
+            statistics:
+              $ref: '#/components/schemas/pageStatistics'
+        id:
+          description: A unique identifier for this user.
+          type: string
+          readOnly: true
+        lastName:
+          description: The user's last name.
+          type: string
         lastPasswordChange:
+          description: The date and time when the user's password was last changed, in [ISO 8601 datetime format](https://www.w3.org/TR/NOTE-datetime).
           type: string
           format: date-time
-        twoFactorAuthenticationEnabled:
+          readOnly: true
+        newsletter:
+          description: Indicates whether the user is subscribed to the newsletter or not.
           type: boolean
-        groups:
-          type: object
-          properties:
-            references:
-              type: array
-              items:
-                type: object
+        owner:
+          description: Identifier of the parent user. If present, indicates that a user belongs to a user hierarchy by pointing to its direct ancestor. Can only be set by users with role USER_MANAGEMENT_ADMIN during user creation. Otherwise it's assigned automatically.
+          type: string
+          readOnly: true
+        password:
+          description: 'The user''s password. Allowed characters are: Latin letters (a–z, A–Z), digits (0–9), and the following special characters: ` ~ ! @ # $ % ^ & * ( ) _ | + - = ? ; : '' " , . < > { } [ ] \ /
+
+
+            If you do not specify a password when creating a new user with a POST request, it must contain the property `sendPasswordResetEmail` with a value of `true`.
+
+            '
+          type: string
+          format: password
+          writeOnly: true
+          minLength: 6
+          maxLength: 32
+        passwordStrength:
+          description: Indicates the password strength. The value can be GREEN, YELLOW or RED for decreasing password strengths.
+          type: string
+          enum:
+          - GREEN
+          - YELLOW
+          - RED
+          readOnly: true
+        phone:
+          description: The user's phone number.
+          type: string
+          format: phone
         roles:
+          description: An object with a list of user roles.
           type: object
+          readOnly: true
           properties:
+            self:
+              $ref: '#/components/schemas/desc_self'
             references:
+              description: A list of user role references.
               type: array
               items:
-                type: object
+                $ref: '#/components/schemas/roleReference'
+            statistics:
+              $ref: '#/components/schemas/pageStatistics'
+        self:
+          $ref: '#/components/schemas/desc_self'
+        sendPasswordResetEmail:
+          description: 'When set to `true`, this field will cause Cumulocity to send a password reset email to the email address specified.
+
+
+            If there is no password specified when creating a new user with a POST request, this must be specified and it must be set to `true`.
+
+            '
+          type: boolean
+          writeOnly: true
+        shouldResetPassword:
+          description: Indicates if the user should reset the password on the next login.
+          type: boolean
+          readOnly: true
+        twoFactorAuthenticationEnabled:
+          description: Indicates if the user has to use two-factor authentication to log in.
+          type: boolean
+          default: false
+          readOnly: true
+        userName:
+          description: The user's username. It cannot contain whitespace, slashes nor any of `+$:` characters.
+          maxLength: 1000
+          minLength: 1
+          type: string
         devicePermissions:
+          $ref: '#/components/schemas/desc_user_devicepermissions'
+      example:
+        self: https://<TENANT_DOMAIN>/user/{tenantId}/users/jdoe
+        id: jdoe
+        firstName: John
+        lastName: Doe
+        userName: jdoe
+        phone: +1-541-754-3010
+        displayName: John Doe
+        email: johndoe@example.com
+        lastPasswordChange: '2020-06-09T09:48:40.008Z'
+        passwordStrength: GREEN
+        shouldResetPassword: false
+        twoFactorAuthenticationEnabled: false
+        customProperties: {}
+        enabled: true
+        groups:
+          self: https://<TENANT_DOMAIN>/user/{tenantId}/users/jdoe/groups
+          references: []
+        applications: []
+        devicePermissions:
+          '647100':
+          - MANAGED_OBJECT:*:READ
+    groupReference:
+      type: object
+      properties:
+        group:
+          $ref: '#/components/schemas/group'
+        self:
+          $ref: '#/components/schemas/desc_self'
+    application_manifest_probe:
+      type: object
+      properties:
+        failureThreshold:
+          description: The probe failure threshold.
+          type: integer
+        periodSeconds:
+          description: The probe period in seconds.
+          type: integer
+        timeoutSeconds:
+          description: The probe timeout in seconds.
+          type: integer
+        successThreshold:
+          description: The probe success threshold.
+          type: integer
+        initialDelaySeconds:
+          description: The probe's initial delay in seconds.
+          type: integer
+        httpGet:
+          description: The probe's HTTP GET method information.
           type: object
+          properties:
+            path:
+              description: The HTTP path.
+              type: string
+            port:
+              description: The HTTP port.
+              type: integer
+      example:
+        failureThreshold: 3
+        periodSeconds: 30
+        timeoutSeconds: 10
+        successThreshold: 1
+        initialDelaySeconds: 360
+        httpGet:
+          path: /health
+          port: 80
+    application_roles:
+      description: Roles provided by the microservice.
+      type: array
+      items:
+        description: A role name.
+        type: string
+        example: ROLE_SMS_READ
+  responses:
+    groupNotFound:
+      description: Group not found.
+      content:
+        application/vnd.com.nsn.cumulocity.error+json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            error: groups/Not Found
+            message: 'Error retrieving group with id 2! : Cannot find document with ID ID [type=com_cumulocity_model_idtype_GId, value=2]!'
+            info: https://www.cumulocity.com/guides/reference-guide/#error_reporting
+    invalidPayload:
+      description: Unprocessable Entity – invalid payload.
+    invalidData:
+      description: Invalid data was sent.
+      content:
+        application/vnd.com.nsn.cumulocity.error+json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            error: inventory/Invalid Data
+            message: 'Find by filter query failed : Query could not be understood.'
+            info: https://www.cumulocity.com/guides/reference-guide/#error_reporting
+    unauthorizedError:
+      description: Authentication information is missing or invalid.
+      content:
+        application/vnd.com.nsn.cumulocity.error+json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            error: security/Unauthorized
+            message: 'Invalid credentials! : Bad credentials'
+            info: https://www.cumulocity.com/guides/reference-guide/#error_reporting
+    userNotFound:
+      description: User not found.
+      content:
+        application/vnd.com.nsn.cumulocity.error+json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            error: users/Not Found
+            message: 'Error retrieving user 123! : Cannot find document with ID ID [type=com_cumulocity_model_idtype_GId, value=123]!'
+            info: https://www.cumulocity.com/guides/reference-guide/#error_reporting
+    operationNotAuthorized:
+      description: Not authorized to perform this operation.
+    accessDenied:
+      description: Not enough permissions/roles to perform this operation.
+      content:
+        application/vnd.com.nsn.cumulocity.error+json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            error: security/Forbidden
+            message: Access is denied.
+            info: https://www.cumulocity.com/guides/reference-guide/#error_reporting
   securitySchemes:
-    basicAuth:
+    Basic:
       type: http
       scheme: basic
-    bearerAuth:
+      description: 'The authorization header is formed as `Basic <Base64(<tenantID>/<c8yuser>:<password>)>`. For instance, if your tenantID, username and password are **t0071234**, **testuser** and **secret123** respectively, you can generate the Base64 string with the following command:
+
+
+        ```shell
+
+        $ echo -n t0071234/testuser:secret123 | base64
+
+        ```
+
+
+        and your authorization header would look like this:
+
+
+        ```
+
+        "Authorization": "Basic dDAwNzEyMzQvdGVzdHVzZXI6c2VjcmV0MTIz"
+
+        ```
+
+        '
+    OAI-Secure:
+      type: http
+      scheme: bearer
+      description: 'This is the recommended authorization method because it provides high security using authorization tokens to prove the identity of the user, and it is the default login mode on creating new tenants. This mode is an enhancement of the previous OAuth Internal authentication (available prior to 10.13.0).
+
+
+        For more details about OAI-Secure authentication, see [Platform administration > Authentication > Basic settings > Login settings](https://www.cumulocity.com/docs/authentication/basic-settings/#login-settings) in the Cumulocity user documentation.
+
+        '
+    SSO:
+      type: oauth2
+      description: "The login with SSO requires a correct configuration on the [Cumulocity side](https://www.cumulocity.com/docs/authentication/sso/). With the configuration, an additional button is available on the Login page. After clicking the button, the user is redirected to authenticate with the configured authorization server. On successful login, the user is redirected to Cumulocity.\n\nAuthentication details are exchanged using cookies. There are two parts to it, the first is the authentication cookie that is handled automatically by the Cumulocity platform. The second is the XSRF-TOKEN cookie. When a client receives the cookie, it should take the value and put it in the X-XSRF-TOKEN request header in all subsequent requests.\n\nThe flow of authenticating with authentication code grant is as follows:\n\n![Authentication flow](images/oauth-simple-flow.png)\n\nThe first request executed by the browser is:\n\n```http\nGET /tenant/loginOptions\nHost: https://<TENANT_DOMAIN>\nAccept: application/vnd.com.nsn.cumulocity.loginoptioncollection+json\n```\n\nResponse sample:\n\n```json\n{\n    \"loginOptions\": [\n        {\n            \"buttonName\": \"Login with oauth\",\n            \"grantType\": \"<AUTHORIZATION_CODE>\",\n            \"initRequest\": \"https://<TENANT_DOMAIN>/tenant/oauth?response_type=code&tenant_id=<TENANT_ID>\",\n            \"self\": \"https://<TENANT_DOMAIN>/tenant/loginOptions/oauth2\",\n            \"type\": \"oauth2\"\n        },\n        ...\n    ],\n    \"self\": \"http://<TENANT_DOMAIN>/tenant/loginOptions/\"\n}\n```\n\nThe browser must invoke the request provided in the initRequest parameter.\n\nThe initRequest initiates the redirect, in which the user is prompted for credentials. After successful login, the user is redirected back to the browser, where it must capture the code request parameter. Then the request to exchange the code for the token is as follows:\n\n```http\nPOST /tenant/oauth?grant_type=authorization_code&code=<CODE>\nHost: https://<TENANT_DOMAIN>\n```\n\nA successful response will have no body but the following response headers:\n\n```\nSet-Cookie: authorization=<TOKEN>;\nSet-Cookie: XSRF-TOKEN=<XSRF-TOKEN>;\n```\n\nThe authorization cookie is valid for two weeks.\n"
+      flows:
+        clientCredentials:
+          tokenUrl: /tenant/oauth?grant_type=authorization_code&code=<CODE>
+          scopes: {}
+    JWT-IAM:
       type: http
       scheme: bearer
       bearerFormat: JWT
+      description: 'This kind of authentication substitutes the JWT authentication with OAuth2 access tokens from your Identity and Access Management (IAM).
+
+        You can enable this in the [SSO configuration](https://www.cumulocity.com/docs/authentication/sso/).
+
+
+        The HTTP header must include:
+
+
+        ```
+
+        "Authorization": "Bearer <Access token>"
+
+        ```
+
+
+        When a request with a bearer token in the header is received, Cumulocity checks if the access token is from your IAM (that is, if authentication is enabled in your SSO configuration), and verifies the authenticity of
+
+        the token remotely against the IAM.
+
+        '
+x-tagGroups:
+- name: Platform
+  tags:
+  - Platform API
+- name: Alarms
+  tags:
+  - Alarm API
+  - Alarm notification API
+  - Alarms
+- name: Applications
+  tags:
+  - Application API
+  - Applications
+  - Application versions
+  - Application binaries
+  - Bootstrap user
+  - Current application
+- name: Audits
+  tags:
+  - Audit API
+  - Audits
+- name: Device control
+  tags:
+  - Device control API
+  - Device control notification API
+  - Operations
+  - Bulk operations
+  - Device credentials
+  - New device requests
+  - Device control via SMS
+- name: Events
+  tags:
+  - Event API
+  - Event notification API
+  - Events
+  - Attachments
+- name: Feature toggles
+  tags:
+  - Feature toggles API
+- name: Identity
+  tags:
+  - Identity API
+  - External IDs
+- name: Inventory
+  tags:
+  - Inventory API
+  - Inventory notification API
+  - Managed objects
+  - Binaries
+  - Child operations
+  - Query language
+- name: Measurements
+  tags:
+  - Measurement API
+  - Measurement notification API
+  - Measurements
+  - Measurements specifics
+- name: Notifications 2.0
+  tags:
+  - About notifications 2.0
+  - Notification 2.0 API
+  - Subscriptions
+  - Tokens
+- name: Real-time notifications
+  tags:
+  - Real-time notification API
+- name: Retentions
+  tags:
+  - Retention rules
+- name: Tenants
+  tags:
+  - Tenant API
+  - Tenants
+  - Tenant applications
+  - Trusted certificates
+  - Device statistics
+  - Usage statistics
+  - Options
+  - Login options
+  - Login tokens
+  - System options
+- name: Users
+  tags:
+  - User API
+  - Current User
+  - Users
+  - Groups
+  - Roles
+  - Inventory Roles
+  - Device Permissions
+- name: Certificate
+  tags:
+  - Certificate authority
+  - Device enrollment

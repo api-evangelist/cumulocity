@@ -1,107 +1,927 @@
 openapi: 3.2.0
 info:
-  title: Cumulocity Device Bootstrap New Device Requests API
-  version: 10.20.0
-  description: 'Zero-touch device onboarding flow. A factory-bootstrapped device authenticates with a shared bootstrap
+  version: Latest
+  title: Cumulocity New device requests API
+  x-logo:
+    url: https://www.cumulocity.com/docs/images/logo-platform.svg
+    backgroundColor: '#F8F8F8'
+    altText: Cumulocity
+    href: https://www.cumulocity.com/api
+  description: '# REST implementation
 
-    user, polls /devicecontrol/deviceCredentials with its external ID, and receives back tenant-scoped
 
-    credentials once an admin accepts the registration request in the Device Management UI.'
+    This section describes the aspects common to all REST-based interfaces of Cumulocity. The interfaces are based on the Hypertext Transfer Protocol 1.1 using HTTPS. ## HTTP usage
+
+
+    ### Application management
+
+
+    Cumulocity uses a so-called "application key" to distinguish requests coming from devices and traffic from applications. If you write an application, pass the following header as part of all requests:
+
+
+    ```markup
+
+    X-Cumulocity-Application-Key:
+
+    ```
+
+
+    For example, if you registered your application in the Cumulocity Administration application with the key "myapp", your requests should contain the header:
+
+
+    ```markup
+
+    X-Cumulocity-Application-Key: myapp
+
+    ```
+
+
+    This makes your application subscribable and billable. If you implement a device, do not pass the key. > **ⓘ Info:** Make sure that you pass the key in **all** requests coming from an application. If you leave out the key,
+
+    > the request will be considered as a device request, and the corresponding device will be marked as "available". ### Limited HTTP clients
+
+
+    If you use an HTTP client that can only perform GET and POST methods in HTTP, you can emulate the other methods through an additional "X-HTTP-METHOD" header. Simply issue a POST request and add the header, specifying the actual REST method to be executed. For example, to emulate the "PUT" (modify) method, you can use:
+
+
+    ```http
+
+    POST ... X-HTTP-METHOD: PUT
+
+    ```
+
+
+    ### Processing mode
+
+
+    Every update request (PUT, POST, DELETE) executes with a so-called *processing mode*. The processing modes are as follows:
+
+
+    |Processing mode|Description|
+
+    |---|---|
+
+    |PERSISTENT (default)|Stores data in the Cumulocity database and sends data to the Streaming Analytics engine. Afterwards, Cumulocity returns the result of the request. This is the default mode.|
+
+    |TRANSIENT|Sends data to the Streaming Analytics engine and immediately returns the results asynchronously but does not store data in Cumulocity’s database. This mode saves storage and processing costs and is useful for example when tracking devices in real time without requiring data to be stored.|
+
+    |QUIESCENT|Behaves similar to the persistent mode with the exception that no real-time notifications will be sent.|
+
+    |CEP|Behaves like the transient mode with the exception that no real-time notifications are sent.|
+
+
+    To explicitly control the processing mode of an update request, you can use the "X-Cumulocity-Processing-Mode" header with a value of either "PERSISTENT", "TRANSIENT", "QUIESCENT" or "CEP":
+
+
+    ```markup
+
+    X-Cumulocity-Processing-Mode: PERSISTENT
+
+    ```
+
+
+    > **ⓘ Info:** Events are always delivered to CEP/Apama for all processing modes. This is independent from real-time notifications. ### Authorization
+
+
+    All requests issued to Cumulocity are subject to authorization. To determine the required permissions, see the "Required role" entries for the individual requests. To learn more about the different permissions and the concept of ownership in Cumulocity, see Getting started > Technical concepts > Security aspects > Access control > Managing roles and assigning permissions in the Cumulocity user documentation. > **⚠️ Important:** In the Cumulocity API, each granular permission is identified by a unique “permission” string, which is prefixed with ROLE_ (for example, ROLE_ALARM_READ, ROLE_INVENTORY_ADMIN). Therefore, permissions are frequently referred to as “roles” throughout the API as well as in the configuration files. For example, the microservice manifest includes a requiredRoles field, which actually expects a permission string. See also the Glossary of the Cumulocity user documentation for the usage of the terms “permission” and “role” in the Cumulocity context. ### Media types
+
+
+    Each type of data is associated with an own media type. The general format of media types is:
+
+
+    ```markup
+
+    application/vnd.com.nsn.cumulocity.+json;ver=;charset=UTF-8
+
+    ```
+
+
+    Each media type contains a parameter `ver` indicating the version of the type.'
 servers:
-- url: https://{tenant}.cumulocity.com
-  variables:
-    tenant:
-      default: example
+- description: Cumulocity tenant
+  url: https://<TENANT_DOMAIN>
 security:
-- bootstrapAuth: []
-- basicAuth: []
+- Basic: []
+- OAI-Secure: []
+- SSO: []
+- JWT-IAM: []
 tags:
-- name: New Device Requests
+- name: New device requests
+  description: 'API methods to create, retrieve, update and delete new device requests in Cumulocity.
+
+
+    > **ⓘ Info:** The Accept header should be provided in all POST/PUT requests, otherwise an empty response body will be returned.'
 paths:
   /devicecontrol/newDeviceRequests:
-    get:
-      tags:
-      - New Device Requests
-      summary: List New Device Requests
-      operationId: listNewDeviceRequests
-      responses:
-        '200':
-          description: A collection of pending registration requests.
     post:
+      operationId: postNewDeviceRequestCollectionResource
+      x-codegen-resource-name: createNewDeviceRequest
+      parameters:
+      - $ref: '#/components/parameters/acceptHeader'
+      - $ref: '#/components/parameters/processingModeHeader'
       tags:
-      - New Device Requests
-      summary: Create a New Device Request
-      operationId: createNewDeviceRequest
+      - New device requests
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      - JWT-IAM: []
+      summary: Create a new device request
+      description: 'Create a new device request.
+
+
+        Required roles
+
+
+        ROLE_DEVICE_CONTROL_ADMIN'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request POST "https://<TENANT_DOMAIN>/devicecontrol/newDeviceRequests" \
+
+          --header "Authorization: Basic <AUTHORIZATION>" \
+
+          --header "Accept: application/json" \
+
+          --header "Content-Type: application/vnd.com.nsn.cumulocity.newdevicerequest+json" \
+
+          --data-raw "<Payload>"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/devicecontrol/newDeviceRequests");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.POST);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+          request.AddHeader("Content-Type", "application/vnd.com.nsn.cumulocity.newdevicerequest+json");
+
+          request.AddParameter("application/json", "<Payload>", ParameterType.RequestBody);
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.post(\"https://<TENANT_DOMAIN>/devicecontrol/newDeviceRequests\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .header(\"Accept\", \"application/json\")\n    .header(\"Content-Type\", \"application/vnd.com.nsn.cumulocity.newdevicerequest+json\")\n    .body(\"<Payload>\")\n    .asString();\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"POST\", \"https://<TENANT_DOMAIN>/devicecontrol/newDeviceRequests\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\",\n        \"Accept\": \"application/json\",\n        \"Content-Type\": \"application/vnd.com.nsn.cumulocity.newdevicerequest+json\"\n    })\n    .send(JSON.stringify( <Payload> ))\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\nimport json\n\nurl = \"https://<TENANT_DOMAIN>/devicecontrol/newDeviceRequests\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\",\n  \"Accept\": \"application/json\",\n  \"Content-Type\": \"application/vnd.com.nsn.cumulocity.newdevicerequest+json\"\n}\nresponse = requests.request(\"POST\", url, headers=headers, json = <Payload>)\nprint(response.text.encode(\"utf8\"))\n"
       requestBody:
         required: true
         content:
-          application/vnd.com.nsn.cumulocity.newDeviceRequest+json:
+          application/vnd.com.nsn.cumulocity.newdevicerequest+json:
+            example:
+              id: '54545454'
+              groupId: '123'
             schema:
-              $ref: '#/components/schemas/NewDeviceRequest'
+              allOf:
+              - $ref: '#/components/schemas/newDeviceRequest'
+              - required:
+                - id
+                properties:
+                  groupId:
+                    readOnly: false
+                  type:
+                    readOnly: false
+                  enrollmentToken:
+                    readOnly: false
+                  status:
+                    readOnly: true
+                  securityToken:
+                    readOnly: true
       responses:
         '201':
-          description: Registration request created.
-  /devicecontrol/newDeviceRequests/{id}:
-    parameters:
-    - name: id
-      in: path
-      required: true
-      schema:
-        type: string
+          description: A new device request was created.
+          content:
+            application/vnd.com.nsn.cumulocity.newdevicerequest+json:
+              schema:
+                $ref: '#/components/schemas/newDeviceRequest'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+        '422':
+          $ref: '#/components/responses/invalidPayload'
     get:
+      operationId: getNewDeviceRequestCollectionResource
+      x-codegen-resource-name: getNewDeviceRequests
+      parameters:
+      - $ref: '#/components/parameters/queryParam_currentPage'
+      - $ref: '#/components/parameters/queryParam_pageSize'
+      - $ref: '#/components/parameters/queryParam_withTotalElements'
+      - $ref: '#/components/parameters/queryParam_withTotalPages'
       tags:
-      - New Device Requests
-      summary: Retrieve a New Device Request
-      operationId: getNewDeviceRequest
+      - New device requests
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      - JWT-IAM: []
+      summary: Retrieve a list of new device requests
+      description: 'Retrieve a list of new device requests.
+
+
+        Required roles
+
+
+        ROLE_DEVICE_CONTROL_READ'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request GET "https://<TENANT_DOMAIN>/devicecontrol/newDeviceRequests" \
+
+          --header "Authorization: Basic <AUTHORIZATION>" \
+
+          --header "Accept: application/json" \
+
+          --header "Content-Type: application/json"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/devicecontrol/newDeviceRequests");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.GET);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+          request.AddHeader("Content-Type", "application/json");
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.get(\"https://<TENANT_DOMAIN>/devicecontrol/newDeviceRequests\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .header(\"Content-Type\", \"application/json\")\n    .header(\"Accept\", \"application/json\")\n    .asString();\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"GET\", \"https://<TENANT_DOMAIN>/devicecontrol/newDeviceRequests\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\",\n        \"Accept\": \"application/json\",\n        \"Content-Type\": \"application/json\"\n    })\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://<TENANT_DOMAIN>/devicecontrol/newDeviceRequests\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\",\n  \"Accept\": \"application/json\",\n  \"Content-Type\": \"application/json\"\n}\nresponse = requests.request(\"GET\", url, headers = headers)\nprint(response.text.encode(\"utf8\"))\n"
       responses:
         '200':
-          description: A single registration request.
-    put:
+          description: The request has succeeded and the list of new device requests sent in the response.
+          content:
+            application/vnd.com.nsn.cumulocity.newdevicerequestcollection+json:
+              schema:
+                $ref: '#/components/schemas/NewDeviceRequestCollection'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+  /devicecontrol/newDeviceRequests/{requestId}:
+    parameters:
+    - $ref: '#/components/parameters/newDeviceRequestId'
+    get:
+      operationId: getNewDeviceRequestResource
+      x-codegen-resource-name: getNewDeviceRequest
       tags:
-      - New Device Requests
-      summary: Accept or Reject a New Device Request
-      operationId: updateNewDeviceRequest
+      - New device requests
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      - JWT-IAM: []
+      summary: Retrieve a specific new device request
+      description: 'Retrieve a specific new device request (by a given ID).
+
+
+        Required roles
+
+
+        ROLE_DEVICE_CONTROL_READ'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request GET "https://<TENANT_DOMAIN>/devicecontrol/newDeviceRequests/{requestId}" \
+
+          --header "Authorization: Basic <AUTHORIZATION>" \
+
+          --header "Accept: application/json" \
+
+          --header "Content-Type: application/json"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/devicecontrol/newDeviceRequests/{requestId}");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.GET);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+          request.AddHeader("Content-Type", "application/json");
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.get(\"https://<TENANT_DOMAIN>/devicecontrol/newDeviceRequests/{requestId}\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .header(\"Content-Type\", \"application/json\")\n    .header(\"Accept\", \"application/json\")\n    .asString();\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"GET\", \"https://<TENANT_DOMAIN>/devicecontrol/newDeviceRequests/{requestId}\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\",\n        \"Accept\": \"application/json\",\n        \"Content-Type\": \"application/json\"\n    })\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://<TENANT_DOMAIN>/devicecontrol/newDeviceRequests/{requestId}\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\",\n  \"Accept\": \"application/json\",\n  \"Content-Type\": \"application/json\"\n}\nresponse = requests.request(\"GET\", url, headers = headers)\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '200':
+          description: The request has succeeded and the new device request is sent in the response.
+          content:
+            application/vnd.com.nsn.cumulocity.newdevicerequest+json:
+              schema:
+                $ref: '#/components/schemas/newDeviceRequest'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+        '404':
+          $ref: '#/components/responses/newDeviceRequestNotFound'
+    put:
+      operationId: putNewDeviceRequestResource
+      x-codegen-resource-name: updateNewDeviceRequest
+      parameters:
+      - $ref: '#/components/parameters/acceptHeader'
+      tags:
+      - New device requests
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      - JWT-IAM: []
+      summary: Update a specific new device request status
+      description: 'Update a specific new device request (by a given ID).
+
+        You can only update its status.
+
+
+        Required roles
+
+
+        ROLE_DEVICE_CONTROL_ADMIN'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request PUT "https://<TENANT_DOMAIN>/devicecontrol/newDeviceRequests/{requestId}" \
+
+          --header "Authorization: Basic <AUTHORIZATION>" \
+
+          --header "Accept: application/json" \
+
+          --header "Content-Type: application/json" \
+
+          --data-raw ''<Payload>''
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/devicecontrol/newDeviceRequests/{requestId}");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.PUT);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+          request.AddHeader("Content-Type", "application/json");
+
+          request.AddHeader("Accept", "application/json");
+
+          request.AddParameter("application/json", "<Payload>",  ParameterType.RequestBody);
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.put(\"https://<TENANT_DOMAIN>/devicecontrol/newDeviceRequests/{requestId}\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .header(\"Content-Type\", \"application/json\")\n    .header(\"Accept\", \"application/json\")\n    .body(\"<Payload>\")\n    .asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"PUT\", \"https://<TENANT_DOMAIN>/devicecontrol/newDeviceRequests/{requestId}\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\",\n        \"Accept\": \"application/json\",\n        \"Content-Type\": \"application/json\"\n    })\n    .send(JSON.stringify( <Payload> ))\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\nimport json\n\nurl = \"https://<TENANT_DOMAIN>/devicecontrol/newDeviceRequests/{requestId}\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\",\n  \"Accept\": \"application/json\",\n  \"Content-Type\": \"application/json\"\n}\nresponse = requests.request(\"PUT\", url, headers=headers, json.dumps(<Payload>))\nprint(response.text.encode(\"utf8\"))\n"
       requestBody:
         required: true
         content:
-          application/vnd.com.nsn.cumulocity.newDeviceRequest+json:
+          application/vnd.com.nsn.cumulocity.newdevicerequest+json:
+            examples:
+              default:
+                value:
+                  status: WAITING_FOR_CONNECTION
+                description: 'Example of payload for `WAITING_FOR_CONNECTION`, `PENDING_ACCEPTANCE`, `ACCEPTED` statuses.
+
+                  '
+              with_security_token:
+                value:
+                  status: ACCEPTED
+                  securityToken: SecureDeviceToken
+                description: 'Example of payload for `ACCEPTED` status when security token is used during device registration.
+
+                  '
             schema:
-              $ref: '#/components/schemas/NewDeviceRequest'
+              allOf:
+              - $ref: '#/components/schemas/newDeviceRequest'
+              - required:
+                - status
+                properties:
+                  id:
+                    readOnly: true
+                  groupId:
+                    readOnly: true
+                  type:
+                    readOnly: true
       responses:
         '200':
-          description: Registration request updated.
+          description: A new device request was updated.
+          content:
+            application/vnd.com.nsn.cumulocity.newdevicerequest+json:
+              schema:
+                $ref: '#/components/schemas/newDeviceRequest'
+              examples:
+                default:
+                  value:
+                    id: '54545454'
+                    self: https://<TENANT_DOMAIN>/devicecontrol/newDeviceRequests/54545454
+                    status: WAITING_FOR_CONNECTION
+                  description: 'Example of response for `WAITING_FOR_CONNECTION`, `PENDING_ACCEPTANCE`, `ACCEPTED` statuses.
+
+                    '
+                with_security_token:
+                  value:
+                    id: '54545454'
+                    self: https://<TENANT_DOMAIN>/devicecontrol/newDeviceRequests/54545454
+                    status: ACCEPTED
+                  description: Example of response for `ACCEPTED` status when security token is used during device registration.
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+        '404':
+          $ref: '#/components/responses/newDeviceRequestNotFound'
     delete:
+      operationId: deleteNewDeviceRequestResource
+      x-codegen-resource-name: deleteNewDeviceRequest
       tags:
-      - New Device Requests
-      summary: Delete a New Device Request
-      operationId: deleteNewDeviceRequest
+      - New device requests
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      - JWT-IAM: []
+      summary: Delete a specific new device request
+      description: 'Delete a specific new device request (by a given ID).
+
+
+        Required roles
+
+
+        ROLE_USER_MANAGEMENT_ADMIN'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request DELETE "https://<TENANT_DOMAIN>/devicecontrol/newDeviceRequests/{requestId}" \
+
+          --header "Authorization: Basic <AUTHORIZATION>"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/devicecontrol/newDeviceRequests/{requestId}");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.DELETE);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.delete(\"https://<TENANT_DOMAIN>/devicecontrol/newDeviceRequests/{requestId}\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\").asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"DELETE\", \"https://<TENANT_DOMAIN>/devicecontrol/newDeviceRequests/{requestId}\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\"\n    })\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://<TENANT_DOMAIN>/devicecontrol/newDeviceRequests/{requestId}\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\"\n}\nresponse = requests.request(\"DELETE\", url, headers=headers)\nprint(response.text.encode(\"utf8\"))\n"
       responses:
         '204':
-          description: Registration request deleted.
+          description: A new device request was removed.
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+        '404':
+          $ref: '#/components/responses/newDeviceRequestNotFound'
 components:
   schemas:
-    NewDeviceRequest:
+    desc_prevPage:
+      title: PreviousPageURL
+      description: A URI reference [[RFC3986](https://tools.ietf.org/html/rfc3986)] to a potential previous page of managed objects.
+      type: string
+      readOnly: true
+    desc_nextPage:
+      title: NextPageURL
+      description: A URI reference [[RFC3986](https://tools.ietf.org/html/rfc3986)] to a potential next page of managed objects.
+      type: string
+      readOnly: true
+    desc_self:
+      title: SelfURL
+      description: A URL linking to this resource.
+      type: string
+      format: uri
+      readOnly: true
+    error:
+      type: object
+      properties:
+        error:
+          description: The type of error returned.
+          type: string
+        message:
+          description: A human-readable message providing more details about the error.
+          type: string
+        info:
+          description: A URI reference [[RFC3986](https://tools.ietf.org/html/rfc3986)] that identifies the error code reported.
+          type: string
+    NewDeviceRequestCollection:
+      type: object
+      properties:
+        newDeviceRequests:
+          description: An array of new device requests.
+          type: array
+          items:
+            $ref: '#/components/schemas/newDeviceRequest'
+        next:
+          $ref: '#/components/schemas/desc_nextPage'
+        prev:
+          $ref: '#/components/schemas/desc_prevPage'
+        self:
+          $ref: '#/components/schemas/desc_self'
+        statistics:
+          $ref: '#/components/schemas/pageStatistics'
+      example:
+        prev: https://<TENANT_DOMAIN>/devicecontrol/newDeviceRequests?pageSize=1&currentPage=1
+        self: https://<TENANT_DOMAIN>/devicecontrol/newDeviceRequests?pageSize=1&currentPage=2
+        next: https://<TENANT_DOMAIN>/devicecontrol/newDeviceRequests?pageSize=1&currentPage=3
+        newDeviceRequests:
+        - id: '54545454'
+          self: https://<TENANT_DOMAIN>/devicecontrol/newDeviceRequests/54545454
+          status: WAITING_FOR_CONNECTION
+        statistics:
+          total: 3
+          currentPage: 2
+          pageSize: 1
+    pageStatistics:
+      description: Information about paging statistics.
+      type: object
+      readOnly: true
+      properties:
+        currentPage:
+          description: The current page of the paginated results.
+          type: integer
+          minimum: 1
+          example: 2
+        pageSize:
+          description: Indicates the number of objects that the collection may contain per page. The upper limit for one page is 2,000 objects.
+          type: integer
+          minimum: 1
+          maximum: 2000
+          example: 5
+        totalElements:
+          description: The total number of results (elements).
+          type: integer
+          minimum: 0
+          example: 12
+        totalPages:
+          description: 'The total number of paginated results (pages).
+
+
+            > **&#9432; Info:** This property is returned by default except when an operation retrieves all records where values are between an upper and lower boundary, for example, querying ranges using `dateFrom`–`dateTo`. In such cases, the query parameter `withTotalPages=true` should be used to include the total number of pages (at the expense of slightly slower performance).
+
+            '
+          type: integer
+          minimum: 0
+          example: 3
+    newDeviceRequest:
       type: object
       properties:
         id:
+          description: External ID of the device.
           type: string
+        groupId:
+          description: ID of the group to which the device will be assigned.
+          type: string
+        type:
+          description: Type of the device.
+          type: string
+        tenantId:
+          description: Tenant who owns the device.
+          type: string
+          readOnly: true
+        self:
+          $ref: '#/components/schemas/desc_self'
         status:
+          description: Status of this new device request.
           type: string
           enum:
           - WAITING_FOR_CONNECTION
           - PENDING_ACCEPTANCE
           - ACCEPTED
-        self:
+        owner:
+          description: Owner of the device.
           type: string
-          format: uri
+          readOnly: true
         creationTime:
+          description: Date and time when the device was created in the database.
           type: string
           format: date-time
+          readOnly: true
+        securityToken:
+          type: string
+          writeOnly: true
+          description: 'When accepting a device request, the security token is verified against the token submitted by the device when requesting credentials.
+
+            See [Security token policy](https://www.cumulocity.com/docs/device-management-application/registering-devices/#security-token-policy) for details on configuration.
+
+            See [Create device credentials](#operation/postDeviceCredentialsCollectionResource) for details on creating token for device registration.
+
+            `securityToken` parameter can be added only when submitting `ACCEPTED` status.
+
+            '
+        enrollmentToken:
+          type: string
+          description: "When creating [a new device enrollment request](#tag/Device-enrollment) this field is treated as device's one time password (OTP).   \n"
+      example:
+        id: '54545454'
+        self: https://<TENANT_DOMAIN>/devicecontrol/newDeviceRequests/54545454
+        status: WAITING_FOR_CONNECTION
+  parameters:
+    acceptHeader:
+      name: Accept
+      in: header
+      description: Advertises which content types, expressed as MIME types, the client is able to understand.
+      required: false
+      schema:
+        type: string
+        minLength: 1
+        example: application/json
+    processingModeHeader:
+      name: X-Cumulocity-Processing-Mode
+      in: header
+      description: Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+      required: false
+      schema:
+        type: string
+        default: PERSISTENT
+        enum:
+        - PERSISTENT
+        - TRANSIENT
+        - QUIESCENT
+        - CEP
+        example: PERSISTENT
+    newDeviceRequestId:
+      name: requestId
+      in: path
+      description: Unique identifier of the new device request.
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        example: '54545454'
+    queryParam_withTotalPages:
+      name: withTotalPages
+      in: query
+      description: 'When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
+
+        > **&#9432; Info:** To improve performance, the `totalPages` statistics are cached for 10 seconds.
+
+        '
+      schema:
+        type: boolean
+        default: false
+        example: true
+    queryParam_withTotalElements:
+      name: withTotalElements
+      in: query
+      description: 'When set to `true`, the returned result will contain in the statistics object the total number of elements. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
+
+        > **&#9432; Info:** To improve performance, the `totalElements` statistics are cached for 10 seconds.
+
+        '
+      schema:
+        type: boolean
+        default: false
+        example: true
+    queryParam_currentPage:
+      name: currentPage
+      in: query
+      description: The current page of the paginated results.
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+        example: 3
+    queryParam_pageSize:
+      name: pageSize
+      in: query
+      description: Indicates how many entries of the collection shall be returned. The upper limit for one page is 2,000 objects.
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 2000
+        default: 5
+        example: 10
+  responses:
+    operationNotAuthorized:
+      description: Not authorized to perform this operation.
+    newDeviceRequestNotFound:
+      description: New device request not found.
+      content:
+        application/vnd.com.nsn.cumulocity.error+json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            error: devicecontrol/Not Found
+            message: Could not find newDeviceRequest by ID 54545454
+            info: https://www.cumulocity.com/guides/reference-guide/#error_reporting
+    unauthorizedError:
+      description: Authentication information is missing or invalid.
+      content:
+        application/vnd.com.nsn.cumulocity.error+json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            error: security/Unauthorized
+            message: 'Invalid credentials! : Bad credentials'
+            info: https://www.cumulocity.com/guides/reference-guide/#error_reporting
+    invalidPayload:
+      description: Unprocessable Entity – invalid payload.
   securitySchemes:
-    basicAuth:
+    Basic:
       type: http
       scheme: basic
-    bootstrapAuth:
+      description: 'The authorization header is formed as `Basic <Base64(<tenantID>/<c8yuser>:<password>)>`. For instance, if your tenantID, username and password are **t0071234**, **testuser** and **secret123** respectively, you can generate the Base64 string with the following command:
+
+
+        ```shell
+
+        $ echo -n t0071234/testuser:secret123 | base64
+
+        ```
+
+
+        and your authorization header would look like this:
+
+
+        ```
+
+        "Authorization": "Basic dDAwNzEyMzQvdGVzdHVzZXI6c2VjcmV0MTIz"
+
+        ```
+
+        '
+    OAI-Secure:
       type: http
-      scheme: basic
-      description: HTTP Basic with the tenant-wide bootstrap user (devicebootstrap).
+      scheme: bearer
+      description: 'This is the recommended authorization method because it provides high security using authorization tokens to prove the identity of the user, and it is the default login mode on creating new tenants. This mode is an enhancement of the previous OAuth Internal authentication (available prior to 10.13.0).
+
+
+        For more details about OAI-Secure authentication, see [Platform administration > Authentication > Basic settings > Login settings](https://www.cumulocity.com/docs/authentication/basic-settings/#login-settings) in the Cumulocity user documentation.
+
+        '
+    SSO:
+      type: oauth2
+      description: "The login with SSO requires a correct configuration on the [Cumulocity side](https://www.cumulocity.com/docs/authentication/sso/). With the configuration, an additional button is available on the Login page. After clicking the button, the user is redirected to authenticate with the configured authorization server. On successful login, the user is redirected to Cumulocity.\n\nAuthentication details are exchanged using cookies. There are two parts to it, the first is the authentication cookie that is handled automatically by the Cumulocity platform. The second is the XSRF-TOKEN cookie. When a client receives the cookie, it should take the value and put it in the X-XSRF-TOKEN request header in all subsequent requests.\n\nThe flow of authenticating with authentication code grant is as follows:\n\n![Authentication flow](images/oauth-simple-flow.png)\n\nThe first request executed by the browser is:\n\n```http\nGET /tenant/loginOptions\nHost: https://<TENANT_DOMAIN>\nAccept: application/vnd.com.nsn.cumulocity.loginoptioncollection+json\n```\n\nResponse sample:\n\n```json\n{\n    \"loginOptions\": [\n        {\n            \"buttonName\": \"Login with oauth\",\n            \"grantType\": \"<AUTHORIZATION_CODE>\",\n            \"initRequest\": \"https://<TENANT_DOMAIN>/tenant/oauth?response_type=code&tenant_id=<TENANT_ID>\",\n            \"self\": \"https://<TENANT_DOMAIN>/tenant/loginOptions/oauth2\",\n            \"type\": \"oauth2\"\n        },\n        ...\n    ],\n    \"self\": \"http://<TENANT_DOMAIN>/tenant/loginOptions/\"\n}\n```\n\nThe browser must invoke the request provided in the initRequest parameter.\n\nThe initRequest initiates the redirect, in which the user is prompted for credentials. After successful login, the user is redirected back to the browser, where it must capture the code request parameter. Then the request to exchange the code for the token is as follows:\n\n```http\nPOST /tenant/oauth?grant_type=authorization_code&code=<CODE>\nHost: https://<TENANT_DOMAIN>\n```\n\nA successful response will have no body but the following response headers:\n\n```\nSet-Cookie: authorization=<TOKEN>;\nSet-Cookie: XSRF-TOKEN=<XSRF-TOKEN>;\n```\n\nThe authorization cookie is valid for two weeks.\n"
+      flows:
+        clientCredentials:
+          tokenUrl: /tenant/oauth?grant_type=authorization_code&code=<CODE>
+          scopes: {}
+    JWT-IAM:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'This kind of authentication substitutes the JWT authentication with OAuth2 access tokens from your Identity and Access Management (IAM).
+
+        You can enable this in the [SSO configuration](https://www.cumulocity.com/docs/authentication/sso/).
+
+
+        The HTTP header must include:
+
+
+        ```
+
+        "Authorization": "Bearer <Access token>"
+
+        ```
+
+
+        When a request with a bearer token in the header is received, Cumulocity checks if the access token is from your IAM (that is, if authentication is enabled in your SSO configuration), and verifies the authenticity of
+
+        the token remotely against the IAM.
+
+        '
+x-tagGroups:
+- name: Platform
+  tags:
+  - Platform API
+- name: Alarms
+  tags:
+  - Alarm API
+  - Alarm notification API
+  - Alarms
+- name: Applications
+  tags:
+  - Application API
+  - Applications
+  - Application versions
+  - Application binaries
+  - Bootstrap user
+  - Current application
+- name: Audits
+  tags:
+  - Audit API
+  - Audits
+- name: Device control
+  tags:
+  - Device control API
+  - Device control notification API
+  - Operations
+  - Bulk operations
+  - Device credentials
+  - New device requests
+  - Device control via SMS
+- name: Events
+  tags:
+  - Event API
+  - Event notification API
+  - Events
+  - Attachments
+- name: Feature toggles
+  tags:
+  - Feature toggles API
+- name: Identity
+  tags:
+  - Identity API
+  - External IDs
+- name: Inventory
+  tags:
+  - Inventory API
+  - Inventory notification API
+  - Managed objects
+  - Binaries
+  - Child operations
+  - Query language
+- name: Measurements
+  tags:
+  - Measurement API
+  - Measurement notification API
+  - Measurements
+  - Measurements specifics
+- name: Notifications 2.0
+  tags:
+  - About notifications 2.0
+  - Notification 2.0 API
+  - Subscriptions
+  - Tokens
+- name: Real-time notifications
+  tags:
+  - Real-time notification API
+- name: Retentions
+  tags:
+  - Retention rules
+- name: Tenants
+  tags:
+  - Tenant API
+  - Tenants
+  - Tenant applications
+  - Trusted certificates
+  - Device statistics
+  - Usage statistics
+  - Options
+  - Login options
+  - Login tokens
+  - System options
+- name: Users
+  tags:
+  - User API
+  - Current User
+  - Users
+  - Groups
+  - Roles
+  - Inventory Roles
+  - Device Permissions
+- name: Certificate
+  tags:
+  - Certificate authority
+  - Device enrollment

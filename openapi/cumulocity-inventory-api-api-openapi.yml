@@ -1,0 +1,746 @@
+openapi: 3.2.0
+info:
+  version: Latest
+  title: Cumulocity Inventory API
+  x-logo:
+    url: https://www.cumulocity.com/docs/images/logo-platform.svg
+    backgroundColor: '#F8F8F8'
+    altText: Cumulocity
+    href: https://www.cumulocity.com/api
+  description: '# REST implementation
+
+
+    This section describes the aspects common to all REST-based interfaces of Cumulocity. The interfaces are based on the Hypertext Transfer Protocol 1.1 using HTTPS. ## HTTP usage
+
+
+    ### Application management
+
+
+    Cumulocity uses a so-called "application key" to distinguish requests coming from devices and traffic from applications. If you write an application, pass the following header as part of all requests:
+
+
+    ```markup
+
+    X-Cumulocity-Application-Key:
+
+    ```
+
+
+    For example, if you registered your application in the Cumulocity Administration application with the key "myapp", your requests should contain the header:
+
+
+    ```markup
+
+    X-Cumulocity-Application-Key: myapp
+
+    ```
+
+
+    This makes your application subscribable and billable. If you implement a device, do not pass the key. > **ⓘ Info:** Make sure that you pass the key in **all** requests coming from an application. If you leave out the key,
+
+    > the request will be considered as a device request, and the corresponding device will be marked as "available". ### Limited HTTP clients
+
+
+    If you use an HTTP client that can only perform GET and POST methods in HTTP, you can emulate the other methods through an additional "X-HTTP-METHOD" header. Simply issue a POST request and add the header, specifying the actual REST method to be executed. For example, to emulate the "PUT" (modify) method, you can use:
+
+
+    ```http
+
+    POST ... X-HTTP-METHOD: PUT
+
+    ```
+
+
+    ### Processing mode
+
+
+    Every update request (PUT, POST, DELETE) executes with a so-called *processing mode*. The processing modes are as follows:
+
+
+    |Processing mode|Description|
+
+    |---|---|
+
+    |PERSISTENT (default)|Stores data in the Cumulocity database and sends data to the Streaming Analytics engine. Afterwards, Cumulocity returns the result of the request. This is the default mode.|
+
+    |TRANSIENT|Sends data to the Streaming Analytics engine and immediately returns the results asynchronously but does not store data in Cumulocity’s database. This mode saves storage and processing costs and is useful for example when tracking devices in real time without requiring data to be stored.|
+
+    |QUIESCENT|Behaves similar to the persistent mode with the exception that no real-time notifications will be sent.|
+
+    |CEP|Behaves like the transient mode with the exception that no real-time notifications are sent.|
+
+
+    To explicitly control the processing mode of an update request, you can use the "X-Cumulocity-Processing-Mode" header with a value of either "PERSISTENT", "TRANSIENT", "QUIESCENT" or "CEP":
+
+
+    ```markup
+
+    X-Cumulocity-Processing-Mode: PERSISTENT
+
+    ```
+
+
+    > **ⓘ Info:** Events are always delivered to CEP/Apama for all processing modes. This is independent from real-time notifications. ### Authorization
+
+
+    All requests issued to Cumulocity are subject to authorization. To determine the required permissions, see the "Required role" entries for the individual requests. To learn more about the different permissions and the concept of ownership in Cumulocity, see Getting started > Technical concepts > Security aspects > Access control > Managing roles and assigning permissions in the Cumulocity user documentation. > **⚠️ Important:** In the Cumulocity API, each granular permission is identified by a unique “permission” string, which is prefixed with ROLE_ (for example, ROLE_ALARM_READ, ROLE_INVENTORY_ADMIN). Therefore, permissions are frequently referred to as “roles” throughout the API as well as in the configuration files. For example, the microservice manifest includes a requiredRoles field, which actually expects a permission string. See also the Glossary of the Cumulocity user documentation for the usage of the terms “permission” and “role” in the Cumulocity context. ### Media types
+
+
+    Each type of data is associated with an own media type. The general format of media types is:
+
+
+    ```markup
+
+    application/vnd.com.nsn.cumulocity.+json;ver=;charset=UTF-8
+
+    ```
+
+
+    Each media type contains a parameter `ver` indicating the version of the type.'
+servers:
+- description: Cumulocity tenant
+  url: https://<TENANT_DOMAIN>
+security:
+- Basic: []
+- OAI-Secure: []
+- SSO: []
+- JWT-IAM: []
+tags:
+- name: Inventory API
+  description: The inventory stores all master data related to devices, their configuration and their connections. It also contains all related assets (for example, vehicles, machines, buildings) and their structure. The inventory API resource returns URIs and URI templates to collections of managed objects.
+  x-codegen-ignore: true
+paths:
+  /inventory:
+    get:
+      operationId: getInventoryApiResource
+      tags:
+      - Inventory API
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Retrieve URIs to collections of managed objects
+      description: 'Retrieve URIs and URI templates to collections of managed objects.
+
+
+        More detailed information about inventory can be found in the Cumulocity user documentation.
+
+
+        Required roles
+
+
+        ROLE_INVENTORY_READ OR ROLE_MANAGED_OBJECT_READ'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request GET "https://<TENANT_DOMAIN>/inventory" \
+
+          --header "Authorization: Basic <AUTHORIZATION>"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/inventory");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.GET);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.get(\"https://<TENANT_DOMAIN>/inventory\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\").asString();\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"GET\", \"https://<TENANT_DOMAIN>/inventory\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\"\n    })\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://<TENANT_DOMAIN>/inventory\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\"\n}\nresponse = requests.request(\"GET\", url, headers=headers)\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '200':
+          description: The request has succeeded and the URIs are sent in the response.
+          content:
+            application/vnd.com.nsn.cumulocity.inventoryapi+json:
+              schema:
+                $ref: '#/components/schemas/inventoryApiResource'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+components:
+  schemas:
+    desc_self:
+      title: SelfURL
+      description: A URL linking to this resource.
+      type: string
+      format: uri
+      readOnly: true
+    PreviousMeasurementValue:
+      type: object
+      readOnly: true
+      description: 'The read only fragment which contains the previous to latest measurements series values reported by the device.
+
+        > **⚠️ Feature Preview:** The feature is part of the Latest Measurement feature which is still under public feature preview.
+
+        '
+      required:
+      - value
+      properties:
+        unit:
+          description: The unit of the measurement series.
+          type: string
+          minLength: 1
+          example: C
+        time:
+          description: The time of the measurement series.
+          type: string
+          format: date-time
+          example: '2020-06-09T08:48:40.008Z'
+        value:
+          description: The value of the individual measurement.
+          type: number
+          example: 15
+    objectAdditionParents:
+      description: A collection of references to addition parent objects.
+      type: object
+      readOnly: true
+      properties:
+        references:
+          description: An array with the references to addition parent objects.
+          type: array
+          items:
+            $ref: '#/components/schemas/managedObjectReferenceTuple'
+          example: []
+        self:
+          description: Link to this resource's addition parent objects.
+          type: string
+          example: https://<TENANT_DOMAIN>/inventory/managedObjects/{id}/additionParents
+    objectChildDevices:
+      description: A collection of references to child devices.
+      type: object
+      readOnly: true
+      properties:
+        count:
+          description: The total number of child devices. Only present if the value is greater than 0.
+          type: integer
+        references:
+          description: An array with the references to child devices.
+          type: array
+          items:
+            $ref: '#/components/schemas/managedObjectReferenceTuple'
+          example: []
+        self:
+          description: Link to this resource's child devices.
+          type: string
+          example: https://<TENANT_DOMAIN>/inventory/managedObjects/{id}/childDevices
+    managedObject:
+      type: object
+      properties:
+        creationTime:
+          description: The date and time when the object was created.
+          type: string
+          format: date-time
+          readOnly: true
+        id:
+          description: Unique identifier of the object.
+          type: string
+          readOnly: true
+        lastUpdated:
+          description: The date and time when the object was updated for the last time.
+          type: string
+          format: date-time
+          readOnly: true
+        name:
+          description: Human-readable name that is used for representing the object in user interfaces.
+          type: string
+          maxLength: 1000
+        owner:
+          description: Username of the device's owner.
+          type: string
+        self:
+          $ref: '#/components/schemas/desc_self'
+        type:
+          description: The fragment type can be interpreted as _device class_, this means, devices with the same type can receive the same types of configuration, software, firmware and operations. The type value is indexed and is therefore used for queries.
+          type: string
+          maxLength: 1000
+        childAdditions:
+          $ref: '#/components/schemas/objectChildAdditions'
+        childAssets:
+          $ref: '#/components/schemas/objectChildAssets'
+        childDevices:
+          $ref: '#/components/schemas/objectChildDevices'
+        additionParents:
+          $ref: '#/components/schemas/objectAdditionParents'
+        assetParents:
+          $ref: '#/components/schemas/objectAssetParents'
+        deviceParents:
+          $ref: '#/components/schemas/objectDeviceParents'
+        c8y_IsDevice:
+          description: A fragment which identifies this managed object as a device.
+          type: object
+        c8y_LatestMeasurements:
+          $ref: '#/components/schemas/c8y_LatestMeasurements'
+        c8y_PreviousMeasurements:
+          $ref: '#/components/schemas/c8y_PreviousMeasurements'
+        c8y_IsDeviceGroup:
+          description: A fragment which identifies this managed object as a device group.
+          type: object
+        c8y_DeviceTypes:
+          type: array
+          description: 'This fragment must be added in order to publish sample commands for a subset of devices sharing the same device type. If the fragment is present, the list of sample commands for a device type
+
+            will be extended with the sample commands for the `c8y_DeviceTypes`. New sample commands created from the user interface will be created in the context of the `c8y_DeviceTypes`.
+
+            '
+          items:
+            type: string
+        c8y_SupportedOperations:
+          type: array
+          description: Lists the operations that are available for a particular device, so that applications can trigger the operations.
+          items:
+            type: string
+      additionalProperties:
+        description: 'It is possible to add an arbitrary number of additional properties as a list of key-value pairs, for example, `"property1": {}`, `"property2": "value"`.
+
+          These properties are known as custom fragments and can be of any type, for example, object or string. Each custom fragment is identified by a unique name.
+
+
+          Review [Getting started > Technical concepts > Cumulocity''s domain model > Inventory > Fragments > Naming conventions of fragments](https://www.cumulocity.com/docs/concepts/domain-model/#naming-conventions-of-fragments)
+
+          in the Cumulocity user documentation as there are characters that can not be used when naming custom fragments.
+
+          '
+        x-additionalPropertiesName: customFragments
+      example:
+        creationTime: '2017-12-12T22:09:06.881+01:00'
+        id: '51994'
+        lastUpdated: '2018-07-19T12:01:50.731Z'
+        name: My tracking device
+        owner: manga
+        self: https://<TENANT_DOMAIN>/inventory/managedObjects/51994
+        c8y_IsDevice: {}
+        c8y_DeviceTypes:
+        - deviceSubsetType
+        c8y_SupportedOperations:
+        - c8y_Restart
+        c8y_LatestMeasurements:
+          c8y_Temperature:
+            T:
+              value: 10
+              unit: C
+              time: '2020-06-09T09:48:40.008Z'
+        c8y_PreviousMeasurements:
+          c8y_Temperature:
+            T:
+              value: 15
+              unit: C
+              time: '2020-06-09T08:48:40.008Z'
+        childAdditions:
+          self: https://<TENANT_DOMAIN>/inventory/managedObjects/51994/childAdditions
+          references: []
+        childAssets:
+          self: https://<TENANT_DOMAIN>/inventory/managedObjects/51994/childAssets
+          references: []
+        childDevices:
+          self: https://<TENANT_DOMAIN>/inventory/managedObjects/51994/childDevices
+          references: []
+        additionParents:
+          self: https://<TENANT_DOMAIN>/inventory/managedObjects/51994/additionParents
+          references: []
+        assetParents:
+          self: https://<TENANT_DOMAIN>/inventory/managedObjects/51994/assetParents
+          references: []
+        deviceParents:
+          self: https://<TENANT_DOMAIN>/inventory/managedObjects/51994/deviceParents
+          references: []
+    LatestMeasurementFragment:
+      type: object
+      readOnly: true
+      description: 'The read only fragment which contains the latest measurements series reported by the device.
+
+        > **⚠️ Feature Preview:** The feature is part of the Latest Measurement feature which is still under public feature preview.
+
+        '
+      additionalProperties:
+        $ref: '#/components/schemas/LatestMeasurementValue'
+    error:
+      type: object
+      properties:
+        error:
+          description: The type of error returned.
+          type: string
+        message:
+          description: A human-readable message providing more details about the error.
+          type: string
+        info:
+          description: A URI reference [[RFC3986](https://tools.ietf.org/html/rfc3986)] that identifies the error code reported.
+          type: string
+    c8y_PreviousMeasurements:
+      type: object
+      readOnly: true
+      description: 'The read only fragment which contains the previous to latest measurements reported by the device.
+
+        The returned optionally only if the query parameter `withLatestValues=true` is used.
+
+        > **⚠️ Feature Preview:** The feature is part of the Latest Measurement feature which is still under public feature preview.
+
+        '
+      additionalProperties:
+        $ref: '#/components/schemas/PreviousMeasurementFragment'
+      example:
+        c8y_Temperature:
+          T:
+            value: 15
+            unit: C
+            time: '2020-06-09T08:48:40.008Z'
+    desc_objectName:
+      title: ObjectName
+      description: Human-readable name that is used for representing the object in user interfaces.
+      type: string
+    objectDeviceParents:
+      description: A collection of references to device parent objects.
+      type: object
+      readOnly: true
+      properties:
+        references:
+          description: An array with the references to parent objects.
+          type: array
+          items:
+            $ref: '#/components/schemas/managedObjectReferenceTuple'
+          example: []
+        self:
+          description: Link to this resource's parent objects.
+          type: string
+          example: https://<TENANT_DOMAIN>/inventory/managedObjects/{id}/deviceParents
+    c8y_LatestMeasurements:
+      type: object
+      readOnly: true
+      description: 'The read only fragment which contains the latest measurements reported by the device.
+
+        The returned optionally only if the query parameter `withLatestValues=true` is used.
+
+        > **⚠️ Feature Preview:** The feature is part of the Latest Measurement feature which is still under public feature preview.
+
+        '
+      additionalProperties:
+        $ref: '#/components/schemas/LatestMeasurementFragment'
+      example:
+        c8y_Temperature:
+          T:
+            value: 10
+            unit: C
+            time: '2020-06-09T09:48:40.008Z'
+    inventoryApiResource:
+      type: object
+      properties:
+        managedObjectsForFragmentType:
+          description: Read-only collection of all managed objects with a particular fragment type or capability (placeholder {fragmentType}).
+          type: string
+        managedObjectsForType:
+          description: Read-only collection of all managed objects of a particular type (placeholder {type}).
+          type: string
+        managedObjectsForListOfIds:
+          description: Read-only collection of managed objects fetched for a given list of ids, for example, “ids=41,43,68”.
+          type: string
+        managedObjects:
+          description: Collection of all managed objects
+          type: object
+          properties:
+            references:
+              description: An array containing the referenced managed objects.
+              type: array
+              minItems: 0
+              items:
+                $ref: '#/components/schemas/managedObject'
+            self:
+              $ref: '#/components/schemas/desc_self'
+        self:
+          $ref: '#/components/schemas/desc_self'
+      example:
+        managedObjectsForFragmentType: https://<TENANT_DOMAIN>/inventory/managedObjects?fragmentType={fragmentType}
+        managedObjectsForType: https://<TENANT_DOMAIN>/inventory/managedObjects?type={type}
+        managedObjectsForListOfIds: https://<TENANT_DOMAIN>/inventory/managedObjects?ids={ids}
+        managedObjects:
+          references: []
+          self: https://<TENANT_DOMAIN>/inventory/managedObjects
+        self: https://<TENANT_DOMAIN>/inventory
+    PreviousMeasurementFragment:
+      type: object
+      readOnly: true
+      description: 'The read only fragment which contains the previous to latest measurements series reported by the device.
+
+        > **⚠️ Feature Preview:** The feature is part of the Latest Measurement feature which is still under public feature preview.
+
+        '
+      additionalProperties:
+        $ref: '#/components/schemas/PreviousMeasurementValue'
+    desc_objectId:
+      title: ObjectId
+      description: Unique identifier of the object.
+      type: string
+      minLength: 1
+    objectChildAssets:
+      description: A collection of references to child assets.
+      type: object
+      readOnly: true
+      properties:
+        count:
+          description: The total number of child assets. Only present if the value is greater than 0.
+          type: integer
+        references:
+          description: An array with the references to child assets.
+          type: array
+          items:
+            $ref: '#/components/schemas/managedObjectReferenceTuple'
+          example: []
+        self:
+          description: Link to this resource's child assets.
+          type: string
+          example: https://<TENANT_DOMAIN>/inventory/managedObjects/{id}/childAssets
+    objectAssetParents:
+      description: A collection of references to asset parent objects.
+      type: object
+      readOnly: true
+      properties:
+        references:
+          description: An array with the references to asset parent objects.
+          type: array
+          items:
+            $ref: '#/components/schemas/managedObjectReferenceTuple'
+          example: []
+        self:
+          description: Link to this resource's asset parent objects.
+          type: string
+          example: https://<TENANT_DOMAIN>/inventory/managedObjects/{id}/assetParents
+    managedObjectReferenceTuple:
+      type: object
+      properties:
+        managedObject:
+          description: Details of the referenced managed object.
+          type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/desc_objectId'
+            name:
+              $ref: '#/components/schemas/desc_objectName'
+            self:
+              $ref: '#/components/schemas/desc_self'
+        self:
+          $ref: '#/components/schemas/desc_self'
+    objectChildAdditions:
+      description: A collection of references to child additions.
+      type: object
+      readOnly: true
+      properties:
+        count:
+          description: The total number of child additions. Only present if the value is greater than 0.
+          type: integer
+        references:
+          description: An array with the references to child devices.
+          type: array
+          items:
+            $ref: '#/components/schemas/managedObjectReferenceTuple'
+          example: []
+        self:
+          description: Link to this resource's child additions.
+          type: string
+          example: https://<TENANT_DOMAIN>/inventory/managedObjects/{id}/childAdditions
+    LatestMeasurementValue:
+      type: object
+      readOnly: true
+      description: 'The read only fragment which contains the latest measurements series values reported by the device.
+
+        > **⚠️ Feature Preview:** The feature is part of the Latest Measurement feature which is still under public feature preview.
+
+        '
+      required:
+      - value
+      properties:
+        unit:
+          description: The unit of the measurement series.
+          type: string
+          minLength: 1
+          example: C
+        time:
+          description: The time of the measurement series.
+          type: string
+          format: date-time
+          example: '2020-06-09T09:48:40.008Z'
+        value:
+          description: The value of the individual measurement.
+          type: number
+          example: 100
+  responses:
+    unauthorizedError:
+      description: Authentication information is missing or invalid.
+      content:
+        application/vnd.com.nsn.cumulocity.error+json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            error: security/Unauthorized
+            message: 'Invalid credentials! : Bad credentials'
+            info: https://www.cumulocity.com/guides/reference-guide/#error_reporting
+    operationNotAuthorized:
+      description: Not authorized to perform this operation.
+  securitySchemes:
+    Basic:
+      type: http
+      scheme: basic
+      description: 'The authorization header is formed as `Basic <Base64(<tenantID>/<c8yuser>:<password>)>`. For instance, if your tenantID, username and password are **t0071234**, **testuser** and **secret123** respectively, you can generate the Base64 string with the following command:
+
+
+        ```shell
+
+        $ echo -n t0071234/testuser:secret123 | base64
+
+        ```
+
+
+        and your authorization header would look like this:
+
+
+        ```
+
+        "Authorization": "Basic dDAwNzEyMzQvdGVzdHVzZXI6c2VjcmV0MTIz"
+
+        ```
+
+        '
+    OAI-Secure:
+      type: http
+      scheme: bearer
+      description: 'This is the recommended authorization method because it provides high security using authorization tokens to prove the identity of the user, and it is the default login mode on creating new tenants. This mode is an enhancement of the previous OAuth Internal authentication (available prior to 10.13.0).
+
+
+        For more details about OAI-Secure authentication, see [Platform administration > Authentication > Basic settings > Login settings](https://www.cumulocity.com/docs/authentication/basic-settings/#login-settings) in the Cumulocity user documentation.
+
+        '
+    SSO:
+      type: oauth2
+      description: "The login with SSO requires a correct configuration on the [Cumulocity side](https://www.cumulocity.com/docs/authentication/sso/). With the configuration, an additional button is available on the Login page. After clicking the button, the user is redirected to authenticate with the configured authorization server. On successful login, the user is redirected to Cumulocity.\n\nAuthentication details are exchanged using cookies. There are two parts to it, the first is the authentication cookie that is handled automatically by the Cumulocity platform. The second is the XSRF-TOKEN cookie. When a client receives the cookie, it should take the value and put it in the X-XSRF-TOKEN request header in all subsequent requests.\n\nThe flow of authenticating with authentication code grant is as follows:\n\n![Authentication flow](images/oauth-simple-flow.png)\n\nThe first request executed by the browser is:\n\n```http\nGET /tenant/loginOptions\nHost: https://<TENANT_DOMAIN>\nAccept: application/vnd.com.nsn.cumulocity.loginoptioncollection+json\n```\n\nResponse sample:\n\n```json\n{\n    \"loginOptions\": [\n        {\n            \"buttonName\": \"Login with oauth\",\n            \"grantType\": \"<AUTHORIZATION_CODE>\",\n            \"initRequest\": \"https://<TENANT_DOMAIN>/tenant/oauth?response_type=code&tenant_id=<TENANT_ID>\",\n            \"self\": \"https://<TENANT_DOMAIN>/tenant/loginOptions/oauth2\",\n            \"type\": \"oauth2\"\n        },\n        ...\n    ],\n    \"self\": \"http://<TENANT_DOMAIN>/tenant/loginOptions/\"\n}\n```\n\nThe browser must invoke the request provided in the initRequest parameter.\n\nThe initRequest initiates the redirect, in which the user is prompted for credentials. After successful login, the user is redirected back to the browser, where it must capture the code request parameter. Then the request to exchange the code for the token is as follows:\n\n```http\nPOST /tenant/oauth?grant_type=authorization_code&code=<CODE>\nHost: https://<TENANT_DOMAIN>\n```\n\nA successful response will have no body but the following response headers:\n\n```\nSet-Cookie: authorization=<TOKEN>;\nSet-Cookie: XSRF-TOKEN=<XSRF-TOKEN>;\n```\n\nThe authorization cookie is valid for two weeks.\n"
+      flows:
+        clientCredentials:
+          tokenUrl: /tenant/oauth?grant_type=authorization_code&code=<CODE>
+          scopes: {}
+    JWT-IAM:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'This kind of authentication substitutes the JWT authentication with OAuth2 access tokens from your Identity and Access Management (IAM).
+
+        You can enable this in the [SSO configuration](https://www.cumulocity.com/docs/authentication/sso/).
+
+
+        The HTTP header must include:
+
+
+        ```
+
+        "Authorization": "Bearer <Access token>"
+
+        ```
+
+
+        When a request with a bearer token in the header is received, Cumulocity checks if the access token is from your IAM (that is, if authentication is enabled in your SSO configuration), and verifies the authenticity of
+
+        the token remotely against the IAM.
+
+        '
+x-tagGroups:
+- name: Platform
+  tags:
+  - Platform API
+- name: Alarms
+  tags:
+  - Alarm API
+  - Alarm notification API
+  - Alarms
+- name: Applications
+  tags:
+  - Application API
+  - Applications
+  - Application versions
+  - Application binaries
+  - Bootstrap user
+  - Current application
+- name: Audits
+  tags:
+  - Audit API
+  - Audits
+- name: Device control
+  tags:
+  - Device control API
+  - Device control notification API
+  - Operations
+  - Bulk operations
+  - Device credentials
+  - New device requests
+  - Device control via SMS
+- name: Events
+  tags:
+  - Event API
+  - Event notification API
+  - Events
+  - Attachments
+- name: Feature toggles
+  tags:
+  - Feature toggles API
+- name: Identity
+  tags:
+  - Identity API
+  - External IDs
+- name: Inventory
+  tags:
+  - Inventory API
+  - Inventory notification API
+  - Managed objects
+  - Binaries
+  - Child operations
+  - Query language
+- name: Measurements
+  tags:
+  - Measurement API
+  - Measurement notification API
+  - Measurements
+  - Measurements specifics
+- name: Notifications 2.0
+  tags:
+  - About notifications 2.0
+  - Notification 2.0 API
+  - Subscriptions
+  - Tokens
+- name: Real-time notifications
+  tags:
+  - Real-time notification API
+- name: Retentions
+  tags:
+  - Retention rules
+- name: Tenants
+  tags:
+  - Tenant API
+  - Tenants
+  - Tenant applications
+  - Trusted certificates
+  - Device statistics
+  - Usage statistics
+  - Options
+  - Login options
+  - Login tokens
+  - System options
+- name: Users
+  tags:
+  - User API
+  - Current User
+  - Users
+  - Groups
+  - Roles
+  - Inventory Roles
+  - Device Permissions
+- name: Certificate
+  tags:
+  - Certificate authority
+  - Device enrollment

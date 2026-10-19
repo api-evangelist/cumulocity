@@ -1,0 +1,94 @@
+openapi: 3.2.0
+info:
+  title: Cumulocity Notification 2.0 Tokens API
+  version: 10.20.0
+  description: 'High-throughput, persistent, ordered notification streaming for production microservices. Subscribers
+
+    declare typed subscriptions (managed object, measurements, events, alarms, operations), exchange them
+
+    for short-lived JWT tokens, and consume via WebSocket. Survives subscriber outages by buffering messages
+
+    on the server.'
+servers:
+- url: https://{tenant}.cumulocity.com
+  variables:
+    tenant:
+      default: example
+security:
+- basicAuth: []
+- bearerAuth: []
+tags:
+- name: Tokens
+paths:
+  /notification2/token:
+    post:
+      tags:
+      - Tokens
+      summary: Create a Subscription Token
+      operationId: createToken
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRequest'
+      responses:
+        '200':
+          description: A short-lived JWT token to use with the WebSocket consumer endpoint.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+  /notification2/unsubscribe:
+    post:
+      tags:
+      - Tokens
+      summary: Unsubscribe (Invalidate Token)
+      operationId: unsubscribeToken
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+      responses:
+        '200':
+          description: Token invalidated.
+components:
+  schemas:
+    TokenResponse:
+      type: object
+      properties:
+        token:
+          type: string
+    TokenRequest:
+      type: object
+      required:
+      - subscriber
+      - subscription
+      properties:
+        subscriber:
+          type: string
+        subscription:
+          type: string
+        expiresInMinutes:
+          type: integer
+          minimum: 1
+          maximum: 1440
+        nonPersistent:
+          type: boolean
+        signed:
+          type: boolean
+        shared:
+          type: boolean
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

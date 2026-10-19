@@ -1,282 +1,2310 @@
 openapi: 3.2.0
 info:
-  title: Cumulocity Inventory Managed Objects API
-  version: 10.20.0
-  description: 'Manage Cumulocity managed objects — the universal representation of any IoT-relevant asset including
+  version: Latest
+  title: Cumulocity Managed objects API
+  x-logo:
+    url: https://www.cumulocity.com/docs/images/logo-platform.svg
+    backgroundColor: '#F8F8F8'
+    altText: Cumulocity
+    href: https://www.cumulocity.com/api
+  description: '# REST implementation
 
-    devices, groups, assets, and digital twins. Managed objects are fragment-extensible documents
 
-    addressed by Cumulocity-assigned IDs and linked via parent/child references.'
-  contact:
-    name: Cumulocity
-    url: https://cumulocity.com
-  license:
-    name: Cumulocity Terms of Service
-    url: https://cumulocity.com/legal/terms/
+    This section describes the aspects common to all REST-based interfaces of Cumulocity. The interfaces are based on the Hypertext Transfer Protocol 1.1 using HTTPS. ## HTTP usage
+
+
+    ### Application management
+
+
+    Cumulocity uses a so-called "application key" to distinguish requests coming from devices and traffic from applications. If you write an application, pass the following header as part of all requests:
+
+
+    ```markup
+
+    X-Cumulocity-Application-Key:
+
+    ```
+
+
+    For example, if you registered your application in the Cumulocity Administration application with the key "myapp", your requests should contain the header:
+
+
+    ```markup
+
+    X-Cumulocity-Application-Key: myapp
+
+    ```
+
+
+    This makes your application subscribable and billable. If you implement a device, do not pass the key. > **ⓘ Info:** Make sure that you pass the key in **all** requests coming from an application. If you leave out the key,
+
+    > the request will be considered as a device request, and the corresponding device will be marked as "available". ### Limited HTTP clients
+
+
+    If you use an HTTP client that can only perform GET and POST methods in HTTP, you can emulate the other methods through an additional "X-HTTP-METHOD" header. Simply issue a POST request and add the header, specifying the actual REST method to be executed. For example, to emulate the "PUT" (modify) method, you can use:
+
+
+    ```http
+
+    POST ... X-HTTP-METHOD: PUT
+
+    ```
+
+
+    ### Processing mode
+
+
+    Every update request (PUT, POST, DELETE) executes with a so-called *processing mode*. The processing modes are as follows:
+
+
+    |Processing mode|Description|
+
+    |---|---|
+
+    |PERSISTENT (default)|Stores data in the Cumulocity database and sends data to the Streaming Analytics engine. Afterwards, Cumulocity returns the result of the request. This is the default mode.|
+
+    |TRANSIENT|Sends data to the Streaming Analytics engine and immediately returns the results asynchronously but does not store data in Cumulocity’s database. This mode saves storage and processing costs and is useful for example when tracking devices in real time without requiring data to be stored.|
+
+    |QUIESCENT|Behaves similar to the persistent mode with the exception that no real-time notifications will be sent.|
+
+    |CEP|Behaves like the transient mode with the exception that no real-time notifications are sent.|
+
+
+    To explicitly control the processing mode of an update request, you can use the "X-Cumulocity-Processing-Mode" header with a value of either "PERSISTENT", "TRANSIENT", "QUIESCENT" or "CEP":
+
+
+    ```markup
+
+    X-Cumulocity-Processing-Mode: PERSISTENT
+
+    ```
+
+
+    > **ⓘ Info:** Events are always delivered to CEP/Apama for all processing modes. This is independent from real-time notifications. ### Authorization
+
+
+    All requests issued to Cumulocity are subject to authorization. To determine the required permissions, see the "Required role" entries for the individual requests. To learn more about the different permissions and the concept of ownership in Cumulocity, see Getting started > Technical concepts > Security aspects > Access control > Managing roles and assigning permissions in the Cumulocity user documentation. > **⚠️ Important:** In the Cumulocity API, each granular permission is identified by a unique “permission” string, which is prefixed with ROLE_ (for example, ROLE_ALARM_READ, ROLE_INVENTORY_ADMIN). Therefore, permissions are frequently referred to as “roles” throughout the API as well as in the configuration files. For example, the microservice manifest includes a requiredRoles field, which actually expects a permission string. See also the Glossary of the Cumulocity user documentation for the usage of the terms “permission” and “role” in the Cumulocity context. ### Media types
+
+
+    Each type of data is associated with an own media type. The general format of media types is:
+
+
+    ```markup
+
+    application/vnd.com.nsn.cumulocity.+json;ver=;charset=UTF-8
+
+    ```
+
+
+    Each media type contains a parameter `ver` indicating the version of the type.'
 servers:
-- url: https://{tenant}.cumulocity.com
-  variables:
-    tenant:
-      default: example
+- description: Cumulocity tenant
+  url: https://<TENANT_DOMAIN>
 security:
-- basicAuth: []
-- bearerAuth: []
+- Basic: []
+- OAI-Secure: []
+- SSO: []
+- JWT-IAM: []
 tags:
-- name: Managed Objects
-  description: Inventory documents representing devices, assets, groups, and digital twins.
+- name: Managed objects
+  description: 'The inventory stores devices and other assets relevant to your IoT solution. We refer to them as managed objects and such can be “smart objects”, for example, smart electricity meters, home automation gateways or GPS devices.
+
+
+    For further information, refer to Getting started > Technical concepts > Cumulocity''s domain model > Inventory > Managed objects in the Cumulocity user documentation.
+
+
+    > **ⓘ Info:** The Accept header should be provided in all POST/PUT requests, otherwise an empty response body will be returned.'
 paths:
   /inventory/managedObjects:
-    get:
-      tags:
-      - Managed Objects
-      summary: List Managed Objects
-      operationId: listManagedObjects
+    post:
+      operationId: postManagedObjectCollectionResource
+      x-codegen-resource-name: createManagedObject
       parameters:
-      - $ref: '#/components/parameters/PageSize'
-      - $ref: '#/components/parameters/CurrentPage'
-      - $ref: '#/components/parameters/WithTotalPages'
-      - name: type
-        in: query
-        schema:
-          type: string
-      - name: fragmentType
-        in: query
-        schema:
-          type: string
-      - name: text
-        in: query
-        schema:
-          type: string
-      - name: ids
-        in: query
-        schema:
-          type: string
-      - name: owner
-        in: query
-        schema:
-          type: string
+      - $ref: '#/components/parameters/acceptHeader'
+      - $ref: '#/components/parameters/processingModeHeader'
+      tags:
+      - Managed objects
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Create one or multiple managed objects
+      description: 'Create a managed object, for example, a device with temperature measurements support or a binary switch.
+
+
+        In general, each managed object may consist of:
+
+
+        * A unique identifier that references the object.
+
+        * The name of the object.
+
+        * The most specific type of the managed object.
+
+        * A time stamp showing the last update.
+
+        * Fragments with specific meanings, for example, `c8y_IsDevice`, `c8y_SupportedOperations`.
+
+        * Any additional custom fragments.
+
+
+        Imagine, for example, that you want to describe electric meters from different vendors. Depending on the make of the meter, one may have a relay and one may be capable to measure a single phase or three phases (for example, a three-phase electricity sensor). A fragment `c8y_ThreePhaseElectricitySensor` would identify such an electric meter. Devices'' characteristics are identified by storing fragments for each of them.
+
+
+        > **ⓘ Info:** For more details about fragments with specific meanings, refer to Device management & connectivity > Device integration > Fragment library in the Cumulocity user documentation.
+
+
+        External identifiers can be assigned to managed objects upon creation by specifying a list in `externalIds` field.
+
+        Given external identifiers must be valid and not be already assigned to another managed object or the request to create a single or multiple managed objects will fail with a client error and not create anything.
+
+
+        #### Bulk create
+
+
+        A bulk request creates at most 50 managed objects; the response lists them in request order.
+
+        All of them are validated, and their external identifiers checked, before anything is created, so a failed check creates nothing.
+
+        An external identifier may occur only once in the request.
+
+
+        Part of the request is created only if a failure occurs while writing, for example, a concurrent request binds the same external identifier (`409`), or the datastore fails (`500`).
+
+        The error''s `bulkRequest.fragmentType` then names a fragment that each created managed object carries with its request position, for example, `"c8y_BatchId_7c8e1e0a-3b2f-4f6e-9a51-5d2c7e4b9f10": { "index": 3 }`.
+
+        To complete the request without duplicates:
+
+
+        1. Find the created managed objects with `GET /inventory/managedObjects?fragmentType=&pageSize=50`. If the lookup fails, retry it, never the bulk request.
+
+        2. Re-send only the positions the lookup did not return. This also applies to `failedIndex`, which may have been created.
+
+        3. Managed objects found may have incomplete external identifiers or group assignment.
+
+
+        The fragment is not in the response or notifications, and is removed on success; if removal fails, it stays.
+
+        Remove it with a bulk update setting it to `null`, or ignore fragments starting with `c8y_BatchId_`. The prefix is reserved and dropped from managed objects you create.
+
+
+        Required roles
+
+
+        ROLE_INVENTORY_ADMIN OR ROLE_INVENTORY_CREATE OR ROLE_MANAGED_OBJECT_ADMIN OR ROLE_MANAGED_OBJECT_CREATE'
+      requestBody:
+        required: true
+        content:
+          application/vnd.com.nsn.cumulocity.managedobject+json:
+            schema:
+              $ref: '#/components/schemas/managedObjectCreate'
+            example:
+              name: My tracking device
+              c8y_IsDevice: {}
+              c8y_DeviceTypes:
+              - deviceSubsetType
+              c8y_SupportedOperations:
+              - c8y_Restart
+          application/vnd.com.nsn.cumulocity.managedobjectcollection+json:
+            schema:
+              $ref: '#/components/schemas/ManagedObjectCollectionCreate'
+            example:
+              managedObjects:
+              - name: My tracking device
+                c8y_IsDevice: {}
+                c8y_DeviceTypes:
+                - deviceSubsetType
+                c8y_SupportedOperations:
+                - c8y_Restart
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request POST "https://<TENANT_DOMAIN>/inventory/managedObjects" \
+
+          --header "Authorization: Basic <AUTHORIZATION>" \
+
+          --header "Accept: application/json" \
+
+          --header "Content-Type: application/json" \
+
+          --data-raw ''<Payload>''
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/inventory/managedObjects");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.POST);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+          request.AddHeader("Content-Type", "application/json");
+
+          request.AddHeader("Accept", "application/json");
+
+          request.AddParameter("application/json", "<Payload>",  ParameterType.RequestBody);
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.post(\"https://<TENANT_DOMAIN>/inventory/managedObjects\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .header(\"Content-Type\", \"application/json\")\n    .header(\"Accept\", \"application/json\")\n    .body(\"<Payload>\")\n    .asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"POST\", \"https://<TENANT_DOMAIN>/inventory/managedObjects\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\",\n        \"Accept\": \"application/json\",\n        \"Content-Type\": \"application/json\"\n    })\n    .send(JSON.stringify( <Payload> ))\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\nimport json\n\nurl = \"https://<TENANT_DOMAIN>/inventory/managedObjects\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\",\n  \"Accept\": \"application/json\",\n  \"Content-Type\": \"application/json\"\n}\nresponse = requests.request(\"POST\", url, headers=headers, data = json.dumps(<Payload>))\nprint(response.text.encode(\"utf8\"))\n"
       responses:
         '200':
-          description: A collection of managed objects.
+          description: All managed objects of the bulk request were created. The `managedObjects` array has the same order as in the request.
           content:
-            application/vnd.com.nsn.cumulocity.managedObjectCollection+json:
+            application/vnd.com.nsn.cumulocity.managedobjectcollection+json:
               schema:
                 $ref: '#/components/schemas/ManagedObjectCollection'
-    post:
+        '201':
+          description: A managed object was created.
+          content:
+            application/vnd.com.nsn.cumulocity.managedobject+json:
+              schema:
+                $ref: '#/components/schemas/managedObject'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+        '409':
+          description: 'Conflict – An external identifier is already bound to another managed object.
+
+            '
+          content:
+            application/vnd.com.nsn.cumulocity.error+json:
+              schema:
+                $ref: '#/components/schemas/bulkRequestError'
+              examples:
+                bound_before_the_request:
+                  description: An external identifier was already bound to another managed object when the request was received. Nothing was created.
+                  value:
+                    error: identity/Duplicate
+                    info: https://www.cumulocity.com/guides/reference-guide/#error_reporting
+                    bulkRequest:
+                      failedIndex: 3
+                bound_during_the_request:
+                  description: Another request bound the external identifier while the bulk request was being processed. Part of the bulk request may have been created.
+                  value:
+                    error: identity/Duplicate
+                    info: https://www.cumulocity.com/guides/reference-guide/#error_reporting
+                    bulkRequest:
+                      failedIndex: 3
+                      fragmentType: c8y_BatchId_7c8e1e0a-3b2f-4f6e-9a51-5d2c7e4b9f10
+        '422':
+          $ref: '#/components/responses/invalidBulkPayload'
+        '500':
+          description: Internal Server Error – For a bulk request, part of it may have been created.
+          content:
+            application/vnd.com.nsn.cumulocity.error+json:
+              schema:
+                $ref: '#/components/schemas/bulkRequestError'
+              example:
+                error: inventory/Internal Server Error
+                info: https://www.cumulocity.com/guides/reference-guide/#error_reporting
+                bulkRequest:
+                  failedIndex: 17
+                  fragmentType: c8y_BatchId_7c8e1e0a-3b2f-4f6e-9a51-5d2c7e4b9f10
+    put:
+      operationId: putManagedObjectCollectionResource
+      x-codegen-resource-name: updateManagedObjects
+      parameters:
+      - $ref: '#/components/parameters/acceptHeader'
+      - $ref: '#/components/parameters/processingModeHeader'
       tags:
-      - Managed Objects
-      summary: Create a Managed Object
-      operationId: createManagedObject
+      - Managed objects
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Update multiple managed objects at once
+      description: 'Updates multiple managed objects (for example, devices) by their given IDs.
+
+
+        The maximum number of managed objects that can be updated in a single bulk request is 50.
+
+        Each ID can occur only once in the request.
+
+        Updating `externalIds` is not supported through this operation; use the Identity API instead.
+
+
+        All managed objects of the bulk request are validated, and checked to exist, before anything is updated.
+
+        If any of these checks fails, the request fails with a client error and nothing is updated.
+
+        The error response identifies the failed managed object in `bulkRequest`. A duplicate ID fails the whole request.
+
+
+        If the request fails while the managed objects are updated, for example, when the datastore fails, part of them may have been updated.
+
+        Retrieve the managed objects by their IDs to find out their current state.
+
+
+        Required roles
+
+
+        ROLE_INVENTORY_ADMIN OR ROLE_MANAGED_OBJECT_ADMIN OR owner of the source OR MANAGE_OBJECT_ADMIN permission on the source'
       requestBody:
         required: true
         content:
-          application/vnd.com.nsn.cumulocity.managedObject+json:
+          application/vnd.com.nsn.cumulocity.managedobjectcollection+json:
             schema:
-              $ref: '#/components/schemas/ManagedObject'
+              $ref: '#/components/schemas/ManagedObjectCollectionUpdate'
+            example:
+              managedObjects:
+              - c8y_IsDevice: {}
+                name: My tracking device
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request PUT "https://<TENANT_DOMAIN>/inventory/managedObjects" \
+
+          --header "Authorization: Basic <AUTHORIZATION>" \
+
+          --header "Accept: application/json" \
+
+          --header "Content-Type: application/json" \
+
+          --data-raw ''<Payload>''
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/inventory/managedObjects");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.PUT);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+          request.AddHeader("Content-Type", "application/json");
+
+          request.AddHeader("Accept", "application/json");
+
+          request.AddParameter("application/json", "<Payload>",  ParameterType.RequestBody);
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.put(\"https://<TENANT_DOMAIN>/inventory/managedObjects\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .header(\"Content-Type\", \"application/json\")\n    .header(\"Accept\", \"application/json\")\n    .body(\"<Payload>\")\n    .asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"PUT\", \"https://<TENANT_DOMAIN>/inventory/managedObjects\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\",\n        \"Accept\": \"application/json\",\n        \"Content-Type\": \"application/json\"\n    })\n    .send(JSON.stringify( <Payload> ))\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\nimport json\n\nurl = \"https://<TENANT_DOMAIN>/inventory/managedObjects\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\",\n  \"Accept\": \"application/json\",\n  \"Content-Type\": \"application/json\"\n}\nresponse = requests.request(\"PUT\", url, headers=headers, data = json.dumps(<Payload>))\nprint(response.text.encode(\"utf8\"))\n"
       responses:
-        '201':
-          description: Managed object created.
+        '200':
+          description: All managed objects were updated.
           content:
-            application/vnd.com.nsn.cumulocity.managedObject+json:
+            application/vnd.com.nsn.cumulocity.managedobjectcollection+json:
               schema:
-                $ref: '#/components/schemas/ManagedObject'
+                $ref: '#/components/schemas/ManagedObjectCollection'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+        '404':
+          description: Managed object not found.
+          content:
+            application/vnd.com.nsn.cumulocity.error+json:
+              schema:
+                $ref: '#/components/schemas/bulkRequestError'
+              example:
+                error: inventory/Not Found
+                info: https://www.cumulocity.com/guides/reference-guide/#error_reporting
+                bulkRequest:
+                  failedIndex: 1
+        '422':
+          $ref: '#/components/responses/invalidBulkPayload'
+    get:
+      operationId: getManagedObjectCollectionResource
+      x-codegen-resource-name: getManagedObjects
+      parameters:
+      - $ref: '#/components/parameters/queryParam_inventory_childAdditionId'
+      - $ref: '#/components/parameters/queryParam_inventory_childAssetId'
+      - $ref: '#/components/parameters/queryParam_inventory_childDeviceId'
+      - $ref: '#/components/parameters/queryParam_currentPage'
+      - $ref: '#/components/parameters/queryParam_fragmentType'
+      - $ref: '#/components/parameters/queryParam_inventory_ids'
+      - $ref: '#/components/parameters/queryParam_inventory_onlyRoots'
+      - $ref: '#/components/parameters/queryParam_inventory_owner'
+      - $ref: '#/components/parameters/queryParam_pageSize'
+      - $ref: '#/components/parameters/queryParam_inventory_deviceQuery'
+      - $ref: '#/components/parameters/queryParam_query'
+      - $ref: '#/components/parameters/queryParam_skipChildrenNames'
+      - $ref: '#/components/parameters/queryParam_inventory_textPrefix'
+      - $ref: '#/components/parameters/queryParam_inventory_type'
+      - $ref: '#/components/parameters/queryParam_inventory_withChildren'
+      - $ref: '#/components/parameters/queryParam_inventory_withChildrenCount'
+      - $ref: '#/components/parameters/queryParam_inventory_withGroups'
+      - $ref: '#/components/parameters/queryParam_withParents'
+      - $ref: '#/components/parameters/queryParam_withTotalElements'
+      - $ref: '#/components/parameters/queryParam_withTotalPages'
+      - $ref: '#/components/parameters/queryParam_withLatestValues'
+      tags:
+      - Managed objects
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Retrieve all managed objects
+      description: Retrieve all managed objects (for example, devices, assets, etc.) registered in your tenant, or a subset based on queries.
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request GET "https://<TENANT_DOMAIN>/inventory/managedObjects" \
+
+          --header "Authorization: Basic <AUTHORIZATION>"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/inventory/managedObjects");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.GET);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.get(\"https://<TENANT_DOMAIN>/inventory/managedObjects\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\").asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"GET\", \"https://<TENANT_DOMAIN>/inventory/managedObjects\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\"\n    })\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://<TENANT_DOMAIN>/inventory/managedObjects\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\"\n}\nresponse = requests.request(\"GET\", url, headers=headers)\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '200':
+          $ref: '#/components/responses/inventoryObjectCollectionFound'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+        '422':
+          $ref: '#/components/responses/invalidData'
   /inventory/managedObjects/{id}:
     parameters:
-    - $ref: '#/components/parameters/ManagedObjectId'
+    - $ref: '#/components/parameters/managedObjectId'
     get:
-      tags:
-      - Managed Objects
-      summary: Retrieve a Managed Object
-      operationId: getManagedObject
+      operationId: getManagedObjectResource
+      x-codegen-resource-name: getManagedObject
       parameters:
-      - name: withChildren
-        in: query
-        schema:
-          type: boolean
-      - name: withParents
-        in: query
-        schema:
-          type: boolean
+      - $ref: '#/components/parameters/queryParam_skipChildrenNames'
+      - $ref: '#/components/parameters/queryParam_inventory_withChildren'
+      - $ref: '#/components/parameters/queryParam_inventory_withChildrenCount'
+      - $ref: '#/components/parameters/queryParam_withParents'
+      - $ref: '#/components/parameters/queryParam_withLatestValues'
+      tags:
+      - Managed objects
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Retrieve a specific managed object
+      description: 'Retrieve a specific managed object (for example, device, group, template) by a given ID.
+
+
+        Required roles
+
+
+        ROLE_INVENTORY_READ OR ROLE_MANAGED_OBJECT_READ OR owner of the source OR MANAGE_OBJECT_READ permission on the source'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request GET "https://<TENANT_DOMAIN>/inventory/managedObjects/{id}" \
+
+          --header "Authorization: Basic <AUTHORIZATION>"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/inventory/managedObjects/{id}");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.GET);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.get(\"https://<TENANT_DOMAIN>/inventory/managedObjects/{id}\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\").asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"GET\", \"https://<TENANT_DOMAIN>/inventory/managedObjects/{id}\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\"\n    })\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://<TENANT_DOMAIN>/inventory/managedObjects/{id}\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\"\n}\nresponse = requests.request(\"GET\", url, headers=headers)\nprint(response.text.encode(\"utf8\"))\n"
       responses:
         '200':
-          description: A single managed object.
-          content:
-            application/vnd.com.nsn.cumulocity.managedObject+json:
-              schema:
-                $ref: '#/components/schemas/ManagedObject'
+          $ref: '#/components/responses/inventoryObjectFound'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+        '404':
+          $ref: '#/components/responses/inventoryObjectNotFound'
     put:
+      operationId: putManagedObjectResource
+      x-codegen-resource-name: updateManagedObject
+      parameters:
+      - $ref: '#/components/parameters/acceptHeader'
+      - $ref: '#/components/parameters/processingModeHeader'
       tags:
-      - Managed Objects
-      summary: Update a Managed Object
-      operationId: updateManagedObject
+      - Managed objects
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Update a specific managed object
+      description: 'Update a specific managed object (for example, device) by a given ID.
+
+
+        For example, if you want to specify that your managed object is a device, you must add the fragment `c8y_IsDevice`.
+
+
+        The endpoint can also be used as a device availability heartbeat.
+
+        If you only specifiy the `id`, it updates the date when the last message was received and no other property.
+
+        The response then only contains the `id` instead of the full managed object.
+
+
+        Required roles
+
+
+        ROLE_INVENTORY_ADMIN OR ROLE_MANAGED_OBJECT_ADMIN OR owner of the source OR MANAGE_OBJECT_ADMIN permission on the source'
       requestBody:
         required: true
         content:
-          application/vnd.com.nsn.cumulocity.managedObject+json:
+          application/vnd.com.nsn.cumulocity.managedobject+json:
+            example:
+              c8y_IsDevice: {}
+              name: My tracking device
             schema:
-              $ref: '#/components/schemas/ManagedObject'
+              $ref: '#/components/schemas/managedObject'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request PUT "https://<TENANT_DOMAIN>/inventory/managedObjects/{id}" \
+
+          --header "Authorization: Basic <AUTHORIZATION>" \
+
+          --header "Accept: application/json" \
+
+          --header "Content-Type: application/json" \
+
+          --data-raw ''<Payload>''
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/inventory/managedObjects/{id}");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.PUT);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+          request.AddHeader("Content-Type", "application/json");
+
+          request.AddHeader("Accept", "application/json");
+
+          request.AddParameter("application/json", "<Payload>",  ParameterType.RequestBody);
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.put(\"https://<TENANT_DOMAIN>/inventory/managedObjects/{id}\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .header(\"Content-Type\", \"application/json\")\n    .header(\"Accept\", \"application/json\")\n    .body(\"<Payload>\")\n    .asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"PUT\", \"https://<TENANT_DOMAIN>/inventory/managedObjects/{id}\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\",\n        \"Accept\": \"application/json\",\n        \"Content-Type\": \"application/json\"\n    })\n    .send(JSON.stringify( <Payload> ))\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\nimport json\n\nurl = \"https://<TENANT_DOMAIN>/inventory/managedObjects/{id}\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\",\n  \"Accept\": \"application/json\",\n  \"Content-Type\": \"application/json\"\n}\nresponse = requests.request(\"PUT\", url, headers=headers, json.dumps(<Payload>))\nprint(response.text.encode(\"utf8\"))\n"
       responses:
         '200':
-          description: Managed object updated.
+          description: A managed object was updated.
           content:
-            application/vnd.com.nsn.cumulocity.managedObject+json:
+            application/vnd.com.nsn.cumulocity.managedobject+json:
               schema:
-                $ref: '#/components/schemas/ManagedObject'
+                $ref: '#/components/schemas/managedObject'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+        '404':
+          $ref: '#/components/responses/inventoryObjectNotFound'
     delete:
-      tags:
-      - Managed Objects
-      summary: Delete a Managed Object
-      operationId: deleteManagedObject
+      operationId: deleteManagedObjectResource
+      x-codegen-resource-name: deleteManagedObject
       parameters:
-      - name: cascade
-        in: query
-        schema:
-          type: boolean
+      - $ref: '#/components/parameters/processingModeHeader'
+      - $ref: '#/components/parameters/queryParam_inventory_cascade'
+      - $ref: '#/components/parameters/queryParam_inventory_forceCascade'
+      - $ref: '#/components/parameters/queryParam_inventory_withDeviceUser'
+      tags:
+      - Managed objects
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Remove a specific managed object
+      description: 'Remove a specific managed object (for example, device) by a given ID.
+
+
+        > **ⓘ Info:** The platform first deletes the associated data and then the requested managed object. If this completes within 30 seconds, the response is 204 and the managed object has been deleted. Otherwise, the response is 202 and the deletion continues in the background. This happens especially when the deleted managed object has a lot of associated data or children. An error during the background deletion is not reported to the client. To verify that the managed object has been deleted, retrieve it until the response is 404.
+
+
+        > **ⓘ Info:** By default, the delete operation is propagated to subgroups, but only if the object being deleted is a group. Deleting a parent group will also delete its subgroups. The cascade parameter controls whether the devices assigned to the groups are also deleted. When set to false, the devices remain intact even as the groups and subgroups are deleted. When set to true, all groups, subgroups, and their assigned devices are deleted.
+
+
+        Required roles
+
+
+        ROLE_INVENTORY_ADMIN OR ROLE_MANAGED_OBJECT_ADMIN OR owner of the source OR MANAGE_OBJECT_ADMIN permission on the source'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request DELETE "https://<TENANT_DOMAIN>/inventory/managedObjects/{id}" \
+
+          --header "Authorization: Basic <AUTHORIZATION>"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/inventory/managedObjects/{id}");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.DELETE);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.delete(\"https://<TENANT_DOMAIN>/inventory/managedObjects/{id}\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\").asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"DELETE\", \"https://<TENANT_DOMAIN>/inventory/managedObjects/{id}\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\"\n    })\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://<TENANT_DOMAIN>/inventory/managedObjects/{id}\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\"\n}\nresponse = requests.request(\"DELETE\", url, headers=headers)\nprint(response.text.encode(\"utf8\"))\n"
       responses:
+        '202':
+          description: The deletion did not complete within 30 seconds and continues in the background.
+          content:
+            application/vnd.com.nsn.cumulocity.managedobject+json:
+              schema:
+                $ref: '#/components/schemas/inventoryObjectDeleteInBackground'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inventoryObjectDeleteInBackground'
         '204':
-          description: Managed object deleted.
+          description: A managed object was removed.
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+        '404':
+          $ref: '#/components/responses/inventoryObjectNotFound'
+        '409':
+          $ref: '#/components/responses/inventoryObjectDeleteConflict'
+        '422':
+          $ref: '#/components/responses/inventoryObjectDeleteInvalidData'
+        '429':
+          $ref: '#/components/responses/inventoryObjectDeleteTooManyRequests'
+  /inventory/managedObjects/{id}/availability:
+    parameters:
+    - $ref: '#/components/parameters/managedObjectId'
+    get:
+      operationId: getLastAvailabilityManagedObjectResource
+      x-codegen-resource-name: getLatestAvailability
+      tags:
+      - Managed objects
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Retrieve the latest availability date of a specific managed object
+      description: 'Retrieve the date when a specific managed object (by a given ID) sent the last message to Cumulocity.
+
+
+        Required roles
+
+
+        ROLE_INVENTORY_READ OR ROLE_MANAGED_OBJECT_READ'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request GET "https://<TENANT_DOMAIN>/inventory/managedObjects/{id}/availability" \
+
+          --header "Authorization: Basic <AUTHORIZATION>"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/inventory/managedObjects/{id}/availability");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.GET);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.get(\"https://<TENANT_DOMAIN>/inventory/managedObjects/{id}/availability\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\").asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"GET\", \"https://<TENANT_DOMAIN>/inventory/managedObjects/{id}/availability\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\"\n    })\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://<TENANT_DOMAIN>/inventory/managedObjects/{id}/availability\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\"\n}\nresponse = requests.request(\"GET\", url, headers=headers)\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '200':
+          description: The request has succeeded and the date is sent in the response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/managedObjectAvailability'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+        '404':
+          description: A device with provided ID is not monitored.
+  /inventory/managedObjects/{id}/supportedMeasurements:
+    parameters:
+    - $ref: '#/components/parameters/managedObjectId'
+    get:
+      operationId: getSupportedMeasurementsManagedObjectResource
+      x-codegen-resource-name: getSupportedMeasurements
+      tags:
+      - Managed objects
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Retrieve all supported measurement fragments of a specific managed object
+      description: 'Retrieve all measurement types of a specific managed object by a given ID.
+
+
+        Required roles
+
+
+        ROLE_INVENTORY_READ OR ROLE_MANAGED_OBJECT_READ OR owner of the source OR MANAGE_OBJECT_READ permission on the source'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request GET "https://<TENANT_DOMAIN>/inventory/managedObjects/{id}/supportedMeasurements" \
+
+          --header "Authorization: Basic <AUTHORIZATION>"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/inventory/managedObjects/{id}/supportedMeasurements");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.GET);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.get(\"https://<TENANT_DOMAIN>/inventory/managedObjects/{id}/supportedMeasurements\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\").asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"GET\", \"https://<TENANT_DOMAIN>/inventory/managedObjects/{id}/supportedMeasurements\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\"\n    })\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://<TENANT_DOMAIN>/inventory/managedObjects/{id}/supportedMeasurements\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\"\n}\nresponse = requests.request(\"GET\", url, headers=headers)\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '200':
+          description: The request has succeeded and all measurement types are sent in the response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SupportedMeasurements'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+        '404':
+          $ref: '#/components/responses/inventoryObjectNotFound'
+  /inventory/managedObjects/{id}/supportedSeries:
+    parameters:
+    - $ref: '#/components/parameters/managedObjectId'
+    get:
+      operationId: getSupportedSeriesManagedObjectResource
+      x-codegen-resource-name: getSupportedSeries
+      tags:
+      - Managed objects
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Retrieve all supported measurement fragments and series of a specific managed…
+      description: 'Retrieve all supported measurement fragments and series of a specific managed object by a given ID.
+
+
+        Required roles
+
+
+        ROLE_INVENTORY_READ OR ROLE_MANAGED_OBJECT_READ OR owner of the source OR MANAGE_OBJECT_READ permission on the source'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request GET "https://<TENANT_DOMAIN>/inventory/managedObjects/{id}/supportedSeries" \
+
+          --header "Authorization: Basic <AUTHORIZATION>"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/inventory/managedObjects/{id}/supportedSeries");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.GET);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.get(\"https://<TENANT_DOMAIN>/inventory/managedObjects/{id}/supportedSeries\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\").asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"GET\", \"https://<TENANT_DOMAIN>/inventory/managedObjects/{id}/supportedSeries\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\"\n    })\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://<TENANT_DOMAIN>/inventory/managedObjects/{id}/supportedSeries\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\"\n}\nresponse = requests.request(\"GET\", url, headers=headers)\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '200':
+          description: The request has succeeded and all supported measurement series are sent in the response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SupportedSeries'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+        '404':
+          $ref: '#/components/responses/inventoryObjectNotFound'
+  /inventory/managedObjects/{id}/user:
+    parameters:
+    - $ref: '#/components/parameters/managedObjectId'
+    get:
+      operationId: getManagedObjectUserResource
+      x-codegen-resource-name: getManagedObjectUser
+      tags:
+      - Managed objects
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Retrieve the username and state of a specific managed object
+      description: 'Retrieve the device owner''s username and state (enabled or disabled) of a specific managed object (by a given ID).
+
+
+        Required roles
+
+
+        ROLE_INVENTORY_READ OR ROLE_MANAGED_OBJECT_READ OR owner of the source OR MANAGE_OBJECT_READ permission on the source'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request GET "https://<TENANT_DOMAIN>/inventory/managedObjects/{id}/user" \
+
+          --header "Authorization: Basic <AUTHORIZATION>"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/inventory/managedObjects/{id}/user");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.GET);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.get(\"https://<TENANT_DOMAIN>/inventory/managedObjects/{id}/user\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\").asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"GET\", \"https://<TENANT_DOMAIN>/inventory/managedObjects/{id}/user\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\"\n    })\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://<TENANT_DOMAIN>/inventory/managedObjects/{id}/user\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\"\n}\nresponse = requests.request(\"GET\", url, headers=headers)\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '200':
+          description: The request has succeeded and the username and state are sent in the response.
+          content:
+            application/vnd.com.nsn.cumulocity.managedobjectuser+json:
+              schema:
+                $ref: '#/components/schemas/ManagedObjectUser'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+        '404':
+          $ref: '#/components/responses/inventoryObjectNotFound'
+    put:
+      operationId: putManagedObjectUserResource
+      x-codegen-resource-name: updateManagedObjectUser
+      parameters:
+      - $ref: '#/components/parameters/acceptHeader'
+      - $ref: '#/components/parameters/processingModeHeader'
+      tags:
+      - Managed objects
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Update the user's details of a specific managed object
+      description: 'Update the device owner''s state (enabled or disabled) of a specific managed object (by a given ID).
+
+
+        Required roles
+
+
+        ROLE_INVENTORY_ADMIN OR ROLE_MANAGED_OBJECT_ADMIN OR owner of the source OR MANAGE_OBJECT_ADMIN permission on the source'
+      requestBody:
+        required: true
+        content:
+          application/vnd.com.nsn.cumulocity.managedobjectuser+json:
+            example:
+              enabled: true
+            schema:
+              $ref: '#/components/schemas/ManagedObjectUser'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request PUT "https://<TENANT_DOMAIN>/inventory/managedObjects/{id}/user" \
+
+          --header "Authorization: Basic <AUTHORIZATION>" \
+
+          --header "Accept: application/json" \
+
+          --header "Content-Type: application/json" \
+
+          --data-raw ''<Payload>''
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/inventory/managedObjects/{id}/user");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.PUT);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+          request.AddHeader("Content-Type", "application/json");
+
+          request.AddHeader("Accept", "application/json");
+
+          request.AddParameter("application/json", "<Payload>",  ParameterType.RequestBody);
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.put(\"https://<TENANT_DOMAIN>/inventory/managedObjects/{id}/user\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .header(\"Content-Type\", \"application/json\")\n    .header(\"Accept\", \"application/json\")\n    .body(\"<Payload>\")\n    .asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"PUT\", \"https://<TENANT_DOMAIN>/inventory/managedObjects/{id}/user\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\",\n        \"Accept\": \"application/json\",\n        \"Content-Type\": \"application/json\"\n    })\n    .send(JSON.stringify( <Payload> ))\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\nimport json\n\nurl = \"https://<TENANT_DOMAIN>/inventory/managedObjects/{id}/user\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\",\n  \"Accept\": \"application/json\",\n  \"Content-Type\": \"application/json\"\n}\nresponse = requests.request(\"PUT\", url, headers=headers, json.dumps(<Payload>))\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '200':
+          description: The user's details of a specific managed object were updated.
+          content:
+            application/vnd.com.nsn.cumulocity.managedobjectuser+json:
+              schema:
+                $ref: '#/components/schemas/ManagedObjectUser'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+        '404':
+          $ref: '#/components/responses/inventoryObjectNotFound'
 components:
+  schemas:
+    c8y_AvailabilityDataStatus:
+      description: The current status of availability, one of `AVAILABLE`, `UNAVAILABLE`, `MAINTENANCE`.
+      type: string
+      enum:
+      - AVAILABLE
+      - MAINTENANCE
+      - UNAVAILABLE
+    managedObjectUpdate:
+      type: object
+      required:
+      - id
+      properties:
+        id:
+          description: Unique identifier of the object.
+          type: string
+        name:
+          description: Human-readable name that is used for representing the object in user interfaces.
+          type: string
+          maxLength: 1000
+        type:
+          description: The fragment type can be interpreted as _device class_, this means, devices with the same type can receive the same types of configuration, software, firmware and operations. The type value is indexed and is therefore used for queries.
+          type: string
+          maxLength: 1000
+        c8y_IsDevice:
+          description: A fragment which identifies this managed object as a device.
+          type: object
+        c8y_IsDeviceGroup:
+          description: A fragment which identifies this managed object as a device group.
+          type: object
+        c8y_DeviceTypes:
+          type: array
+          description: 'This fragment must be added in order to publish sample commands for a subset of devices sharing the same device type. If the fragment is present, the list of sample commands for a device type
+
+            will be extended with the sample commands for the `c8y_DeviceTypes`. New sample commands created from the user interface will be created in the context of the `c8y_DeviceTypes`.
+
+            '
+          items:
+            type: string
+        c8y_SupportedOperations:
+          type: array
+          description: Lists the operations that are available for a particular device, so that applications can trigger the operations.
+          items:
+            type: string
+      additionalProperties:
+        description: 'It is possible to add an arbitrary number of additional properties as a list of key-value pairs, for example, `"property1": {}`, `"property2": "value"`.
+
+          These properties are known as custom fragments and can be of any type, for example, object or string. Each custom fragment is identified by a unique name.
+
+
+          Review [Getting started > Technical concepts > Cumulocity''s domain model > Inventory > Fragments > Naming conventions of fragments](https://www.cumulocity.com/docs/concepts/domain-model/#naming-conventions-of-fragments)
+
+          in the Cumulocity user documentation as there are characters that can not be used when naming custom fragments.
+
+          '
+        x-additionalPropertiesName: customFragments
+      example:
+        id: '51994'
+        name: My tracking device
+        c8y_IsDevice: {}
+        c8y_DeviceTypes:
+        - deviceSubsetType
+        c8y_SupportedOperations:
+        - c8y_Restart
+    desc_self:
+      title: SelfURL
+      description: A URL linking to this resource.
+      type: string
+      format: uri
+      readOnly: true
+    ManagedObjectCollectionUpdate:
+      type: object
+      required:
+      - managedObjects
+      properties:
+        managedObjects:
+          description: An array containing the managed objects to update.
+          type: array
+          minItems: 1
+          maxItems: 50
+          items:
+            $ref: '#/components/schemas/managedObjectUpdate'
+      example:
+        managedObjects:
+        - id: '51994'
+          name: My tracking device
+          owner: manga
+          c8y_IsDevice: {}
+    PreviousMeasurementValue:
+      type: object
+      readOnly: true
+      description: 'The read only fragment which contains the previous to latest measurements series values reported by the device.
+
+        > **⚠️ Feature Preview:** The feature is part of the Latest Measurement feature which is still under public feature preview.
+
+        '
+      required:
+      - value
+      properties:
+        unit:
+          description: The unit of the measurement series.
+          type: string
+          minLength: 1
+          example: C
+        time:
+          description: The time of the measurement series.
+          type: string
+          format: date-time
+          example: '2020-06-09T08:48:40.008Z'
+        value:
+          description: The value of the individual measurement.
+          type: number
+          example: 15
+    objectAdditionParents:
+      description: A collection of references to addition parent objects.
+      type: object
+      readOnly: true
+      properties:
+        references:
+          description: An array with the references to addition parent objects.
+          type: array
+          items:
+            $ref: '#/components/schemas/managedObjectReferenceTuple'
+          example: []
+        self:
+          description: Link to this resource's addition parent objects.
+          type: string
+          example: https://<TENANT_DOMAIN>/inventory/managedObjects/{id}/additionParents
+    objectChildDevices:
+      description: A collection of references to child devices.
+      type: object
+      readOnly: true
+      properties:
+        count:
+          description: The total number of child devices. Only present if the value is greater than 0.
+          type: integer
+        references:
+          description: An array with the references to child devices.
+          type: array
+          items:
+            $ref: '#/components/schemas/managedObjectReferenceTuple'
+          example: []
+        self:
+          description: Link to this resource's child devices.
+          type: string
+          example: https://<TENANT_DOMAIN>/inventory/managedObjects/{id}/childDevices
+    desc_nextPage:
+      title: NextPageURL
+      description: A URI reference [[RFC3986](https://tools.ietf.org/html/rfc3986)] to a potential next page of managed objects.
+      type: string
+      readOnly: true
+    managedObject:
+      type: object
+      properties:
+        creationTime:
+          description: The date and time when the object was created.
+          type: string
+          format: date-time
+          readOnly: true
+        id:
+          description: Unique identifier of the object.
+          type: string
+          readOnly: true
+        lastUpdated:
+          description: The date and time when the object was updated for the last time.
+          type: string
+          format: date-time
+          readOnly: true
+        name:
+          description: Human-readable name that is used for representing the object in user interfaces.
+          type: string
+          maxLength: 1000
+        owner:
+          description: Username of the device's owner.
+          type: string
+        self:
+          $ref: '#/components/schemas/desc_self'
+        type:
+          description: The fragment type can be interpreted as _device class_, this means, devices with the same type can receive the same types of configuration, software, firmware and operations. The type value is indexed and is therefore used for queries.
+          type: string
+          maxLength: 1000
+        childAdditions:
+          $ref: '#/components/schemas/objectChildAdditions'
+        childAssets:
+          $ref: '#/components/schemas/objectChildAssets'
+        childDevices:
+          $ref: '#/components/schemas/objectChildDevices'
+        additionParents:
+          $ref: '#/components/schemas/objectAdditionParents'
+        assetParents:
+          $ref: '#/components/schemas/objectAssetParents'
+        deviceParents:
+          $ref: '#/components/schemas/objectDeviceParents'
+        c8y_IsDevice:
+          description: A fragment which identifies this managed object as a device.
+          type: object
+        c8y_LatestMeasurements:
+          $ref: '#/components/schemas/c8y_LatestMeasurements'
+        c8y_PreviousMeasurements:
+          $ref: '#/components/schemas/c8y_PreviousMeasurements'
+        c8y_IsDeviceGroup:
+          description: A fragment which identifies this managed object as a device group.
+          type: object
+        c8y_DeviceTypes:
+          type: array
+          description: 'This fragment must be added in order to publish sample commands for a subset of devices sharing the same device type. If the fragment is present, the list of sample commands for a device type
+
+            will be extended with the sample commands for the `c8y_DeviceTypes`. New sample commands created from the user interface will be created in the context of the `c8y_DeviceTypes`.
+
+            '
+          items:
+            type: string
+        c8y_SupportedOperations:
+          type: array
+          description: Lists the operations that are available for a particular device, so that applications can trigger the operations.
+          items:
+            type: string
+      additionalProperties:
+        description: 'It is possible to add an arbitrary number of additional properties as a list of key-value pairs, for example, `"property1": {}`, `"property2": "value"`.
+
+          These properties are known as custom fragments and can be of any type, for example, object or string. Each custom fragment is identified by a unique name.
+
+
+          Review [Getting started > Technical concepts > Cumulocity''s domain model > Inventory > Fragments > Naming conventions of fragments](https://www.cumulocity.com/docs/concepts/domain-model/#naming-conventions-of-fragments)
+
+          in the Cumulocity user documentation as there are characters that can not be used when naming custom fragments.
+
+          '
+        x-additionalPropertiesName: customFragments
+      example:
+        creationTime: '2017-12-12T22:09:06.881+01:00'
+        id: '51994'
+        lastUpdated: '2018-07-19T12:01:50.731Z'
+        name: My tracking device
+        owner: manga
+        self: https://<TENANT_DOMAIN>/inventory/managedObjects/51994
+        c8y_IsDevice: {}
+        c8y_DeviceTypes:
+        - deviceSubsetType
+        c8y_SupportedOperations:
+        - c8y_Restart
+        c8y_LatestMeasurements:
+          c8y_Temperature:
+            T:
+              value: 10
+              unit: C
+              time: '2020-06-09T09:48:40.008Z'
+        c8y_PreviousMeasurements:
+          c8y_Temperature:
+            T:
+              value: 15
+              unit: C
+              time: '2020-06-09T08:48:40.008Z'
+        childAdditions:
+          self: https://<TENANT_DOMAIN>/inventory/managedObjects/51994/childAdditions
+          references: []
+        childAssets:
+          self: https://<TENANT_DOMAIN>/inventory/managedObjects/51994/childAssets
+          references: []
+        childDevices:
+          self: https://<TENANT_DOMAIN>/inventory/managedObjects/51994/childDevices
+          references: []
+        additionParents:
+          self: https://<TENANT_DOMAIN>/inventory/managedObjects/51994/additionParents
+          references: []
+        assetParents:
+          self: https://<TENANT_DOMAIN>/inventory/managedObjects/51994/assetParents
+          references: []
+        deviceParents:
+          self: https://<TENANT_DOMAIN>/inventory/managedObjects/51994/deviceParents
+          references: []
+    c8y_AvailabilityConnectionStatus:
+      description: The current status of connection, one of `CONNECTED`, `DISCONNECTED`, `MAINTENANCE`.
+      type: string
+      enum:
+      - CONNECTED
+      - DISCONNECTED
+      - MAINTENANCE
+    LatestMeasurementFragment:
+      type: object
+      readOnly: true
+      description: 'The read only fragment which contains the latest measurements series reported by the device.
+
+        > **⚠️ Feature Preview:** The feature is part of the Latest Measurement feature which is still under public feature preview.
+
+        '
+      additionalProperties:
+        $ref: '#/components/schemas/LatestMeasurementValue'
+    error:
+      type: object
+      properties:
+        error:
+          description: The type of error returned.
+          type: string
+        message:
+          description: A human-readable message providing more details about the error.
+          type: string
+        info:
+          description: A URI reference [[RFC3986](https://tools.ietf.org/html/rfc3986)] that identifies the error code reported.
+          type: string
+    ManagedObjectCollection:
+      type: object
+      properties:
+        managedObjects:
+          description: An array containing the results (managed objects) of the request.
+          type: array
+          items:
+            $ref: '#/components/schemas/managedObject'
+        next:
+          $ref: '#/components/schemas/desc_nextPage'
+        prev:
+          $ref: '#/components/schemas/desc_prevPage'
+        self:
+          $ref: '#/components/schemas/desc_self'
+        statistics:
+          $ref: '#/components/schemas/pageStatistics'
+      example:
+        self: https://<TENANT_DOMAIN>/inventory/managedObjects?pageSize=5&currentPage=1
+        managedObjects:
+        - creationTime: '2017-12-12T22:09:06.881+01:00'
+          id: '51994'
+          lastUpdated: '2018-07-19T12:01:50.731Z'
+          name: My tracking device
+          owner: manga
+          self: https://<TENANT_DOMAIN>/inventory/managedObjects/51994
+          c8y_IsDevice: {}
+        statistics:
+          totalPages: 1
+          pageSize: 5
+          currentPage: 1
+    c8y_PreviousMeasurements:
+      type: object
+      readOnly: true
+      description: 'The read only fragment which contains the previous to latest measurements reported by the device.
+
+        The returned optionally only if the query parameter `withLatestValues=true` is used.
+
+        > **⚠️ Feature Preview:** The feature is part of the Latest Measurement feature which is still under public feature preview.
+
+        '
+      additionalProperties:
+        $ref: '#/components/schemas/PreviousMeasurementFragment'
+      example:
+        c8y_Temperature:
+          T:
+            value: 15
+            unit: C
+            time: '2020-06-09T08:48:40.008Z'
+    externalId:
+      type: object
+      required:
+      - externalId
+      - type
+      properties:
+        externalId:
+          description: The identifier used in the external system that Cumulocity interfaces with.
+          type: string
+        managedObject:
+          type: object
+          description: The managed object linked to the external ID.
+          readOnly: true
+          properties:
+            id:
+              $ref: '#/components/schemas/desc_objectId'
+            self:
+              $ref: '#/components/schemas/desc_self'
+        self:
+          $ref: '#/components/schemas/desc_self'
+        type:
+          description: The type of the external identifier.
+          type: string
+      example:
+        externalId: simulator_145074_1
+        managedObject:
+          id: '251982'
+          self: https://<TENANT_DOMAIN>/inventory/managedObjects/251982
+        self: https://<TENANT_DOMAIN>/identity/externalIds/c8y_Serial/simulator_145074_1
+        type: c8y_Serial
+    managedObjectAvailability:
+      type: object
+      properties:
+        deviceId:
+          description: Identifier of the target device.
+          type: string
+        externalId:
+          description: The identifier used in the external system that Cumulocity interfaces with.
+          type: string
+        lastMessage:
+          type: string
+          format: date-time
+          description: The time when the device sent the last message to Cumulocity.
+          example: '2013-03-19T00:00:00.000Z'
+        interval:
+          type: integer
+          description: Required interval of monitored device
+        dataStatus:
+          $ref: '#/components/schemas/c8y_AvailabilityDataStatus'
+        connectionStatus:
+          $ref: '#/components/schemas/c8y_AvailabilityConnectionStatus'
+    desc_objectName:
+      title: ObjectName
+      description: Human-readable name that is used for representing the object in user interfaces.
+      type: string
+    pageStatistics:
+      description: Information about paging statistics.
+      type: object
+      readOnly: true
+      properties:
+        currentPage:
+          description: The current page of the paginated results.
+          type: integer
+          minimum: 1
+          example: 2
+        pageSize:
+          description: Indicates the number of objects that the collection may contain per page. The upper limit for one page is 2,000 objects.
+          type: integer
+          minimum: 1
+          maximum: 2000
+          example: 5
+        totalElements:
+          description: The total number of results (elements).
+          type: integer
+          minimum: 0
+          example: 12
+        totalPages:
+          description: 'The total number of paginated results (pages).
+
+
+            > **&#9432; Info:** This property is returned by default except when an operation retrieves all records where values are between an upper and lower boundary, for example, querying ranges using `dateFrom`–`dateTo`. In such cases, the query parameter `withTotalPages=true` should be used to include the total number of pages (at the expense of slightly slower performance).
+
+            '
+          type: integer
+          minimum: 0
+          example: 3
+    c8y_LatestMeasurements:
+      type: object
+      readOnly: true
+      description: 'The read only fragment which contains the latest measurements reported by the device.
+
+        The returned optionally only if the query parameter `withLatestValues=true` is used.
+
+        > **⚠️ Feature Preview:** The feature is part of the Latest Measurement feature which is still under public feature preview.
+
+        '
+      additionalProperties:
+        $ref: '#/components/schemas/LatestMeasurementFragment'
+      example:
+        c8y_Temperature:
+          T:
+            value: 10
+            unit: C
+            time: '2020-06-09T09:48:40.008Z'
+    objectDeviceParents:
+      description: A collection of references to device parent objects.
+      type: object
+      readOnly: true
+      properties:
+        references:
+          description: An array with the references to parent objects.
+          type: array
+          items:
+            $ref: '#/components/schemas/managedObjectReferenceTuple'
+          example: []
+        self:
+          description: Link to this resource's parent objects.
+          type: string
+          example: https://<TENANT_DOMAIN>/inventory/managedObjects/{id}/deviceParents
+    ManagedObjectUser:
+      type: object
+      properties:
+        enabled:
+          description: Specifies if the device's owner is enabled or not.
+          type: boolean
+        self:
+          $ref: '#/components/schemas/desc_self'
+        userName:
+          description: The username of the device's owner.
+          type: string
+          minLength: 1
+          readOnly: true
+      example:
+        self: https://<TENANT_DOMAIN>/inventory/managedObjects/{id}/user
+        userName: manga
+        enabled: true
+    SupportedMeasurements:
+      type: object
+      properties:
+        c8y_SupportedMeasurements:
+          description: An array containing all supported measurements of the specified managed object.
+          type: array
+          items:
+            type: string
+          example:
+          - c8y_MemoryMeasurement
+          - c8y_CPUMeasurement
+    PreviousMeasurementFragment:
+      type: object
+      readOnly: true
+      description: 'The read only fragment which contains the previous to latest measurements series reported by the device.
+
+        > **⚠️ Feature Preview:** The feature is part of the Latest Measurement feature which is still under public feature preview.
+
+        '
+      additionalProperties:
+        $ref: '#/components/schemas/PreviousMeasurementValue'
+    desc_objectId:
+      title: ObjectId
+      description: Unique identifier of the object.
+      type: string
+      minLength: 1
+    objectChildAssets:
+      description: A collection of references to child assets.
+      type: object
+      readOnly: true
+      properties:
+        count:
+          description: The total number of child assets. Only present if the value is greater than 0.
+          type: integer
+        references:
+          description: An array with the references to child assets.
+          type: array
+          items:
+            $ref: '#/components/schemas/managedObjectReferenceTuple'
+          example: []
+        self:
+          description: Link to this resource's child assets.
+          type: string
+          example: https://<TENANT_DOMAIN>/inventory/managedObjects/{id}/childAssets
+    ManagedObjectCollectionCreate:
+      type: object
+      required:
+      - managedObjects
+      properties:
+        managedObjects:
+          description: An array containing the managed objects to create.
+          type: array
+          minItems: 1
+          maxItems: 50
+          items:
+            $ref: '#/components/schemas/managedObjectCreate'
+      example:
+        managedObjects:
+        - name: My tracking device
+          c8y_IsDevice: {}
+    objectAssetParents:
+      description: A collection of references to asset parent objects.
+      type: object
+      readOnly: true
+      properties:
+        references:
+          description: An array with the references to asset parent objects.
+          type: array
+          items:
+            $ref: '#/components/schemas/managedObjectReferenceTuple'
+          example: []
+        self:
+          description: Link to this resource's asset parent objects.
+          type: string
+          example: https://<TENANT_DOMAIN>/inventory/managedObjects/{id}/assetParents
+    desc_prevPage:
+      title: PreviousPageURL
+      description: A URI reference [[RFC3986](https://tools.ietf.org/html/rfc3986)] to a potential previous page of managed objects.
+      type: string
+      readOnly: true
+    SupportedSeries:
+      type: object
+      properties:
+        c8y_SupportedSeries:
+          description: An array containing all supported measurement series of the specified device.
+          type: array
+          items:
+            type: string
+          example:
+          - c8y_MemoryMeasurement.Total
+          - c8y_CPUMeasurement.Workload
+          - c8y_MemoryMeasurement.Used
+    inventoryObjectDeleteInBackground:
+      type: object
+      properties:
+        message:
+          description: A human-readable message stating that the deletion continues in the background.
+          type: string
+      example:
+        message: Managed object delete is being continued in background
+    managedObjectReferenceTuple:
+      type: object
+      properties:
+        managedObject:
+          description: Details of the referenced managed object.
+          type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/desc_objectId'
+            name:
+              $ref: '#/components/schemas/desc_objectName'
+            self:
+              $ref: '#/components/schemas/desc_self'
+        self:
+          $ref: '#/components/schemas/desc_self'
+    objectChildAdditions:
+      description: A collection of references to child additions.
+      type: object
+      readOnly: true
+      properties:
+        count:
+          description: The total number of child additions. Only present if the value is greater than 0.
+          type: integer
+        references:
+          description: An array with the references to child devices.
+          type: array
+          items:
+            $ref: '#/components/schemas/managedObjectReferenceTuple'
+          example: []
+        self:
+          description: Link to this resource's child additions.
+          type: string
+          example: https://<TENANT_DOMAIN>/inventory/managedObjects/{id}/childAdditions
+    bulkRequestError:
+      allOf:
+      - $ref: '#/components/schemas/error'
+      - type: object
+        properties:
+          bulkRequest:
+            description: 'Present when the error belongs to one element of the bulk request.
+
+              Absent when the error belongs to the whole request, for example, when the request has too many elements or none.
+
+              '
+            type: object
+            required:
+            - failedIndex
+            properties:
+              failedIndex:
+                description: 'The position of the element that the error belongs to, counted from 0 in the request.
+
+                  If several elements are invalid, the lowest position is reported.
+
+                  '
+                type: integer
+                minimum: 0
+                example: 17
+              fragmentType:
+                description: 'The batch marker fragment carried by the managed objects that the request created.
+
+                  Present only when part of the bulk create may have been created.
+
+                  Use it as the `fragmentType` query parameter to find the created managed objects.
+
+                  '
+                type: string
+                example: c8y_BatchId_7c8e1e0a-3b2f-4f6e-9a51-5d2c7e4b9f10
+    LatestMeasurementValue:
+      type: object
+      readOnly: true
+      description: 'The read only fragment which contains the latest measurements series values reported by the device.
+
+        > **⚠️ Feature Preview:** The feature is part of the Latest Measurement feature which is still under public feature preview.
+
+        '
+      required:
+      - value
+      properties:
+        unit:
+          description: The unit of the measurement series.
+          type: string
+          minLength: 1
+          example: C
+        time:
+          description: The time of the measurement series.
+          type: string
+          format: date-time
+          example: '2020-06-09T09:48:40.008Z'
+        value:
+          description: The value of the individual measurement.
+          type: number
+          example: 100
+    managedObjectCreate:
+      type: object
+      properties:
+        name:
+          description: Human-readable name that is used for representing the object in user interfaces.
+          type: string
+          maxLength: 1000
+        type:
+          description: The fragment type can be interpreted as _device class_, this means, devices with the same type can receive the same types of configuration, software, firmware and operations. The type value is indexed and is therefore used for queries.
+          type: string
+          maxLength: 1000
+        externalIds:
+          description: List of external identifiers to bind to newly created managed object.
+          type: array
+          items:
+            $ref: '#/components/schemas/externalId'
+        c8y_IsDevice:
+          description: A fragment which identifies this managed object as a device.
+          type: object
+        c8y_IsDeviceGroup:
+          description: A fragment which identifies this managed object as a device group.
+          type: object
+        c8y_DeviceTypes:
+          type: array
+          description: 'This fragment must be added in order to publish sample commands for a subset of devices sharing the same device type. If the fragment is present, the list of sample commands for a device type
+
+            will be extended with the sample commands for the `c8y_DeviceTypes`. New sample commands created from the user interface will be created in the context of the `c8y_DeviceTypes`.
+
+            '
+          items:
+            type: string
+        c8y_SupportedOperations:
+          type: array
+          description: Lists the operations that are available for a particular device, so that applications can trigger the operations.
+          items:
+            type: string
+      additionalProperties:
+        description: 'It is possible to add an arbitrary number of additional properties as a list of key-value pairs, for example, `"property1": {}`, `"property2": "value"`.
+
+          These properties are known as custom fragments and can be of any type, for example, object or string. Each custom fragment is identified by a unique name.
+
+
+          Review [Getting started > Technical concepts > Cumulocity''s domain model > Inventory > Fragments > Naming conventions of fragments](https://www.cumulocity.com/docs/concepts/domain-model/#naming-conventions-of-fragments)
+
+          in the Cumulocity user documentation as there are characters that can not be used when naming custom fragments.
+
+          '
+        x-additionalPropertiesName: customFragments
+      example:
+        name: My tracking device
+        externalIds:
+        - externalId: simulator_145074_1
+          type: c8y_Serial
+        c8y_IsDevice: {}
+        c8y_DeviceTypes:
+        - deviceSubsetType
+        c8y_SupportedOperations:
+        - c8y_Restart
   parameters:
-    ManagedObjectId:
+    queryParam_inventory_textPrefix:
+      name: text
+      in: query
+      description: 'Perform full-text search on managed objects. The following properties are examined: `id`, `type`, `name`, `owner`, `externalIds`.
+
+
+        The search value is processed using full-text tokenization: the provided string is split into individual tokens at whitespace and certain special characters (such as `/`, `-`, `.`), and the search matches managed objects that contain **any** of those tokens in the examined properties.
+
+
+        For example, searching for `abc/def-ghi` produces the tokens `abc`, `def`, and `ghi`. As a result, managed objects whose examined properties contain any of these tokens will be returned, which may include unintended results.
+
+
+        To search for an exact phrase, wrap the value in double quotes (for example, `text="abc/def-ghi"`). This restricts results to managed objects that contain the full phrase rather than any individual token.
+
+
+        > **&#9432; Info:** If you need an exact match on a specific property, consider using the `query` parameter with an explicit filter expression instead (for example, `$filter=(name+eq+''abc/def-ghi'')`).
+
+        '
+      schema:
+        type: string
+        minLength: 1
+        example: my_value
+    processingModeHeader:
+      name: X-Cumulocity-Processing-Mode
+      in: header
+      description: Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+      required: false
+      schema:
+        type: string
+        default: PERSISTENT
+        enum:
+        - PERSISTENT
+        - TRANSIENT
+        - QUIESCENT
+        - CEP
+        example: PERSISTENT
+    queryParam_currentPage:
+      name: currentPage
+      in: query
+      description: The current page of the paginated results.
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+        example: 3
+    queryParam_withTotalElements:
+      name: withTotalElements
+      in: query
+      description: 'When set to `true`, the returned result will contain in the statistics object the total number of elements. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
+
+        > **&#9432; Info:** To improve performance, the `totalElements` statistics are cached for 10 seconds.
+
+        '
+      schema:
+        type: boolean
+        default: false
+        example: true
+    queryParam_inventory_childAssetId:
+      name: childAssetId
+      in: query
+      description: Search for a specific child asset and list all the groups to which it belongs.
+      schema:
+        type: string
+        minLength: 1
+        example: '200'
+    queryParam_inventory_childAdditionId:
+      name: childAdditionId
+      in: query
+      description: Search for a specific child addition and list all the groups to which it belongs.
+      schema:
+        type: string
+        minLength: 1
+        example: '3003'
+    queryParam_inventory_onlyRoots:
+      name: onlyRoots
+      in: query
+      description: When set to `true` it returns managed objects which don't have any parent. If the current user doesn't have access to the parent, this is also root for the user.
+      schema:
+        type: boolean
+        default: false
+        example: true
+    queryParam_withLatestValues:
+      name: withLatestValues
+      in: query
+      description: "If set to true the platform returns managed objects with the fragment `c8y_LatestMeasurements`, which contains the latest measurement values reported by the device to the platform. Additionally returned managed objects can have fragment `c8y_PreviousMeasurements` if there was a value of a given series previous to the latest.  \n\n> **⚠️ Feature Preview:** The parameter is a part of the Latest Measurement feature which is still under public preview.\n"
+      schema:
+        type: boolean
+        default: false
+        example: true
+    queryParam_withTotalPages:
+      name: withTotalPages
+      in: query
+      description: 'When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
+
+        > **&#9432; Info:** To improve performance, the `totalPages` statistics are cached for 10 seconds.
+
+        '
+      schema:
+        type: boolean
+        default: false
+        example: true
+    queryParam_inventory_withChildren:
+      name: withChildren
+      in: query
+      description: Determines if children with ID and name should be returned when fetching the managed object. Set it to `false` to improve query performance. The default behavior can be controlled by the feature toggle `core.inventory.without.children`. When this toggle is disabled, the default value reverts to `true` for backward compatibility.
+      schema:
+        type: boolean
+        default: false
+        example: false
+    queryParam_inventory_cascade:
+      name: cascade
+      in: query
+      description: When set to `true` and the managed object is a device or group, all the hierarchy will be deleted.
+      schema:
+        type: boolean
+        default: false
+        example: true
+    managedObjectId:
       name: id
       in: path
+      description: Unique identifier of the managed object.
       required: true
       schema:
         type: string
-    PageSize:
+        minLength: 1
+        example: '251982'
+    queryParam_inventory_owner:
+      name: owner
+      in: query
+      description: Username of the owner of the managed objects.
+      schema:
+        type: string
+        minLength: 1
+        example: manga
+    queryParam_skipChildrenNames:
+      name: skipChildrenNames
+      in: query
+      description: When set to `true`, the returned references of child devices won't contain their names.
+      schema:
+        type: boolean
+        default: false
+        example: true
+    queryParam_inventory_forceCascade:
+      name: forceCascade
+      in: query
+      description: When set to `true` all the hierarchy will be deleted without checking the type of managed object. It takes precedence over the parameter `cascade`.
+      schema:
+        type: boolean
+        default: false
+        example: true
+    queryParam_inventory_withDeviceUser:
+      name: withDeviceUser
+      in: query
+      description: When set to `true` and the managed object is a device, it deletes the associated device user (credentials).
+      schema:
+        type: boolean
+        default: false
+        example: true
+    queryParam_withParents:
+      name: withParents
+      in: query
+      description: 'When withParents is set to `true`, the request will include all ancestors from all the levels above the device in the hierarchy. If no parents exist, an empty array will be returned.
+
+        > **&#9432; Info:** Inventory roles are not taken into consideration when collecting managed object parents, so basic information about all ancestors will be returned.
+
+        '
+      schema:
+        type: boolean
+        default: false
+        example: true
+    queryParam_fragmentType:
+      name: fragmentType
+      in: query
+      description: A characteristic which identifies a managed object or event, for example, geolocation, electricity sensor, relay state.
+      schema:
+        type: string
+        minLength: 1
+        example: c8y_IsDevice
+    queryParam_inventory_withChildrenCount:
+      name: withChildrenCount
+      in: query
+      description: When set to `true`, the returned result will contain the total number of children in the respective objects (`childAdditions`, `childAssets` and `childDevices`).
+      schema:
+        type: boolean
+        default: false
+        example: true
+    queryParam_inventory_withGroups:
+      name: withGroups
+      in: query
+      description: When set to `true` it returns additional information about the groups to which the searched managed object belongs. This results in setting the `assetParents` property with additional information about the groups.
+      schema:
+        type: boolean
+        default: false
+        example: true
+    queryParam_inventory_deviceQuery:
+      name: q
+      in: query
+      description: Similar to the parameter `query`, but it assumes that this is a device query request and it adds automatically the search criteria `fragmentType=c8y_IsDevice`.
+      schema:
+        type: string
+        minLength: 1
+        example: $filter=(owner+eq+'manga')
+    queryParam_inventory_childDeviceId:
+      name: childDeviceId
+      in: query
+      description: Search for a specific child device and list all the groups to which it belongs.
+      schema:
+        type: string
+        minLength: 1
+        example: '2001'
+    acceptHeader:
+      name: Accept
+      in: header
+      description: Advertises which content types, expressed as MIME types, the client is able to understand.
+      required: false
+      schema:
+        type: string
+        minLength: 1
+        example: application/json
+    queryParam_inventory_type:
+      name: type
+      in: query
+      description: The type of managed object to search for.
+      schema:
+        type: string
+        minLength: 1
+        example: c8y_DeviceGroup
+    queryParam_inventory_ids:
+      name: ids
+      in: query
+      description: 'The managed object IDs to search for.
+
+        >**&#9432; Info:** If you query for multiple IDs at once, comma-separate the values.
+
+        '
+      schema:
+        type: array
+        items:
+          type: string
+          minLength: 1
+        example:
+        - '200'
+        - '300'
+      style: form
+      explode: false
+    queryParam_query:
+      name: query
+      in: query
+      description: Use query language to perform operations and/or filter the results. Details about the properties and supported operations can be found in [Query language](#tag/Query-language).
+      schema:
+        type: string
+        minLength: 1
+        example: $filter=(owner+eq+'manga')
+    queryParam_pageSize:
       name: pageSize
       in: query
+      description: Indicates how many entries of the collection shall be returned. The upper limit for one page is 2,000 objects.
       schema:
         type: integer
         minimum: 1
         maximum: 2000
         default: 5
-    CurrentPage:
-      name: currentPage
-      in: query
-      schema:
-        type: integer
-        minimum: 1
-        default: 1
-    WithTotalPages:
-      name: withTotalPages
-      in: query
-      schema:
-        type: boolean
-        default: false
-  schemas:
-    ManagedObjectReferenceCollection:
-      type: object
-      properties:
-        self:
-          type: string
-          format: uri
-        references:
-          type: array
-          items:
-            $ref: '#/components/schemas/ManagedObjectReference'
-    ManagedObjectCollection:
-      type: object
-      properties:
-        self:
-          type: string
-          format: uri
-        managedObjects:
-          type: array
-          items:
-            $ref: '#/components/schemas/ManagedObject'
-        statistics:
-          $ref: '#/components/schemas/PageStatistics'
-        next:
-          type: string
-          format: uri
-        prev:
-          type: string
-          format: uri
-    ManagedObjectReference:
-      type: object
-      properties:
-        self:
-          type: string
-          format: uri
-        managedObject:
-          type: object
-          properties:
-            id:
-              type: string
-            self:
-              type: string
-              format: uri
-            name:
-              type: string
-    ManagedObject:
-      type: object
-      properties:
-        id:
-          type: string
-          readOnly: true
-        self:
-          type: string
-          format: uri
-          readOnly: true
-        type:
-          type: string
-        name:
-          type: string
-        owner:
-          type: string
-        creationTime:
-          type: string
-          format: date-time
-        lastUpdated:
-          type: string
-          format: date-time
-        c8y_IsDevice:
-          type: object
-        c8y_IsDeviceGroup:
-          type: object
-        c8y_Hardware:
-          type: object
-          properties:
-            model:
-              type: string
-            revision:
-              type: string
-            serialNumber:
-              type: string
-        c8y_Firmware:
-          type: object
-          properties:
-            name:
-              type: string
-            version:
-              type: string
-            url:
-              type: string
-        childDevices:
-          $ref: '#/components/schemas/ManagedObjectReferenceCollection'
-        childAssets:
-          $ref: '#/components/schemas/ManagedObjectReferenceCollection'
-        childAdditions:
-          $ref: '#/components/schemas/ManagedObjectReferenceCollection'
-        deviceParents:
-          $ref: '#/components/schemas/ManagedObjectReferenceCollection'
-        assetParents:
-          $ref: '#/components/schemas/ManagedObjectReferenceCollection'
-    PageStatistics:
-      type: object
-      properties:
-        pageSize:
-          type: integer
-        currentPage:
-          type: integer
-        totalPages:
-          type: integer
+        example: 10
+  responses:
+    inventoryObjectNotFound:
+      description: Managed object not found.
+      content:
+        application/vnd.com.nsn.cumulocity.error+json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            error: inventory/Not Found
+            message: Finding device data from database failed
+            info: https://www.cumulocity.com/guides/reference-guide/#error_reporting
+    inventoryObjectDeleteConflict:
+      description: Conflict – The device user cannot be deleted with `withDeviceUser=true` because it owns other managed objects.
+      content:
+        application/vnd.com.nsn.cumulocity.error+json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            error: inventory/Update Conflict
+            message: Can't delete user because it is used by another managed object
+            info: https://www.cumulocity.com/guides/reference-guide/#error_reporting
+    inventoryObjectDeleteTooManyRequests:
+      description: Too Many Requests – Too many delete operations are in progress.
+      content:
+        application/vnd.com.nsn.cumulocity.error+json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            error: inventory/Too Many Requests
+            message: Too many delete operations in progress.
+            info: https://www.cumulocity.com/guides/reference-guide/#error_reporting
+    inventoryObjectDeleteInvalidData:
+      description: Unprocessable Entity – The managed object cannot be deleted through the Inventory API, for example a binary, a tenant or a monitored application.
+      content:
+        application/vnd.com.nsn.cumulocity.error+json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            error: inventory/Invalid Data
+            message: Cannot delete managed object.
+            info: https://www.cumulocity.com/guides/reference-guide/#error_reporting
+    unauthorizedError:
+      description: Authentication information is missing or invalid.
+      content:
+        application/vnd.com.nsn.cumulocity.error+json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            error: security/Unauthorized
+            message: 'Invalid credentials! : Bad credentials'
+            info: https://www.cumulocity.com/guides/reference-guide/#error_reporting
+    inventoryObjectFound:
+      description: The request has succeeded and the object is sent in the response.
+      content:
+        application/vnd.com.nsn.cumulocity.managedobject+json:
+          schema:
+            $ref: '#/components/schemas/managedObject'
+    invalidData:
+      description: Invalid data was sent.
+      content:
+        application/vnd.com.nsn.cumulocity.error+json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            error: inventory/Invalid Data
+            message: 'Find by filter query failed : Query could not be understood.'
+            info: https://www.cumulocity.com/guides/reference-guide/#error_reporting
+    operationNotAuthorized:
+      description: Not authorized to perform this operation.
+    inventoryObjectCollectionFound:
+      description: The request has succeeded and the collection of objects is sent in the response.
+      content:
+        application/vnd.com.nsn.cumulocity.managedobjectcollection+json:
+          schema:
+            $ref: '#/components/schemas/ManagedObjectCollection'
+    invalidBulkPayload:
+      description: Unprocessable Entity – invalid payload.
+      content:
+        application/vnd.com.nsn.cumulocity.error+json:
+          schema:
+            $ref: '#/components/schemas/bulkRequestError'
+          example:
+            error: undefined/validationError
+            info: https://www.cumulocity.com/guides/reference-guide/#error_reporting
+            bulkRequest:
+              failedIndex: 2
   securitySchemes:
-    basicAuth:
+    Basic:
       type: http
       scheme: basic
-    bearerAuth:
+      description: 'The authorization header is formed as `Basic <Base64(<tenantID>/<c8yuser>:<password>)>`. For instance, if your tenantID, username and password are **t0071234**, **testuser** and **secret123** respectively, you can generate the Base64 string with the following command:
+
+
+        ```shell
+
+        $ echo -n t0071234/testuser:secret123 | base64
+
+        ```
+
+
+        and your authorization header would look like this:
+
+
+        ```
+
+        "Authorization": "Basic dDAwNzEyMzQvdGVzdHVzZXI6c2VjcmV0MTIz"
+
+        ```
+
+        '
+    OAI-Secure:
+      type: http
+      scheme: bearer
+      description: 'This is the recommended authorization method because it provides high security using authorization tokens to prove the identity of the user, and it is the default login mode on creating new tenants. This mode is an enhancement of the previous OAuth Internal authentication (available prior to 10.13.0).
+
+
+        For more details about OAI-Secure authentication, see [Platform administration > Authentication > Basic settings > Login settings](https://www.cumulocity.com/docs/authentication/basic-settings/#login-settings) in the Cumulocity user documentation.
+
+        '
+    SSO:
+      type: oauth2
+      description: "The login with SSO requires a correct configuration on the [Cumulocity side](https://www.cumulocity.com/docs/authentication/sso/). With the configuration, an additional button is available on the Login page. After clicking the button, the user is redirected to authenticate with the configured authorization server. On successful login, the user is redirected to Cumulocity.\n\nAuthentication details are exchanged using cookies. There are two parts to it, the first is the authentication cookie that is handled automatically by the Cumulocity platform. The second is the XSRF-TOKEN cookie. When a client receives the cookie, it should take the value and put it in the X-XSRF-TOKEN request header in all subsequent requests.\n\nThe flow of authenticating with authentication code grant is as follows:\n\n![Authentication flow](images/oauth-simple-flow.png)\n\nThe first request executed by the browser is:\n\n```http\nGET /tenant/loginOptions\nHost: https://<TENANT_DOMAIN>\nAccept: application/vnd.com.nsn.cumulocity.loginoptioncollection+json\n```\n\nResponse sample:\n\n```json\n{\n    \"loginOptions\": [\n        {\n            \"buttonName\": \"Login with oauth\",\n            \"grantType\": \"<AUTHORIZATION_CODE>\",\n            \"initRequest\": \"https://<TENANT_DOMAIN>/tenant/oauth?response_type=code&tenant_id=<TENANT_ID>\",\n            \"self\": \"https://<TENANT_DOMAIN>/tenant/loginOptions/oauth2\",\n            \"type\": \"oauth2\"\n        },\n        ...\n    ],\n    \"self\": \"http://<TENANT_DOMAIN>/tenant/loginOptions/\"\n}\n```\n\nThe browser must invoke the request provided in the initRequest parameter.\n\nThe initRequest initiates the redirect, in which the user is prompted for credentials. After successful login, the user is redirected back to the browser, where it must capture the code request parameter. Then the request to exchange the code for the token is as follows:\n\n```http\nPOST /tenant/oauth?grant_type=authorization_code&code=<CODE>\nHost: https://<TENANT_DOMAIN>\n```\n\nA successful response will have no body but the following response headers:\n\n```\nSet-Cookie: authorization=<TOKEN>;\nSet-Cookie: XSRF-TOKEN=<XSRF-TOKEN>;\n```\n\nThe authorization cookie is valid for two weeks.\n"
+      flows:
+        clientCredentials:
+          tokenUrl: /tenant/oauth?grant_type=authorization_code&code=<CODE>
+          scopes: {}
+    JWT-IAM:
       type: http
       scheme: bearer
       bearerFormat: JWT
+      description: 'This kind of authentication substitutes the JWT authentication with OAuth2 access tokens from your Identity and Access Management (IAM).
+
+        You can enable this in the [SSO configuration](https://www.cumulocity.com/docs/authentication/sso/).
+
+
+        The HTTP header must include:
+
+
+        ```
+
+        "Authorization": "Bearer <Access token>"
+
+        ```
+
+
+        When a request with a bearer token in the header is received, Cumulocity checks if the access token is from your IAM (that is, if authentication is enabled in your SSO configuration), and verifies the authenticity of
+
+        the token remotely against the IAM.
+
+        '
+x-tagGroups:
+- name: Platform
+  tags:
+  - Platform API
+- name: Alarms
+  tags:
+  - Alarm API
+  - Alarm notification API
+  - Alarms
+- name: Applications
+  tags:
+  - Application API
+  - Applications
+  - Application versions
+  - Application binaries
+  - Bootstrap user
+  - Current application
+- name: Audits
+  tags:
+  - Audit API
+  - Audits
+- name: Device control
+  tags:
+  - Device control API
+  - Device control notification API
+  - Operations
+  - Bulk operations
+  - Device credentials
+  - New device requests
+  - Device control via SMS
+- name: Events
+  tags:
+  - Event API
+  - Event notification API
+  - Events
+  - Attachments
+- name: Feature toggles
+  tags:
+  - Feature toggles API
+- name: Identity
+  tags:
+  - Identity API
+  - External IDs
+- name: Inventory
+  tags:
+  - Inventory API
+  - Inventory notification API
+  - Managed objects
+  - Binaries
+  - Child operations
+  - Query language
+- name: Measurements
+  tags:
+  - Measurement API
+  - Measurement notification API
+  - Measurements
+  - Measurements specifics
+- name: Notifications 2.0
+  tags:
+  - About notifications 2.0
+  - Notification 2.0 API
+  - Subscriptions
+  - Tokens
+- name: Real-time notifications
+  tags:
+  - Real-time notification API
+- name: Retentions
+  tags:
+  - Retention rules
+- name: Tenants
+  tags:
+  - Tenant API
+  - Tenants
+  - Tenant applications
+  - Trusted certificates
+  - Device statistics
+  - Usage statistics
+  - Options
+  - Login options
+  - Login tokens
+  - System options
+- name: Users
+  tags:
+  - User API
+  - Current User
+  - Users
+  - Groups
+  - Roles
+  - Inventory Roles
+  - Device Permissions
+- name: Certificate
+  tags:
+  - Certificate authority
+  - Device enrollment

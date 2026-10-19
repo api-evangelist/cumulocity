@@ -1,0 +1,107 @@
+openapi: 3.2.0
+info:
+  title: Cumulocity Device Bootstrap New Device Requests API
+  version: 10.20.0
+  description: 'Zero-touch device onboarding flow. A factory-bootstrapped device authenticates with a shared bootstrap
+
+    user, polls /devicecontrol/deviceCredentials with its external ID, and receives back tenant-scoped
+
+    credentials once an admin accepts the registration request in the Device Management UI.'
+servers:
+- url: https://{tenant}.cumulocity.com
+  variables:
+    tenant:
+      default: example
+security:
+- bootstrapAuth: []
+- basicAuth: []
+tags:
+- name: New Device Requests
+paths:
+  /devicecontrol/newDeviceRequests:
+    get:
+      tags:
+      - New Device Requests
+      summary: List New Device Requests
+      operationId: listNewDeviceRequests
+      responses:
+        '200':
+          description: A collection of pending registration requests.
+    post:
+      tags:
+      - New Device Requests
+      summary: Create a New Device Request
+      operationId: createNewDeviceRequest
+      requestBody:
+        required: true
+        content:
+          application/vnd.com.nsn.cumulocity.newDeviceRequest+json:
+            schema:
+              $ref: '#/components/schemas/NewDeviceRequest'
+      responses:
+        '201':
+          description: Registration request created.
+  /devicecontrol/newDeviceRequests/{id}:
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      tags:
+      - New Device Requests
+      summary: Retrieve a New Device Request
+      operationId: getNewDeviceRequest
+      responses:
+        '200':
+          description: A single registration request.
+    put:
+      tags:
+      - New Device Requests
+      summary: Accept or Reject a New Device Request
+      operationId: updateNewDeviceRequest
+      requestBody:
+        required: true
+        content:
+          application/vnd.com.nsn.cumulocity.newDeviceRequest+json:
+            schema:
+              $ref: '#/components/schemas/NewDeviceRequest'
+      responses:
+        '200':
+          description: Registration request updated.
+    delete:
+      tags:
+      - New Device Requests
+      summary: Delete a New Device Request
+      operationId: deleteNewDeviceRequest
+      responses:
+        '204':
+          description: Registration request deleted.
+components:
+  schemas:
+    NewDeviceRequest:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+          enum:
+          - WAITING_FOR_CONNECTION
+          - PENDING_ACCEPTANCE
+          - ACCEPTED
+        self:
+          type: string
+          format: uri
+        creationTime:
+          type: string
+          format: date-time
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    bootstrapAuth:
+      type: http
+      scheme: basic
+      description: HTTP Basic with the tenant-wide bootstrap user (devicebootstrap).

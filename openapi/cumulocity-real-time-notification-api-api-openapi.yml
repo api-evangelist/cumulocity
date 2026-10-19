@@ -1,0 +1,652 @@
+openapi: 3.2.0
+info:
+  version: Latest
+  title: Cumulocity Real-time notification API
+  x-logo:
+    url: https://www.cumulocity.com/docs/images/logo-platform.svg
+    backgroundColor: '#F8F8F8'
+    altText: Cumulocity
+    href: https://www.cumulocity.com/api
+  description: '# REST implementation
+
+
+    This section describes the aspects common to all REST-based interfaces of Cumulocity. The interfaces are based on the Hypertext Transfer Protocol 1.1 using HTTPS. ## HTTP usage
+
+
+    ### Application management
+
+
+    Cumulocity uses a so-called "application key" to distinguish requests coming from devices and traffic from applications. If you write an application, pass the following header as part of all requests:
+
+
+    ```markup
+
+    X-Cumulocity-Application-Key:
+
+    ```
+
+
+    For example, if you registered your application in the Cumulocity Administration application with the key "myapp", your requests should contain the header:
+
+
+    ```markup
+
+    X-Cumulocity-Application-Key: myapp
+
+    ```
+
+
+    This makes your application subscribable and billable. If you implement a device, do not pass the key. > **ⓘ Info:** Make sure that you pass the key in **all** requests coming from an application. If you leave out the key,
+
+    > the request will be considered as a device request, and the corresponding device will be marked as "available". ### Limited HTTP clients
+
+
+    If you use an HTTP client that can only perform GET and POST methods in HTTP, you can emulate the other methods through an additional "X-HTTP-METHOD" header. Simply issue a POST request and add the header, specifying the actual REST method to be executed. For example, to emulate the "PUT" (modify) method, you can use:
+
+
+    ```http
+
+    POST ... X-HTTP-METHOD: PUT
+
+    ```
+
+
+    ### Processing mode
+
+
+    Every update request (PUT, POST, DELETE) executes with a so-called *processing mode*. The processing modes are as follows:
+
+
+    |Processing mode|Description|
+
+    |---|---|
+
+    |PERSISTENT (default)|Stores data in the Cumulocity database and sends data to the Streaming Analytics engine. Afterwards, Cumulocity returns the result of the request. This is the default mode.|
+
+    |TRANSIENT|Sends data to the Streaming Analytics engine and immediately returns the results asynchronously but does not store data in Cumulocity’s database. This mode saves storage and processing costs and is useful for example when tracking devices in real time without requiring data to be stored.|
+
+    |QUIESCENT|Behaves similar to the persistent mode with the exception that no real-time notifications will be sent.|
+
+    |CEP|Behaves like the transient mode with the exception that no real-time notifications are sent.|
+
+
+    To explicitly control the processing mode of an update request, you can use the "X-Cumulocity-Processing-Mode" header with a value of either "PERSISTENT", "TRANSIENT", "QUIESCENT" or "CEP":
+
+
+    ```markup
+
+    X-Cumulocity-Processing-Mode: PERSISTENT
+
+    ```
+
+
+    > **ⓘ Info:** Events are always delivered to CEP/Apama for all processing modes. This is independent from real-time notifications. ### Authorization
+
+
+    All requests issued to Cumulocity are subject to authorization. To determine the required permissions, see the "Required role" entries for the individual requests. To learn more about the different permissions and the concept of ownership in Cumulocity, see Getting started > Technical concepts > Security aspects > Access control > Managing roles and assigning permissions in the Cumulocity user documentation. > **⚠️ Important:** In the Cumulocity API, each granular permission is identified by a unique “permission” string, which is prefixed with ROLE_ (for example, ROLE_ALARM_READ, ROLE_INVENTORY_ADMIN). Therefore, permissions are frequently referred to as “roles” throughout the API as well as in the configuration files. For example, the microservice manifest includes a requiredRoles field, which actually expects a permission string. See also the Glossary of the Cumulocity user documentation for the usage of the terms “permission” and “role” in the Cumulocity context. ### Media types
+
+
+    Each type of data is associated with an own media type. The general format of media types is:
+
+
+    ```markup
+
+    application/vnd.com.nsn.cumulocity.+json;ver=;charset=UTF-8
+
+    ```
+
+
+    Each media type contains a parameter `ver` indicating the version of the type.'
+servers:
+- description: Cumulocity tenant
+  url: https://<TENANT_DOMAIN>
+security:
+- Basic: []
+- OAI-Secure: []
+- SSO: []
+- JWT-IAM: []
+tags:
+- name: Real-time notification API
+  description: '# Real-time operations
+
+
+    Real-time notification services of Cumulocity have their own subscription channel name format and URL. The real-time notifications are available for Alarms, Device control, Events, Inventory and Measurements. Note that when using long-polling, all POST requests must contain the Accept header, otherwise an empty response body will be returned. All requests are sent to the /notification/realtime endpoint. > **ⓘ Info:** The long-polling interface is designed as a mechanism for custom applications to poll infrequent events from Cumulocity. The long-polling interface is not designed as a mechanism to stream large data volumes (>100kB/sec) or frequent data (>50 events/sec) out of Cumulocity. The usage of long-polling is not supported for such use cases. > **⚠️ Important:** Real-time notification is based on the Bayeux protocol where idle clients will have their sessions terminated after a set interval, defaulting to 2 hours. > An idle client is one that has not received any messages from the server, nor polled the `/meta/connect` endpoint. > To avoid session termination clients should poll `/meta/connect` and follow the instructions for Long-running connections. > Additional information regarding the Bayeux protocol can be found in the CometD documentation under Appendix C: The Bayeux Protocol Specification 1.0. ## Handshake
+
+
+    A real-time notifications client initiates the connection negotiation by sending a message to the `/meta/handshake` channel. In response, the client receives a `clientId` which identifies a conversation and must be passed in every non-handshake request. > **ⓘ Info:** The number of parallel connections that can be opened at the same time by a single user is limited. After exceeding this limit when a new connection is created, the oldest one will be closed and the newly created one will be added in its place. This limit is configurable and managed per installation. Its default value is 10 connections per user, subscription channel and server node. When using WebSockets, a property `ext` containing an authentication object must be sent. In case of basic authentication, the token is used with Base64 encoded credentials. In case of OAuth authentication, the request must have the cookie with the authorization name, holding the access token. Moreover, the XSRF token must be forwarded as part of the handshake message. ### Request example
+
+
+    ```http
+
+    POST /notification/realtime
+
+    Authorization:
+
+    Content-Type: application/json
+
+
+    [
+
+    {
+
+    "channel": "/meta/handshake",
+
+    "version": "1.0"
+
+    }
+
+    ]
+
+    ```
+
+
+    ### Response example
+
+
+    A successful response looks like:
+
+
+    ```json
+
+    [
+
+    {
+
+    "channel": "/meta/handshake",
+
+    "clientId": "69wzith4teyensmz6zyk516um4yum0mvp",
+
+    "minimumVersion": "1.0",
+
+    "successful": true,
+
+    "supportedConnectionTypes": [
+
+    "long-polling",
+
+    "smartrest-long-polling",
+
+    "websocket"
+
+    ],
+
+    "version": "1.0"
+
+    }
+
+    ]
+
+    ```
+
+
+    When an error occurs, the response looks like:
+
+
+    ```json
+
+    [
+
+    {
+
+    "channel": "/meta/handshake",
+
+    "error": "403::Handshake denied",
+
+    "successful": false
+
+    }
+
+    ]
+
+    ```
+
+
+    ## Subscribe
+
+
+    A notification client can send subscribe messages and specify the desired channel to receive output messages from the Cumulocity server. The client will receive the messages in succeeding connect requests. Each REST API that uses the real-time notification service has its own format for channel names. See Device control for more details. ### Request example
+
+
+    ```http
+
+    POST /notification/realtime
+
+    Authorization:
+
+    Content-Type: application/json
+
+
+    [
+
+    {
+
+    "channel": "/meta/subscribe",
+
+    "clientId": "69wzith4teyensmz6zyk516um4yum0mvp",
+
+    "subscription": "/alarms/"
+
+    }
+
+    ]
+
+    ```
+
+
+    ### Response example
+
+
+    ```json
+
+    [
+
+    {
+
+    "channel": "/meta/subscribe",
+
+    "clientId": "69wzith4teyensmz6zyk516um4yum0mvp",
+
+    "subscription": "/alarms/",
+
+    "successful": true
+
+    }
+
+    ]
+
+    ```
+
+
+    ## Unsubscribe
+
+
+    To stop receiving notifications from a channel, send a message to the channel `/meta/unsubscribe` in the same format as used during subscription.'
+paths:
+  /notification/realtime:
+    post:
+      operationId: postNotificationRealtimeResource
+      x-codegen-resource-name: createRealtimeNotification
+      parameters:
+      - $ref: '#/components/parameters/acceptHeader'
+      - $ref: '#/components/parameters/processingModeHeader'
+      tags:
+      - Real-time notification API
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Responsive communication
+      description: The Real-time notification API enables responsive communication from Cumulocity over restricted networks towards clients such as web browser and mobile devices. All clients subscribe to so-called channels to receive messages. These channels are filled by Cumulocity with the output of Operations. In addition, particular system channels are used for the initial handshake with clients, subscription to channels, removal from channels and connection. The Bayeux protocol over HTTPS or WSS is used as communication mechanism.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+            - channel: /meta/handshake
+              version: '1.0'
+            schema:
+              $ref: '#/components/schemas/realtimeNotification'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request POST "https://<TENANT_DOMAIN>/notification/realtime" \
+
+          --header "Authorization: Basic <AUTHORIZATION>" \
+
+          --header "Accept: application/json" \
+
+          --header "Content-Type: application/json" \
+
+          --data-raw ''<Payload>''
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/notification/realtime");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.POST);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+          request.AddHeader("Content-Type", "application/json");
+
+          request.AddHeader("Accept", "application/json");
+
+          request.AddParameter("application/json", "<Payload>",  ParameterType.RequestBody);
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.post(\"https://<TENANT_DOMAIN>/notification/realtime\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .header(\"Content-Type\", \"application/json\")\n    .header(\"Accept\", \"application/json\")\n    .body(\"<Payload>\")\n    .asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"POST\", \"https://<TENANT_DOMAIN>/notification/realtime\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\",\n        \"Accept\": \"application/json\",\n        \"Content-Type\": \"application/json\"\n    })\n    .send(JSON.stringify( <Payload> ))\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\nimport json\n\nurl = \"https://<TENANT_DOMAIN>/notification/realtime\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\",\n  \"Accept\": \"application/json\",\n  \"Content-Type\": \"application/json\"\n}\nresponse = requests.request(\"POST\", url, headers=headers, json.dumps(<Payload>))\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '200':
+          description: The operation was completed and the result is sent in the response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/realtimeNotification'
+        '400':
+          $ref: '#/components/responses/invalidPayload'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+components:
+  parameters:
+    acceptHeader:
+      name: Accept
+      in: header
+      description: Advertises which content types, expressed as MIME types, the client is able to understand.
+      required: false
+      schema:
+        type: string
+        minLength: 1
+        example: application/json
+    processingModeHeader:
+      name: X-Cumulocity-Processing-Mode
+      in: header
+      description: Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+      required: false
+      schema:
+        type: string
+        default: PERSISTENT
+        enum:
+        - PERSISTENT
+        - TRANSIENT
+        - QUIESCENT
+        - CEP
+        example: PERSISTENT
+  responses:
+    operationNotAuthorized:
+      description: Not authorized to perform this operation.
+    unauthorizedError:
+      description: Authentication information is missing or invalid.
+      content:
+        application/vnd.com.nsn.cumulocity.error+json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            error: security/Unauthorized
+            message: 'Invalid credentials! : Bad credentials'
+            info: https://www.cumulocity.com/guides/reference-guide/#error_reporting
+    invalidPayload:
+      description: Unprocessable Entity – invalid payload.
+  schemas:
+    error:
+      type: object
+      properties:
+        error:
+          description: The type of error returned.
+          type: string
+        message:
+          description: A human-readable message providing more details about the error.
+          type: string
+        info:
+          description: A URI reference [[RFC3986](https://tools.ietf.org/html/rfc3986)] that identifies the error code reported.
+          type: string
+    realtimeNotification:
+      type: object
+      required:
+      - channel
+      properties:
+        advice:
+          description: Configuration parameters for the current connect message.
+          type: object
+          properties:
+            interval:
+              description: Period (milliseconds) after which the server will close the session, if it doesn't received the next connect message from the client. Overrides server default settings for current request-response conversation.
+              type: integer
+              minimum: 0
+            timeout:
+              description: Interval (milliseconds) between the sending of the connect message and the response from the server. Overrides server default settings for the current request-response conversation.
+              type: integer
+              minimum: 0
+        channel:
+          description: The channel name as a URI.
+          type: string
+          enum:
+          - /meta/handshake
+          - /meta/subscribe
+          - /meta/unsubscribe
+          - /meta/connect
+          - /meta/disconnect
+        clientId:
+          description: Unique client ID generated by the server during handshake. Required for all other operations.
+          type: string
+          readOnly: true
+        connectionType:
+          description: Selected connection type.
+          type: string
+        data:
+          description: List of notifications from the channel.
+          type:
+          - object
+          - 'null'
+          readOnly: true
+        error:
+          description: Operation failure reason (only present if the operation was not successful).
+          type: string
+          readOnly: true
+        ext:
+          description: Authentication object passed to handshake (only over WebSockets).
+          type: object
+          properties:
+            com.cumulocity.authn:
+              type: object
+              properties:
+                token:
+                  description: Base64 encoded credentials.
+                  type: string
+                  format: Base64
+                tfa:
+                  description: Optional two factor authentication token.
+                  type: string
+                xsrfToken:
+                  description: Required for OAuth authentication.
+                  type: string
+            systemOfUnits:
+              description: The system of units to use.
+              type: string
+              enum:
+              - imperial
+              - metric
+        id:
+          description: ID of the message passed in a request. Required to match the response message.
+          type: string
+        minimumVersion:
+          description: Minimum server-side Bayeux protocol version required by the client (in a request) or minimum client-side Bayeux protocol version required by the server (in a response).
+          type: string
+        subscription:
+          description: Name of the channel to subscribe to. Subscription channels are available for [Alarms](#tag/Alarm-notification-API), [Device control](#tag/Device-control-notification-API), [Events](#tag/Event-notification-API), [Inventory](#tag/Inventory-notification-API) and [Measurements](#tag/Measurement-notification-API).
+          type: string
+        successful:
+          description: Indicates if the operation was successful.
+          type: boolean
+          readOnly: true
+        supportedConnectionTypes:
+          description: Connection types supported by both client and server, that is, intersection between client and server options.
+          type: array
+          items:
+            type: string
+        version:
+          description: '[Bayeux protocol](https://docs.cometd.org/current/reference/#_concepts_bayeux_protocol) version used by the client (in a request) or server (in a response).
+
+            '
+          type: string
+      example:
+      - channel: /meta/handshake
+        clientId: 69wzith4teyensmz6zyk516um4yum0mvp
+        minimumVersion: '1.0'
+        successful: true
+        supportedConnectionTypes:
+        - long-polling
+        - smartrest-long-polling
+        - websocket
+        version: '1.0'
+  securitySchemes:
+    Basic:
+      type: http
+      scheme: basic
+      description: 'The authorization header is formed as `Basic <Base64(<tenantID>/<c8yuser>:<password>)>`. For instance, if your tenantID, username and password are **t0071234**, **testuser** and **secret123** respectively, you can generate the Base64 string with the following command:
+
+
+        ```shell
+
+        $ echo -n t0071234/testuser:secret123 | base64
+
+        ```
+
+
+        and your authorization header would look like this:
+
+
+        ```
+
+        "Authorization": "Basic dDAwNzEyMzQvdGVzdHVzZXI6c2VjcmV0MTIz"
+
+        ```
+
+        '
+    OAI-Secure:
+      type: http
+      scheme: bearer
+      description: 'This is the recommended authorization method because it provides high security using authorization tokens to prove the identity of the user, and it is the default login mode on creating new tenants. This mode is an enhancement of the previous OAuth Internal authentication (available prior to 10.13.0).
+
+
+        For more details about OAI-Secure authentication, see [Platform administration > Authentication > Basic settings > Login settings](https://www.cumulocity.com/docs/authentication/basic-settings/#login-settings) in the Cumulocity user documentation.
+
+        '
+    SSO:
+      type: oauth2
+      description: "The login with SSO requires a correct configuration on the [Cumulocity side](https://www.cumulocity.com/docs/authentication/sso/). With the configuration, an additional button is available on the Login page. After clicking the button, the user is redirected to authenticate with the configured authorization server. On successful login, the user is redirected to Cumulocity.\n\nAuthentication details are exchanged using cookies. There are two parts to it, the first is the authentication cookie that is handled automatically by the Cumulocity platform. The second is the XSRF-TOKEN cookie. When a client receives the cookie, it should take the value and put it in the X-XSRF-TOKEN request header in all subsequent requests.\n\nThe flow of authenticating with authentication code grant is as follows:\n\n![Authentication flow](images/oauth-simple-flow.png)\n\nThe first request executed by the browser is:\n\n```http\nGET /tenant/loginOptions\nHost: https://<TENANT_DOMAIN>\nAccept: application/vnd.com.nsn.cumulocity.loginoptioncollection+json\n```\n\nResponse sample:\n\n```json\n{\n    \"loginOptions\": [\n        {\n            \"buttonName\": \"Login with oauth\",\n            \"grantType\": \"<AUTHORIZATION_CODE>\",\n            \"initRequest\": \"https://<TENANT_DOMAIN>/tenant/oauth?response_type=code&tenant_id=<TENANT_ID>\",\n            \"self\": \"https://<TENANT_DOMAIN>/tenant/loginOptions/oauth2\",\n            \"type\": \"oauth2\"\n        },\n        ...\n    ],\n    \"self\": \"http://<TENANT_DOMAIN>/tenant/loginOptions/\"\n}\n```\n\nThe browser must invoke the request provided in the initRequest parameter.\n\nThe initRequest initiates the redirect, in which the user is prompted for credentials. After successful login, the user is redirected back to the browser, where it must capture the code request parameter. Then the request to exchange the code for the token is as follows:\n\n```http\nPOST /tenant/oauth?grant_type=authorization_code&code=<CODE>\nHost: https://<TENANT_DOMAIN>\n```\n\nA successful response will have no body but the following response headers:\n\n```\nSet-Cookie: authorization=<TOKEN>;\nSet-Cookie: XSRF-TOKEN=<XSRF-TOKEN>;\n```\n\nThe authorization cookie is valid for two weeks.\n"
+      flows:
+        clientCredentials:
+          tokenUrl: /tenant/oauth?grant_type=authorization_code&code=<CODE>
+          scopes: {}
+    JWT-IAM:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'This kind of authentication substitutes the JWT authentication with OAuth2 access tokens from your Identity and Access Management (IAM).
+
+        You can enable this in the [SSO configuration](https://www.cumulocity.com/docs/authentication/sso/).
+
+
+        The HTTP header must include:
+
+
+        ```
+
+        "Authorization": "Bearer <Access token>"
+
+        ```
+
+
+        When a request with a bearer token in the header is received, Cumulocity checks if the access token is from your IAM (that is, if authentication is enabled in your SSO configuration), and verifies the authenticity of
+
+        the token remotely against the IAM.
+
+        '
+x-tagGroups:
+- name: Platform
+  tags:
+  - Platform API
+- name: Alarms
+  tags:
+  - Alarm API
+  - Alarm notification API
+  - Alarms
+- name: Applications
+  tags:
+  - Application API
+  - Applications
+  - Application versions
+  - Application binaries
+  - Bootstrap user
+  - Current application
+- name: Audits
+  tags:
+  - Audit API
+  - Audits
+- name: Device control
+  tags:
+  - Device control API
+  - Device control notification API
+  - Operations
+  - Bulk operations
+  - Device credentials
+  - New device requests
+  - Device control via SMS
+- name: Events
+  tags:
+  - Event API
+  - Event notification API
+  - Events
+  - Attachments
+- name: Feature toggles
+  tags:
+  - Feature toggles API
+- name: Identity
+  tags:
+  - Identity API
+  - External IDs
+- name: Inventory
+  tags:
+  - Inventory API
+  - Inventory notification API
+  - Managed objects
+  - Binaries
+  - Child operations
+  - Query language
+- name: Measurements
+  tags:
+  - Measurement API
+  - Measurement notification API
+  - Measurements
+  - Measurements specifics
+- name: Notifications 2.0
+  tags:
+  - About notifications 2.0
+  - Notification 2.0 API
+  - Subscriptions
+  - Tokens
+- name: Real-time notifications
+  tags:
+  - Real-time notification API
+- name: Retentions
+  tags:
+  - Retention rules
+- name: Tenants
+  tags:
+  - Tenant API
+  - Tenants
+  - Tenant applications
+  - Trusted certificates
+  - Device statistics
+  - Usage statistics
+  - Options
+  - Login options
+  - Login tokens
+  - System options
+- name: Users
+  tags:
+  - User API
+  - Current User
+  - Users
+  - Groups
+  - Roles
+  - Inventory Roles
+  - Device Permissions
+- name: Certificate
+  tags:
+  - Certificate authority
+  - Device enrollment

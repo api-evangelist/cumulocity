@@ -1,0 +1,167 @@
+openapi: 3.2.0
+info:
+  title: Cumulocity User Users API
+  version: 10.20.0
+  description: 'Manage users, user groups, global roles, inventory roles, and device permissions. Cumulocity uses an
+
+    RBAC model where global roles grant API access and inventory roles grant access to specific managed-object
+
+    subtrees. Supports SSO via SAML/OIDC and SCIM provisioning for enterprise tenants.'
+servers:
+- url: https://{tenant}.cumulocity.com
+  variables:
+    tenant:
+      default: example
+security:
+- basicAuth: []
+- bearerAuth: []
+tags:
+- name: Users
+paths:
+  /user/{tenantId}/users:
+    parameters:
+    - name: tenantId
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      tags:
+      - Users
+      summary: List Users
+      operationId: listUsers
+      responses:
+        '200':
+          description: A collection of users.
+          content:
+            application/vnd.com.nsn.cumulocity.userCollection+json:
+              schema:
+                $ref: '#/components/schemas/UserCollection'
+    post:
+      tags:
+      - Users
+      summary: Create a User
+      operationId: createUser
+      requestBody:
+        required: true
+        content:
+          application/vnd.com.nsn.cumulocity.user+json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: User created.
+  /user/{tenantId}/users/{userId}:
+    parameters:
+    - name: tenantId
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: userId
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      tags:
+      - Users
+      summary: Retrieve a User
+      operationId: getUser
+      responses:
+        '200':
+          description: A single user.
+          content:
+            application/vnd.com.nsn.cumulocity.user+json:
+              schema:
+                $ref: '#/components/schemas/User'
+    put:
+      tags:
+      - Users
+      summary: Update a User
+      operationId: updateUser
+      requestBody:
+        required: true
+        content:
+          application/vnd.com.nsn.cumulocity.user+json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: User updated.
+    delete:
+      tags:
+      - Users
+      summary: Delete a User
+      operationId: deleteUser
+      responses:
+        '204':
+          description: User deleted.
+components:
+  schemas:
+    UserCollection:
+      type: object
+      properties:
+        self:
+          type: string
+          format: uri
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        self:
+          type: string
+          format: uri
+        userName:
+          type: string
+        email:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        displayName:
+          type: string
+        phone:
+          type: string
+        enabled:
+          type: boolean
+        password:
+          type: string
+          writeOnly: true
+        shouldResetPassword:
+          type: boolean
+        lastPasswordChange:
+          type: string
+          format: date-time
+        twoFactorAuthenticationEnabled:
+          type: boolean
+        groups:
+          type: object
+          properties:
+            references:
+              type: array
+              items:
+                type: object
+        roles:
+          type: object
+          properties:
+            references:
+              type: array
+              items:
+                type: object
+        devicePermissions:
+          type: object
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

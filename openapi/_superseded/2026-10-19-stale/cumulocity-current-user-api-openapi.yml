@@ -1,0 +1,105 @@
+openapi: 3.2.0
+info:
+  title: Cumulocity User Current User API
+  version: 10.20.0
+  description: 'Manage users, user groups, global roles, inventory roles, and device permissions. Cumulocity uses an
+
+    RBAC model where global roles grant API access and inventory roles grant access to specific managed-object
+
+    subtrees. Supports SSO via SAML/OIDC and SCIM provisioning for enterprise tenants.'
+servers:
+- url: https://{tenant}.cumulocity.com
+  variables:
+    tenant:
+      default: example
+security:
+- basicAuth: []
+- bearerAuth: []
+tags:
+- name: Current User
+paths:
+  /user/currentUser:
+    get:
+      tags:
+      - Current User
+      summary: Retrieve Current User
+      operationId: getCurrentUser
+      responses:
+        '200':
+          description: The authenticated user.
+          content:
+            application/vnd.com.nsn.cumulocity.currentUser+json:
+              schema:
+                $ref: '#/components/schemas/User'
+    put:
+      tags:
+      - Current User
+      summary: Update Current User
+      operationId: updateCurrentUser
+      requestBody:
+        required: true
+        content:
+          application/vnd.com.nsn.cumulocity.currentUser+json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: Current user updated.
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        self:
+          type: string
+          format: uri
+        userName:
+          type: string
+        email:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        displayName:
+          type: string
+        phone:
+          type: string
+        enabled:
+          type: boolean
+        password:
+          type: string
+          writeOnly: true
+        shouldResetPassword:
+          type: boolean
+        lastPasswordChange:
+          type: string
+          format: date-time
+        twoFactorAuthenticationEnabled:
+          type: boolean
+        groups:
+          type: object
+          properties:
+            references:
+              type: array
+              items:
+                type: object
+        roles:
+          type: object
+          properties:
+            references:
+              type: array
+              items:
+                type: object
+        devicePermissions:
+          type: object
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

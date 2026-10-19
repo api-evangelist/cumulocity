@@ -1,149 +1,2025 @@
 openapi: 3.2.0
 info:
-  title: Cumulocity Application Applications API
-  version: 10.20.0
-  description: 'Register, subscribe, configure, and upload Cumulocity microservices, hosted web applications, and plugins.
+  version: Latest
+  title: Cumulocity Applications API
+  x-logo:
+    url: https://www.cumulocity.com/docs/images/logo-platform.svg
+    backgroundColor: '#F8F8F8'
+    altText: Cumulocity
+    href: https://www.cumulocity.com/api
+  description: '# REST implementation
 
-    Microservices run inside Cumulocity''s managed container runtime and authenticate via a bootstrap user
 
-    issued by this API; web applications are uploaded as ZIPs and served from the tenant subdomain.'
+    This section describes the aspects common to all REST-based interfaces of Cumulocity. The interfaces are based on the Hypertext Transfer Protocol 1.1 using HTTPS. ## HTTP usage
+
+
+    ### Application management
+
+
+    Cumulocity uses a so-called "application key" to distinguish requests coming from devices and traffic from applications. If you write an application, pass the following header as part of all requests:
+
+
+    ```markup
+
+    X-Cumulocity-Application-Key:
+
+    ```
+
+
+    For example, if you registered your application in the Cumulocity Administration application with the key "myapp", your requests should contain the header:
+
+
+    ```markup
+
+    X-Cumulocity-Application-Key: myapp
+
+    ```
+
+
+    This makes your application subscribable and billable. If you implement a device, do not pass the key. > **ⓘ Info:** Make sure that you pass the key in **all** requests coming from an application. If you leave out the key,
+
+    > the request will be considered as a device request, and the corresponding device will be marked as "available". ### Limited HTTP clients
+
+
+    If you use an HTTP client that can only perform GET and POST methods in HTTP, you can emulate the other methods through an additional "X-HTTP-METHOD" header. Simply issue a POST request and add the header, specifying the actual REST method to be executed. For example, to emulate the "PUT" (modify) method, you can use:
+
+
+    ```http
+
+    POST ... X-HTTP-METHOD: PUT
+
+    ```
+
+
+    ### Processing mode
+
+
+    Every update request (PUT, POST, DELETE) executes with a so-called *processing mode*. The processing modes are as follows:
+
+
+    |Processing mode|Description|
+
+    |---|---|
+
+    |PERSISTENT (default)|Stores data in the Cumulocity database and sends data to the Streaming Analytics engine. Afterwards, Cumulocity returns the result of the request. This is the default mode.|
+
+    |TRANSIENT|Sends data to the Streaming Analytics engine and immediately returns the results asynchronously but does not store data in Cumulocity’s database. This mode saves storage and processing costs and is useful for example when tracking devices in real time without requiring data to be stored.|
+
+    |QUIESCENT|Behaves similar to the persistent mode with the exception that no real-time notifications will be sent.|
+
+    |CEP|Behaves like the transient mode with the exception that no real-time notifications are sent.|
+
+
+    To explicitly control the processing mode of an update request, you can use the "X-Cumulocity-Processing-Mode" header with a value of either "PERSISTENT", "TRANSIENT", "QUIESCENT" or "CEP":
+
+
+    ```markup
+
+    X-Cumulocity-Processing-Mode: PERSISTENT
+
+    ```
+
+
+    > **ⓘ Info:** Events are always delivered to CEP/Apama for all processing modes. This is independent from real-time notifications. ### Authorization
+
+
+    All requests issued to Cumulocity are subject to authorization. To determine the required permissions, see the "Required role" entries for the individual requests. To learn more about the different permissions and the concept of ownership in Cumulocity, see Getting started > Technical concepts > Security aspects > Access control > Managing roles and assigning permissions in the Cumulocity user documentation. > **⚠️ Important:** In the Cumulocity API, each granular permission is identified by a unique “permission” string, which is prefixed with ROLE_ (for example, ROLE_ALARM_READ, ROLE_INVENTORY_ADMIN). Therefore, permissions are frequently referred to as “roles” throughout the API as well as in the configuration files. For example, the microservice manifest includes a requiredRoles field, which actually expects a permission string. See also the Glossary of the Cumulocity user documentation for the usage of the terms “permission” and “role” in the Cumulocity context. ### Media types
+
+
+    Each type of data is associated with an own media type. The general format of media types is:
+
+
+    ```markup
+
+    application/vnd.com.nsn.cumulocity.+json;ver=;charset=UTF-8
+
+    ```
+
+
+    Each media type contains a parameter `ver` indicating the version of the type.'
 servers:
-- url: https://{tenant}.cumulocity.com
-  variables:
-    tenant:
-      default: example
+- description: Cumulocity tenant
+  url: https://<TENANT_DOMAIN>
 security:
-- basicAuth: []
-- bearerAuth: []
+- Basic: []
+- OAI-Secure: []
+- SSO: []
+- JWT-IAM: []
 tags:
 - name: Applications
+  description: 'API methods to retrieve, create, update and delete applications.
+
+
+    ### Application names
+
+
+    For each tenant, Cumulocity manages the subscribed applications and provides a number of applications of various types.
+
+    In case you want to subscribe a tenant to an application using an API, you must use the application name in the argument (as name).
+
+
+    Refer to the tables in Platform administration > Standard tenant administration > Managing the ecosystem > Managing applications in the Cumulocity user documentation for the respective application name to be used.
+
+
+    > **ⓘ Info:** The Accept header should be provided in all POST/PUT requests, otherwise an empty response body will be returned.'
 paths:
   /application/applications:
-    get:
-      tags:
-      - Applications
-      summary: List Applications
-      operationId: listApplications
-      responses:
-        '200':
-          description: A collection of applications.
-          content:
-            application/vnd.com.nsn.cumulocity.applicationCollection+json:
-              schema:
-                $ref: '#/components/schemas/ApplicationCollection'
     post:
+      operationId: postApplicationCollectionResource
+      x-codegen-resource-name: createApplication
+      parameters:
+      - $ref: '#/components/parameters/acceptHeader'
+      - $ref: '#/components/parameters/processingModeHeader'
       tags:
       - Applications
-      summary: Create an Application
-      operationId: createApplication
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      - JWT-IAM: []
+      summary: Create an application
+      description: 'Create an application on your tenant.
+
+
+        Required roles
+
+
+        ROLE_APPLICATION_MANAGEMENT_ADMIN'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request POST "https://<TENANT_DOMAIN>/application/applications" \
+
+          --header "Authorization: Basic <AUTHORIZATION>" \
+
+          --header "Accept: application/json" \
+
+          --header "Content-Type: application/json" \
+
+          --data-raw "<Payload>"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/application/applications");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.POST);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+          request.AddHeader("Content-Type", "application/json");
+
+          request.AddHeader("Accept", "application/json");
+
+          request.AddParameter("application/json", "<Payload>",  ParameterType.RequestBody);
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.post(\"https://<TENANT_DOMAIN>/application/applications\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .header(\"Content-Type\", \"application/json\")\n    .header(\"Accept\", \"application/json\")\n    .body(\"<Payload>\")\n    .asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"POST\", \"https://<TENANT_DOMAIN>/application/applications\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\",\n        \"Accept\": \"application/json\",\n        \"Content-Type\": \"application/json\"\n    })\n    .send(JSON.stringify( <Payload> ))\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://<TENANT_DOMAIN>/application/applications\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\",\n  \"Accept\": \"application/json\",\n  \"Content-Type\": \"application/json\"\n}\nresponse = requests.request(\"POST\", url, headers=headers, data = json.dumps(<Payload>))\nprint(response.text.encode(\"utf8\"))\n"
       requestBody:
         required: true
         content:
           application/vnd.com.nsn.cumulocity.application+json:
+            example:
+              contextPath: myapplication
+              key: my-application-key
+              name: my-application
+              type: HOSTED
             schema:
-              $ref: '#/components/schemas/Application'
+              allOf:
+              - required:
+                - key
+                - name
+                - type
+              - $ref: '#/components/schemas/application_no_microservice_manifest'
       responses:
         '201':
-          description: Application created.
-  /application/applications/{id}:
-    parameters:
-    - name: id
-      in: path
-      required: true
-      schema:
-        type: string
-    get:
-      tags:
-      - Applications
-      summary: Retrieve an Application
-      operationId: getApplication
-      responses:
-        '200':
-          description: A single application.
+          description: An application was created.
           content:
             application/vnd.com.nsn.cumulocity.application+json:
               schema:
-                $ref: '#/components/schemas/Application'
-    put:
+                $ref: '#/components/schemas/application'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+        '409':
+          $ref: '#/components/responses/applicationDuplicatedKeyName'
+        '422':
+          $ref: '#/components/responses/invalidPayload'
+    get:
+      operationId: getAbstractApplicationCollectionResource
+      x-codegen-resource-name: getApplications
+      parameters:
+      - $ref: '#/components/parameters/queryParam_currentPage'
+      - $ref: '#/components/parameters/queryParam_application_name'
+      - $ref: '#/components/parameters/queryParam_application_owner'
+      - $ref: '#/components/parameters/queryParam_pageSize'
+      - $ref: '#/components/parameters/queryParam_application_providedFor'
+      - $ref: '#/components/parameters/queryParam_application_subscriber'
+      - $ref: '#/components/parameters/queryParam_application_tenant'
+      - $ref: '#/components/parameters/queryParam_application_type'
+      - $ref: '#/components/parameters/queryParam_application_user'
+      - $ref: '#/components/parameters/queryParam_withTotalElements'
+      - $ref: '#/components/parameters/queryParam_withTotalPages'
+      - $ref: '#/components/parameters/queryParam_hasVersions'
       tags:
       - Applications
-      summary: Update an Application
-      operationId: updateApplication
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      - JWT-IAM: []
+      summary: Retrieve all applications
+      description: 'Retrieve all applications on your tenant.
+
+
+        Required roles
+
+
+        ROLE_APPLICATION_MANAGEMENT_READ'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request GET "https://<TENANT_DOMAIN>/application/applications" \
+
+          --header "Authorization: Basic <AUTHORIZATION>"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/application/applications");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.GET);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.get(\"https://<TENANT_DOMAIN>/application/applications\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .asString();\n  System.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"GET\", \"https://<TENANT_DOMAIN>/application/applications\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\"\n    })\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://<TENANT_DOMAIN>/application/applications\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\"\n}\nresponse = requests.request(\"GET\", url, headers = headers)\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '200':
+          description: The request has succeeded and the list of applications is sent in the response.
+          content:
+            application/vnd.com.nsn.cumulocity.applicationcollection+json:
+              schema:
+                $ref: '#/components/schemas/ApplicationCollection'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+  /application/applications/{id}:
+    parameters:
+    - $ref: '#/components/parameters/applicationId'
+    get:
+      operationId: getApplicationResource
+      x-codegen-resource-name: getApplication
+      tags:
+      - Applications
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      - JWT-IAM: []
+      summary: Retrieve a specific application
+      description: 'Retrieve a specific application (by a given ID).
+
+
+        Required roles
+
+
+        ROLE_APPLICATION_MANAGEMENT_READ OR current user has explicit access to the application'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request GET "https://<TENANT_DOMAIN>/application/applications/{id}" \
+
+          --header "Authorization: Basic <AUTHORIZATION>"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/application/applications/{id}");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.GET);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.get(\"https://<TENANT_DOMAIN>/application/applications/{id}\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .asString();\n  System.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"GET\", \"https://<TENANT_DOMAIN>/application/applications/{id}\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\"\n    })\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://<TENANT_DOMAIN>/application/applications/{id}\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\"\n}\nresponse = requests.request(\"GET\", url, headers = headers)\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '200':
+          description: The request has succeeded and the application is sent in the response.
+          content:
+            application/vnd.com.nsn.cumulocity.application+json:
+              schema:
+                $ref: '#/components/schemas/application'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+        '404':
+          $ref: '#/components/responses/applicationNotFound'
+    put:
+      operationId: putApplicationResource
+      x-codegen-resource-name: updateApplication
+      parameters:
+      - $ref: '#/components/parameters/acceptHeader'
+      - $ref: '#/components/parameters/processingModeHeader'
+      tags:
+      - Applications
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      - JWT-IAM: []
+      summary: Update a specific application
+      description: 'Update a specific application (by a given ID).
+
+
+        Required roles
+
+
+        ROLE_USER_MANAGEMENT_ADMIN'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request PUT "https://<TENANT_DOMAIN>/application/applications/{id}" \
+
+          --header "Authorization: Basic <AUTHORIZATION>" \
+
+          --header "Accept: application/json" \
+
+          --header "Content-Type: application/json" \
+
+          --data-raw "<Payload>"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/application/applications/{id}");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.PUT);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+          request.AddHeader("Content-Type", "application/json");
+
+          request.AddHeader("Accept", "application/json");
+
+          request.AddParameter("application/json", "<Payload>",  ParameterType.RequestBody);
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.put(\"https://<TENANT_DOMAIN>/application/applications/{id}\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .header(\"Content-Type\", \"application/json\")\n    .header(\"Accept\", \"application/json\")\n    .body(\"<Payload>\")\n    .asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"PUT\", \"https://<TENANT_DOMAIN>/application/applications/{id}\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\",\n        \"Accept\": \"application/json\",\n        \"Content-Type\": \"application/json\"\n    })\n    .send(JSON.stringify( <Payload> ))\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://<TENANT_DOMAIN>/application/applications/{id}\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\",\n  \"Accept\": \"application/json\",\n  \"Content-Type\": \"application/json\"\n}\nresponse = requests.request(\"GET\", url, headers = headers, json.dumps(<Payload>))\nprint(response.text.encode(\"utf8\"))\n"
       requestBody:
         required: true
         content:
           application/vnd.com.nsn.cumulocity.application+json:
+            example:
+              name: my-application
+              availability: PRIVATE
             schema:
-              $ref: '#/components/schemas/Application'
+              allOf:
+              - $ref: '#/components/schemas/application_no_microservice_manifest'
+              - properties:
+                  type:
+                    readOnly: true
       responses:
         '200':
-          description: Application updated.
+          description: An application was updated.
+          content:
+            application/vnd.com.nsn.cumulocity.application+json:
+              schema:
+                $ref: '#/components/schemas/application'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+        '404':
+          $ref: '#/components/responses/applicationNotFound'
     delete:
+      operationId: deleteApplicationResource
+      x-codegen-resource-name: deleteApplication
+      parameters:
+      - $ref: '#/components/parameters/queryParam_application_force'
+      - $ref: '#/components/parameters/processingModeHeader'
       tags:
       - Applications
-      summary: Delete an Application
-      operationId: deleteApplication
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      - JWT-IAM: []
+      summary: Delete an application
+      description: 'Delete an application (by a given ID).
+
+        This method is not supported by microservice applications.
+
+
+        > **ⓘ Info:** With regards to a hosted application, there is a caching mechanism in place that keeps the information about the placement of application files (html, javascript, css, fonts, etc.). Removing a hosted application, in normal circumstances, will cause the subsequent requests for application files to fail with an HTTP 404 error because the application is removed synchronously, its files are immediately removed on the node serving the request and at the same time the information is propagated to other nodes – but in rare cases there might be a delay with this propagation. In such situations, the files of the removed application can be served from those nodes up until the aforementioned cache expires. For the same reason, the cache can also cause HTTP 404 errors when the application is updated as it will keep the path to the files of the old version of the application. The cache is filled on demand, so there should not be issues if application files were not accessed prior to the delete request. The expiration delay of the cache can differ, but should not take more than one minute.
+
+
+        Required roles
+
+
+        ROLE_APPLICATION_MANAGEMENT_ADMIN AND tenant is the owner of the application'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request DELETE "https://<TENANT_DOMAIN>/application/applications/{id}" \
+
+          --header "Authorization: Basic <AUTHORIZATION>"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/application/applications/{id}");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.DELETE);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.delete(\"https://<TENANT_DOMAIN>/application/applications/{id}\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"DELETE\", \"https://<TENANT_DOMAIN>/application/applications/{id}\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\"\n    })\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://<TENANT_DOMAIN>/application/applications/{id}\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\"\n}\nresponse = requests.request(\"DELETE\", url, headers = headers)\nprint(response.text.encode(\"utf8\"))\n"
       responses:
         '204':
-          description: Application deleted.
+          description: An application was removed.
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+        '404':
+          $ref: '#/components/responses/applicationNotFound'
+        '422':
+          $ref: '#/components/responses/applicationSubscribedByTenants'
+  /application/applications/{id}/authType:
+    parameters:
+    - $ref: '#/components/parameters/applicationId'
+    put:
+      operationId: putApplicationResourceAuthType
+      x-codegen-resource-name: resetApplicationAuthType
+      parameters:
+      - $ref: '#/components/parameters/acceptHeader'
+      tags:
+      - Applications
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      - JWT-IAM: []
+      summary: Reset the authentication method required for a service user
+      description: 'Reset `requiredAuthType` to `NONE` for the microservice service user associated with this application (by a given application ID), in the current tenant.
+
+
+        This is the recovery path for a service user that switched itself to `CERTIFICATES` (see Update the authentication method required for the current service user) and no longer has a usable certificate for the tenant, and can therefore no longer authenticate to revert the change itself. An administrator can only reset the value to `NONE`; setting it to `CERTIFICATES` through this endpoint is not allowed, since only the service user can opt itself back in.
+
+
+        Required roles
+
+
+        ROLE_APPLICATION_MANAGEMENT_ADMIN'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request PUT "https://<TENANT_DOMAIN>/application/applications/<ID>/authType" \
+
+          --header "Authorization: Basic <AUTHORIZATION>" \
+
+          --header "Accept: application/json" \
+
+          --header "Content-Type: application/json" \
+
+          --data-raw "<Payload>"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/application/applications/<ID>/authType");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.PUT);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+          request.AddHeader("Content-Type", "application/json");
+
+          request.AddHeader("Accept", "application/json");
+
+          request.AddParameter("application/json", "<Payload>",  ParameterType.RequestBody);
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.put(\"https://<TENANT_DOMAIN>/application/applications/<ID>/authType\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .header(\"Content-Type\", \"application/json\")\n    .header(\"Accept\", \"application/json\")\n    .body(\"<Payload>\")\n    .asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"PUT\", \"https://<TENANT_DOMAIN>/application/applications/<ID>/authType\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\",\n        \"Accept\": \"application/json\",\n        \"Content-Type\": \"application/json\"\n    })\n    .send(JSON.stringify( <Payload> ))\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import json\nimport requests\n\nurl = \"https://<TENANT_DOMAIN>/application/applications/<ID>/authType\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\",\n  \"Accept\": \"application/json\",\n  \"Content-Type\": \"application/json\"\n}\nresponse = requests.request(\"PUT\", url, headers = headers, data = json.dumps(<Payload>))\nprint(response.text.encode(\"utf8\"))\n"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              requiredAuthType: NONE
+            schema:
+              $ref: '#/components/schemas/applicationAuthTypeReset'
+      responses:
+        '200':
+          description: The authentication method required for the service user was reset.
+          content:
+            application/json:
+              example:
+                requiredAuthType: NONE
+              schema:
+                $ref: '#/components/schemas/applicationAuthType'
+        '400':
+          description: requiredAuthType is missing or is not NONE.
+          content:
+            application/vnd.com.nsn.cumulocity.error+json:
+              schema:
+                $ref: '#/components/schemas/error'
+              example:
+                error: application/Bad Request
+                message: requiredAuthType can only be reset to NONE
+                info: https://www.cumulocity.com/guides/reference-guide/#error_reporting
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+        '404':
+          $ref: '#/components/responses/applicationNotFound'
+  /application/applications/{id}/clone:
+    parameters:
+    - $ref: '#/components/parameters/applicationId'
+    - $ref: '#/components/parameters/queryParam_application_version_version'
+    - $ref: '#/components/parameters/queryParam_application_version_tag'
+    post:
+      operationId: postApplicationResource
+      x-codegen-resource-name: copyApplication
+      parameters:
+      - $ref: '#/components/parameters/acceptHeader'
+      - $ref: '#/components/parameters/processingModeHeader'
+      tags:
+      - Applications
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      - JWT-IAM: []
+      summary: Copy an application
+      description: 'Copy an application (by a given ID).
+
+
+        This method is not supported by microservice applications.
+
+
+        A request to the "clone" resource creates a new application based on an already existing one.
+
+
+        The properties are copied to the newly created application and the prefix "clone" is added to the properties `name`, `key` and `contextPath` in order to be unique.
+
+
+        If the target application is hosted and has an active version, the new application will have the active version with the same content.
+
+
+        If the original application is hosted with versions, then only one binary version is cloned. By default it is a version with the "latest" tag. You can also specify a target version directly by using exactly one of the query parameters `version` or `tag`.
+
+
+        Required roles
+
+
+        ROLE_APPLICATION_MANAGEMENT_ADMIN'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request POST "https://<TENANT_DOMAIN>/application/applications/{id}/clone" \
+
+          --header "Authorization: Basic <AUTHORIZATION>" \
+
+          --header "Accept: application/json" \
+
+          --header "Content-Type: application/json"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/application/applications/{id}/clone");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.POST);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+          request.AddHeader("Content-Type", "application/json");
+
+          request.AddHeader("Accept", "application/json");
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.post(\"https://<TENANT_DOMAIN>/application/applications/{id}/clone\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .header(\"Content-Type\", \"application/json\")\n    .header(\"Accept\", \"application/json\")\n    .asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"POST\", \"https://<TENANT_DOMAIN>/application/applications/{id}/clone\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\",\n        \"Accept\": \"application/json\",\n        \"Content-Type\": \"application/json\"\n    })\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://<TENANT_DOMAIN>/application/applications/{id}/clone\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\",\n  \"Accept\": \"application/json\",\n  \"Content-Type\": \"application/json\"\n}\nresponse = requests.request(\"POST\", url, headers=headers, data = {})\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '201':
+          description: An application was copied.
+          content:
+            application/vnd.com.nsn.cumulocity.application+json:
+              schema:
+                $ref: '#/components/schemas/application'
+              example:
+                availability: PRIVATE
+                contextPath: clonemyapplication
+                id: '20200369'
+                key: clonemy-application-key
+                name: clonemy-application
+                owner:
+                  self: https://<TENANT_DOMAIN>/tenant/tenants/t07007007
+                  tenant:
+                    id: t07007007
+                self: https://<TENANT_DOMAIN>/application/applications/20200369
+                type: HOSTED
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+        '422':
+          description: Unprocessable Entity – method not supported
+  /application/applicationsByName/{name}:
+    parameters:
+    - $ref: '#/components/parameters/applicationName'
+    get:
+      operationId: getApplicationsByNameCollectionResource
+      x-codegen-resource-name: getApplicationsByName
+      tags:
+      - Applications
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      - JWT-IAM: []
+      summary: Retrieve applications by name
+      description: 'Retrieve applications by name.
+
+
+        Required roles
+
+
+        ROLE_APPLICATION_MANAGEMENT_READ'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request GET "https://<TENANT_DOMAIN>/application/applicationsByName/{name}" \
+
+          --header "Authorization: Basic <AUTHORIZATION>"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/application/applicationsByName/{name}");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.GET);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.get(\"https://<TENANT_DOMAIN>/application/applicationsByName/{name}\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .asString();\n  System.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"GET\", \"https://<TENANT_DOMAIN>/application/applicationsByName/{name}\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\"\n    })\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://<TENANT_DOMAIN>/application/applicationsByName/{name}\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\"\n}\nresponse = requests.request(\"GET\", url, headers = headers)\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '200':
+          description: The request has succeeded and the applications are sent in the response.
+          content:
+            application/vnd.com.nsn.cumulocity.applicationcollection+json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/ApplicationCollection'
+                - properties:
+                    self:
+                      allOf:
+                      - $ref: '#/components/schemas/desc_self'
+                      - example: https://<TENANT_DOMAIN>/application/applicationsByName?pageSize=5&currentPage=2
+                    prev:
+                      allOf:
+                      - $ref: '#/components/schemas/desc_prevPage'
+                      - example: https://<TENANT_DOMAIN>/application/applicationsByName/{name}?pageSize=5&currentPage=1
+                    next:
+                      allOf:
+                      - $ref: '#/components/schemas/desc_nextPage'
+                      - example: https://<TENANT_DOMAIN>/application/applicationsByName/{name}?pageSize=5&currentPage=3
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+  /application/applicationsByTenant/{tenantId}:
+    parameters:
+    - $ref: '#/components/parameters/tenantId'
+    get:
+      operationId: getApplicationsByTenantCollectionResource
+      x-codegen-resource-name: getApplicationsByTenant
+      tags:
+      - Applications
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      - JWT-IAM: []
+      summary: Retrieve applications by tenant
+      description: 'Retrieve applications subscribed or owned by a particular tenant (by a given tenant ID).
+
+
+        Required roles
+
+
+        ROLE_APPLICATION_MANAGEMENT_READ'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request GET "https://<TENANT_DOMAIN>/application/applicationsByTenant/{tenantId}" \
+
+          --header "Authorization: Basic <AUTHORIZATION>"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/application/applicationsByTenant/{tenantId}");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.GET);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.get(\"https://<TENANT_DOMAIN>/application/applicationsByTenant/{tenantId}\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .asString();\n  System.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"GET\", \"https://<TENANT_DOMAIN>/application/applicationsByTenant/{tenantId}\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\"\n    })\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://<TENANT_DOMAIN>/application/applicationsByTenant/{tenantId}\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\"\n}\nresponse = requests.request(\"GET\", url, headers = headers)\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '200':
+          description: The request has succeeded and the applications are sent in the response.
+          content:
+            application/vnd.com.nsn.cumulocity.applicationcollection+json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/ApplicationCollection'
+                - properties:
+                    self:
+                      allOf:
+                      - $ref: '#/components/schemas/desc_self'
+                      - example: https://<TENANT_DOMAIN>/application/applicationsByTenant?pageSize=5&currentPage=2
+                    prev:
+                      allOf:
+                      - $ref: '#/components/schemas/desc_prevPage'
+                      - example: https://<TENANT_DOMAIN>/application/applicationsByTenant/{tenantId}?pageSize=5&currentPage=1
+                    next:
+                      allOf:
+                      - $ref: '#/components/schemas/desc_nextPage'
+                      - example: https://<TENANT_DOMAIN>/application/applicationsByTenant/{tenantId}?pageSize=5&currentPage=3
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+  /application/applicationsByOwner/{tenantId}:
+    parameters:
+    - $ref: '#/components/parameters/tenantId'
+    get:
+      operationId: getApplicationsByOwnerCollectionResource
+      x-codegen-resource-name: getApplicationsByOwner
+      parameters:
+      - $ref: '#/components/parameters/queryParam_currentPage'
+      - $ref: '#/components/parameters/queryParam_pageSize'
+      - $ref: '#/components/parameters/queryParam_withTotalElements'
+      - $ref: '#/components/parameters/queryParam_withTotalPages'
+      tags:
+      - Applications
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      - JWT-IAM: []
+      summary: Retrieve applications by owner
+      description: 'Retrieve all applications owned by a particular tenant (by a given tenant ID).
+
+
+        Required roles
+
+
+        ROLE_APPLICATION_MANAGEMENT_READ'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request GET "https://<TENANT_DOMAIN>/application/applicationsByOwner/{tenantId}" \
+
+          --header "Authorization: Basic <AUTHORIZATION>"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/application/applicationsByOwner/{tenantId}");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.GET);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.get(\"https://<TENANT_DOMAIN>/application/applicationsByOwner/{tenantId}\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .asString();\n  System.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"GET\", \"https://<TENANT_DOMAIN>/application/applicationsByOwner/{tenantId}\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\"\n    })\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://<TENANT_DOMAIN>/application/applicationsByOwner/{tenantId}\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\"\n}\nresponse = requests.request(\"GET\", url, headers = headers)\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '200':
+          description: The request has succeeded and the applications are sent in the response.
+          content:
+            application/vnd.com.nsn.cumulocity.applicationcollection+json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/ApplicationCollection'
+                - properties:
+                    self:
+                      allOf:
+                      - $ref: '#/components/schemas/desc_self'
+                      - example: https://<TENANT_DOMAIN>/application/applicationsByOwner?pageSize=5&currentPage=2
+                    prev:
+                      allOf:
+                      - $ref: '#/components/schemas/desc_prevPage'
+                      - example: https://<TENANT_DOMAIN>/application/applicationsByOwner/{tenantId}?pageSize=5&currentPage=1
+                    next:
+                      allOf:
+                      - $ref: '#/components/schemas/desc_nextPage'
+                      - example: https://<TENANT_DOMAIN>/application/applicationsByOwner/{tenantId}?pageSize=5&currentPage=3
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+  /application/applicationsByUser/{username}:
+    parameters:
+    - $ref: '#/components/parameters/username'
+    get:
+      operationId: getApplicationsByUserCollectionResource
+      x-codegen-resource-name: getApplicationsByUser
+      parameters:
+      - $ref: '#/components/parameters/queryParam_currentPage'
+      - $ref: '#/components/parameters/queryParam_pageSize'
+      - $ref: '#/components/parameters/queryParam_withTotalElements'
+      - $ref: '#/components/parameters/queryParam_withTotalPages'
+      tags:
+      - Applications
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      - JWT-IAM: []
+      summary: Retrieve applications by user
+      description: 'Retrieve all applications for a particular user (by a given username).
+
+
+        Required roles
+
+
+        (ROLE_USER_MANAGEMENT_OWN_READ AND is the current user) OR (ROLE_USER_MANAGEMENT_READ AND ROLE_APPLICATION_MANAGEMENT_READ)'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request GET "https://<TENANT_DOMAIN>/application/applicationsByUser/{username}" \
+
+          --header "Authorization: Basic <AUTHORIZATION>"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/application/applicationsByUser/{username}");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.GET);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.get(\"https://<TENANT_DOMAIN>/application/applicationsByUser/{username}\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .asString();\n  System.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"GET\", \"https://<TENANT_DOMAIN>/application/applicationsByUser/{username}\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\"\n    })\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://<TENANT_DOMAIN>/application/applicationsByUser/{username}\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\"\n}\nresponse = requests.request(\"GET\", url, headers = headers)\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '200':
+          description: The request has succeeded and the applications are sent in the response.
+          content:
+            application/vnd.com.nsn.cumulocity.applicationcollection+json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/ApplicationCollection'
+                - properties:
+                    self:
+                      allOf:
+                      - $ref: '#/components/schemas/desc_self'
+                      - example: https://<TENANT_DOMAIN>/application/applicationsByUser?pageSize=5&currentPage=2
+                    prev:
+                      allOf:
+                      - $ref: '#/components/schemas/desc_prevPage'
+                      - example: https://<TENANT_DOMAIN>/application/applicationsByUser/{username}?pageSize=5&currentPage=1
+                    next:
+                      allOf:
+                      - $ref: '#/components/schemas/desc_nextPage'
+                      - example: https://<TENANT_DOMAIN>/application/applicationsByUser/{username}?pageSize=5&currentPage=3
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
 components:
   schemas:
-    Application:
+    application_no_microservice_manifest:
       type: object
       properties:
-        id:
-          type: string
-        self:
-          type: string
-          format: uri
-        name:
-          type: string
-        key:
-          type: string
-        type:
+        availability:
+          description: Application access level for other tenants.
           type: string
           enum:
+          - MARKET
+          - PRIVATE
+          default: PRIVATE
+        contextPath:
+          description: The context path in the URL makes the application accessible. Mandatory when the type of the application is `HOSTED`.
+          type: string
+          minLength: 1
+        description:
+          description: Description of the application.
+          type: string
+        id:
+          description: Unique identifier of the application.
+          type: string
+          readOnly: true
+        key:
+          description: Applications, regardless of their form, are identified by an application key.
+          type: string
+          minLength: 1
+        name:
+          description: Name of the application.
+          type: string
+          minLength: 1
+        owner:
+          $ref: '#/components/schemas/application_owner'
+        self:
+          $ref: '#/components/schemas/desc_self'
+        type:
+          description: The type of the application.
+          type: string
+          enum:
+          - EXTERNAL
           - HOSTED
           - MICROSERVICE
-          - EXTERNAL
+        manifest:
+          $ref: '#/components/schemas/web_application_manifest'
+        roles:
+          $ref: '#/components/schemas/application_roles'
+        requiredRoles:
+          $ref: '#/components/schemas/application_required_roles'
+        breadcrumbs:
+          description: 'A flag to indicate if the application has a breadcrumbs navigation on the UI.
+
+            > **&#9432; Info:** This property is specific to the web application type.
+
+            '
+          type: boolean
+        contentSecurityPolicy:
+          description: 'The content security policy of the application.
+
+            > **&#9432; Info:** This property is specific to the web application type.
+
+            '
+          type: string
+        dynamicOptionsUrl:
+          description: 'A URL to a JSON object with dynamic content options.
+
+            > **&#9432; Info:** This property is specific to the web application type.
+
+            '
+          type: string
+          example: /apps/public/public-options/options.json
+        globalTitle:
+          description: 'The global title of the application.
+
+            > **&#9432; Info:** This property is specific to the web application type.
+
+            '
+          type: string
+          example: Cumulocity
+        legacy:
+          description: 'A flag that shows if the application is a legacy application or not.
+
+            > **&#9432; Info:** This property is specific to the web application type.
+
+            '
+          type: boolean
+        rightDrawer:
+          description: 'A flag to indicate if the application uses the UI context menu on the right side.
+
+            > **&#9432; Info:** This property is specific to the web application type.
+
+            '
+          type: boolean
+        upgrade:
+          description: 'A flag that shows if the application is hybrid and using Angular and AngularJS simultaneously.
+
+            > **&#9432; Info:** This property is specific to the web application type.
+
+            '
+          type: boolean
+        activeVersionId:
+          description: The active version ID of the application. For microservice applications the active version ID is the microservice manifest version ID.
+          type: string
+          readOnly: true
+        resourcesUrl:
+          description: URL to the application base directory hosted on an external server. Only present in legacy hosted applications.
+          type: string
+          deprecated: true
+          readOnly: true
+      example:
+        availability: PRIVATE
+        contextPath: myapplication
+        id: '20200301'
+        key: my-application-key
+        name: my-application
+        owner:
+          self: https://<TENANT_DOMAIN>/tenant/tenants/t07007007
+          tenant:
+            id: t07007007
+        self: https://<TENANT_DOMAIN>/application/applications/20200301
+        type: HOSTED
+    application_required_roles:
+      description: List of permissions required by a microservice to work.
+      type: array
+      items:
+        description: A required role name.
+        type: string
+        example: ROLE_INVENTORY_READ
+    desc_self:
+      title: SelfURL
+      description: A URL linking to this resource.
+      type: string
+      format: uri
+      readOnly: true
+    application:
+      type: object
+      properties:
         availability:
+          description: Application access level for other tenants.
           type: string
           enum:
-          - PRIVATE
           - MARKET
+          - PRIVATE
+          default: PRIVATE
         contextPath:
+          description: The context path in the URL makes the application accessible. Mandatory when the type of the application is `HOSTED`.
           type: string
+          minLength: 1
+        description:
+          description: Description of the application.
+          type: string
+        id:
+          description: Unique identifier of the application.
+          type: string
+          readOnly: true
+        key:
+          description: Applications, regardless of their form, are identified by an application key.
+          type: string
+          minLength: 1
+        name:
+          description: Name of the application.
+          type: string
+          minLength: 1
+        owner:
+          $ref: '#/components/schemas/application_owner'
+        self:
+          $ref: '#/components/schemas/desc_self'
+        type:
+          description: The type of the application.
+          type: string
+          enum:
+          - EXTERNAL
+          - HOSTED
+          - MICROSERVICE
         manifest:
-          type: object
+          oneOf:
+          - $ref: '#/components/schemas/microservice_application_manifest'
+          - $ref: '#/components/schemas/web_application_manifest'
+        roles:
+          $ref: '#/components/schemas/application_roles'
         requiredRoles:
+          $ref: '#/components/schemas/application_required_roles'
+        breadcrumbs:
+          description: 'A flag to indicate if the application has a breadcrumbs navigation on the UI.
+
+            > **&#9432; Info:** This property is specific to the web application type.
+
+            '
+          type: boolean
+        contentSecurityPolicy:
+          description: 'The content security policy of the application.
+
+            > **&#9432; Info:** This property is specific to the web application type.
+
+            '
+          type: string
+        dynamicOptionsUrl:
+          description: 'A URL to a JSON object with dynamic content options.
+
+            > **&#9432; Info:** This property is specific to the web application type.
+
+            '
+          type: string
+          example: /apps/public/public-options/options.json
+        globalTitle:
+          description: 'The global title of the application.
+
+            > **&#9432; Info:** This property is specific to the web application type.
+
+            '
+          type: string
+          example: Cumulocity
+        legacy:
+          description: 'A flag that shows if the application is a legacy application or not.
+
+            > **&#9432; Info:** This property is specific to the web application type.
+
+            '
+          type: boolean
+        rightDrawer:
+          description: 'A flag to indicate if the application uses the UI context menu on the right side.
+
+            > **&#9432; Info:** This property is specific to the web application type.
+
+            '
+          type: boolean
+        upgrade:
+          description: 'A flag that shows if the application is hybrid and using Angular and AngularJS simultaneously.
+
+            > **&#9432; Info:** This property is specific to the web application type.
+
+            '
+          type: boolean
+        activeVersionId:
+          description: The active version ID of the application. For microservice applications the active version ID is the microservice manifest version ID.
+          type: string
+          readOnly: true
+        resourcesUrl:
+          description: URL to the application base directory hosted on an external server. Only present in legacy hosted applications.
+          type: string
+          deprecated: true
+          readOnly: true
+      example:
+        availability: PRIVATE
+        contextPath: myapplication
+        id: '20200301'
+        key: my-application-key
+        name: my-application
+        owner:
+          self: https://<TENANT_DOMAIN>/tenant/tenants/t07007007
+          tenant:
+            id: t07007007
+        self: https://<TENANT_DOMAIN>/application/applications/20200301
+        type: HOSTED
+    application_settings:
+      description: 'A map of settings for this microservice application.
+
+        The settings are stored as tenant options in the application''s settings category.
+
+        '
+      type: object
+      additionalProperties:
+        type: string
+      example:
+        hostkey-autosave: 'true'
+        jwt.cache.guava.expireInSeconds: '10'
+    microservice_application_manifest:
+      description: The manifest of the microservice application.
+      type: object
+      properties:
+        apiVersion:
+          description: Document type format discriminator, for future changes in format.
+          type: string
+          example: '1'
+        billingMode:
+          description: 'The billing mode of the application.
+
+
+            In case of RESOURCES, the number of resources used is exposed for billing calculation per usage.
+
+            In case of SUBSCRIPTION, all resources usage is counted for the microservice owner and the subtenant is charged for subscription.
+
+            '
+          type: string
+          enum:
+          - RESOURCES
+          - SUBSCRIPTION
+          default: RESOURCES
+          example: RESOURCES
+        contextPath:
+          description: The context path in the URL makes the application accessible.
+          type: string
+          example: devicemanagement
+        extensions:
+          description: A list of URL extensions for this microservice application.
           type: array
           items:
-            type: string
-        owner:
+            type: object
+            properties:
+              path:
+                description: The relative path in Cumulocity for this microservice application.
+                type: string
+                example: /cep/myapplication
+              type:
+                description: The type of this extension.
+                type: string
+                example: myapplication.io
+        isolation:
+          description: 'Deployment isolation.
+
+            In case of PER_TENANT, there is a separate instance for each tenant.
+
+            Otherwise, there is one single instance for all subscribed tenants.
+
+            This will affect billing.
+
+            '
+          type: string
+          enum:
+          - MULTI_TENANT
+          - PER_TENANT
+          example: PER_TENANT
+        livenessProbe:
+          allOf:
+          - description: Defines the strategy used to verify if a microservice is alive or requires a restart.
+          - $ref: '#/components/schemas/application_manifest_probe'
+        provider:
+          description: 'Application provider information.
+
+            Simple name allowed for predefined providers, for example, c8y.
+
+            Detailed object for external provider.
+
+            '
           type: object
           properties:
-            tenant:
-              type: object
-              properties:
-                id:
-                  type: string
-        resourcesUrl:
+            name:
+              description: The name of the application provider.
+              type: string
+              example: Cumulocity GmbH
+        readinessProbe:
+          allOf:
+          - description: Defines the strategy used to verify if a microservice is ready to accept traffic.
+          - $ref: '#/components/schemas/application_manifest_probe'
+        requestResources:
+          description: The minimum required resources for the microservice application.
+          type: object
+          properties:
+            cpu:
+              description: The required CPU resource for this microservice application.
+              type: string
+              example: 250m
+            memory:
+              description: The required memory resource for this microservice application.
+              type: string
+              example: 256Mi
+        resources:
+          description: The recommended resources for this microservice application.
+          type: object
+          properties:
+            cpu:
+              description: The required CPU resource for this microservice application.
+              type: string
+              example: 6000m
+            memory:
+              description: The required memory resource for this microservice application.
+              type: string
+              example: 28Gi
+        roles:
+          $ref: '#/components/schemas/application_roles'
+        requiredRoles:
+          $ref: '#/components/schemas/application_required_roles'
+        scale:
+          description: 'Allows to configure a microservice auto scaling policy.
+
+            If the microservice uses a lot of CPU resources, a second instance will be created automatically when this is set to `AUTO`.
+
+            The default is `NONE`, meaning auto scaling will not happen.
+
+            '
           type: string
+          enum:
+          - NONE
+          - AUTO
+          default: NONE
+          example: AUTO
+        settings:
+          $ref: '#/components/schemas/application_settings'
+        settingsCategory:
+          description: 'Allows to specify a custom category for microservice settings.
+
+            By default, `contextPath` is used.
+
+            '
+          type: string
+          example: null
+        version:
+          description: 'Application version.
+
+            Must be a correct [SemVer](https://semver.org/) value but the "+" sign is disallowed.
+
+            '
+          type: string
+          example: 1006.6.8
+    applicationAuthType:
+      description: The authentication method required for the microservice service user associated with this application.
+      type: object
+      properties:
+        requiredAuthType:
+          description: 'The required authentication method for the microservice''s service user.
+
+            * `NONE`: the service user authenticates with its password, as before.
+
+            * `CERTIFICATES`: only tokens derived from a certificate exchange (see [Obtain an access token with a certificate](#operation/postCertificateAccessToken)) are accepted for the service user; password-derived tokens are rejected.
+
+            '
+          type: string
+          enum:
+          - NONE
+          - CERTIFICATES
+      required:
+      - requiredAuthType
+      example:
+        requiredAuthType: CERTIFICATES
+    applicationAuthTypeReset:
+      description: The authentication method to reset the microservice service user to. An administrator can only reset it to `NONE`.
+      type: object
+      properties:
+        requiredAuthType:
+          description: The only value an administrator can set through this endpoint.
+          type: string
+          enum:
+          - NONE
+      required:
+      - requiredAuthType
+      example:
+        requiredAuthType: NONE
+    desc_nextPage:
+      title: NextPageURL
+      description: A URI reference [[RFC3986](https://tools.ietf.org/html/rfc3986)] to a potential next page of managed objects.
+      type: string
+      readOnly: true
     ApplicationCollection:
       type: object
       properties:
-        self:
-          type: string
-          format: uri
         applications:
+          description: An array of applications.
           type: array
           items:
-            $ref: '#/components/schemas/Application'
+            $ref: '#/components/schemas/application'
+        next:
+          $ref: '#/components/schemas/desc_nextPage'
+        prev:
+          $ref: '#/components/schemas/desc_prevPage'
+        self:
+          $ref: '#/components/schemas/desc_self'
+        statistics:
+          $ref: '#/components/schemas/pageStatistics'
+      example:
+        prev: https://<TENANT_DOMAIN>/application/applications?pageSize=1&currentPage=1
+        self: https://<TENANT_DOMAIN>/application/applications?pageSize=1&currentPage=2
+        next: https://<TENANT_DOMAIN>/application/applications?pageSize=1&currentPage=3
+        applications:
+        - availability: PRIVATE
+          contextPath: myapplication
+          id: '20200301'
+          key: my-application-key
+          name: my-application
+          owner:
+            self: https://<TENANT_DOMAIN>/tenant/tenants/t07007007
+            tenant:
+              id: t07007007
+          self: https://<TENANT_DOMAIN>/application/applications/20200301
+          type: HOSTED
+        statistics:
+          totalPages: 10
+          pageSize: 1
+          currentPage: 2
+    error:
+      type: object
+      properties:
+        error:
+          description: The type of error returned.
+          type: string
+        message:
+          description: A human-readable message providing more details about the error.
+          type: string
+        info:
+          description: A URI reference [[RFC3986](https://tools.ietf.org/html/rfc3986)] that identifies the error code reported.
+          type: string
+    pageStatistics:
+      description: Information about paging statistics.
+      type: object
+      readOnly: true
+      properties:
+        currentPage:
+          description: The current page of the paginated results.
+          type: integer
+          minimum: 1
+          example: 2
+        pageSize:
+          description: Indicates the number of objects that the collection may contain per page. The upper limit for one page is 2,000 objects.
+          type: integer
+          minimum: 1
+          maximum: 2000
+          example: 5
+        totalElements:
+          description: The total number of results (elements).
+          type: integer
+          minimum: 0
+          example: 12
+        totalPages:
+          description: 'The total number of paginated results (pages).
+
+
+            > **&#9432; Info:** This property is returned by default except when an operation retrieves all records where values are between an upper and lower boundary, for example, querying ranges using `dateFrom`–`dateTo`. In such cases, the query parameter `withTotalPages=true` should be used to include the total number of pages (at the expense of slightly slower performance).
+
+            '
+          type: integer
+          minimum: 0
+          example: 3
+    web_application_manifest:
+      description: The manifest of the web application.
+      type: object
+      deprecated: true
+      properties:
+        _webpaas:
+          deprecated: true
+          description: 'A legacy flag that identified a certain type of web application that would control the behavior of plugin tab in the application details view.
+
+            It is no longer used.
+
+            '
+          type: boolean
+          example: true
+        contentSecurityPolicy:
+          description: The content security policy of the application.
+          type: string
+          example: 'base-uri ''none''; default-src ''self'' ''unsafe-inline'' http: https: ws: wss:; connect-src ''self'' *.billwerk.com http: https: ws: wss:;  script-src ''self'' open.mapquestapi.com *.twitter.com *.twimg.com ''unsafe-inline'' ''unsafe-eval'' data:; style-src * ''unsafe-inline'' blob:; img-src * data:; font-src * data:; frame-src *;'
+        noAppSwitcher:
+          description: A flag that decides if the application is shown in the app switcher on the UI.
+          type: boolean
+          example: true
+        tabsHorizontal:
+          description: A flag that decides if the application tabs are displayed horizontally or not.
+          type: boolean
+          example: true
+    desc_prevPage:
+      title: PreviousPageURL
+      description: A URI reference [[RFC3986](https://tools.ietf.org/html/rfc3986)] to a potential previous page of managed objects.
+      type: string
+      readOnly: true
+    application_owner:
+      description: Reference to the tenant owning this application. The default value is a reference to the current tenant.
+      type: object
+      readOnly: true
+      properties:
+        self:
+          $ref: '#/components/schemas/desc_self'
+        tenant:
+          type: object
+          properties:
+            id:
+              description: The tenant ID.
+              type: string
+    application_manifest_probe:
+      type: object
+      properties:
+        failureThreshold:
+          description: The probe failure threshold.
+          type: integer
+        periodSeconds:
+          description: The probe period in seconds.
+          type: integer
+        timeoutSeconds:
+          description: The probe timeout in seconds.
+          type: integer
+        successThreshold:
+          description: The probe success threshold.
+          type: integer
+        initialDelaySeconds:
+          description: The probe's initial delay in seconds.
+          type: integer
+        httpGet:
+          description: The probe's HTTP GET method information.
+          type: object
+          properties:
+            path:
+              description: The HTTP path.
+              type: string
+            port:
+              description: The HTTP port.
+              type: integer
+      example:
+        failureThreshold: 3
+        periodSeconds: 30
+        timeoutSeconds: 10
+        successThreshold: 1
+        initialDelaySeconds: 360
+        httpGet:
+          path: /health
+          port: 80
+    application_roles:
+      description: Roles provided by the microservice.
+      type: array
+      items:
+        description: A role name.
+        type: string
+        example: ROLE_SMS_READ
+  parameters:
+    processingModeHeader:
+      name: X-Cumulocity-Processing-Mode
+      in: header
+      description: Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+      required: false
+      schema:
+        type: string
+        default: PERSISTENT
+        enum:
+        - PERSISTENT
+        - TRANSIENT
+        - QUIESCENT
+        - CEP
+        example: PERSISTENT
+    queryParam_application_owner:
+      name: owner
+      in: query
+      description: The ID of the tenant that owns the applications.
+      schema:
+        type: string
+        minLength: 1
+        example: management
+    queryParam_application_name:
+      name: name
+      in: query
+      description: The name of the application.
+      schema:
+        type: string
+        minLength: 1
+        example: devicemanagement
+    queryParam_hasVersions:
+      name: hasVersions
+      in: query
+      description: When set to `true`, the returned result contains applications with an `applicationVersions` field that is not empty. When set to `false`, the result will contain applications with an empty `applicationVersions` field.
+      schema:
+        type: boolean
+        default: null
+        example: true
+    queryParam_withTotalElements:
+      name: withTotalElements
+      in: query
+      description: 'When set to `true`, the returned result will contain in the statistics object the total number of elements. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
+
+        > **&#9432; Info:** To improve performance, the `totalElements` statistics are cached for 10 seconds.
+
+        '
+      schema:
+        type: boolean
+        default: false
+        example: true
+    tenantId:
+      name: tenantId
+      in: path
+      description: Unique identifier of a Cumulocity tenant.
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        example: t07007007
+    username:
+      name: username
+      in: path
+      description: The username of the a user.
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        example: jdoe
+    queryParam_application_subscriber:
+      name: subscriber
+      in: query
+      description: The ID of a tenant that is subscribed to the applications.
+      schema:
+        type: string
+        minLength: 1
+        example: management
+    queryParam_application_user:
+      name: user
+      in: query
+      description: The ID of a user that has access to the applications.
+      schema:
+        type: string
+        minLength: 1
+        example: jdoe
+    queryParam_withTotalPages:
+      name: withTotalPages
+      in: query
+      description: 'When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
+
+        > **&#9432; Info:** To improve performance, the `totalPages` statistics are cached for 10 seconds.
+
+        '
+      schema:
+        type: boolean
+        default: false
+        example: true
+    queryParam_application_version_version:
+      name: version
+      in: query
+      description: The version field of the application version.
+      schema:
+        type: string
+        minLength: 1
+        example: 1
+    applicationId:
+      name: id
+      in: path
+      description: Unique identifier of the application.
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        example: '20200301'
+    queryParam_currentPage:
+      name: currentPage
+      in: query
+      description: The current page of the paginated results.
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+        example: 3
+    queryParam_application_providedFor:
+      name: providedFor
+      in: query
+      description: The ID of a tenant that is subscribed to the applications but doesn't own them.
+      schema:
+        type: string
+        minLength: 1
+        example: t07007007
+    queryParam_application_force:
+      name: force
+      in: query
+      description: Force deletion by unsubscribing all tenants from the application first and then deleting the application itself.
+      schema:
+        type: boolean
+        default: false
+        example: true
+    queryParam_application_version_tag:
+      name: tag
+      in: query
+      description: The tag of the application version.
+      schema:
+        type: string
+        minLength: 1
+        example: tag1
+    applicationName:
+      name: name
+      in: path
+      description: The name of the application.
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        example: my-application
+    acceptHeader:
+      name: Accept
+      in: header
+      description: Advertises which content types, expressed as MIME types, the client is able to understand.
+      required: false
+      schema:
+        type: string
+        minLength: 1
+        example: application/json
+    queryParam_application_tenant:
+      name: tenant
+      in: query
+      description: The ID of a tenant that either owns the application or is subscribed to the applications.
+      schema:
+        type: string
+        minLength: 1
+        example: management
+    queryParam_application_type:
+      name: type
+      in: query
+      description: The type of the application. It is possible to use multiple values separated by a comma. For example, `EXTERNAL,HOSTED` will return only applications with type `EXTERNAL` or `HOSTED`.
+      schema:
+        type: string
+        enum:
+        - EXTERNAL
+        - HOSTED
+        - MICROSERVICE
+        example: HOSTED
+    queryParam_pageSize:
+      name: pageSize
+      in: query
+      description: Indicates how many entries of the collection shall be returned. The upper limit for one page is 2,000 objects.
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 2000
+        default: 5
+        example: 10
+  responses:
+    applicationDuplicatedKeyName:
+      description: Duplicate key/name.
+      content:
+        application/vnd.com.nsn.cumulocity.error+json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            error: applications/Duplicate
+            message: Application for tenant t07007007 with properties ( name:devicemanagement ) already exists
+            info: https://www.cumulocity.com/guides/reference-guide/#error_reporting
+    applicationNotFound:
+      description: Application not found.
+      content:
+        application/vnd.com.nsn.cumulocity.error+json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            error: applications/Not Found
+            message: Could not find application by ID 20200301
+            info: https://www.cumulocity.com/guides/reference-guide/#error_reporting
+    invalidPayload:
+      description: Unprocessable Entity – invalid payload.
+    unauthorizedError:
+      description: Authentication information is missing or invalid.
+      content:
+        application/vnd.com.nsn.cumulocity.error+json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            error: security/Unauthorized
+            message: 'Invalid credentials! : Bad credentials'
+            info: https://www.cumulocity.com/guides/reference-guide/#error_reporting
+    applicationSubscribedByTenants:
+      description: Application was not deleted because it is subscribed by other tenants. Set `force=true` to unsubscribe all tenants before deletion.
+      content:
+        application/vnd.com.nsn.cumulocity.error+json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            error: applications/Conflict
+            message: 'Failed to delete application.  : Cannot remove application subscribed to other tenants: [t231, t11134]'
+            info: https://www.cumulocity.com/guides/reference-guide/#error_reporting
+    operationNotAuthorized:
+      description: Not authorized to perform this operation.
   securitySchemes:
-    basicAuth:
+    Basic:
       type: http
       scheme: basic
-    bearerAuth:
+      description: 'The authorization header is formed as `Basic <Base64(<tenantID>/<c8yuser>:<password>)>`. For instance, if your tenantID, username and password are **t0071234**, **testuser** and **secret123** respectively, you can generate the Base64 string with the following command:
+
+
+        ```shell
+
+        $ echo -n t0071234/testuser:secret123 | base64
+
+        ```
+
+
+        and your authorization header would look like this:
+
+
+        ```
+
+        "Authorization": "Basic dDAwNzEyMzQvdGVzdHVzZXI6c2VjcmV0MTIz"
+
+        ```
+
+        '
+    OAI-Secure:
+      type: http
+      scheme: bearer
+      description: 'This is the recommended authorization method because it provides high security using authorization tokens to prove the identity of the user, and it is the default login mode on creating new tenants. This mode is an enhancement of the previous OAuth Internal authentication (available prior to 10.13.0).
+
+
+        For more details about OAI-Secure authentication, see [Platform administration > Authentication > Basic settings > Login settings](https://www.cumulocity.com/docs/authentication/basic-settings/#login-settings) in the Cumulocity user documentation.
+
+        '
+    SSO:
+      type: oauth2
+      description: "The login with SSO requires a correct configuration on the [Cumulocity side](https://www.cumulocity.com/docs/authentication/sso/). With the configuration, an additional button is available on the Login page. After clicking the button, the user is redirected to authenticate with the configured authorization server. On successful login, the user is redirected to Cumulocity.\n\nAuthentication details are exchanged using cookies. There are two parts to it, the first is the authentication cookie that is handled automatically by the Cumulocity platform. The second is the XSRF-TOKEN cookie. When a client receives the cookie, it should take the value and put it in the X-XSRF-TOKEN request header in all subsequent requests.\n\nThe flow of authenticating with authentication code grant is as follows:\n\n![Authentication flow](images/oauth-simple-flow.png)\n\nThe first request executed by the browser is:\n\n```http\nGET /tenant/loginOptions\nHost: https://<TENANT_DOMAIN>\nAccept: application/vnd.com.nsn.cumulocity.loginoptioncollection+json\n```\n\nResponse sample:\n\n```json\n{\n    \"loginOptions\": [\n        {\n            \"buttonName\": \"Login with oauth\",\n            \"grantType\": \"<AUTHORIZATION_CODE>\",\n            \"initRequest\": \"https://<TENANT_DOMAIN>/tenant/oauth?response_type=code&tenant_id=<TENANT_ID>\",\n            \"self\": \"https://<TENANT_DOMAIN>/tenant/loginOptions/oauth2\",\n            \"type\": \"oauth2\"\n        },\n        ...\n    ],\n    \"self\": \"http://<TENANT_DOMAIN>/tenant/loginOptions/\"\n}\n```\n\nThe browser must invoke the request provided in the initRequest parameter.\n\nThe initRequest initiates the redirect, in which the user is prompted for credentials. After successful login, the user is redirected back to the browser, where it must capture the code request parameter. Then the request to exchange the code for the token is as follows:\n\n```http\nPOST /tenant/oauth?grant_type=authorization_code&code=<CODE>\nHost: https://<TENANT_DOMAIN>\n```\n\nA successful response will have no body but the following response headers:\n\n```\nSet-Cookie: authorization=<TOKEN>;\nSet-Cookie: XSRF-TOKEN=<XSRF-TOKEN>;\n```\n\nThe authorization cookie is valid for two weeks.\n"
+      flows:
+        clientCredentials:
+          tokenUrl: /tenant/oauth?grant_type=authorization_code&code=<CODE>
+          scopes: {}
+    JWT-IAM:
       type: http
       scheme: bearer
       bearerFormat: JWT
+      description: 'This kind of authentication substitutes the JWT authentication with OAuth2 access tokens from your Identity and Access Management (IAM).
+
+        You can enable this in the [SSO configuration](https://www.cumulocity.com/docs/authentication/sso/).
+
+
+        The HTTP header must include:
+
+
+        ```
+
+        "Authorization": "Bearer <Access token>"
+
+        ```
+
+
+        When a request with a bearer token in the header is received, Cumulocity checks if the access token is from your IAM (that is, if authentication is enabled in your SSO configuration), and verifies the authenticity of
+
+        the token remotely against the IAM.
+
+        '
+x-tagGroups:
+- name: Platform
+  tags:
+  - Platform API
+- name: Alarms
+  tags:
+  - Alarm API
+  - Alarm notification API
+  - Alarms
+- name: Applications
+  tags:
+  - Application API
+  - Applications
+  - Application versions
+  - Application binaries
+  - Bootstrap user
+  - Current application
+- name: Audits
+  tags:
+  - Audit API
+  - Audits
+- name: Device control
+  tags:
+  - Device control API
+  - Device control notification API
+  - Operations
+  - Bulk operations
+  - Device credentials
+  - New device requests
+  - Device control via SMS
+- name: Events
+  tags:
+  - Event API
+  - Event notification API
+  - Events
+  - Attachments
+- name: Feature toggles
+  tags:
+  - Feature toggles API
+- name: Identity
+  tags:
+  - Identity API
+  - External IDs
+- name: Inventory
+  tags:
+  - Inventory API
+  - Inventory notification API
+  - Managed objects
+  - Binaries
+  - Child operations
+  - Query language
+- name: Measurements
+  tags:
+  - Measurement API
+  - Measurement notification API
+  - Measurements
+  - Measurements specifics
+- name: Notifications 2.0
+  tags:
+  - About notifications 2.0
+  - Notification 2.0 API
+  - Subscriptions
+  - Tokens
+- name: Real-time notifications
+  tags:
+  - Real-time notification API
+- name: Retentions
+  tags:
+  - Retention rules
+- name: Tenants
+  tags:
+  - Tenant API
+  - Tenants
+  - Tenant applications
+  - Trusted certificates
+  - Device statistics
+  - Usage statistics
+  - Options
+  - Login options
+  - Login tokens
+  - System options
+- name: Users
+  tags:
+  - User API
+  - Current User
+  - Users
+  - Groups
+  - Roles
+  - Inventory Roles
+  - Device Permissions
+- name: Certificate
+  tags:
+  - Certificate authority
+  - Device enrollment

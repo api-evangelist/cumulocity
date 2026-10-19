@@ -1,0 +1,704 @@
+openapi: 3.2.0
+info:
+  version: Latest
+  title: Cumulocity Login tokens API
+  x-logo:
+    url: https://www.cumulocity.com/docs/images/logo-platform.svg
+    backgroundColor: '#F8F8F8'
+    altText: Cumulocity
+    href: https://www.cumulocity.com/api
+  description: '# REST implementation
+
+
+    This section describes the aspects common to all REST-based interfaces of Cumulocity. The interfaces are based on the Hypertext Transfer Protocol 1.1 using HTTPS. ## HTTP usage
+
+
+    ### Application management
+
+
+    Cumulocity uses a so-called "application key" to distinguish requests coming from devices and traffic from applications. If you write an application, pass the following header as part of all requests:
+
+
+    ```markup
+
+    X-Cumulocity-Application-Key:
+
+    ```
+
+
+    For example, if you registered your application in the Cumulocity Administration application with the key "myapp", your requests should contain the header:
+
+
+    ```markup
+
+    X-Cumulocity-Application-Key: myapp
+
+    ```
+
+
+    This makes your application subscribable and billable. If you implement a device, do not pass the key. > **ⓘ Info:** Make sure that you pass the key in **all** requests coming from an application. If you leave out the key,
+
+    > the request will be considered as a device request, and the corresponding device will be marked as "available". ### Limited HTTP clients
+
+
+    If you use an HTTP client that can only perform GET and POST methods in HTTP, you can emulate the other methods through an additional "X-HTTP-METHOD" header. Simply issue a POST request and add the header, specifying the actual REST method to be executed. For example, to emulate the "PUT" (modify) method, you can use:
+
+
+    ```http
+
+    POST ... X-HTTP-METHOD: PUT
+
+    ```
+
+
+    ### Processing mode
+
+
+    Every update request (PUT, POST, DELETE) executes with a so-called *processing mode*. The processing modes are as follows:
+
+
+    |Processing mode|Description|
+
+    |---|---|
+
+    |PERSISTENT (default)|Stores data in the Cumulocity database and sends data to the Streaming Analytics engine. Afterwards, Cumulocity returns the result of the request. This is the default mode.|
+
+    |TRANSIENT|Sends data to the Streaming Analytics engine and immediately returns the results asynchronously but does not store data in Cumulocity’s database. This mode saves storage and processing costs and is useful for example when tracking devices in real time without requiring data to be stored.|
+
+    |QUIESCENT|Behaves similar to the persistent mode with the exception that no real-time notifications will be sent.|
+
+    |CEP|Behaves like the transient mode with the exception that no real-time notifications are sent.|
+
+
+    To explicitly control the processing mode of an update request, you can use the "X-Cumulocity-Processing-Mode" header with a value of either "PERSISTENT", "TRANSIENT", "QUIESCENT" or "CEP":
+
+
+    ```markup
+
+    X-Cumulocity-Processing-Mode: PERSISTENT
+
+    ```
+
+
+    > **ⓘ Info:** Events are always delivered to CEP/Apama for all processing modes. This is independent from real-time notifications. ### Authorization
+
+
+    All requests issued to Cumulocity are subject to authorization. To determine the required permissions, see the "Required role" entries for the individual requests. To learn more about the different permissions and the concept of ownership in Cumulocity, see Getting started > Technical concepts > Security aspects > Access control > Managing roles and assigning permissions in the Cumulocity user documentation. > **⚠️ Important:** In the Cumulocity API, each granular permission is identified by a unique “permission” string, which is prefixed with ROLE_ (for example, ROLE_ALARM_READ, ROLE_INVENTORY_ADMIN). Therefore, permissions are frequently referred to as “roles” throughout the API as well as in the configuration files. For example, the microservice manifest includes a requiredRoles field, which actually expects a permission string. See also the Glossary of the Cumulocity user documentation for the usage of the terms “permission” and “role” in the Cumulocity context. ### Media types
+
+
+    Each type of data is associated with an own media type. The general format of media types is:
+
+
+    ```markup
+
+    application/vnd.com.nsn.cumulocity.+json;ver=;charset=UTF-8
+
+    ```
+
+
+    Each media type contains a parameter `ver` indicating the version of the type.'
+servers:
+- description: Cumulocity tenant
+  url: https://<TENANT_DOMAIN>
+security:
+- Basic: []
+- OAI-Secure: []
+- SSO: []
+- JWT-IAM: []
+tags:
+- name: Login tokens
+  description: API methods to obtain access tokens to the Cumulocity platform in case of OAI-Secure or SSO authentication.
+paths:
+  /tenant/oauth:
+    post:
+      operationId: postLoginFormCookie
+      x-codegen-resource-name: obtainAccessCookies
+      parameters:
+      - $ref: '#/components/parameters/queryParam_tenant_id'
+      - $ref: '#/components/parameters/tfaCodeHeader'
+      - $ref: '#/components/parameters/acceptHeader'
+      tags:
+      - Login tokens
+      security: []
+      summary: Obtain access tokens in cookies
+      description: Obtain an OAI-Secure and XSRF tokens in cookies.
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/loginForm'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request POST "https://<TENANT_DOMAIN>/tenant/oauth?tenant_id=<TENANT_ID>" \
+
+          --header "Accept: application/json" \
+
+          --header "Content-Type: application/x-www-form-urlencoded" \
+
+          --data-urlencode "grant_type=PASSWORD" \
+
+          --data-urlencode "username=<USERNAME>" \
+
+          --data-urlencode "password=<PASSWORD>"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/tenant/oauth?tenant_id=<TENANT_ID>");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.POST);
+
+          request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
+
+          request.AddHeader("Accept", "application/json");
+
+          request.AddParameter("grant_type", "PASSWORD");
+
+          request.AddParameter("username", "<USERNAME>");
+
+          request.AddParameter("password", "<PASSWORD>");
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.post(\"https://<TENANT_DOMAIN>/tenant/oauth?tenant_id=<TENANT_ID>\")\n    .header(\"Content-Type\", \"application/x-www-form-urlencoded\")\n    .header(\"Accept\", \"application/json\")\n    .field(\"grant_type\", \"PASSWORD\")\n    .field(\"username\", \"<USERNAME>\")\n    .field(\"password\", \"<PASSWORD>\")\n    .asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"POST\", \"https://<TENANT_DOMAIN>/tenant/oauth?tenant_id=<TENANT_ID>\")\n    .headers({\n        \"Accept\": \"application/json\",\n        \"Content-Type\": \"application/x-www-form-urlencoded\"\n    })\n    .send(\"grant_type=PASSWORD\")\n    .send(\"username=<USERNAME>\")\n    .send(\"password=<PASSWORD>\")\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\nimport json\n\nurl = \"https://<TENANT_DOMAIN>/tenant/oauth?tenant_id=<TENANT_ID>\"\nheaders = {\n  \"Accept\": \"application/json\",\n  \"Content-Type\": \"application/x-www-form-urlencoded\"\n}\ndata = \"grant_type=PASSWORD&username=<USERNAME>&password=<PASSWORD>\"\n\nresponse = requests.request(\"POST\", url, headers=headers, data=data)\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '200':
+          description: The tokens are return in cookies.
+          headers:
+            Set-Cookie:
+              schema:
+                description: The XSRF token is returned in a cookie name `XSRF-TOKEN`.
+                type: string
+                minLength: 1
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+  /tenant/oauth/token:
+    post:
+      operationId: postLoginFormBody
+      x-codegen-resource-name: obtainAccessToken
+      parameters:
+      - $ref: '#/components/parameters/queryParam_tenant_id'
+      - $ref: '#/components/parameters/tfaCodeHeader'
+      - $ref: '#/components/parameters/acceptHeader'
+      tags:
+      - Login tokens
+      security: []
+      summary: Obtain an access token
+      description: Obtain an OAI-Secure access token.
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/loginForm'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request POST "https://<TENANT_DOMAIN>/tenant/oauth/token?tenant_id=<TENANT_ID>" \
+
+          --header "Content-Type: application/x-www-form-urlencoded" \
+
+          --header "Accept: application/json" \
+
+          --data-urlencode "grant_type=PASSWORD" \
+
+          --data-urlencode "username=<USERNAME>" \
+
+          --data-urlencode "password=<PASSWORD>"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/tenant/oauth/token?tenant_id=<TENANT_ID>");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.POST);
+
+          request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
+
+          request.AddHeader("Accept", "application/json");
+
+          request.AddParameter("grant_type", "PASSWORD");
+
+          request.AddParameter("username", "<USERNAME>");
+
+          request.AddParameter("password", "<PASSWORD>");
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.post(\"https://<TENANT_DOMAIN>/tenant/oauth/token?tenant_id=<TENANT_ID>\")\n    .header(\"Content-Type\", \"application/x-www-form-urlencoded\")\n    .header(\"Accept\", \"application/json\")\n    .field(\"grant_type\", \"PASSWORD\")\n    .field(\"username\", \"<USERNAME>\")\n    .field(\"password\", \"<PASSWORD>\")\n    .asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"POST\", \"https://<TENANT_DOMAIN>/tenant/oauth/token?tenant_id=<TENANT_ID>\")\n    .headers({\n        \"Accept\": \"application/json\",\n        \"Content-Type\": \"application/x-www-form-urlencoded\"\n    })\n    .send(\"grant_type=PASSWORD\")\n    .send(\"username=<USERNAME>\")\n    .send(\"password=<PASSWORD>\")\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\nimport json\n\nurl = \"https://<TENANT_DOMAIN>/tenant/oauth/token?tenant_id=<TENANT_ID>\"\nheaders = {\n  \"Accept\": \"application/json\",\n  \"Content-Type\": \"application/x-www-form-urlencoded\"\n}\ndata = \"grant_type=PASSWORD&username=<USERNAME>&password=<PASSWORD>\"\n\nresponse = requests.request(\"POST\", url, headers=headers, data=data)\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '200':
+          description: The OAI-Secure access token is sent in the response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/accessToken'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+  /tenant/oauth/certificate:
+    post:
+      operationId: postCertificateAccessToken
+      x-codegen-resource-name: obtainAccessTokenWithCertificate
+      parameters:
+      - $ref: '#/components/parameters/queryParam_tenant_id'
+      - $ref: '#/components/parameters/tenantIdInHeader'
+      - $ref: '#/components/parameters/tokenResponseModeHeader'
+      - $ref: '#/components/parameters/tfaCodeHeader'
+      - $ref: '#/components/parameters/acceptHeader'
+      tags:
+      - Login tokens
+      security: []
+      summary: Obtain an access token with a certificate
+      description: 'Obtain a platform access token by presenting an X.509 certificate over standard HTTPS, without requiring mutual TLS (mTLS) or MQTT. This provides a REST-native, standard-port alternative for certificate-authenticated clients that cannot use MQTT or the dedicated mTLS endpoint.
+
+
+        The request body contains the leaf certificate, or the full certificate chain, in PEM format. By default the returned access token is encrypted as a JWE with the public key from the presented certificate, so that only the holder of the corresponding private key can decrypt it and use it as a `Bearer` token for subsequent REST API requests. The response format can be controlled with the `X-Cumulocity-Token-Response-Mode` header. JWE mode requires the certificate to use an RSA key, because the platform encrypts the token with `RSA-OAEP-256`; clients presenting a certificate with a non-RSA key must request a plain JWT with the `X-Cumulocity-Token-Response-Mode: jwt` header.
+
+
+        The platform derives the identity from the certificate subject, validates the certificate material against the tenant-trusted certificate authorities (including validity dates and revocation checks where configured) and confirms that the certificate is authorized for the resolved user. The tenant context must be established from the request before validation, for example through the `tenant_id` query parameter or the `X-Cumulocity-TenantId` header. The certificate is not used as the primary tenant identification mechanism.
+
+
+        If the resolved certificate identity is ambiguous, for example when the same certificate common name could resolve to both a regular user and a device user, the request is rejected and no token is issued. Untrusted, expired, revoked, malformed, unsupported or unmapped certificates are rejected as well.
+
+
+        Except for device users, the resolved account must have explicitly opted in to certificate authentication by setting its `requiredAuthType` to `CERTIFICATES` (see Update the current user and Update the authentication method required for the current service user). A `401` is returned for any other account, even if the presented certificate chain is otherwise valid and trusted by the tenant. Single sign-on (SSO) users are always rejected, regardless of `requiredAuthType`, because their identity is owned by the external identity provider.
+
+
+        If two-factor authentication (TFA) is active for the resolved user, it must be passed with the request as well, because the certificate replaces the password, not the second factor. Send the current TFA code in the `X-Cumulocity-TFA-Code` header. Both the TOTP and the SMS strategy are supported, in the same way as for the OAI-Secure login. Device users are never asked for a second factor.'
+      requestBody:
+        required: true
+        content:
+          application/x-pem-file:
+            schema:
+              type: string
+              format: binary
+              description: Leaf certificate or full certificate chain in PEM format.
+              example: '-----BEGIN CERTIFICATE-----
+
+                MIIDTzCCAjegAwIBAgIUB1a5GM9ubBpN5tyU7YO8D3C8zUUwDQYJKoZIhvcNAQEL
+
+                ...
+
+                zngrsOfyKr8YYlDRy6RiAR2HQode00Hs4WoakfuTpaISZIs=
+
+                -----END CERTIFICATE-----'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request POST "https://<TENANT_DOMAIN>/tenant/oauth/certificate" \
+
+          --header "Content-Type: application/x-pem-file" \
+
+          --header "Accept: application/json" \
+
+          --header "X-Cumulocity-TenantId: <TENANT_ID>" \
+
+          --header "X-Cumulocity-Token-Response-Mode: jwe" \
+
+          --data-binary "@client-certificate.pem"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/tenant/oauth/certificate");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.POST);
+
+          request.AddHeader("Content-Type", "application/x-pem-file");
+
+          request.AddHeader("Accept", "application/json");
+
+          request.AddHeader("X-Cumulocity-TenantId", "<TENANT_ID>");
+
+          request.AddHeader("X-Cumulocity-Token-Response-Mode", "jwe");
+
+          request.AddParameter("application/x-pem-file", File.ReadAllText("client-certificate.pem"), ParameterType.RequestBody);
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nString certificate = new String(Files.readAllBytes(Paths.get(\"client-certificate.pem\")), java.nio.charset.StandardCharsets.US_ASCII);\nHttpResponse<String> response = Unirest.post(\"https://<TENANT_DOMAIN>/tenant/oauth/certificate\")\n    .header(\"Content-Type\", \"application/x-pem-file\")\n    .header(\"Accept\", \"application/json\")\n    .header(\"X-Cumulocity-TenantId\", \"<TENANT_ID>\")\n    .header(\"X-Cumulocity-Token-Response-Mode\", \"jwe\")\n    .body(certificate)\n    .asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar fs = require(\"fs\");\nvar req = unirest(\"POST\", \"https://<TENANT_DOMAIN>/tenant/oauth/certificate\")\n    .headers({\n        \"Accept\": \"application/json\",\n        \"Content-Type\": \"application/x-pem-file\",\n        \"X-Cumulocity-TenantId\": \"<TENANT_ID>\",\n        \"X-Cumulocity-Token-Response-Mode\": \"jwe\"\n    })\n    .send(fs.readFileSync(\"client-certificate.pem\"))\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://<TENANT_DOMAIN>/tenant/oauth/certificate\"\nheaders = {\n  \"Accept\": \"application/json\",\n  \"Content-Type\": \"application/x-pem-file\",\n  \"X-Cumulocity-TenantId\": \"<TENANT_ID>\",\n  \"X-Cumulocity-Token-Response-Mode\": \"jwe\"\n}\nwith open(\"client-certificate.pem\", \"rb\") as certificate:\n  data = certificate.read()\n\nresponse = requests.request(\"POST\", url, headers=headers, data=data)\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '200':
+          description: The access token is sent in the response. By default it is a JWE encrypted with the public key from the presented certificate.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/certificateAccessToken'
+        '400':
+          $ref: '#/components/responses/unableToParseCertBadRequest'
+        '401':
+          $ref: '#/components/responses/certificateAccessTokenUnauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+        '422':
+          $ref: '#/components/responses/jweUnsupportedCertificateKeyUnprocessableEntity'
+components:
+  responses:
+    certificateAccessTokenUnauthorizedError:
+      description: 'One or more certificates in the chain are revoked or the certificate chain is not valid. Revoked certificates are checked first, then the validity of the certificate chain.
+
+
+        Also returned when the resolved account has not opted in to certificate authentication (`requiredAuthType` is not `CERTIFICATES`) or is a single sign-on (SSO) user, even if the certificate chain itself is valid and trusted.
+
+        '
+      content:
+        application/vnd.com.nsn.cumulocity.error+json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            error: security/Unauthorized
+            message: Invalid certificate chain!
+            info: https://www.cumulocity.com/guides/reference-guide/#error_reporting
+    operationNotAuthorized:
+      description: Not authorized to perform this operation.
+    jweUnsupportedCertificateKeyUnprocessableEntity:
+      description: 'The presented certificate does not use an RSA key, so the access token cannot be encrypted as a JWE. Request a plain JWT with the `X-Cumulocity-Token-Response-Mode: jwt` header instead.
+
+        '
+      content:
+        application/vnd.com.nsn.cumulocity.error+json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            error: certificate-token/Unprocessable Entity
+            message: 'Only RSA certificates are supported for JWE mode. Use header X-Cumulocity-Token-Response-Mode: jwt for non-RSA certificates.'
+            info: https://www.cumulocity.com/guides/reference-guide/#error_reporting
+    unauthorizedError:
+      description: Authentication information is missing or invalid.
+      content:
+        application/vnd.com.nsn.cumulocity.error+json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            error: security/Unauthorized
+            message: 'Invalid credentials! : Bad credentials'
+            info: https://www.cumulocity.com/guides/reference-guide/#error_reporting
+    unableToParseCertBadRequest:
+      description: Unable to parse certificate chain.
+      content:
+        application/vnd.com.nsn.cumulocity.error+json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            error: Device Certificates/Bad Request
+            message: 'Cannot parse X509 certificate. : Incomplete data'
+            info: https://www.cumulocity.com/guides/reference-guide/#error_reporting
+  parameters:
+    acceptHeader:
+      name: Accept
+      in: header
+      description: Advertises which content types, expressed as MIME types, the client is able to understand.
+      required: false
+      schema:
+        type: string
+        minLength: 1
+        example: application/json
+    queryParam_tenant_id:
+      name: tenant_id
+      in: query
+      required: false
+      description: Unique identifier of a Cumulocity tenant. If not provided, the tenant is calculated based on the request domain.
+      schema:
+        type: string
+        minLength: 1
+        example: t07007007
+    tenantIdInHeader:
+      name: X-Cumulocity-TenantId
+      in: header
+      description: Used to send a tenant ID.
+      schema:
+        type: string
+        example: t07007007
+    tfaCodeHeader:
+      name: X-Cumulocity-TFA-Code
+      in: header
+      description: 'Optional. Current TFA code of the user, if a TFA code is required to log in. For form-based OAI-Secure login, the code can be sent as the `tfa_code` field in the request body; this header is useful for requests that cannot include that field (for example when the request body is a certificate chain). If both are sent, the request body field takes precedence.
+
+        '
+      required: false
+      schema:
+        type: string
+        example: '123433'
+    tokenResponseModeHeader:
+      name: X-Cumulocity-Token-Response-Mode
+      in: header
+      description: 'Optional. Selects the format of the returned access token. `jwe` (default) returns the access token as a JWE encrypted with the public key from the presented certificate (RSA-OAEP-256 for key encryption and AES-256-GCM for content encryption), so that only the holder of the corresponding private key can decrypt it; it requires the certificate to use an RSA key. `jwt` returns a plain, unencrypted JWT and is rejected with a 403 error unless plain JWT responses are enabled for the platform or the certificate does not use an RSA key. Unsupported values are rejected with a 400 error.
+
+        '
+      required: false
+      schema:
+        type: string
+        enum:
+        - jwe
+        - jwt
+        default: jwe
+        example: jwe
+  schemas:
+    certificateAccessToken:
+      description: 'Access token obtained by presenting an X.509 certificate. By default the token is returned as a JWE encrypted with the public key from the presented certificate, so that only the holder of the corresponding private key can decrypt it. This requires the certificate to use an RSA key, because the platform encrypts the token with `RSA-OAEP-256`.
+
+
+        A plain, unencrypted JWT can be requested with the `X-Cumulocity-Token-Response-Mode: jwt` header, but such requests are rejected with a 403 error unless plain JWT responses have been explicitly enabled for the platform. Clients whose certificate does not use an RSA key are exempt from that restriction, as JWE mode is not available to them: they may always request `jwt`, and must do so, because a request left in the default `jwe` mode is rejected with a 422 error.
+
+        '
+      type: object
+      properties:
+        access_token:
+          description: The access token generated by the Cumulocity platform. A JWE compact-serialized, encrypted JWT when `response_mode` is `jwe`, or a plain, unencrypted JWT when `response_mode` is `jwt`.
+          type: string
+          example: eyJhbGciOiJSU0EtT0FFUC0yNTYiLCJlbmMiOiJBMjU2R0NNIn0.g_hEwksO1Ax8Qn7HoN-BVeBoa8FXe0kpyk_XdcSmxvcM5_P296JXXtoHISr_DD_M...48V95cLzdVlCyoQ
+        token_type:
+          description: The type of the returned token.
+          type: string
+          example: Bearer
+        response_mode:
+          description: The format of the returned access token. `jwe` unless a plain JWT was requested with the `X-Cumulocity-Token-Response-Mode` header and permitted.
+          type: string
+          enum:
+          - jwe
+          - jwt
+          example: jwe
+        expires_in:
+          description: The token lifetime in seconds.
+          type: integer
+          example: 3600
+    loginForm:
+      type: object
+      properties:
+        code:
+          description: Used in case of SSO login. A code received from the external authentication server is exchanged to an internal access token.
+          type: string
+          example: MIIFezCCA2OgAwIBAgIUNU2ZnXIdu9aq+O7x2emLTgXgQEowDQYJKoZIhvc
+        grant_type:
+          description: Dependent on the authentication type. PASSWORD is used for OAI-Secure.
+          type: string
+          enum:
+          - PASSWORD
+          - AUTHORIZATION_CODE
+          example: PASSWORD
+        password:
+          description: Used in case of OAI-Secure authentication.
+          type: string
+          example: Str0ngPassw0rd!2
+        tfa_code:
+          description: Current TFA code, sent by the user, if a TFA code is required to log in. Used in case of OAI-Secure authentication.
+          type: string
+          example: '123433'
+        username:
+          description: Used in case of OAI-Secure authentication.
+          type: string
+          example: Admin
+    error:
+      type: object
+      properties:
+        error:
+          description: The type of error returned.
+          type: string
+        message:
+          description: A human-readable message providing more details about the error.
+          type: string
+        info:
+          description: A URI reference [[RFC3986](https://tools.ietf.org/html/rfc3986)] that identifies the error code reported.
+          type: string
+    accessToken:
+      description: OAI-Secure access token.
+      type: object
+      properties:
+        access_token:
+          description: Access token generated by the Cumulocity platform.
+          type: string
+          example: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJhZGY0ODI3Yi00ZjZjLTRiMTktYTJmYy0x...S-04HPk3G5OezjCP8oQUAIG87wd-fHyJ2oKSuetWFWpUSBPzJzl_73_3yauIlplHorlSoQ
+  securitySchemes:
+    Basic:
+      type: http
+      scheme: basic
+      description: 'The authorization header is formed as `Basic <Base64(<tenantID>/<c8yuser>:<password>)>`. For instance, if your tenantID, username and password are **t0071234**, **testuser** and **secret123** respectively, you can generate the Base64 string with the following command:
+
+
+        ```shell
+
+        $ echo -n t0071234/testuser:secret123 | base64
+
+        ```
+
+
+        and your authorization header would look like this:
+
+
+        ```
+
+        "Authorization": "Basic dDAwNzEyMzQvdGVzdHVzZXI6c2VjcmV0MTIz"
+
+        ```
+
+        '
+    OAI-Secure:
+      type: http
+      scheme: bearer
+      description: 'This is the recommended authorization method because it provides high security using authorization tokens to prove the identity of the user, and it is the default login mode on creating new tenants. This mode is an enhancement of the previous OAuth Internal authentication (available prior to 10.13.0).
+
+
+        For more details about OAI-Secure authentication, see [Platform administration > Authentication > Basic settings > Login settings](https://www.cumulocity.com/docs/authentication/basic-settings/#login-settings) in the Cumulocity user documentation.
+
+        '
+    SSO:
+      type: oauth2
+      description: "The login with SSO requires a correct configuration on the [Cumulocity side](https://www.cumulocity.com/docs/authentication/sso/). With the configuration, an additional button is available on the Login page. After clicking the button, the user is redirected to authenticate with the configured authorization server. On successful login, the user is redirected to Cumulocity.\n\nAuthentication details are exchanged using cookies. There are two parts to it, the first is the authentication cookie that is handled automatically by the Cumulocity platform. The second is the XSRF-TOKEN cookie. When a client receives the cookie, it should take the value and put it in the X-XSRF-TOKEN request header in all subsequent requests.\n\nThe flow of authenticating with authentication code grant is as follows:\n\n![Authentication flow](images/oauth-simple-flow.png)\n\nThe first request executed by the browser is:\n\n```http\nGET /tenant/loginOptions\nHost: https://<TENANT_DOMAIN>\nAccept: application/vnd.com.nsn.cumulocity.loginoptioncollection+json\n```\n\nResponse sample:\n\n```json\n{\n    \"loginOptions\": [\n        {\n            \"buttonName\": \"Login with oauth\",\n            \"grantType\": \"<AUTHORIZATION_CODE>\",\n            \"initRequest\": \"https://<TENANT_DOMAIN>/tenant/oauth?response_type=code&tenant_id=<TENANT_ID>\",\n            \"self\": \"https://<TENANT_DOMAIN>/tenant/loginOptions/oauth2\",\n            \"type\": \"oauth2\"\n        },\n        ...\n    ],\n    \"self\": \"http://<TENANT_DOMAIN>/tenant/loginOptions/\"\n}\n```\n\nThe browser must invoke the request provided in the initRequest parameter.\n\nThe initRequest initiates the redirect, in which the user is prompted for credentials. After successful login, the user is redirected back to the browser, where it must capture the code request parameter. Then the request to exchange the code for the token is as follows:\n\n```http\nPOST /tenant/oauth?grant_type=authorization_code&code=<CODE>\nHost: https://<TENANT_DOMAIN>\n```\n\nA successful response will have no body but the following response headers:\n\n```\nSet-Cookie: authorization=<TOKEN>;\nSet-Cookie: XSRF-TOKEN=<XSRF-TOKEN>;\n```\n\nThe authorization cookie is valid for two weeks.\n"
+      flows:
+        clientCredentials:
+          tokenUrl: /tenant/oauth?grant_type=authorization_code&code=<CODE>
+          scopes: {}
+    JWT-IAM:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'This kind of authentication substitutes the JWT authentication with OAuth2 access tokens from your Identity and Access Management (IAM).
+
+        You can enable this in the [SSO configuration](https://www.cumulocity.com/docs/authentication/sso/).
+
+
+        The HTTP header must include:
+
+
+        ```
+
+        "Authorization": "Bearer <Access token>"
+
+        ```
+
+
+        When a request with a bearer token in the header is received, Cumulocity checks if the access token is from your IAM (that is, if authentication is enabled in your SSO configuration), and verifies the authenticity of
+
+        the token remotely against the IAM.
+
+        '
+x-tagGroups:
+- name: Platform
+  tags:
+  - Platform API
+- name: Alarms
+  tags:
+  - Alarm API
+  - Alarm notification API
+  - Alarms
+- name: Applications
+  tags:
+  - Application API
+  - Applications
+  - Application versions
+  - Application binaries
+  - Bootstrap user
+  - Current application
+- name: Audits
+  tags:
+  - Audit API
+  - Audits
+- name: Device control
+  tags:
+  - Device control API
+  - Device control notification API
+  - Operations
+  - Bulk operations
+  - Device credentials
+  - New device requests
+  - Device control via SMS
+- name: Events
+  tags:
+  - Event API
+  - Event notification API
+  - Events
+  - Attachments
+- name: Feature toggles
+  tags:
+  - Feature toggles API
+- name: Identity
+  tags:
+  - Identity API
+  - External IDs
+- name: Inventory
+  tags:
+  - Inventory API
+  - Inventory notification API
+  - Managed objects
+  - Binaries
+  - Child operations
+  - Query language
+- name: Measurements
+  tags:
+  - Measurement API
+  - Measurement notification API
+  - Measurements
+  - Measurements specifics
+- name: Notifications 2.0
+  tags:
+  - About notifications 2.0
+  - Notification 2.0 API
+  - Subscriptions
+  - Tokens
+- name: Real-time notifications
+  tags:
+  - Real-time notification API
+- name: Retentions
+  tags:
+  - Retention rules
+- name: Tenants
+  tags:
+  - Tenant API
+  - Tenants
+  - Tenant applications
+  - Trusted certificates
+  - Device statistics
+  - Usage statistics
+  - Options
+  - Login options
+  - Login tokens
+  - System options
+- name: Users
+  tags:
+  - User API
+  - Current User
+  - Users
+  - Groups
+  - Roles
+  - Inventory Roles
+  - Device Permissions
+- name: Certificate
+  tags:
+  - Certificate authority
+  - Device enrollment

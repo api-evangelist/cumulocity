@@ -1,0 +1,2269 @@
+openapi: 3.2.0
+info:
+  version: Latest
+  title: Cumulocity Trusted certificates API
+  x-logo:
+    url: https://www.cumulocity.com/docs/images/logo-platform.svg
+    backgroundColor: '#F8F8F8'
+    altText: Cumulocity
+    href: https://www.cumulocity.com/api
+  description: '# REST implementation
+
+
+    This section describes the aspects common to all REST-based interfaces of Cumulocity. The interfaces are based on the Hypertext Transfer Protocol 1.1 using HTTPS. ## HTTP usage
+
+
+    ### Application management
+
+
+    Cumulocity uses a so-called "application key" to distinguish requests coming from devices and traffic from applications. If you write an application, pass the following header as part of all requests:
+
+
+    ```markup
+
+    X-Cumulocity-Application-Key:
+
+    ```
+
+
+    For example, if you registered your application in the Cumulocity Administration application with the key "myapp", your requests should contain the header:
+
+
+    ```markup
+
+    X-Cumulocity-Application-Key: myapp
+
+    ```
+
+
+    This makes your application subscribable and billable. If you implement a device, do not pass the key. > **ⓘ Info:** Make sure that you pass the key in **all** requests coming from an application. If you leave out the key,
+
+    > the request will be considered as a device request, and the corresponding device will be marked as "available". ### Limited HTTP clients
+
+
+    If you use an HTTP client that can only perform GET and POST methods in HTTP, you can emulate the other methods through an additional "X-HTTP-METHOD" header. Simply issue a POST request and add the header, specifying the actual REST method to be executed. For example, to emulate the "PUT" (modify) method, you can use:
+
+
+    ```http
+
+    POST ... X-HTTP-METHOD: PUT
+
+    ```
+
+
+    ### Processing mode
+
+
+    Every update request (PUT, POST, DELETE) executes with a so-called *processing mode*. The processing modes are as follows:
+
+
+    |Processing mode|Description|
+
+    |---|---|
+
+    |PERSISTENT (default)|Stores data in the Cumulocity database and sends data to the Streaming Analytics engine. Afterwards, Cumulocity returns the result of the request. This is the default mode.|
+
+    |TRANSIENT|Sends data to the Streaming Analytics engine and immediately returns the results asynchronously but does not store data in Cumulocity’s database. This mode saves storage and processing costs and is useful for example when tracking devices in real time without requiring data to be stored.|
+
+    |QUIESCENT|Behaves similar to the persistent mode with the exception that no real-time notifications will be sent.|
+
+    |CEP|Behaves like the transient mode with the exception that no real-time notifications are sent.|
+
+
+    To explicitly control the processing mode of an update request, you can use the "X-Cumulocity-Processing-Mode" header with a value of either "PERSISTENT", "TRANSIENT", "QUIESCENT" or "CEP":
+
+
+    ```markup
+
+    X-Cumulocity-Processing-Mode: PERSISTENT
+
+    ```
+
+
+    > **ⓘ Info:** Events are always delivered to CEP/Apama for all processing modes. This is independent from real-time notifications. ### Authorization
+
+
+    All requests issued to Cumulocity are subject to authorization. To determine the required permissions, see the "Required role" entries for the individual requests. To learn more about the different permissions and the concept of ownership in Cumulocity, see Getting started > Technical concepts > Security aspects > Access control > Managing roles and assigning permissions in the Cumulocity user documentation. > **⚠️ Important:** In the Cumulocity API, each granular permission is identified by a unique “permission” string, which is prefixed with ROLE_ (for example, ROLE_ALARM_READ, ROLE_INVENTORY_ADMIN). Therefore, permissions are frequently referred to as “roles” throughout the API as well as in the configuration files. For example, the microservice manifest includes a requiredRoles field, which actually expects a permission string. See also the Glossary of the Cumulocity user documentation for the usage of the terms “permission” and “role” in the Cumulocity context. ### Media types
+
+
+    Each type of data is associated with an own media type. The general format of media types is:
+
+
+    ```markup
+
+    application/vnd.com.nsn.cumulocity.+json;ver=;charset=UTF-8
+
+    ```
+
+
+    Each media type contains a parameter `ver` indicating the version of the type.'
+servers:
+- description: Cumulocity tenant
+  url: https://<TENANT_DOMAIN>
+security:
+- Basic: []
+- OAI-Secure: []
+- SSO: []
+- JWT-IAM: []
+tags:
+- name: Trusted certificates
+  description: 'API methods for managing trusted certificates used to establish device connections via MQTT.
+
+
+    More detailed information about trusted certificates and their role can be found in Device management > Device management application > Managing device data in the Cumulocity user documentation.
+
+
+    > **ⓘ Info:** The Accept header must be provided in all POST/PUT requests, otherwise an empty response body will be returned.'
+paths:
+  /tenant/tenants/{tenantId}/trusted-certificates:
+    parameters:
+    - $ref: '#/components/parameters/tenantId'
+    post:
+      operationId: postTrustedCertificateCollectionResource
+      x-codegen-resource-name: addTrustedCertificate
+      parameters:
+      - $ref: '#/components/parameters/acceptHeader'
+      - $ref: '#/components/parameters/processingModeHeader'
+      - $ref: '#/components/parameters/queryParam_addToTrustStore'
+      tags:
+      - Trusted certificates
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Add a new certificate
+      description: 'Add a new trusted certificate to a specific tenant (by a given ID) which can be further used by the devices to establish connections with the Cumulocity platform.
+
+
+        Required roles
+
+
+        (ROLE_TENANT_MANAGEMENT_ADMIN OR ROLE_TENANT_ADMIN) AND (is the current tenant)'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              name: My Certificate
+              status: ENABLED
+              autoRegistrationEnabled: true
+              certInPemFormat: "-----BEGIN CERTIFICATE-----\n  MIIFezCCA2OgAwIBAgIUNU2ZnXIdu9aq+O7x2emLTgXgQEowDQYJKoZIhvcNAQEL\n  BQAwRTELMAkGA1UEBhMCUEwxDzANBgNVBAoMBmluZXR1bTEPMA0GA1UECwwGbHVi\n  bGluMRQwEgYDVQQDDAtiYXNpY0NvbW1vbjAeFw0yMTA5MDMwNzQyMDBaFw00MTA4\n  MjkwNzQyMDBaMEUxCzAJBgNVBAYTAlBMMQ8wDQYDVQQKDAZpbmV0dW0xDzANBgNV\n  BAsMBmx1YmxpbjEUMBIGA1UEAwwLYmFzaWNDb21tb24wggIiMA0GCSqGSIb3DQEB\n  AQUAA4ICDwAwggIKAoICAQDEc1NevRvKaIDs5CsGbIc/ETm3gHmG3OP9Z8ULQv1y\n  W1VzdjSKfgoVWVEsbhuhaRaWyIuaFh6dsWpWEcXpHkq+DiRuQGifBmUNFURZQ8Aw\n  UOrQ4F10UuzulEYauYh218rGSynLnIXCO3UHXGjWX+iiXPjbesFcnLPaarmLmQU9\n  AAh9MpBb3ztMzh5wRGcyVpuDxZ7e0HDBlI7hNMEqCFO/brJsILtv5q0j4JoShyWX\n  NVV8tX8P+biMlyMcVoZJazBfYuYErxmxdXtORxOkfge815ltGoMI9V4YSSex3/Fv\n  /PBavpF4iueqcrWQF3dhctAViPEzpMoefTu+cFtB/40wx/NHiBF5x5rjcT2s/+6W\n  b9OGLxLLf84XpYlHWtucfFLzznPMiXNegfkJpU0dMuMh1GT5WNTfmcPV3LiasbI0\n  GNq6mWKLgcRHX95pw16vw0CqzPnFTASztnI12mIYm6D0oQ+tHjLoPrW3fiZEeF67\n  fVA8LNWJwCkzHlnnNl5HP15K+GoscyzyMKj7ViAqN+XZaCRpRqYNZGkGXB9mSVQn\n  0oK6eRX8oQ4NQQW49VNoho9I8DhcCdMglMj9bhciIy2LrSwB8Sx9nB1C9wiHDbCA\n  fTy1nxEJS9gUGg7LNmRxlpQFBuQ0ndq87UEUdjchvbmJD7T5ZYM0LgDopJypBsqF\n  gQIDAQABo2MwYTAdBgNVHQ4EFgQUUS08257ro38KOB1a8pqYL3P2NvAwHwYDVR0j\n  BBgwFoAUUS08257ro38KOB1a8pqYL3P2NvAwEgYDVR0TAQH/BAgwBgEB/wIBCjAL\n  BgNVHQ8EBAMCAYYwDQYJKoZIhvcNAQELBQADggIBAGtYjON+CFzVGRkajHK1RKZS\n  J4kAfQlrXq1vG2b4jWYSLgrNw4o93xx0yLK0HVHO12juFhUrmlfhCB/iGI9iL2IO\n  h7v+PQ4L5wQJWfxZNWDZpqbF3S7UyDGAFx1J3MwjIhkoPpaIB0km+sQCJxn5Vt36\n  OPCKmORm4tplBHNauP9PpS418HAC9uyrew/h/0BLLaPF9BwFWk4HmSwfSFTHOvyh\n  hC1G4cEzHuiadLGCPXwerCe5As9F4InvIYmQ4UxAOtnlQcnQYOowFSrMobkArGR9\n  HcG1b0vWQJdzVrDU7zcRzD90ehwsXJIczOQoa/Hmb3Njlop8LyTFPjeXeoJf6PJE\n  MHy08IOLvaX4UsRiKLKJ28JEhVVemBrPspHeADqmlbeBotQ6OToWFeki9qQSz5Lw\n  lks/4qfRn6Xl3rmRSH8FdbK3VdIYInT7PTz5W2EBE8Ql5vneSPb9aank+9H67mB5\n  GQ8uYpxcs6Qjyy62pkfejlHHHh5oqEq0b6w7YyUuMAEW0JB0WevoCS8iVl8hKbyK\n  94u/PqW6lH+agw4kaMzaeMwBmppAy4JsiEKKavvP3jO6NDMc1bHt5q2+XTRPdlQY\n  DVZJfXybnOvsTQv41A4zyHSaNZsH1AyhJPfFKAMPXhajm7dBCi87bamMj4NyZt8f\n  PPBUaE6x9fMfuGJbcsAR\n  -----END CERTIFICATE-----\n"
+            schema:
+              $ref: '#/components/schemas/UploadedTrustedCertificate'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request POST "https://<TENANT_DOMAIN>/tenant/tenants/{tenantId}/trusted-certificates" \
+
+          --header "Authorization: Basic <AUTHORIZATION>" \
+
+          --header "Accept: application/json" \
+
+          --header "Content-Type: application/json" \
+
+          --data-raw ''<Payload>''
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/tenant/tenants/{tenantId}/trusted-certificates");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.POST);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+          request.AddHeader("Content-Type", "application/json");
+
+          request.AddHeader("Accept", "application/json");
+
+          request.AddParameter("application/json", "<Payload>",  ParameterType.RequestBody);
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.post(\"https://<TENANT_DOMAIN>/tenant/tenants/{tenantId}/trusted-certificates\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .header(\"Content-Type\", \"application/json\")\n    .header(\"Accept\", \"application/json\")\n    .body(\"<Payload>\")\n    .asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"POST\", \"https://<TENANT_DOMAIN>/tenant/tenants/{tenantId}/trusted-certificates\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\",\n        \"Accept\": \"application/json\",\n        \"Content-Type\": \"application/json\"\n    })\n    .send(JSON.stringify( <Payload> ))\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\nimport json\n\nurl = \"https://<TENANT_DOMAIN>/tenant/tenants/{tenantId}/trusted-certificates\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\",\n  \"Accept\": \"application/json\",\n  \"Content-Type\": \"application/json\"\n}\nresponse = requests.request(\"POST\", url, headers=headers, json.dumps(<Payload>))\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '201':
+          description: The certificate was added to the tenant.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrustedCertificate'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+        '404':
+          $ref: '#/components/responses/tenantNotFound'
+        '409':
+          description: Duplicate – A certificate with the same fingerprint already exists.
+        '422':
+          description: Unprocessable Entity – Invalid certificate data.
+    get:
+      operationId: getTrustedCertificateCollectionResource
+      x-codegen-resource-name: getTrustedCertificates
+      parameters:
+      - $ref: '#/components/parameters/queryParam_currentPage'
+      - $ref: '#/components/parameters/queryParam_pageSize'
+      - $ref: '#/components/parameters/queryParam_withTotalElements'
+      - $ref: '#/components/parameters/queryParam_withTotalPages'
+      - $ref: '#/components/parameters/queryParam_certificateAuthority'
+      tags:
+      - Trusted certificates
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Retrieve all stored certificates
+      description: 'Retrieve all the trusted certificates of a specific tenant (by a given ID).
+
+
+        Required roles
+
+
+        (ROLE_TENANT_MANAGEMENT_ADMIN OR ROLE_TENANT_ADMIN OR ROLE_TENANT_MANAGEMENT_READ) AND (is the current tenant)'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request GET "https://<TENANT_DOMAIN>/tenant/tenants/{tenantId}/trusted-certificates" \
+
+          --header "Authorization: Basic <AUTHORIZATION>"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/tenant/tenants/{tenantId}/trusted-certificates");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.GET);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.get(\"https://<TENANT_DOMAIN>/tenant/tenants/{tenantId}/trusted-certificates\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\").asString();\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"GET\", \"https://<TENANT_DOMAIN>/tenant/tenants/{tenantId}/trusted-certificates\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\"\n    })\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://<TENANT_DOMAIN>/tenant/tenants/{tenantId}/trusted-certificates\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\"\n}\nresponse = requests.request(\"GET\", url, headers=headers)\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '200':
+          description: The request has succeeded and the trusted certificates are sent in the response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrustedCertificateCollection'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+        '404':
+          $ref: '#/components/responses/tenantNotFound'
+  /tenant/tenants/{tenantId}/trusted-certificates/bulk:
+    parameters:
+    - $ref: '#/components/parameters/tenantId'
+    - $ref: '#/components/parameters/queryParam_addToTrustStore'
+    post:
+      operationId: postTrustedCertificateCollectionResourceBulk
+      x-codegen-resource-name: addTrustedCertificates
+      parameters:
+      - $ref: '#/components/parameters/acceptHeader'
+      tags:
+      - Trusted certificates
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Add multiple certificates
+      description: 'Add multiple trusted certificates to a specific tenant (by a given ID) which can be further used by the devices to establish connections with the Cumulocity platform.
+
+
+        Required roles
+
+
+        (ROLE_TENANT_MANAGEMENT_ADMIN OR ROLE_TENANT_ADMIN) AND (is the current tenant)'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              certificates:
+              - name: My Certificate
+                status: ENABLED
+                autoRegistrationEnabled: true
+                certInPemFormat: "-----BEGIN CERTIFICATE-----\n  MIIFezCCA2OgAwIBAgIUNU2ZnXIdu9aq+O7x2emLTgXgQEowDQYJKoZIhvcNAQEL\n  BQAwRTELMAkGA1UEBhMCUEwxDzANBgNVBAoMBmluZXR1bTEPMA0GA1UECwwGbHVi\n  bGluMRQwEgYDVQQDDAtiYXNpY0NvbW1vbjAeFw0yMTA5MDMwNzQyMDBaFw00MTA4\n  MjkwNzQyMDBaMEUxCzAJBgNVBAYTAlBMMQ8wDQYDVQQKDAZpbmV0dW0xDzANBgNV\n  BAsMBmx1YmxpbjEUMBIGA1UEAwwLYmFzaWNDb21tb24wggIiMA0GCSqGSIb3DQEB\n  AQUAA4ICDwAwggIKAoICAQDEc1NevRvKaIDs5CsGbIc/ETm3gHmG3OP9Z8ULQv1y\n  W1VzdjSKfgoVWVEsbhuhaRaWyIuaFh6dsWpWEcXpHkq+DiRuQGifBmUNFURZQ8Aw\n  UOrQ4F10UuzulEYauYh218rGSynLnIXCO3UHXGjWX+iiXPjbesFcnLPaarmLmQU9\n  AAh9MpBb3ztMzh5wRGcyVpuDxZ7e0HDBlI7hNMEqCFO/brJsILtv5q0j4JoShyWX\n  NVV8tX8P+biMlyMcVoZJazBfYuYErxmxdXtORxOkfge815ltGoMI9V4YSSex3/Fv\n  /PBavpF4iueqcrWQF3dhctAViPEzpMoefTu+cFtB/40wx/NHiBF5x5rjcT2s/+6W\n  b9OGLxLLf84XpYlHWtucfFLzznPMiXNegfkJpU0dMuMh1GT5WNTfmcPV3LiasbI0\n  GNq6mWKLgcRHX95pw16vw0CqzPnFTASztnI12mIYm6D0oQ+tHjLoPrW3fiZEeF67\n  fVA8LNWJwCkzHlnnNl5HP15K+GoscyzyMKj7ViAqN+XZaCRpRqYNZGkGXB9mSVQn\n  0oK6eRX8oQ4NQQW49VNoho9I8DhcCdMglMj9bhciIy2LrSwB8Sx9nB1C9wiHDbCA\n  fTy1nxEJS9gUGg7LNmRxlpQFBuQ0ndq87UEUdjchvbmJD7T5ZYM0LgDopJypBsqF\n  gQIDAQABo2MwYTAdBgNVHQ4EFgQUUS08257ro38KOB1a8pqYL3P2NvAwHwYDVR0j\n  BBgwFoAUUS08257ro38KOB1a8pqYL3P2NvAwEgYDVR0TAQH/BAgwBgEB/wIBCjAL\n  BgNVHQ8EBAMCAYYwDQYJKoZIhvcNAQELBQADggIBAGtYjON+CFzVGRkajHK1RKZS\n  J4kAfQlrXq1vG2b4jWYSLgrNw4o93xx0yLK0HVHO12juFhUrmlfhCB/iGI9iL2IO\n  h7v+PQ4L5wQJWfxZNWDZpqbF3S7UyDGAFx1J3MwjIhkoPpaIB0km+sQCJxn5Vt36\n  OPCKmORm4tplBHNauP9PpS418HAC9uyrew/h/0BLLaPF9BwFWk4HmSwfSFTHOvyh\n  hC1G4cEzHuiadLGCPXwerCe5As9F4InvIYmQ4UxAOtnlQcnQYOowFSrMobkArGR9\n  HcG1b0vWQJdzVrDU7zcRzD90ehwsXJIczOQoa/Hmb3Njlop8LyTFPjeXeoJf6PJE\n  MHy08IOLvaX4UsRiKLKJ28JEhVVemBrPspHeADqmlbeBotQ6OToWFeki9qQSz5Lw\n  lks/4qfRn6Xl3rmRSH8FdbK3VdIYInT7PTz5W2EBE8Ql5vneSPb9aank+9H67mB5\n  GQ8uYpxcs6Qjyy62pkfejlHHHh5oqEq0b6w7YyUuMAEW0JB0WevoCS8iVl8hKbyK\n  94u/PqW6lH+agw4kaMzaeMwBmppAy4JsiEKKavvP3jO6NDMc1bHt5q2+XTRPdlQY\n  DVZJfXybnOvsTQv41A4zyHSaNZsH1AyhJPfFKAMPXhajm7dBCi87bamMj4NyZt8f\n  PPBUaE6x9fMfuGJbcsAR\n  -----END CERTIFICATE-----\n"
+            schema:
+              $ref: '#/components/schemas/UploadedTrustedCertificateCollection'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request POST "https://<TENANT_DOMAIN>/tenant/tenants/{tenantId}/trusted-certificates/bulk" \
+
+          --header "Authorization: Basic <AUTHORIZATION>" \
+
+          --header "Accept: application/json" \
+
+          --header "Content-Type: application/json" \
+
+          --data-raw ''<Payload>''
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/tenant/tenants/{tenantId}/trusted-certificates/bulk");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.POST);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+          request.AddHeader("Content-Type", "application/json");
+
+          request.AddHeader("Accept", "application/json");
+
+          request.AddParameter("application/json", "<Payload>",  ParameterType.RequestBody);
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.post(\"https://<TENANT_DOMAIN>/tenant/tenants/{tenantId}/trusted-certificates/bulk\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .header(\"Content-Type\", \"application/json\")\n    .header(\"Accept\", \"application/json\")\n    .body(\"<Payload>\")\n    .asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"POST\", \"https://<TENANT_DOMAIN>/tenant/tenants/{tenantId}/trusted-certificates/bulk\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\",\n        \"Accept\": \"application/json\",\n        \"Content-Type\": \"application/json\"\n    })\n    .send(JSON.stringify( <Payload> ))\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\nimport json\n\nurl = \"https://<TENANT_DOMAIN>/tenant/tenants/{tenantId}/trusted-certificates/bulk\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\",\n  \"Accept\": \"application/json\",\n  \"Content-Type\": \"application/json\"\n}\nresponse = requests.request(\"POST\", url, headers=headers, json.dumps(<Payload>))\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '201':
+          description: The certificates were added to the tenant.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrustedCertificateCollection'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+        '404':
+          $ref: '#/components/responses/tenantNotFound'
+        '409':
+          description: Duplicate – A certificate with the same fingerprint already exists.
+        '422':
+          description: Unprocessable Entity – Invalid certificates data.
+  /tenant/tenants/{tenantId}/trusted-certificates/{fingerprint}:
+    parameters:
+    - $ref: '#/components/parameters/tenantId'
+    - $ref: '#/components/parameters/fingerprint'
+    get:
+      operationId: getTrustedCertificateResource
+      x-codegen-resource-name: getTrustedCertificate
+      tags:
+      - Trusted certificates
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Retrieve a stored certificate
+      description: 'Retrieve the data of a stored trusted certificate (by a given fingerprint) of a specific tenant (by a given ID).
+
+
+        Required roles
+
+
+        (ROLE_TENANT_MANAGEMENT_ADMIN OR ROLE_TENANT_ADMIN OR ROLE_TENANT_MANAGEMENT_READ) AND (is the current tenant OR is the management tenant)'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request GET "https://<TENANT_DOMAIN>/tenant/tenants/{tenantId}/trusted-certificates/{fingerprint}" \
+
+          --header "Authorization: Basic <AUTHORIZATION>"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/tenant/tenants/{tenantId}/trusted-certificates/{fingerprint}");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.GET);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.get(\"https://<TENANT_DOMAIN>/tenant/tenants/{tenantId}/trusted-certificates/{fingerprint}\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\").asString();\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"GET\", \"https://<TENANT_DOMAIN>/tenant/tenants/{tenantId}/trusted-certificates/{fingerprint}\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\"\n    })\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://<TENANT_DOMAIN>/tenant/tenants/{tenantId}/trusted-certificates/{fingerprint}\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\"\n}\nresponse = requests.request(\"GET\", url, headers=headers)\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '200':
+          description: The request has succeeded and the trusted certificate is sent in the response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrustedCertificate'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+    put:
+      operationId: putTrustedCertificateResource
+      x-codegen-resource-name: updateTrustedCertificate
+      parameters:
+      - $ref: '#/components/parameters/acceptHeader'
+      tags:
+      - Trusted certificates
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Update a stored certificate
+      description: 'Update the data of a stored trusted certificate (by a given fingerprint) of a specific tenant (by a given ID).
+
+
+        Required roles
+
+
+        (ROLE_TENANT_MANAGEMENT_ADMIN OR ROLE_TENANT_ADMIN) AND (is the current tenant OR is the management tenant)'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              name: My Certificate
+              status: ENABLED
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/TrustedCertificate'
+              - type: object
+                properties:
+                  certInPemFormat:
+                    readOnly: true
+                  proofOfPossessionValid:
+                    readOnly: true
+                  proofOfPossessionUnsignedVerificationCode:
+                    readOnly: true
+                  proofOfPossessionVerificationCodeUsableUntil:
+                    readOnly: true
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request PUT "https://<TENANT_DOMAIN>/tenant/tenants/{tenantId}/trusted-certificates/{fingerprint}" \
+
+          --header "Authorization: Basic <AUTHORIZATION>" \
+
+          --header "Accept: application/json" \
+
+          --header "Content-Type: application/json" \
+
+          --data-raw ''<Payload>''
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/tenant/tenants/{tenantId}/trusted-certificates/{fingerprint}");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.PUT);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+          request.AddHeader("Content-Type", "application/json");
+
+          request.AddHeader("Accept", "application/json");
+
+          request.AddParameter("application/json", "<Payload>",  ParameterType.RequestBody);
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.put(\"https://<TENANT_DOMAIN>/tenant/tenants/{tenantId}/trusted-certificates/{fingerprint}\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .header(\"Content-Type\", \"application/json\")\n    .header(\"Accept\", \"application/json\")\n    .body(\"<Payload>\")\n    .asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"PUT\", \"https://<TENANT_DOMAIN>/tenant/tenants/{tenantId}/trusted-certificates/{fingerprint}\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\",\n        \"Accept\": \"application/json\",\n        \"Content-Type\": \"application/json\"\n    })\n    .send(JSON.stringify( <Payload> ))\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\nimport json\n\nurl = \"https://<TENANT_DOMAIN>/tenant/tenants/{tenantId}/trusted-certificates/{fingerprint}\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\",\n  \"Accept\": \"application/json\",\n  \"Content-Type\": \"application/json\"\n}\nresponse = requests.request(\"PUT\", url, headers=headers, json.dumps(<Payload>))\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '200':
+          description: The certificate was updated on the tenant.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrustedCertificate'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+        '404':
+          description: Certificate not found.
+        '422':
+          $ref: '#/components/responses/invalidPayload'
+    delete:
+      operationId: deleteTrustedCertificateResource
+      x-codegen-resource-name: removeTrustedCertificate
+      tags:
+      - Trusted certificates
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Remove a stored certificate
+      description: 'Remove a stored trusted certificate (by a given fingerprint) from a specific tenant (by a given ID).
+
+        When a trusted certificate is deleted, the established MQTT connection to all devices that are using the corresponding certificate are closed.
+
+
+        Required roles
+
+
+        (ROLE_TENANT_MANAGEMENT_ADMIN OR ROLE_TENANT_ADMIN) AND (is the current tenant OR is the management tenant)'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request DELETE "https://<TENANT_DOMAIN>/tenant/tenants/{tenantId}/trusted-certificates/{fingerprint}" \
+
+          --header "Authorization: Basic <AUTHORIZATION>"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/tenant/tenants/{tenantId}/trusted-certificates/{fingerprint}");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.DELETE);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.delete(\"https://<TENANT_DOMAIN>/tenant/tenants/{tenantId}/trusted-certificates/{fingerprint}\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\").asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"DELETE\", \"https://<TENANT_DOMAIN>/tenant/tenants/{tenantId}/trusted-certificates/{fingerprint}\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\"\n    })\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://<TENANT_DOMAIN>/tenant/tenants/{tenantId}/trusted-certificates/{fingerprint}\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\"\n}\nresponse = requests.request(\"DELETE\", url, headers=headers)\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '204':
+          description: The trusted certificate was removed.
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+        '404':
+          description: Certificate not found.
+  /tenant/tenants/{tenantId}/trusted-certificates-pop/{fingerprint}/pop:
+    parameters:
+    - $ref: '#/components/parameters/tenantId'
+    - $ref: '#/components/parameters/fingerprint'
+    post:
+      operationId: postTrustedCertificatePopResource
+      x-codegen-resource-name: proveCertificatePossession
+      parameters:
+      - $ref: '#/components/parameters/acceptHeader'
+      tags:
+      - Trusted certificates
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Provide the proof of possession for an already uploaded certificate
+      description: 'Provide the proof of possession for a specific uploaded certificate (by a given fingerprint) for a specific tenant (by a given ID).
+
+
+        (ROLE_TENANT_MANAGEMENT_ADMIN OR ROLE_TENANT_ADMIN) AND is the current tenant'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UploadedTrustedCertSignedVerificationCode'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request POST "https://<TENANT_DOMAIN>/tenant/tenants/{tenantId}/trusted-certificates-pop/{fingerprint}/pop" \
+
+          --header "Authorization: Basic <AUTHORIZATION>" \
+
+          --header "Accept: application/json" \
+
+          --header "Content-Type: application/json" \
+
+          --data-raw ''<Payload>''
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/tenant/tenants/{tenantId}/trusted-certificates-pop/{fingerprint}/pop");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.POST);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+          request.AddHeader("Content-Type", "application/json");
+
+          request.AddHeader("Accept", "application/json");
+
+          request.AddParameter("application/json", "<Payload>",  ParameterType.RequestBody);
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.post(\"https://<TENANT_DOMAIN>/tenant/tenants/{tenantId}/trusted-certificates-pop/{fingerprint}/pop\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .header(\"Content-Type\", \"application/json\")\n    .header(\"Accept\", \"application/json\")\n    .body(\"<Payload>\")\n    .asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"POST\", \"https://<TENANT_DOMAIN>/tenant/tenants/{tenantId}/trusted-certificates-pop/{fingerprint}/pop\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\",\n        \"Accept\": \"application/json\",\n        \"Content-Type\": \"application/json\"\n    })\n    .send(JSON.stringify( <Payload> ))\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\nimport json\n\nurl = \"https://<TENANT_DOMAIN>/tenant/tenants/{tenantId}/trusted-certificates-pop/{fingerprint}/pop\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\",\n  \"Accept\": \"application/json\",\n  \"Content-Type\": \"application/json\"\n}\nresponse = requests.request(\"POST\", url, headers=headers, json.dumps(<Payload>))\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '200':
+          description: The provided signed verification code check was successful.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrustedCertificate'
+        '400':
+          description: The provided signed verification code is not correct.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+              example:
+                error: tenants/Bad Request
+                message: Wrong Proof Of Possession plaintext used for tenant <'t012'>. Certificate <'df9c19e0433c6861bac899078b76fe56a3e7dd14'>, usage not granted.
+                info: https://www.cumulocity.com/guides/reference-guide/#error_reporting
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+        '404':
+          $ref: '#/components/responses/trustedCertificateNotFound'
+        '422':
+          description: Proof of possession for the certificate was not confirmed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+              examples:
+                unprocessable:
+                  value:
+                    error: tenants/Unprocessable Entity
+                    message: Cannot process certificate data <'df9c19e0433c6861bac899078b76fe56a3e7dd14'> for tenant <'t012'>.
+                    info: https://www.cumulocity.com/guides/reference-guide/#error_reporting
+                invalidData:
+                  value:
+                    error: tenants/Invalid Data
+                    message: Cannot process user certificate data <'df9c19e0433c6861bac899078b76fe56a3e7dd14'> for tenant <'t012'>.
+                    info: https://www.cumulocity.com/guides/reference-guide/#error_reporting
+  /tenant/tenants/{tenantId}/trusted-certificates-pop/{fingerprint}/confirmed:
+    parameters:
+    - $ref: '#/components/parameters/tenantId'
+    - $ref: '#/components/parameters/fingerprint'
+    post:
+      operationId: postConfirmedTrustedCertificatePopResource
+      x-codegen-resource-name: confirmCertificate
+      parameters:
+      - $ref: '#/components/parameters/acceptHeader'
+      tags:
+      - Trusted certificates
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Confirm an already uploaded certificate
+      description: 'Confirm an already uploaded certificate (by a given fingerprint) for a specific tenant (by a given ID).
+
+
+        (ROLE_TENANT_MANAGEMENT_ADMIN OR ROLE_TENANT_ADMIN) AND is the management tenant'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request POST "https://<TENANT_DOMAIN>/tenant/tenants/{tenantId}/trusted-certificates-pop/{fingerprint}/confirmed" \
+
+          --header "Authorization: Basic <AUTHORIZATION>" \
+
+          --header "Accept: application/json" \
+
+          --header "Content-Type: application/json"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/tenant/tenants/{tenantId}/trusted-certificates-pop/{fingerprint}/confirmed");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.POST);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+          request.AddHeader("Content-Type", "application/json");
+
+          request.AddHeader("Accept", "application/json");
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.post(\"https://<TENANT_DOMAIN>/tenant/tenants/{tenantId}/trusted-certificates-pop/{fingerprint}/confirmed\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .header(\"Content-Type\", \"applicatio json.dumps(<Payload>)n/json\")\n    .header(\"Accept\", \"application/json\")\n    .asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"POST\", \"https://<TENANT_DOMAIN>/tenant/tenants/{tenantId}/trusted-certificates-pop/{fingerprint}/confirmed\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\",\n        \"Accept\": \"application/json\",\n        \"Content-Type\": \"application/json\"\n    })\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\nimport json\n\nurl = \"https://<TENANT_DOMAIN>/tenant/tenants/{tenantId}/trusted-certificates-pop/{fingerprint}/confirmed\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\",\n  \"Accept\": \"application/json\",\n  \"Content-Type\": \"application/json\"\n}\nresponse = requests.request(\"POST\", url, headers=headers)\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '200':
+          description: The certificate is confirmed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrustedCertificate'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+        '404':
+          $ref: '#/components/responses/trustedCertificateNotFound'
+        '422':
+          description: The verification was not successful. Certificate not confirmed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+              examples:
+                unprocessable:
+                  value:
+                    error: tenants/Unprocessable Entity
+                    message: Cannot process certificate data <'df9c19e0433c6861bac899078b76fe56a3e7dd14'> for tenant <'t012'>.
+                    info: https://www.cumulocity.com/guides/reference-guide/#error_reporting
+                invalidData:
+                  value:
+                    error: tenants/Invalid Data
+                    message: Cannot process user certificate data <'df9c19e0433c6861bac899078b76fe56a3e7dd14'> for tenant <'t012'>.
+                    info: https://www.cumulocity.com/guides/reference-guide/#error_reporting
+  /tenant/tenants/{tenantId}/trusted-certificates-pop/{fingerprint}/verification-code:
+    parameters:
+    - $ref: '#/components/parameters/tenantId'
+    - $ref: '#/components/parameters/fingerprint'
+    post:
+      operationId: postVerificationCodeTrustedCertificatesPopResource
+      x-codegen-resource-name: generateVerificationCode
+      parameters:
+      - $ref: '#/components/parameters/acceptHeader'
+      tags:
+      - Trusted certificates
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Generate a verification code for the proof of possession operation for the…
+      description: 'Generate a verification code for the proof of possession operation for the certificate (by a given fingerprint).
+
+
+        (ROLE_TENANT_MANAGEMENT_ADMIN OR ROLE_TENANT_ADMIN) AND is the current tenant'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request POST "https://<TENANT_DOMAIN>/tenant/tenants/{tenantId}/trusted-certificates-pop/{fingerprint}/verification-code" \
+
+          --header "Authorization: Basic <AUTHORIZATION>" \
+
+          --header "Accept: application/json" \
+
+          --header "Content-Type: application/json" \
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/tenant/tenants/{tenantId}/trusted-certificates-pop/{fingerprint}/verification-code");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.POST);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+          request.AddHeader("Content-Type", "application/json");
+
+          request.AddHeader("Accept", "application/json");
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.post(\"https://<TENANT_DOMAIN>/tenant/tenants/{tenantId}/trusted-certificates-pop/{fingerprint}/verification-code\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .header(\"Content-Type\", \"application/json\")\n    .header(\"Accept\", \"application/json\")\n    .asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"POST\", \"https://<TENANT_DOMAIN>/tenant/tenants/{tenantId}/trusted-certificates-pop/{fingerprint}/verification-code\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\",\n        \"Accept\": \"application/json\",\n        \"Content-Type\": \"application/json\"\n    })\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\nimport json\n\nurl = \"https://<TENANT_DOMAIN>/tenant/tenants/{tenantId}/trusted-certificates-pop/{fingerprint}/verification-code\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\",\n  \"Accept\": \"application/json\",\n  \"Content-Type\": \"application/json\"\n}\nresponse = requests.request(\"POST\", url, headers=headers)\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '200':
+          description: The verification code was generated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrustedCertificate'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+        '404':
+          $ref: '#/components/responses/trustedCertificateNotFound'
+  /tenant/trusted-certificates/verify-cert-chain:
+    post:
+      operationId: postX509ChainValidate
+      x-codegen-resource-name: validateChain
+      parameters:
+      - $ref: '#/components/parameters/certChainInHeader'
+      tags:
+      - Trusted certificates
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Verify a certificate chain
+      description: 'Verify a device certificate chain against a specific tenant using file upload or by HTTP headers.
+
+        The tenant ID is `optional` and this api will try to resolve the tenant from the chain if not found in the request header.
+
+        For file upload, the max chain length support is 10 and for a header it is 5.
+
+
+        If CRL (certificate revocation list) check is enabled on the tenant and the certificate chain is identified to be revoked during validation the further validation of the chain stops and returns unauthorized.
+
+
+        > **ⓘ Info:** File upload takes precedence over HTTP headers if both are passed.
+
+
+        Required roles
+
+
+        (ROLE_TENANT_MANAGEMENT_ADMIN OR ROLE_TENANT_MANAGEMENT_READ) AND (is the current tenant OR is current management tenant) OR (is authenticated AND is current user service user)'
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+              - file
+              properties:
+                tenantId:
+                  type: string
+                file:
+                  description: File to be uploaded.
+                  type: string
+                  format: binary
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request POST ''https://<TENANT_DOMAIN>/tenant/trusted-certificates/verify-cert-chain'' \
+
+          --header "Authorization: Basic <AUTHORIZATION>" \
+
+          --header "Accept: application/json" \
+
+          --header "Content-Type: application/json" \
+
+          --form ''tenantId={tenantId}'' \
+
+          --form ''file=@"/path_to_file/cert_chain.pem"'' \
+
+          OR
+
+          curl --location --request POST ''https://<TENANT_DOMAIN>/tenant/trusted-certificates/verify-cert-chain'' \
+
+          --header "Authorization: Basic <AUTHORIZATION>" \
+
+          --header "Accept: application/json" \
+
+          --header "Content-Type: application/json" \
+
+          --header "X-Cumulocity-TenantId:{tenantId}" \
+
+          --header "X-Cumulocity-Client-Cert-Chain:{cert-chain}"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/tenant/trusted-certificates/verify-cert-chain");
+
+          client.Timeout = -1;
+
+          var request = new RestRequest(Method.POST);
+
+          request.AlwaysMultipartFormData = true;
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+          request.AddHeader("Content-Type", "application/json");
+
+          request.AddHeader("Accept", "application/json");
+
+          request.AddParameter("tenantId", {tenantId});
+
+          request.AddFile("file", "/path_to_file/cert_chain.pem");
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          OR
+
+          var client = new RestClient("https://<TENANT_DOMAIN>/tenant/trusted-certificates/verify-cert-chain");
+
+          client.Timeout = -1;
+
+          var request = new RestRequest(Method.POST);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+          request.AddHeader("Content-Type", "application/json");
+
+          request.AddHeader("Accept", "application/json");
+
+          request.AddHeader("X-Cumulocity-TenantId", {tenantId});
+
+          request.AddHeader("X-Cumulocity-Client-Cert-Chain", {cert-chain});
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.post(\"https://<TENANT_DOMAIN>/tenant/trusted-certificates/verify-cert-chain\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .header(\"Content-Type\", \"application/json\")\n    .header(\"Accept\", \"application/json\")\n    .field(\"tenantId\", {tenantId})\n    .field(\"file\", new File(\"/path_to_file/cert_chain.pem\"))\n    .asString();\nSystem.out.println(response);\nOR\nUnirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.post(\"https://<TENANT_DOMAIN>/tenant/trusted-certificates/verify-cert-chain\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .header(\"Content-Type\", \"application/json\")\n    .header(\"Accept\", \"application/json\")\n    .header(\"X-Cumulocity-TenantId\", {tenantId})\n    .header(\"X-Cumulocity-Client-Cert-Chain\", {cert-chain})\n    .asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"POST\", \"https://<TENANT_DOMAIN>/tenant/trusted-certificates/verify-cert-chain\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\",\n        \"Accept\": \"application/json\",\n        \"Content-Type\": \"application/json\"\n    })\n    .field('tenantId', {tenantId})\n    .attach('file', '/path_to_file/cert_chain.pem')\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\nOR\nvar unirest = require(\"unirest\");\nvar req = unirest(\"POST\", \"https://<TENANT_DOMAIN>/tenant/trusted-certificates/verify-cert-chain\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\",\n        \"Accept\": \"application/json\",\n        \"Content-Type\": \"application/json\",\n        \"X-Cumulocity-TenantId\": {tenantId},\n        \"X-Cumulocity-Client-Cert-Chain\": {cert-chain},\n    })\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\nimport json\nurl = \"https://<TENANT_DOMAIN>/tenant/trusted-certificates/verify-cert-chain\"\npayload={'tenantId': {tenantId}}\nfiles=[\n('file',('cert_chain.pem',open('/path_to_file/cert_chain.pem','rb'),'application/octet-stream'))\n]\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\",\n  \"Accept\": \"application/json\",\n  \"Content-Type\": \"application/json\"\n}\nresponse = requests.request(\"POST\", url, headers=headers, data=payload, files=files)\nprint(response.text.encode(\"utf8\"))\nOR\nimport requests\nimport json\nurl = \"https://<TENANT_DOMAIN>/tenant/trusted-certificates/verify-cert-chain\"\npayload={}\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\",\n  \"Accept\": \"application/json\",\n  \"Content-Type\": \"application/json\",\n  \"X-Cumulocity-TenantId\": {tenantId},\n  \"X-Cumulocity-Client-Cert-Chain\": {cert-chain},\n}\nresponse = requests.request(\"POST\", url, headers=headers, data=payload)\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '200':
+          description: The certificate chain is valid and not revoked.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerifyCertificateChain'
+        '400':
+          $ref: '#/components/responses/unableToParseCertBadRequest'
+        '401':
+          $ref: '#/components/responses/x509CertificateValidationUnauthorizedError'
+        '403':
+          $ref: '#/components/responses/accessDenied'
+        '404':
+          $ref: '#/components/responses/tenantDoesNotExists'
+  /tenant/trusted-certificates/settings/crl:
+    put:
+      operationId: putCRLSettings
+      x-codegen-resource-name: updateCRL
+      tags:
+      - Trusted certificates
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Add revoked certificates
+      description: '> **ⓘ Info:** A certificate revocation list (CRL) is a list of digital certificates
+
+        that have been revoked by the issuing certificate authority (CA) before expiration date.
+
+        In Cumulocity, a CRL check can be in online or offline mode or both.
+
+
+        An endpoint to add revoked certificate serial numbers for offline CRL check via payload or file.
+
+        A file can be uploaded with either `PUT` or `POST`, a JSON payload is accepted by `PUT` only.
+
+
+        For payload, a JSON object required with list of CRL entries, for example:
+
+        ```json
+
+        {
+
+        "crls": [
+
+        {
+
+        "serialNumberInHex": "1000",
+
+        "revocationDate": "2023-01-11T16:12:36.288Z"
+
+        }
+
+        ]
+
+        }
+
+        ```
+
+        Each entry is composed of:
+
+        * serialNumberInHex: Needs to be in `Hexadecimal Value`. e.g As (1000)^16 == (4096)^10, So we have to enter 1000.
+
+        If duplicate serial number exists in payload, the existing entry stays
+
+
+        * `revocationDate` - accepted Date format: `yyyy-MM-dd''T''HH:mm:ss.SSS''Z''`, for example: `2023-01-11T16:12:36.288Z`.
+
+        This is an optional parameter and defaults to the current server UTC date time if not specified in the payload.
+
+        If specified and the date is in future then those entries will be also defaulted to current date.
+
+
+        For file upload, each file can hold at maximum 5000 revocation entries.
+
+        Multiple upload is allowed.
+
+        In case of duplicates, the latest (last uploaded) entry is considered.
+
+
+        See below for a sample CSV file:
+
+
+        | SERIAL NO. | REVOCATION DATE |
+
+        |--|--|
+
+        | 1000 | 2023-01-11T16:12:36.288Z |
+
+
+        Each entry is composed of :
+
+        * serialNumberInHex: Needs to be in `Hexadecimal Value`. e.g (1000)^16 == (4096)^10, So we have to enter 1000.
+
+        If duplicate serial number exists in payload, the latest entry will be taken.
+
+
+        * revocationDate: Accepted Date format: `yyyy-MM-dd''T''HH:mm:ss.SSS''Z''` e.g: 2023-01-11T16:12:36.288Z.
+
+        This is an optional and will be default to current server UTC date time if not specified in payload.
+
+        If specified and the date is in future then those entries will be skipped.
+
+
+        The CRL setting for offline and online check can be enabled/disabled using /tenant/options.
+
+        Keys are `crl.online.check.enabled` and `crl.offline.check.enabled` under the category `configuration`.
+
+
+        Required roles
+
+
+        (ROLE_TENANT_MANAGEMENT_ADMIN OR ROLE_TENANT_ADMIN) AND is the current tenant
+
+
+        **⚠️ Important:** According to CRL policy, added serial numbers cannot be reversed.'
+      x-code-samples:
+      - lang: cURL
+        source: "curl --location --request PUT 'https://<TENANT_DOMAIN>/tenant/trusted-certificates/settings/crl' \\\n--header \"Authorization: Basic <AUTHORIZATION>\" \\\n--header \"Accept: application/json\" \\\n--header \"Content-Type: application/json\" \\\n--data '{\n  \"crls\": [\n      {\n          \"serialNumberInHex\": \"<SERIAL_NO>\",\n          \"revocationDate\": \"<yyyy-MM-dd'T'HH:mm:ss.SSS'Z'\"\n      }\n  ]\n}'\nOR\ncurl --location --request PUT 'https://<TENANT_DOMAIN>/tenant/trusted-certificates/settings/crl' \\\n--header \"Authorization: Basic <AUTHORIZATION>\" \\\n--form 'file=@\"/path_to_file/CRL_bulk_registration_template.csv\"'\n"
+      - lang: C#
+        source: "var client = new RestClient(\"https://<TENANT_DOMAIN>/tenant/trusted-certificates/settings/crl\");\nclient.Timeout = -1;\nvar request = new RestRequest(Method.PUT);\nrequest.AddHeader(\"Authorization\", \"Basic <AUTHORIZATION>\");\nvar body = @\"{\" + \"\\n\" +\n            @\"    \"\"crls\"\": [\" + \"\\n\" +\n            @\"        {\" + \"\\n\" +\n            @\"            \"\"serialNumberInHex\"\": \"\"<SERIAL_NO>\"\",\" + \"\\n\" +\n            @\"            \"\"revocationDate\"\": \"\"<yyyy-MM-dd'T'HH:mm:ss.SSS'Z'>\"\"\" + \"\\n\" +\n            @\"        }\" + \"\\n\" +\n            @\"    ]\" + \"\\n\" +\n            @\"}\";\nrequest.AddHeader(\"Content-Type\", \"application/json\");\nrequest.AddHeader(\"Accept\", \"application/json\");\nrequest.AddStringBody(body, DataFormat.Json);\nIRestResponse response = client.Execute(request);\nConsole.WriteLine(response.Content);\nOR\nvar client = new RestClient(\"https://<TENANT_DOMAIN>/tenant/trusted-certificates/settings/crl\");\nclient.Timeout = -1;\nvar request = new RestRequest(Method.PUT);\nrequest.AlwaysMultipartFormData = true;\nrequest.AddHeader(\"Authorization\", \"Basic <AUTHORIZATION>\");\nrequest.AddFile(\"file\", \"/path_to_file/CRL_bulk_registration_template.csv\");\nIRestResponse response = client.Execute(request);\nConsole.WriteLine(response.Content);\n"
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.put(\"https://<TENANT_DOMAIN>/tenant/trusted-certificates/settings/crl\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .header(\"Content-Type\", \"application/json\")\n    .header(\"Accept\", \"application/json\")\n    .body(\"{\\n    \\\"crls\\\": [\\n        \n         {\\n            \\\"serialNumberInHex\\\": \\\"<SERIAL_NO>\\\",\\n            \n         \\\"revocationDate\\\": \\\"<yyyy-MM-dd'T'HH:mm:ss.SSS'Z'\\\"\\n        \n          }\\n    \n        ]\\n}\")\n    .asString();\nSystem.out.println(response);\nOR\nUnirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.put(\"https://<TENANT_DOMAIN>/tenant/trusted-certificates/settings/crl\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .field(\"file\", new File(\"/path_to_file/CRL_bulk_registration_template.csv\"))\n    .asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"PUT\", \"https://<TENANT_DOMAIN>/tenant/trusted-certificates/settings/crl\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\",\n        \"Accept\": \"application/json\",\n        \"Content-Type\": \"application/json\"\n    })\n    .send(JSON.stringify({\n          \"crls\": [\n            {\n              \"serialNumberInHex\": \"<SERIAL_NO>\",\n              \"revocationDate\": \"<yyyy-MM-dd'T'HH:mm:ss.SSS'Z'>\"\n            }\n          ]\n      }))\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\nOR\nvar unirest = require(\"unirest\");\nvar req = unirest(\"PUT\", \"https://<TENANT_DOMAIN>/tenant/trusted-certificates/settings/crl\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\",\n    })\n    .attach('file', '/path_to_file/CRL_bulk_registration_template.csv')\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\nimport json\nurl = \"https://<TENANT_DOMAIN>/tenant/trusted-certificates/settings/crl\"\npayload = json.dumps({\n  \"crls\": [\n    {\n      \"serialNumberInHex\": \"<SERIAL_NO>\",\n      \"revocationDate\": \"<yyyy-MM-dd'T'HH:mm:ss.SSS'Z'\"\n    }\n  ]\n})\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\",\n  \"Accept\": \"application/json\",\n  \"Content-Type\": \"application/json\"\n}\nresponse = requests.request(\"PUT\", url, headers=headers, data=payload)\nprint(response.text.encode(\"utf8\"))\nOR\nimport requests\nimport json\nurl = \"https://<TENANT_DOMAIN>/tenant/trusted-certificates/settings/crl\"\npayload = {}\nfiles=[\n('file',('cert_chain.pem',open('/path_to_file/CRL_bulk_registration_template.csv','rb'),'application/octet-stream'))\n]\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\",\n}\nresponse = requests.request(\"PUT\", url, headers=headers, data=payload, files=files)\nprint(response.text.encode(\"utf8\"))\n"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCRLEntries'
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+              - file
+              properties:
+                file:
+                  description: File to be uploaded.
+                  type: string
+                  format: binary
+      responses:
+        '204':
+          description: CRLs updated successfully.
+        '400':
+          $ref: '#/components/responses/unableToParseCRLEntries'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/accessDenied'
+    post:
+      operationId: postCRLSettings
+      x-codegen-resource-name: uploadCRL
+      tags:
+      - Trusted certificates
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Add revoked certificates
+      description: '> **ⓘ Info:** A certificate revocation list (CRL) is a list of digital certificates
+
+        that have been revoked by the issuing certificate authority (CA) before expiration date.
+
+        In Cumulocity, a CRL check can be in online or offline mode or both.
+
+
+        An endpoint to add revoked certificate serial numbers for offline CRL check via payload or file.
+
+        A file can be uploaded with either `PUT` or `POST`, a JSON payload is accepted by `PUT` only.
+
+
+        For payload, a JSON object required with list of CRL entries, for example:
+
+        ```json
+
+        {
+
+        "crls": [
+
+        {
+
+        "serialNumberInHex": "1000",
+
+        "revocationDate": "2023-01-11T16:12:36.288Z"
+
+        }
+
+        ]
+
+        }
+
+        ```
+
+        Each entry is composed of:
+
+        * serialNumberInHex: Needs to be in `Hexadecimal Value`. e.g As (1000)^16 == (4096)^10, So we have to enter 1000.
+
+        If duplicate serial number exists in payload, the existing entry stays
+
+
+        * `revocationDate` - accepted Date format: `yyyy-MM-dd''T''HH:mm:ss.SSS''Z''`, for example: `2023-01-11T16:12:36.288Z`.
+
+        This is an optional parameter and defaults to the current server UTC date time if not specified in the payload.
+
+        If specified and the date is in future then those entries will be also defaulted to current date.
+
+
+        For file upload, each file can hold at maximum 5000 revocation entries.
+
+        Multiple upload is allowed.
+
+        In case of duplicates, the latest (last uploaded) entry is considered.
+
+
+        See below for a sample CSV file:
+
+
+        | SERIAL NO. | REVOCATION DATE |
+
+        |--|--|
+
+        | 1000 | 2023-01-11T16:12:36.288Z |
+
+
+        Each entry is composed of :
+
+        * serialNumberInHex: Needs to be in `Hexadecimal Value`. e.g (1000)^16 == (4096)^10, So we have to enter 1000.
+
+        If duplicate serial number exists in payload, the latest entry will be taken.
+
+
+        * revocationDate: Accepted Date format: `yyyy-MM-dd''T''HH:mm:ss.SSS''Z''` e.g: 2023-01-11T16:12:36.288Z.
+
+        This is an optional and will be default to current server UTC date time if not specified in payload.
+
+        If specified and the date is in future then those entries will be skipped.
+
+
+        The CRL setting for offline and online check can be enabled/disabled using /tenant/options.
+
+        Keys are `crl.online.check.enabled` and `crl.offline.check.enabled` under the category `configuration`.
+
+
+        Required roles
+
+
+        (ROLE_TENANT_MANAGEMENT_ADMIN OR ROLE_TENANT_ADMIN) AND is the current tenant
+
+
+        **⚠️ Important:** According to CRL policy, added serial numbers cannot be reversed.'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request POST ''https://<TENANT_DOMAIN>/tenant/trusted-certificates/settings/crl'' \
+
+          --header "Authorization: Basic <AUTHORIZATION>" \
+
+          --form ''file=@"/path_to_file/CRL_bulk_registration_template.csv"''
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/tenant/trusted-certificates/settings/crl");
+
+          client.Timeout = -1;
+
+          var request = new RestRequest(Method.POST);
+
+          request.AlwaysMultipartFormData = true;
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+          request.AddFile("file", "/path_to_file/CRL_bulk_registration_template.csv");
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.post(\"https://<TENANT_DOMAIN>/tenant/trusted-certificates/settings/crl\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .field(\"file\", new File(\"/path_to_file/CRL_bulk_registration_template.csv\"))\n    .asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"POST\", \"https://<TENANT_DOMAIN>/tenant/trusted-certificates/settings/crl\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\",\n    })\n    .attach('file', '/path_to_file/CRL_bulk_registration_template.csv')\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\nurl = \"https://<TENANT_DOMAIN>/tenant/trusted-certificates/settings/crl\"\npayload = {}\nfiles=[\n('file',('CRL_bulk_registration_template.csv',open('/path_to_file/CRL_bulk_registration_template.csv','rb'),'application/octet-stream'))\n]\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\",\n}\nresponse = requests.request(\"POST\", url, headers=headers, data=payload, files=files)\nprint(response.text.encode(\"utf8\"))\n"
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+              - file
+              properties:
+                file:
+                  description: File to be uploaded.
+                  type: string
+                  format: binary
+      responses:
+        '204':
+          description: CRLs updated successfully.
+        '400':
+          $ref: '#/components/responses/unableToParseCRLEntries'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/accessDenied'
+    get:
+      operationId: getCRLSettings
+      x-codegen-resource-name: downloadCrl
+      tags:
+      - Trusted certificates
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Get revoked certificates
+      description: 'This endpoint downloads current CRL file containing list of revoked certificate in
+
+        a binary file format with `content-type` as `application/pkix-crl`.
+
+
+        Required roles
+
+
+        (ROLE_TENANT_MANAGEMENT_ADMIN OR ROLE_TENANT_ADMIN OR ROLE_TENANT_MANAGEMENT_READ)'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request GET ''https//<TENANT_DOMAIN>/tenant/trusted-certificates/settings/crl'' \
+
+          --header "Accept: */*" \
+
+          --header "Authorization: Basic <AUTHORIZATION>"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https//<TENANT_DOMAIN>/tenant/trusted-certificates/settings/crl");
+
+          client.Timeout = -1;
+
+          var request = new RestRequest(Method.GET);
+
+          request.AddHeader("Accept", "*/*");
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nhttpsResponse<String> response = Unirest.get(\"https//<TENANT_DOMAIN>/tenant/trusted-certificates/settings/crl\")\n    .header(\"Accept\", \"*/*\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\").asString();\n    .asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"GET\", \"https//<TENANT_DOMAIN>/tenant/trusted-certificates/settings/crl\")\n    .headers({\n        \"Accept\": \"*/*\",\n        \"Authorization\": \"Basic <AUTHORIZATION>\"\n    })\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\nimport json\nurl = \"https//<TENANT_DOMAIN>/tenant/trusted-certificates/settings/crl\"\npayload={}\n headers = {\n  \"Accept\": \"*/*\",\n  \"Authorization\": \"Basic <AUTHORIZATION>\"\n}\nresponse = requests.request(\"GET\", url, headers=headers, data=payload)\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '200':
+          description: The CRL file of the current tenant.
+          content:
+            application/pkix-crl:
+              schema:
+                description: The generated CRL file in binary format
+                type: string
+                format: binary
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+  /devicecontrol/deviceAccessToken:
+    post:
+      operationId: postDeviceAccessTokenResource
+      x-codegen-resource-name: obtainAccessToken
+      parameters:
+      - $ref: '#/components/parameters/acceptHeader'
+      - $ref: '#/components/parameters/sslCertChainInHeader'
+      tags:
+      - Trusted certificates
+      security: []
+      summary: Obtain device access token
+      description: 'Only those devices which are registered to use cert auth can authenticate via mTLS protocol and retrieve JWT token. Device access token API works only on port 8443 via mutual TLS (mTLS) connection.
+
+        Immediate issuer of client certificate must present in Platform''s truststore, if not then whole certificate chain needs to send in header and root or any intermediate certificate must be present in the Platform''s truststore.
+
+        We must have the following:
+
+        * private_key
+
+        * client certificate
+
+        * whole certificate chain (Optional - This API requires the client to send a custom header `X-SSL-CERT-CHAIN` only if the immediate issuer of the client''s certificate is not uploaded as a trusted certificate on the platform. If the immediate issuer is already uploaded and trusted, the header can be omitted)'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request POST "https://<TENANT_DOMAIN>:8443/devicecontrol/deviceAccessToken" --cert domain-cert.pem --key domain-private-key.pem \
+
+          --header "Accept: application/json" \
+
+          --header "X-Ssl-Cert-Chain:{cert-chain}"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>:8443/devicecontrol/deviceAccessToken");
+
+          client.Timeout = -1;
+
+          var request = new RestRequest(Method.POST);
+
+          request.AddHeader("Accept", "application/json");
+
+          request.AddHeader("X-Ssl-Cert-Chain", {cert-chain});
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: 'KeyStore keyStore = KeyStore.getInstance("JKS");
+
+          keyStore.load(null, null);
+
+          // x509Certificate is domain certificate
+
+          // domainKeyPair is KeyPair for domain certificate
+
+          keyStore.setKeyEntry("cert", this.domainKeyPair.getPrivate(), keystorePassword, new Certificate[]{x509Certificate});
+
+          KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
+
+          keyManagerFactory.init(keyStore, keystorePassword);
+
+          TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+
+          KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
+
+          trustStore.load(null, null);
+
+          trustStore.setCertificateEntry("server_public_key", x509Certificate);
+
+          trustManagerFactory.init(trustStore);
+
+          SSLContext sslContext = SSLContext.getInstance("TLS");
+
+          sslContext.init(keyManagerFactory.getKeyManagers(), trustManagerFactory.getTrustManagers(), null);
+
+          HttpClient httpClient = HttpClient.newBuilder().sslContext(sslContext).build();
+
+          HttpRequest request = HttpRequest.newBuilder().uri(new URI(https://<TENANT_DOMAIN>:8443/devicecontrol/deviceAccessToken))
+
+          .POST(HttpRequest.BodyPublishers.noBody())
+
+          .header("Accept", "application/json")
+
+          .header("X-ssl-Cert-Chain", {cert-chain}).build();
+
+          HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+          System.out.println(response.body());
+
+          '
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"POST\", \"https://<TENANT_DOMAIN>:8443/devicecontrol/deviceAccessToken\")\n    .headers({\n        \"Accept\": \"application/json\",\n        \"X-Ssl-Cert-Chain\": {cert-chain}\n    })\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\nimport json\nurl = \"https://<TENANT_DOMAIN>:8443/devicecontrol/deviceAccessToken\"\nheaders = {\n  \"Accept\": \"application/json\",\n  \"X-Ssl-Cert-Chain\":{cert-chain}\n}\nresponse = requests.request(\"POST\", url, headers = headers, files = files)\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '200':
+          description: Successfully retrieved device access token from device certificate.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/deviceAccessToken'
+        '400':
+          $ref: '#/components/responses/unableToParseCertBadRequest'
+        '401':
+          $ref: '#/components/responses/x509CertificateValidationUnauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+        '404':
+          $ref: '#/components/responses/deviceAccessTokenNotFound'
+        '422':
+          description: The verification was not successful.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+              examples:
+                unprocessable:
+                  value:
+                    error: Auto registeration is failed for device/Unprocessable Entity
+                    message: Cannot process certificate data.
+                    info: https://www.cumulocity.com/guides/reference-guide/#error_reporting
+                invalidData:
+                  value:
+                    error: Invalid Data
+                    message: Cannot process certificate data.
+                    info: https://www.cumulocity.com/guides/reference-guide/#error_reporting
+components:
+  parameters:
+    processingModeHeader:
+      name: X-Cumulocity-Processing-Mode
+      in: header
+      description: Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+      required: false
+      schema:
+        type: string
+        default: PERSISTENT
+        enum:
+        - PERSISTENT
+        - TRANSIENT
+        - QUIESCENT
+        - CEP
+        example: PERSISTENT
+    queryParam_certificateAuthority:
+      name: certificateAuthority
+      in: query
+      description: 'When set to `true`, the tenant certificate authority will be retrieved.
+
+        '
+      schema:
+        type: boolean
+        default: false
+        example: true
+    queryParam_withTotalElements:
+      name: withTotalElements
+      in: query
+      description: 'When set to `true`, the returned result will contain in the statistics object the total number of elements. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
+
+        > **&#9432; Info:** To improve performance, the `totalElements` statistics are cached for 10 seconds.
+
+        '
+      schema:
+        type: boolean
+        default: false
+        example: true
+    tenantId:
+      name: tenantId
+      in: path
+      description: Unique identifier of a Cumulocity tenant.
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        example: t07007007
+    queryParam_withTotalPages:
+      name: withTotalPages
+      in: query
+      description: 'When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
+
+        > **&#9432; Info:** To improve performance, the `totalPages` statistics are cached for 10 seconds.
+
+        '
+      schema:
+        type: boolean
+        default: false
+        example: true
+    queryParam_currentPage:
+      name: currentPage
+      in: query
+      description: The current page of the paginated results.
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+        example: 3
+    sslCertChainInHeader:
+      name: X-Ssl-Cert-Chain
+      in: header
+      description: 'Used to send a certificate chain in the header. Separate the chain with ` ` (a space character) and also each 64 bit block with ` ` (a space character).
+
+        '
+      required: false
+      schema:
+        type: string
+        example: '-----BEGIN CERTIFICATE----- MIIDTzCCAjegAwIBAgIUB1a5GM9ubBpN5tyU7YO8D3C8zUUwDQYJKoZIhvcNAQEL BQAwUjELMAkGA1UEBhMCRVUxCzAJBgNVBAgMAlBMMRswGQYDVQQKDBJJb3QgRGV2 aWNlIEZhY3RvcnkxGTAXBgNVBAMMEElvdERldkZhY3RvcnlDQTQwHhcNMjMwMTMx MDMzMTEyWhcNMzMwMTI4MDMzMTEyWjBSMQswCQYDVQQGEwJFVTELMAkGA1UECAwC UEwxGzAZBgNVBAoMEklvdCBEZXZpY2UgRmFjdG9yeTEZMBcGA1UEAwwQSW90RGV2 RmFjdG9yeUNBNDCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBANeyb0T9 2Ac4G83GGO+vNiieyItY1Tf0Rm1tJPIevDnSg+leplLIEUeE0y7UNAJDMxEEJx6V cFzG2yK4yPJibMw2AAo4Wy9U4Ie4F7kLmgUnh8prxcX19AKhHujZCEjhgmk3MCEc FbSjgSWNaXX6vO5JPj8aMtMKFUIsah9VH8G+HnfPuH4LF0MQFKU+K3bZRrsAUD7a oWGaUGGiLOQgUdURfPj3AJc4gAT+t9f/CX7OrOg+A9RpVVswkYfrCz6hhEJb/jDj 9XO+OdphmXLvjjYsRbEmUZAXJ0M6Iv1WZW9vV7Nd5H4L89wQKRYqFFhAwnLp7Dh2 f85VbHZT7+UmUacCAwEAAaMdMBswDAYDVR0TBAUwAwEB/zALBgNVHQ8EBAMCAuQw DQYJKoZIhvcNAQELBQADggEBAKoSCWwoUIIr5HjQQOThQFgnxcKJX9nwSkZbQOMf 9G7XV5SQTUJTxTAE5sntVoLGtIdA8F7ytbW1Gv1CFlZpu0hRoj92JTS8rCVD4X7f hCbXometLrSPV63BRB2NEmmtOBPXNsENdujhkK0ouXodSJc2xE6VTeaH5ng0jceD riy8qB5wN+AfEyoz36QJaHIt77Stp2ZQU0gK44B+uuSEPCUJfQVEBwkGhYB4Ut2+ s++cqJ7gRXV08Zt5J7q6kTcnmhsm0oJelQDLIJh+hEBzdjCdtKfYslRvFq3I85Y0 zngrsOfyKr8YYlDRy6RiAR2HQode00Hs4WoakfuTpaISZIs= -----END CERTIFICATE----- -----BEGIN CERTIFICATE-----  ..  -----END CERTIFICATE----- -----BEGIN CERTIFICATE-----  ..  -----END CERTIFICATE-----'
+    certChainInHeader:
+      name: X-Cumulocity-Client-Cert-Chain
+      in: header
+      description: Used to send a certificate chain in the header. Separate the chain with `,` and also each 64 bit block with ` ` (a space character).
+      required: true
+      schema:
+        type: string
+        example: '-----BEGIN CERTIFICATE----- MIIDTzCCAjegAwIBAgIUB1a5GM9ubBpN5tyU7YO8D3C8zUUwDQYJKoZIhvcNAQEL BQAwUjELMAkGA1UEBhMCRVUxCzAJBgNVBAgMAlBMMRswGQYDVQQKDBJJb3QgRGV2 aWNlIEZhY3RvcnkxGTAXBgNVBAMMEElvdERldkZhY3RvcnlDQTQwHhcNMjMwMTMx MDMzMTEyWhcNMzMwMTI4MDMzMTEyWjBSMQswCQYDVQQGEwJFVTELMAkGA1UECAwC UEwxGzAZBgNVBAoMEklvdCBEZXZpY2UgRmFjdG9yeTEZMBcGA1UEAwwQSW90RGV2 RmFjdG9yeUNBNDCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBANeyb0T9 2Ac4G83GGO+vNiieyItY1Tf0Rm1tJPIevDnSg+leplLIEUeE0y7UNAJDMxEEJx6V cFzG2yK4yPJibMw2AAo4Wy9U4Ie4F7kLmgUnh8prxcX19AKhHujZCEjhgmk3MCEc FbSjgSWNaXX6vO5JPj8aMtMKFUIsah9VH8G+HnfPuH4LF0MQFKU+K3bZRrsAUD7a oWGaUGGiLOQgUdURfPj3AJc4gAT+t9f/CX7OrOg+A9RpVVswkYfrCz6hhEJb/jDj 9XO+OdphmXLvjjYsRbEmUZAXJ0M6Iv1WZW9vV7Nd5H4L89wQKRYqFFhAwnLp7Dh2 f85VbHZT7+UmUacCAwEAAaMdMBswDAYDVR0TBAUwAwEB/zALBgNVHQ8EBAMCAuQw DQYJKoZIhvcNAQELBQADggEBAKoSCWwoUIIr5HjQQOThQFgnxcKJX9nwSkZbQOMf 9G7XV5SQTUJTxTAE5sntVoLGtIdA8F7ytbW1Gv1CFlZpu0hRoj92JTS8rCVD4X7f hCbXometLrSPV63BRB2NEmmtOBPXNsENdujhkK0ouXodSJc2xE6VTeaH5ng0jceD riy8qB5wN+AfEyoz36QJaHIt77Stp2ZQU0gK44B+uuSEPCUJfQVEBwkGhYB4Ut2+ s++cqJ7gRXV08Zt5J7q6kTcnmhsm0oJelQDLIJh+hEBzdjCdtKfYslRvFq3I85Y0 zngrsOfyKr8YYlDRy6RiAR2HQode00Hs4WoakfuTpaISZIs= -----END CERTIFICATE-----,-----BEGIN CERTIFICATE-----  ..  -----END CERTIFICATE-----,-----BEGIN CERTIFICATE-----  ..  -----END CERTIFICATE-----'
+    queryParam_addToTrustStore:
+      name: addToTrustStore
+      in: query
+      description: 'If set to `true` the certificate is added to the truststore.
+
+
+        The truststore contains all trusted certificates. A connection to a device is only established if it connects to Cumulocity with a certificate in the truststore.
+
+        '
+      schema:
+        type: boolean
+        default: true
+        example: true
+    fingerprint:
+      name: fingerprint
+      in: path
+      description: Unique identifier of a trusted certificate.
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        example: df9c19e0433c6861fak899078b76fe56a3e7dd14
+    acceptHeader:
+      name: Accept
+      in: header
+      description: Advertises which content types, expressed as MIME types, the client is able to understand.
+      required: false
+      schema:
+        type: string
+        minLength: 1
+        example: application/json
+    queryParam_pageSize:
+      name: pageSize
+      in: query
+      description: Indicates how many entries of the collection shall be returned. The upper limit for one page is 2,000 objects.
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 2000
+        default: 5
+        example: 10
+  responses:
+    tenantDoesNotExists:
+      description: The tenant ID does not exist.
+      content:
+        application/vnd.com.nsn.cumulocity.error+json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            error: Device Certificates/Not Found
+            message: Tenant Id doesn't exists
+            info: https://www.cumulocity.com/guides/reference-guide/#error_reporting
+    tenantNotFound:
+      description: Tenant not found.
+      content:
+        application/vnd.com.nsn.cumulocity.error+json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            error: security/Not Found
+            message: There is no tenant with id = t01
+            info: https://www.cumulocity.com/guides/reference-guide/#error_reporting
+    invalidPayload:
+      description: Unprocessable Entity – invalid payload.
+    deviceAccessTokenNotFound:
+      description: Device access token feature is disabled.
+      content:
+        application/vnd.com.nsn.cumulocity.error+json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            error: Not Found
+            message: This feature is disabled, please contact system administrator.
+            info: https://www.cumulocity.com/guides/reference-guide/#error_reporting
+    unableToParseCertBadRequest:
+      description: Unable to parse certificate chain.
+      content:
+        application/vnd.com.nsn.cumulocity.error+json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            error: Device Certificates/Bad Request
+            message: 'Cannot parse X509 certificate. : Incomplete data'
+            info: https://www.cumulocity.com/guides/reference-guide/#error_reporting
+    x509CertificateValidationUnauthorizedError:
+      description: One or more certificates in the chain are revoked or the certificate chain is not valid. Revoked certificates are checked first, then the validity of the certificate chain.
+      content:
+        application/vnd.com.nsn.cumulocity.error+json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            error: security/Unauthorized
+            info: https://www.cumulocity.com/guides/reference-guide/#error_reporting
+    trustedCertificateNotFound:
+      description: Trusted certificate not found.
+      content:
+        application/vnd.com.nsn.cumulocity.error+json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            error: certificate/Not Found
+            message: Cannot find certificate with fingerprint abcdef1234567890.
+            info: https://www.cumulocity.com/guides/reference-guide/#error_reporting
+    unableToParseCRLEntries:
+      description: Unsupported date time format.
+      content:
+        application/vnd.com.nsn.cumulocity.error+json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            error: Device Certificates/Bad Request
+            message: Unsupported date time format, supported format:yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
+            info: https://www.cumulocity.com/guides/reference-guide/#error_reporting
+    unauthorizedError:
+      description: Authentication information is missing or invalid.
+      content:
+        application/vnd.com.nsn.cumulocity.error+json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            error: security/Unauthorized
+            message: 'Invalid credentials! : Bad credentials'
+            info: https://www.cumulocity.com/guides/reference-guide/#error_reporting
+    operationNotAuthorized:
+      description: Not authorized to perform this operation.
+    accessDenied:
+      description: Not enough permissions/roles to perform this operation.
+      content:
+        application/vnd.com.nsn.cumulocity.error+json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            error: security/Forbidden
+            message: Access is denied.
+            info: https://www.cumulocity.com/guides/reference-guide/#error_reporting
+  schemas:
+    desc_self:
+      title: SelfURL
+      description: A URL linking to this resource.
+      type: string
+      format: uri
+      readOnly: true
+    deviceAccessToken:
+      description: OAI-Secure access token for devices.
+      type: object
+      properties:
+        accessToken:
+          description: Access token generated by the Cumulocity platform.
+          type: string
+          example: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJhZGY0ODI3Yi00ZjZjLTRiMTktYTJmYy0x...S-04HPk3G5OezjCP8oQUAIG87wd-fHyJ2oKSuetWFWpUSBPzJzl_73_3yauIlplHorlSoQ
+        idToken:
+          type: string
+          example: null
+        expiresIn:
+          type: integer
+          example: null
+        refreshToken:
+          type: string
+          example: null
+        info:
+          type: object
+          example: null
+    UpdateCRLEntries:
+      description: A list of serial numbers.
+      type: object
+      properties:
+        crls:
+          type: array
+          items:
+            $ref: '#/components/schemas/CRLEntry'
+    TrustedCertificateCollection:
+      type: object
+      description: A collection of trusted certificates.
+      properties:
+        certificates:
+          description: An array containing trusted certificates.
+          type: array
+          items:
+            $ref: '#/components/schemas/TrustedCertificate'
+        next:
+          $ref: '#/components/schemas/desc_nextPage'
+        prev:
+          $ref: '#/components/schemas/desc_prevPage'
+        self:
+          $ref: '#/components/schemas/desc_self'
+        statistics:
+          $ref: '#/components/schemas/pageStatistics'
+      example:
+        certificates:
+        - algorithmName: SHA256withRSA
+          version: 3
+          autoRegistrationEnabled: true
+          issuer: CN=CertificateName, OU=Dusseldorf, O=Cumulocity, C=DE
+          name: My Certificate
+          fingerprint: df9c19e0433c6861fak899078b76fe56a3e7dd14
+          notAfter: '2041-08-29T07:42:00.000Z'
+          notBefore: '2021-09-03T07:42:00.000Z'
+          serialNumber: '304307049989715896618044547121406628655049752690'
+          subject: CN=CertificateName, OU=Dusseldorf, O=Cumulocity, C=DE
+          self: https://<TENANT_DOMAIN>/tenant/tenants/t07007007/trusted-certificates/df9c19e0433c6861fak899078b76fe56a3e7dd14
+          status: ENABLED
+          certInPemFormat: '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
+
+            PPBUaE6x9fMfuGJbcsAR
+
+            '
+        next: https://<TENANT_DOMAIN>/tenant/tenants/t07007007/trusted-certificates?pageSize=1&currentPage=3
+        prev: https://<TENANT_DOMAIN>/tenant/tenants/t07007007/trusted-certificates?pageSize=1&currentPage=1
+        self: https://<TENANT_DOMAIN>/tenant/tenants/t07007007/trusted-certificates?pageSize=1&currentPage=2
+        statistics:
+          currentPage: 2
+          pageSize: 1
+    CRLEntry:
+      type: object
+      required:
+      - serialNumberInHex
+      properties:
+        serialNumberInHex:
+          description: Revoked certificate serial number in hexadecimal.
+          type: string
+          example: 1000
+        revocationDate:
+          description: Date and time when the certificate is revoked.
+          type: string
+          format: date-time
+          example: '2023-01-11T16:12:36.288Z'
+    desc_nextPage:
+      title: NextPageURL
+      description: A URI reference [[RFC3986](https://tools.ietf.org/html/rfc3986)] to a potential next page of managed objects.
+      type: string
+      readOnly: true
+    error:
+      type: object
+      properties:
+        error:
+          description: The type of error returned.
+          type: string
+        message:
+          description: A human-readable message providing more details about the error.
+          type: string
+        info:
+          description: A URI reference [[RFC3986](https://tools.ietf.org/html/rfc3986)] that identifies the error code reported.
+          type: string
+    VerifyCertificateChain:
+      type: object
+      properties:
+        successfullyValidated:
+          description: The result of validating the certificate chain.
+          type: boolean
+          readOnly: true
+        tenantId:
+          description: The tenant ID used for validation.
+          type: string
+          readOnly: true
+        issuer:
+          description: The name of the organization which signed the certificate.
+          type: string
+          readOnly: true
+        subject:
+          description: The name of the organization to which the certificate belongs.
+          type: string
+          readOnly: true
+      example:
+        successfullyValidated: true
+        tenantId: t07007007
+        subject: CN=iotdevice0001,O=device,ST=PL,C=EU
+        issuer: CN=CertificateName, OU=Dusseldorf, O=Cumulocity, C=DE
+    pageStatistics:
+      description: Information about paging statistics.
+      type: object
+      readOnly: true
+      properties:
+        currentPage:
+          description: The current page of the paginated results.
+          type: integer
+          minimum: 1
+          example: 2
+        pageSize:
+          description: Indicates the number of objects that the collection may contain per page. The upper limit for one page is 2,000 objects.
+          type: integer
+          minimum: 1
+          maximum: 2000
+          example: 5
+        totalElements:
+          description: The total number of results (elements).
+          type: integer
+          minimum: 0
+          example: 12
+        totalPages:
+          description: 'The total number of paginated results (pages).
+
+
+            > **&#9432; Info:** This property is returned by default except when an operation retrieves all records where values are between an upper and lower boundary, for example, querying ranges using `dateFrom`–`dateTo`. In such cases, the query parameter `withTotalPages=true` should be used to include the total number of pages (at the expense of slightly slower performance).
+
+            '
+          type: integer
+          minimum: 0
+          example: 3
+    UploadedTrustedCertSignedVerificationCode:
+      type: object
+      description: The signed verification code to prove the user's possession of the certificate.
+      required:
+      - proofOfPossessionSignedVerificationCode
+      properties:
+        proofOfPossessionSignedVerificationCode:
+          description: A signed verification code that proves the right to use the certificate.
+          type: string
+          example: 6qgyIiqnYAx+1pkSSgy1o8tNHBVFkWoQ/2oRt5Czyy2ViobYaG8GVjz3pEcJ/Vz8e2PjjBYFYCvlGF08pZRJMjbTUHpe6p4wBFlK2
+    TrustedCertificate:
+      type: object
+      properties:
+        algorithmName:
+          description: Algorithm used to decode/encode the certificate.
+          type: string
+          readOnly: true
+        autoRegistrationEnabled:
+          description: Indicates whether the automatic device registration is enabled or not.
+          type: boolean
+          default: false
+        certInPemFormat:
+          description: Trusted certificate in PEM format.
+          type: string
+        fingerprint:
+          description: Unique identifier of the trusted certificate.
+          type: string
+          readOnly: true
+        issuer:
+          description: The name of the organization which signed the certificate.
+          type: string
+          readOnly: true
+        name:
+          description: Name of the certificate.
+          type: string
+        notAfter:
+          description: The end date and time of the certificate's validity.
+          type: string
+          format: date-time
+          readOnly: true
+        notBefore:
+          description: The start date and time of the certificate's validity.
+          type: string
+          format: date-time
+          readOnly: true
+        proofOfPossessionValid:
+          description: Indicates whether the proof of possession for the certificate was provided.
+          type: boolean
+          example: false
+        proofOfPossessionUnsignedVerificationCode:
+          description: An unsigned verification code that provides proof of possession for the certificate after signing.
+          type: string
+          example: 6qgyIiqnYAx+1pkSSgy1o8tNHBVFx0Xx959fWmrXfSKsgBEggyR+er6KVgag1oMrdS6L3gBLmU3wKQk83RsdHSJkWoQ/2oRt5Czyy2ViobYaG8GVjz3pEcJ/Vz8e2PjjBYFYCvlGF08pZRJMjbTUHpe6p4wBFlK2
+        proofOfPossessionVerificationCodeUsableUntil:
+          description: Validity of the verification code.
+          type: string
+          format: date-time
+          example: '2024-03-19T00:00:00.000Z'
+        self:
+          $ref: '#/components/schemas/desc_self'
+        serialNumber:
+          description: The certificate's serial number.
+          type: string
+          readOnly: true
+        status:
+          description: Indicates if the certificate is active and can be used by the device to establish a connection to the Cumulocity platform.
+          type: string
+          enum:
+          - ENABLED
+          - DISABLED
+          example: ENABLED
+        subject:
+          description: Name of the organization to which the certificate belongs.
+          type: string
+          readOnly: true
+        version:
+          description: Version of the X.509 certificate standard.
+          type: integer
+          readOnly: true
+        tenantCertificateAuthority:
+          description: Indicates whether this certificate is tenant's CA.
+          type: boolean
+          default: false
+          readOnly: true
+      example:
+        algorithmName: SHA256withRSA
+        version: 3
+        autoRegistrationEnabled: true
+        issuer: CN=CertificateName, OU=Dusseldorf, O=Cumulocity, C=DE
+        name: My Certificate
+        fingerprint: df9c19e0433c6861fak899078b76fe56a3e7dd14
+        notAfter: '2041-08-29T07:42:00.000Z'
+        notBefore: '2021-09-03T07:42:00.000Z'
+        serialNumber: '304307049989715896618044547121406628655049752690'
+        subject: CN=CertificateName, OU=Dusseldorf, O=Cumulocity, C=DE
+        self: https://<TENANT_DOMAIN>/tenant/tenants/t07007007/trusted-certificates/df9c19e0433c6861fak899078b76fe56a3e7dd14
+        status: ENABLED
+        tenantCertificateAuthority: false
+        certInPemFormat: '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
+
+          PPBUaE6x9fMfuGJbcsAR
+
+          '
+    UploadedTrustedCertificateCollection:
+      type: object
+      description: A collection of uploaded trusted certificates.
+      properties:
+        certificates:
+          type: array
+          items:
+            $ref: '#/components/schemas/UploadedTrustedCertificate'
+        next:
+          $ref: '#/components/schemas/desc_nextPage'
+        prev:
+          $ref: '#/components/schemas/desc_prevPage'
+        self:
+          $ref: '#/components/schemas/desc_self'
+        statistics:
+          $ref: '#/components/schemas/pageStatistics'
+    desc_prevPage:
+      title: PreviousPageURL
+      description: A URI reference [[RFC3986](https://tools.ietf.org/html/rfc3986)] to a potential previous page of managed objects.
+      type: string
+      readOnly: true
+    UploadedTrustedCertificate:
+      type: object
+      required:
+      - certInPemFormat
+      - status
+      properties:
+        autoRegistrationEnabled:
+          description: Indicates whether the automatic device registration is enabled or not.
+          type: boolean
+          default: false
+        certInPemFormat:
+          description: Trusted certificate in PEM format.
+          type: string
+        name:
+          description: Name of the certificate.
+          type: string
+        status:
+          description: Indicates if the certificate is active and can be used by the device to establish a connection to the Cumulocity platform.
+          type: string
+          enum:
+          - ENABLED
+          - DISABLED
+          example: ENABLED
+  securitySchemes:
+    Basic:
+      type: http
+      scheme: basic
+      description: 'The authorization header is formed as `Basic <Base64(<tenantID>/<c8yuser>:<password>)>`. For instance, if your tenantID, username and password are **t0071234**, **testuser** and **secret123** respectively, you can generate the Base64 string with the following command:
+
+
+        ```shell
+
+        $ echo -n t0071234/testuser:secret123 | base64
+
+        ```
+
+
+        and your authorization header would look like this:
+
+
+        ```
+
+        "Authorization": "Basic dDAwNzEyMzQvdGVzdHVzZXI6c2VjcmV0MTIz"
+
+        ```
+
+        '
+    OAI-Secure:
+      type: http
+      scheme: bearer
+      description: 'This is the recommended authorization method because it provides high security using authorization tokens to prove the identity of the user, and it is the default login mode on creating new tenants. This mode is an enhancement of the previous OAuth Internal authentication (available prior to 10.13.0).
+
+
+        For more details about OAI-Secure authentication, see [Platform administration > Authentication > Basic settings > Login settings](https://www.cumulocity.com/docs/authentication/basic-settings/#login-settings) in the Cumulocity user documentation.
+
+        '
+    SSO:
+      type: oauth2
+      description: "The login with SSO requires a correct configuration on the [Cumulocity side](https://www.cumulocity.com/docs/authentication/sso/). With the configuration, an additional button is available on the Login page. After clicking the button, the user is redirected to authenticate with the configured authorization server. On successful login, the user is redirected to Cumulocity.\n\nAuthentication details are exchanged using cookies. There are two parts to it, the first is the authentication cookie that is handled automatically by the Cumulocity platform. The second is the XSRF-TOKEN cookie. When a client receives the cookie, it should take the value and put it in the X-XSRF-TOKEN request header in all subsequent requests.\n\nThe flow of authenticating with authentication code grant is as follows:\n\n![Authentication flow](images/oauth-simple-flow.png)\n\nThe first request executed by the browser is:\n\n```http\nGET /tenant/loginOptions\nHost: https://<TENANT_DOMAIN>\nAccept: application/vnd.com.nsn.cumulocity.loginoptioncollection+json\n```\n\nResponse sample:\n\n```json\n{\n    \"loginOptions\": [\n        {\n            \"buttonName\": \"Login with oauth\",\n            \"grantType\": \"<AUTHORIZATION_CODE>\",\n            \"initRequest\": \"https://<TENANT_DOMAIN>/tenant/oauth?response_type=code&tenant_id=<TENANT_ID>\",\n            \"self\": \"https://<TENANT_DOMAIN>/tenant/loginOptions/oauth2\",\n            \"type\": \"oauth2\"\n        },\n        ...\n    ],\n    \"self\": \"http://<TENANT_DOMAIN>/tenant/loginOptions/\"\n}\n```\n\nThe browser must invoke the request provided in the initRequest parameter.\n\nThe initRequest initiates the redirect, in which the user is prompted for credentials. After successful login, the user is redirected back to the browser, where it must capture the code request parameter. Then the request to exchange the code for the token is as follows:\n\n```http\nPOST /tenant/oauth?grant_type=authorization_code&code=<CODE>\nHost: https://<TENANT_DOMAIN>\n```\n\nA successful response will have no body but the following response headers:\n\n```\nSet-Cookie: authorization=<TOKEN>;\nSet-Cookie: XSRF-TOKEN=<XSRF-TOKEN>;\n```\n\nThe authorization cookie is valid for two weeks.\n"
+      flows:
+        clientCredentials:
+          tokenUrl: /tenant/oauth?grant_type=authorization_code&code=<CODE>
+          scopes: {}
+    JWT-IAM:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'This kind of authentication substitutes the JWT authentication with OAuth2 access tokens from your Identity and Access Management (IAM).
+
+        You can enable this in the [SSO configuration](https://www.cumulocity.com/docs/authentication/sso/).
+
+
+        The HTTP header must include:
+
+
+        ```
+
+        "Authorization": "Bearer <Access token>"
+
+        ```
+
+
+        When a request with a bearer token in the header is received, Cumulocity checks if the access token is from your IAM (that is, if authentication is enabled in your SSO configuration), and verifies the authenticity of
+
+        the token remotely against the IAM.
+
+        '
+x-tagGroups:
+- name: Platform
+  tags:
+  - Platform API
+- name: Alarms
+  tags:
+  - Alarm API
+  - Alarm notification API
+  - Alarms
+- name: Applications
+  tags:
+  - Application API
+  - Applications
+  - Application versions
+  - Application binaries
+  - Bootstrap user
+  - Current application
+- name: Audits
+  tags:
+  - Audit API
+  - Audits
+- name: Device control
+  tags:
+  - Device control API
+  - Device control notification API
+  - Operations
+  - Bulk operations
+  - Device credentials
+  - New device requests
+  - Device control via SMS
+- name: Events
+  tags:
+  - Event API
+  - Event notification API
+  - Events
+  - Attachments
+- name: Feature toggles
+  tags:
+  - Feature toggles API
+- name: Identity
+  tags:
+  - Identity API
+  - External IDs
+- name: Inventory
+  tags:
+  - Inventory API
+  - Inventory notification API
+  - Managed objects
+  - Binaries
+  - Child operations
+  - Query language
+- name: Measurements
+  tags:
+  - Measurement API
+  - Measurement notification API
+  - Measurements
+  - Measurements specifics
+- name: Notifications 2.0
+  tags:
+  - About notifications 2.0
+  - Notification 2.0 API
+  - Subscriptions
+  - Tokens
+- name: Real-time notifications
+  tags:
+  - Real-time notification API
+- name: Retentions
+  tags:
+  - Retention rules
+- name: Tenants
+  tags:
+  - Tenant API
+  - Tenants
+  - Tenant applications
+  - Trusted certificates
+  - Device statistics
+  - Usage statistics
+  - Options
+  - Login options
+  - Login tokens
+  - System options
+- name: Users
+  tags:
+  - User API
+  - Current User
+  - Users
+  - Groups
+  - Roles
+  - Inventory Roles
+  - Device Permissions
+- name: Certificate
+  tags:
+  - Certificate authority
+  - Device enrollment

@@ -1,205 +1,1494 @@
 openapi: 3.2.0
 info:
-  title: Cumulocity Measurement Measurements API
-  version: 10.20.0
-  description: 'Ingest, query, and delete device measurements (telemetry data points) including temperature, voltage,
+  version: Latest
+  title: Cumulocity Measurements API
+  x-logo:
+    url: https://www.cumulocity.com/docs/images/logo-platform.svg
+    backgroundColor: '#F8F8F8'
+    altText: Cumulocity
+    href: https://www.cumulocity.com/api
+  description: '# REST implementation
 
-    location, and arbitrary custom fragments with units. Supports time-range queries, source/type filters,
 
-    series aggregations (hourly/daily), and bulk creation.'
+    This section describes the aspects common to all REST-based interfaces of Cumulocity. The interfaces are based on the Hypertext Transfer Protocol 1.1 using HTTPS. ## HTTP usage
+
+
+    ### Application management
+
+
+    Cumulocity uses a so-called "application key" to distinguish requests coming from devices and traffic from applications. If you write an application, pass the following header as part of all requests:
+
+
+    ```markup
+
+    X-Cumulocity-Application-Key:
+
+    ```
+
+
+    For example, if you registered your application in the Cumulocity Administration application with the key "myapp", your requests should contain the header:
+
+
+    ```markup
+
+    X-Cumulocity-Application-Key: myapp
+
+    ```
+
+
+    This makes your application subscribable and billable. If you implement a device, do not pass the key. > **ⓘ Info:** Make sure that you pass the key in **all** requests coming from an application. If you leave out the key,
+
+    > the request will be considered as a device request, and the corresponding device will be marked as "available". ### Limited HTTP clients
+
+
+    If you use an HTTP client that can only perform GET and POST methods in HTTP, you can emulate the other methods through an additional "X-HTTP-METHOD" header. Simply issue a POST request and add the header, specifying the actual REST method to be executed. For example, to emulate the "PUT" (modify) method, you can use:
+
+
+    ```http
+
+    POST ... X-HTTP-METHOD: PUT
+
+    ```
+
+
+    ### Processing mode
+
+
+    Every update request (PUT, POST, DELETE) executes with a so-called *processing mode*. The processing modes are as follows:
+
+
+    |Processing mode|Description|
+
+    |---|---|
+
+    |PERSISTENT (default)|Stores data in the Cumulocity database and sends data to the Streaming Analytics engine. Afterwards, Cumulocity returns the result of the request. This is the default mode.|
+
+    |TRANSIENT|Sends data to the Streaming Analytics engine and immediately returns the results asynchronously but does not store data in Cumulocity’s database. This mode saves storage and processing costs and is useful for example when tracking devices in real time without requiring data to be stored.|
+
+    |QUIESCENT|Behaves similar to the persistent mode with the exception that no real-time notifications will be sent.|
+
+    |CEP|Behaves like the transient mode with the exception that no real-time notifications are sent.|
+
+
+    To explicitly control the processing mode of an update request, you can use the "X-Cumulocity-Processing-Mode" header with a value of either "PERSISTENT", "TRANSIENT", "QUIESCENT" or "CEP":
+
+
+    ```markup
+
+    X-Cumulocity-Processing-Mode: PERSISTENT
+
+    ```
+
+
+    > **ⓘ Info:** Events are always delivered to CEP/Apama for all processing modes. This is independent from real-time notifications. ### Authorization
+
+
+    All requests issued to Cumulocity are subject to authorization. To determine the required permissions, see the "Required role" entries for the individual requests. To learn more about the different permissions and the concept of ownership in Cumulocity, see Getting started > Technical concepts > Security aspects > Access control > Managing roles and assigning permissions in the Cumulocity user documentation. > **⚠️ Important:** In the Cumulocity API, each granular permission is identified by a unique “permission” string, which is prefixed with ROLE_ (for example, ROLE_ALARM_READ, ROLE_INVENTORY_ADMIN). Therefore, permissions are frequently referred to as “roles” throughout the API as well as in the configuration files. For example, the microservice manifest includes a requiredRoles field, which actually expects a permission string. See also the Glossary of the Cumulocity user documentation for the usage of the terms “permission” and “role” in the Cumulocity context. ### Media types
+
+
+    Each type of data is associated with an own media type. The general format of media types is:
+
+
+    ```markup
+
+    application/vnd.com.nsn.cumulocity.+json;ver=;charset=UTF-8
+
+    ```
+
+
+    Each media type contains a parameter `ver` indicating the version of the type.'
 servers:
-- url: https://{tenant}.cumulocity.com
-  variables:
-    tenant:
-      default: example
+- description: Cumulocity tenant
+  url: https://<TENANT_DOMAIN>
 security:
-- basicAuth: []
-- bearerAuth: []
+- Basic: []
+- OAI-Secure: []
+- SSO: []
+- JWT-IAM: []
 tags:
 - name: Measurements
+  description: 'Measurements are produced by reading sensor values. In some cases, this data is read in static intervals and sent to the platform (for example, temperature sensors or electrical meters). In other cases, the data is read on demand or at irregular intervals (for example, health devices such as weight scales). Regardless what kind of protocol the device supports, the agent is responsible for converting it into a "push" protocol by uploading data to Cumulocity.
+
+
+    > **ⓘ Info:** The Accept header should be provided in all POST requests, otherwise an empty response body will be returned.'
 paths:
   /measurement/measurements:
-    get:
-      tags:
-      - Measurements
-      summary: List Measurements
-      operationId: listMeasurements
-      parameters:
-      - name: source
-        in: query
-        schema:
-          type: string
-      - name: type
-        in: query
-        schema:
-          type: string
-      - name: valueFragmentType
-        in: query
-        schema:
-          type: string
-      - name: valueFragmentSeries
-        in: query
-        schema:
-          type: string
-      - name: dateFrom
-        in: query
-        schema:
-          type: string
-          format: date-time
-      - name: dateTo
-        in: query
-        schema:
-          type: string
-          format: date-time
-      - name: revert
-        in: query
-        schema:
-          type: boolean
-      - $ref: '#/components/parameters/PageSize'
-      - $ref: '#/components/parameters/CurrentPage'
-      responses:
-        '200':
-          description: A collection of measurements.
-          content:
-            application/vnd.com.nsn.cumulocity.measurementCollection+json:
-              schema:
-                $ref: '#/components/schemas/MeasurementCollection'
     post:
+      operationId: postMeasurementCollectionResource
+      x-codegen-resource-name: createMeasurement
+      parameters:
+      - $ref: '#/components/parameters/acceptHeader'
+      - $ref: '#/components/parameters/processingModeHeader'
       tags:
       - Measurements
-      summary: Create a Measurement
-      operationId: createMeasurement
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Create a measurement
+      description: 'A measurement must be associated with a source (managed object) identified by ID, and must specify the type of measurement and the time when it was measured by the device (for example, a thermometer). Each measurement fragment is an object (for example, `c8y_Steam`) containing the actual measurements as properties. The property name represents the name of the measurement (for example, `Temperature`) and it contains two properties:
+
+
+        * `value` - The value of the individual measurement. The maximum precision for floating point numbers is 64-bit IEEE 754. For integers it''s a 64-bit two''s complement integer. The `value` is mandatory for a fragment. * `unit` - The unit of the measurements. This field is optional in the request body; however, if it is provided, it must be a non-empty string and must not be null. Review the System of units section for details about the conversions of units. Also review Getting started > Technical concepts > Cumulocity''s domain model > Inventory > Fragments > Naming conventions of fragments in the Cumulocity user documentation. The example below uses `c8y_SteamFragment` in the request body to illustrate recording two measurements called `Temperature` and `Humidity`. ```json
+
+        {
+
+        "source": { "id": "681200" },
+
+        "time": "2020-03-19T12:03:27.845Z",
+
+        "type": "temperatureMeasurement",
+
+        "c8y_SteamFragment": {
+
+        "Temperature": { "value": 42.7, "unit": "C" },
+
+        "Humidity": { "value": 13.37, "unit": "%RH" }
+
+        }
+
+        }
+
+        ```
+
+
+        > **⚠️ Important:** Property names used for fragment and series must not contain whitespaces nor the special characters `. , * [ ] ( ) @ $`. This is required to ensure a correct processing. **Legacy compatibility:**
+
+
+        For legacy compatibility reasons, a measurement can contain custom fragments. The platform''s behavior will vary based on whether the series in the custom fragment are valid or not:
+
+
+        1. ***Mixed Series Fragments:***
+
+
+        When creating a measurement with a fragment containing both valid and invalid series:
+
+        - Valid series (those with numeric value fields) are processed and persisted. - Invalid series (e.g., Booleans, Lists, Strings, Structs) are silently ignored and are not included in the resulting measurement. - The measurement is created successfully (HTTP 201 Created), but the invalid series are removed. **Example:**
+
+        ```json
+
+        {
+
+        "source": { "id": "681200" },
+
+        "time": "2020-03-19T12:03:27.845Z",
+
+        "type": "temperatureMeasurement",
+
+        "c8y_SteamFragment": {
+
+        "validSeries_DOUBLE": { "value": 3.141592653589793, "unit": "RAD" },
+
+        "validSeries_INTEGER": { "value": 42, "unit": "C" },
+
+        "ignoredField_BOOLEAN": { "value": false, "unit": "t/f" },
+
+        "ignoredField_LIST": { "value": [42, 43, 44] },
+
+        "ignoredField_STRUCT": { "value": { "a": 1, "b": 2 }, "unit": "C" },
+
+        "ignoredField0": 42,
+
+        "ignoredField1": { "value": { "a": 1, "b": 2 }, "unit": "C" },
+
+        "ignoredField2": { "unit": "C" },
+
+        "ignoredField3": { "val": 42 },
+
+        "ignoredField4": { "subseries": { "value": 42 } }
+
+        }
+
+        }
+
+        ```
+
+
+        **Response:**
+
+        ```json
+
+        {
+
+        "self": "https://example.cumulocity.com/measurement/measurements/124",
+
+        "id": "124",
+
+        "type": "temperatureMeasurement",
+
+        "source": { "id": "681200" },
+
+        "time": "2020-03-19T12:03:27.845Z",
+
+        "c8y_SteamFragment": {
+
+        "validSeries_DOUBLE": { "value": 3.141592653589793, "unit": "RAD" },
+
+        "validSeries_INTEGER": { "value": 42, "unit": "C" }
+
+        }
+
+        }
+
+        ```
+
+
+        2. ***Fragments with Only Invalid Series:***
+
+
+        If a measurement fragment contains only invalid series, the entire fragment is preserved as a plain object, and no fields are removed or validated further. This means that such fragments are treated as normal document properties rather than as series fragments. As a result:
+
+        - These objects are not included in series fragment aggregation. - They are not treated as part of the measurement''s series data but remain accessible as regular property within the measurement document.'
       requestBody:
         required: true
         content:
           application/vnd.com.nsn.cumulocity.measurement+json:
             schema:
-              $ref: '#/components/schemas/Measurement'
-          application/vnd.com.nsn.cumulocity.measurementCollection+json:
+              $ref: '#/components/schemas/measurement'
+            example:
+              source:
+                id: '251982'
+              time: '2020-03-19T12:03:27.845Z'
+              type: c8y_TemperatureMeasurement
+              c8y_Steam:
+                Temperature:
+                  unit: C
+                  value: 100
+          application/vnd.com.nsn.cumulocity.measurementcollection+json:
             schema:
               $ref: '#/components/schemas/MeasurementCollection'
+            example:
+              measurements:
+              - source:
+                  id: '251982'
+                time: '2020-03-19T12:03:27.845Z'
+                type: c8y_TemperatureMeasurement
+                c8y_Steam:
+                  Temperature:
+                    unit: C
+                    value: 100
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request POST "https://<TENANT_DOMAIN>/measurement/measurements" \
+
+          --header "Authorization: Basic <AUTHORIZATION>" \
+
+          --header "Accept: application/json" \
+
+          --header "Content-Type: application/json" \
+
+          --data-raw ''<Payload>''
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/measurement/measurements");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.POST);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+          request.AddHeader("Content-Type", "application/json");
+
+          request.AddHeader("Accept", "application/json");
+
+          request.AddParameter("application/json", "<Payload>",  ParameterType.RequestBody);
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.post(\"https://<TENANT_DOMAIN>/measurement/measurements\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .header(\"Content-Type\", \"application/json\")\n    .header(\"Accept\", \"application/json\")\n    .body(\"<Payload>\")\n    .asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"POST\", \"https://<TENANT_DOMAIN>/measurement/measurements\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\",\n        \"Accept\": \"application/json\",\n        \"Content-Type\": \"application/json\"\n    })\n    .send(JSON.stringify( <Payload> ))\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\nimport json\n\nurl = \"https://<TENANT_DOMAIN>/measurement/measurements\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\",\n  \"Accept\": \"application/json\",\n  \"Content-Type\": \"application/json\"\n}\nresponse = requests.request(\"POST\", url, headers=headers, data = json.dumps(<Payload>))\nprint(response.text.encode(\"utf8\"))\n"
       responses:
         '201':
-          description: Measurement created.
+          description: A measurement was created.
           content:
             application/vnd.com.nsn.cumulocity.measurement+json:
               schema:
-                $ref: '#/components/schemas/Measurement'
-    delete:
+                $ref: '#/components/schemas/measurement'
+            application/vnd.com.nsn.cumulocity.measurementcollection+json:
+              schema:
+                $ref: '#/components/schemas/MeasurementCollection'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+        '422':
+          $ref: '#/components/responses/invalidBulkPayload'
+    get:
+      operationId: getMeasurementCollectionResource
+      x-codegen-resource-name: getMeasurements
+      parameters:
+      - $ref: '#/components/parameters/queryParam_currentPage'
+      - $ref: '#/components/parameters/queryParam_measurement_dateFrom'
+      - $ref: '#/components/parameters/queryParam_measurement_dateTo'
+      - $ref: '#/components/parameters/queryParam_pageSize'
+      - $ref: '#/components/parameters/queryParam_measurement_revert'
+      - $ref: '#/components/parameters/queryParam_measurement_source'
+      - $ref: '#/components/parameters/queryParam_measurement_type'
+      - $ref: '#/components/parameters/queryParam_measurement_valueFragmentSeries'
+      - $ref: '#/components/parameters/queryParam_measurement_valueFragmentType'
+      - $ref: '#/components/parameters/queryParam_withTotalElements'
+      - $ref: '#/components/parameters/queryParam_withTotalPages'
       tags:
       - Measurements
-      summary: Delete Measurements by Filter
-      operationId: deleteMeasurements
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Retrieve all measurements
+      description: 'Retrieve all measurements on your tenant, or a specific subset based on queries.
+
+
+        In case of executing range queries) between an upper and lower boundary, for example, querying using `dateFrom`–`dateTo`, the oldest registered measurements are returned first. It is possible to change the order using the query parameter `revert=true`.
+
+
+        For large measurement collections, querying older records without filters can be slow as the server needs to scan from the beginning of the input results set before beginning to return the results. For cases when older measurements should be retrieved, it is recommended to narrow the scope by using range queries based on the time stamp reported by a device. The scope of query can also be reduced significantly when a source device is provided.
+
+
+        Review Measurements Specifics for details about data streaming and response formats.
+
+
+        Required roles
+
+
+        ROLE_MEASUREMENT_READ'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request GET "https://<TENANT_DOMAIN>/measurement/measurements" \
+
+          --header "Authorization: Basic <AUTHORIZATION>"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/measurement/measurements");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.GET);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.get(\"https://<TENANT_DOMAIN>/measurement/measurements\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\").asString();\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"GET\", \"https://<TENANT_DOMAIN>/measurement/measurements\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\"\n    })\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://<TENANT_DOMAIN>/measurement/measurements\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\"\n}\nresponse = requests.request(\"GET\", url, headers=headers)\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '200':
+          $ref: '#/components/responses/measurementCollectionFound'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+    delete:
+      operationId: deleteMeasurementCollectionResource
+      x-codegen-resource-name: deleteMeasurements
       parameters:
-      - name: source
-        in: query
-        schema:
-          type: string
-      - name: type
-        in: query
-        schema:
-          type: string
-      - name: dateFrom
-        in: query
-        schema:
-          type: string
-          format: date-time
-      - name: dateTo
-        in: query
-        schema:
-          type: string
-          format: date-time
+      - $ref: '#/components/parameters/processingModeHeader'
+      - $ref: '#/components/parameters/queryParam_measurement_dateFrom'
+      - $ref: '#/components/parameters/queryParam_measurement_dateTo'
+      - $ref: '#/components/parameters/queryParam_fragmentType'
+      - $ref: '#/components/parameters/queryParam_measurement_source'
+      - $ref: '#/components/parameters/queryParam_measurement_type'
+      tags:
+      - Measurements
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Remove measurement collections
+      description: 'Remove measurement collections specified by query parameters.
+
+
+        DELETE requests are not synchronous. The response could be returned before the delete request has been completed. This may happen especially when there are a lot of measurements to be deleted.
+
+
+        > **⚠️ Important:** DELETE requires at least one of the following parameters: `source`, `dateFrom`, `dateTo`.
+
+
+        In case of enhanced time series measurements, both `dateFrom` and `dateTo` parameters must be truncated to full hours (for example, 2022-08-19T14:00:00.000Z), otherwise an error will be returned.
+
+        The `fragmentType` parameter allows to delete measurements only by a measurement fragment when enhanced time series measurements are used.
+
+        It''s not possible to delete by a custom (non-measurement) fragment.
+
+
+        Example for a valid measurement value fragment:
+
+        ```
+
+        "c8y_TemperatureMeasurement": {
+
+        "T": {
+
+        "value": 28,
+
+        "unit": "C"
+
+        }
+
+        }
+
+        ```
+
+        In the example above `c8y_TemperatureMeasurement` is called fragment and `T` is called series.
+
+
+        Example for a non-measurement fragment:
+
+        ```
+
+        "c8y_TemperatureMeasurement": 28
+
+        ```
+
+        Enhanced Time series measurements will not allow to delete by fragment specific like above.
+
+
+        Required roles
+
+
+        ROLE_MEASUREMENT_ADMIN'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request DELETE "https://<TENANT_DOMAIN>/measurement/measurements?source=<managedObjectId>" \
+
+          --header "Authorization: Basic <AUTHORIZATION>"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/measurement/measurements?source=<managedObjectId>");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.DELETE);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.delete(\"https://<TENANT_DOMAIN>/measurement/measurements?source=<managedObjectId>\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\").asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"DELETE\", \"https://<TENANT_DOMAIN>/measurement/measurements?source=<managedObjectId>\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\"\n    })\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://<TENANT_DOMAIN>/measurement/measurements?source=<managedObjectId>\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\"\n}\nresponse = requests.request(\"DELETE\", url, headers=headers)\nprint(response.text.encode(\"utf8\"))\n"
       responses:
         '204':
-          description: Measurements deleted.
+          description: A collection of measurements was removed.
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+        '422':
+          $ref: '#/components/responses/invalidPayload'
   /measurement/measurements/{id}:
     parameters:
-    - name: id
-      in: path
+    - $ref: '#/components/parameters/measurementId'
+    get:
+      operationId: getMeasurementResource
+      x-codegen-resource-name: getMeasurement
+      tags:
+      - Measurements
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Retrieve a specific measurement
+      description: 'Retrieve a specific measurement by a given ID.
+
+        Note that you cannot retrieve time series measurements by ID.
+
+        Instead you can search for such measurements via query parameters.
+
+        No behavior changes for tenants which do not have time series enabled.
+
+
+        Required roles
+
+
+        ROLE_MEASUREMENT_READ OR owner of the source OR MEASUREMENT_READ permission on the source'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request GET "https://<TENANT_DOMAIN>/measurement/measurements/{id}" \
+
+          --header "Authorization: Basic <AUTHORIZATION>"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/measurement/measurements/{id}");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.GET);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.get(\"https://<TENANT_DOMAIN>/measurement/measurements/{id}\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\").asString();\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"GET\", \"https://<TENANT_DOMAIN>/measurement/measurements/{id}\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\"\n    })\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://<TENANT_DOMAIN>/measurement/measurements/{id}\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\"\n}\nresponse = requests.request(\"GET\", url, headers=headers)\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '200':
+          $ref: '#/components/responses/measurementFound'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+        '404':
+          $ref: '#/components/responses/measurementNotFound'
+    delete:
+      operationId: deleteMeasurementResource
+      x-codegen-resource-name: deleteMeasurement
+      parameters:
+      - $ref: '#/components/parameters/processingModeHeader'
+      tags:
+      - Measurements
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Remove a specific measurement
+      description: 'Remove a specific measurement by a given ID.
+
+        For time series measurements, it is recommended to delete by query or use the retention rules to remove expired
+
+        data from the Operational Store.
+
+
+        Required roles
+
+
+        ROLE_MEASUREMENT_ADMIN OR owner of the source OR MEASUREMENT_ADMIN permission on the source'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request DELETE "https://<TENANT_DOMAIN>/measurement/measurements/{id}" \
+
+          --header "Authorization: Basic <AUTHORIZATION>"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/measurement/measurements/{id}");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.DELETE);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.delete(\"https://<TENANT_DOMAIN>/measurement/measurements/{id}\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\").asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"DELETE\", \"https://<TENANT_DOMAIN>/measurement/measurements/{id}\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\"\n    })\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://<TENANT_DOMAIN>/measurement/measurements/{id}\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\"\n}\nresponse = requests.request(\"DELETE\", url, headers=headers)\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '204':
+          description: A measurement was removed.
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+        '404':
+          $ref: '#/components/responses/measurementNotFound'
+  /measurement/measurements/series:
+    parameters:
+    - $ref: '#/components/parameters/queryParam_measurement_aggregationFunction'
+    - $ref: '#/components/parameters/queryParam_measurement_aggregationInterval'
+    - $ref: '#/components/parameters/queryParam_measurement_aggregationType'
+    - $ref: '#/components/parameters/queryParam_measurement_dateFromRequired'
+    - $ref: '#/components/parameters/queryParam_measurement_dateToRequired'
+    - $ref: '#/components/parameters/queryParam_measurement_revert'
+    - $ref: '#/components/parameters/queryParam_measurement_series'
+    - $ref: '#/components/parameters/queryParam_measurement_sourceRequired'
+    get:
+      operationId: getMeasurementSeriesResource
+      x-codegen-resource-name: getMeasurementSeries
+      tags:
+      - Measurements
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Retrieve a list of series and their values
+      description: 'Retrieve a list of series (all or only those matching the specified names) and their values within a given period of a specific managed object (source).
+
+
+        A series is any fragment in measurement that contains a `value` property.
+
+        When querying a series, you can retrieve aggregated data by using the aggregation parameters.
+
+        If no aggregation is specified, the response contains a maximum of 5,000 values.
+
+
+        **Aggregation Options**
+
+
+        Aggregation is configured using the `aggregationInterval` parameter, which defines a custom time interval for aggregation.
+
+
+        **Custom Time Intervals**
+
+
+        The `aggregationInterval` value must consist of a positive integer from 1–999 range followed by a supported time unit:
+
+
+        * `s` – seconds
+
+        * `m` – minutes
+
+        * `h` – hours
+
+        * `d` – days
+
+        * `w` – weeks
+
+        * `M` – months
+
+        * `q` – quarters
+
+        * `y` – years
+
+
+        ***Examples:*** `300s`, `25m`, `12h`, `7d`, `4w`, `3M`, `2q`, `1y`
+
+
+        **Aggregation Functions**
+
+
+        The `aggregationFunction` parameter specifies the functions calculated for each aggregation interval. Supported values:
+
+
+        * `min`
+
+        * `max`
+
+        * `avg`
+
+        * `sum`
+
+        * `count`
+
+        * `stdDevPop`
+
+        * `stdDevSamp`
+
+
+        If not specified, the `min` and `max` functions are calculated by default.
+
+
+        To request multiple functions, repeat the parameter:
+
+
+        ```markup
+
+        aggregationFunction=min&aggregationFunction=max&aggregationFunction=avg
+
+        ```
+
+
+        The `aggregationFunction` parameter is valid only when aggregation is defined using `aggregationInterval`. Otherwise, the request returns a 400 Bad Request error.
+
+
+        >**ⓘ Info:** Applies only to timeseries persistence. For legacy persistence, only min and max are always calculated and `aggregationFunction` parameter is ignored.
+
+
+        > **⚠️ Important:** For correct aggregation, devices must use a consistent time zone when sending timestamps.
+
+
+        Required roles
+
+
+        ROLE_MEASUREMENT_READ OR owner of the source OR MEASUREMENT_READ permission on the source'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request GET "https://<TENANT_DOMAIN>/measurement/measurements/series?source=<sourceID>&dateFrom=<startDate>&dateTo=<endDate>" \
+
+          --header "Authorization: Basic <AUTHORIZATION>"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/measurement/measurements/series?source=<sourceID>&dateFrom=<startDate>&dateTo=<endDate>");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.GET);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.get(\"https://<TENANT_DOMAIN>/measurement/measurements/series?source=<sourceID>&dateFrom=<startDate>&dateTo=<endDate>\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\").asString();\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"GET\", \"https://<TENANT_DOMAIN>/measurement/measurements/series?source=<sourceID>&dateFrom=<startDate>&dateTo=<endDate>\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\"\n    })\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://<TENANT_DOMAIN>/measurement/measurements/series?source=<sourceID>&dateFrom=<startDate>&dateTo=<endDate>\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\"\n}\nresponse = requests.request(\"GET\", url, headers=headers)\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '200':
+          description: The request has succeeded and the series are sent in the response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeasurementSeries'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/operationNotAuthorized'
+components:
+  parameters:
+    processingModeHeader:
+      name: X-Cumulocity-Processing-Mode
+      in: header
+      description: Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+      required: false
+      schema:
+        type: string
+        default: PERSISTENT
+        enum:
+        - PERSISTENT
+        - TRANSIENT
+        - QUIESCENT
+        - CEP
+        example: PERSISTENT
+    queryParam_measurement_revert:
+      name: revert
+      in: query
+      description: "If you are using a range query (that is, at least one of the `dateFrom` or `dateTo` parameters is included in the request), then setting `revert=false` will sort the \nresults by the oldest measurements first and `revert=true` will sort the results by the newest measurements first. By default, the results are sorted by the newest \nmeasurements first for time series and by the oldest first for legacy measurements.\n"
+      schema:
+        type: boolean
+        default: true for time series and false for legacy measurements
+        example: true
+    queryParam_measurement_series:
+      name: series
+      in: query
+      description: 'The specific series to search for.
+
+        >**&#9432; Info:** If you want to query multiple series at once, you must specify the parameter multiple times.
+
+        '
+      schema:
+        type: array
+        items:
+          type: string
+          minLength: 1
+        example: c8y_Speed.speedX&series=c8y_Speed.speedY
+      style: form
+      explode: true
+    queryParam_measurement_aggregationInterval:
+      name: aggregationInterval
+      in: query
+      description: 'Fetch results are aggregated using a time interval specified by an integer followed by a unit.
+
+        Available units of `s`econd, `m`inute, `h`our, `d`ay, `w`eek, `M`onth, `q`uarter and `y`ear are specified using their first letter.
+
+        Provided integer value must be positive with maximum three digits and without leading zeros.
+
+        >**&#9432; Info:** Full range of values for `aggregationInterval` parameter is only available when time series persistence is enabled. For legacy persistence the implementation will always fall back to `1d`, `1h` or `1m` based on the closest unit used.
+
+        '
+      schema:
+        type: string
+        minLength: 2
+        maxLength: 4
+        example:
+        - 300s
+        - 25m
+        - 12h
+        - 7d
+        - 4w
+        - 6M
+        - 3q
+        - 5y
+    queryParam_withTotalElements:
+      name: withTotalElements
+      in: query
+      description: 'When set to `true`, the returned result will contain in the statistics object the total number of elements. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
+
+        > **&#9432; Info:** To improve performance, the `totalElements` statistics are cached for 10 seconds.
+
+        '
+      schema:
+        type: boolean
+        default: false
+        example: true
+    queryParam_measurement_aggregationType:
+      name: aggregationType
+      in: query
+      description: 'Fetch aggregated results as specified.
+
+        >**&#9432; Info:** When time series persistence is enabled, then this parameter is superseded by `aggregationInterval` and will be ignored if that parameter is specified. `aggregationType` should only be used for legacy persistence.
+
+        '
+      schema:
+        type: string
+        enum:
+        - DAILY
+        - HOURLY
+        - MINUTELY
+        example: MINUTELY
+    queryParam_measurement_sourceRequired:
+      name: source
+      in: query
+      description: The managed object ID to which the measurement is associated.
       required: true
       schema:
         type: string
-    get:
-      tags:
-      - Measurements
-      summary: Retrieve a Measurement
-      operationId: getMeasurement
-      responses:
-        '200':
-          description: A single measurement.
-          content:
-            application/vnd.com.nsn.cumulocity.measurement+json:
-              schema:
-                $ref: '#/components/schemas/Measurement'
-    delete:
-      tags:
-      - Measurements
-      summary: Delete a Measurement
-      operationId: deleteMeasurement
-      responses:
-        '204':
-          description: Measurement deleted.
-components:
-  schemas:
-    Measurement:
-      type: object
-      required:
-      - time
-      - type
-      - source
-      properties:
-        id:
+        minLength: 1
+        example: '251994'
+    queryParam_measurement_dateFromRequired:
+      name: dateFrom
+      in: query
+      description: Start date or date and time of the measurement.
+      required: true
+      schema:
+        type: string
+        format: date-time
+        minLength: 10
+        example: '2020-03-01'
+    queryParam_measurement_dateFrom:
+      name: dateFrom
+      in: query
+      description: Start date or date and time of the measurement.
+      schema:
+        type: string
+        format: date-time
+        minLength: 10
+        example: '2020-03-01'
+    queryParam_measurement_valueFragmentType:
+      name: valueFragmentType
+      in: query
+      description: A characteristic which identifies the measurement.
+      schema:
+        type: string
+        minLength: 1
+        example: c8y_Steam
+    queryParam_measurement_dateToRequired:
+      name: dateTo
+      in: query
+      description: End date or date and time of the measurement.
+      required: true
+      schema:
+        type: string
+        format: date-time
+        minLength: 10
+        example: '2020-03-30'
+    queryParam_withTotalPages:
+      name: withTotalPages
+      in: query
+      description: 'When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
+
+        > **&#9432; Info:** To improve performance, the `totalPages` statistics are cached for 10 seconds.
+
+        '
+      schema:
+        type: boolean
+        default: false
+        example: true
+    queryParam_currentPage:
+      name: currentPage
+      in: query
+      description: The current page of the paginated results.
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+        example: 3
+    measurementId:
+      name: id
+      in: path
+      description: Unique identifier of the measurement.
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        example: '102700509'
+    queryParam_measurement_aggregationFunction:
+      name: aggregationFunction
+      in: query
+      description: 'Selects aggregation functions that are calculated for each selected aggregation interval.
+
+        Providing this parameter requires also providing the `aggregationInterval` parameter.
+
+        By default `min` and `max` functions are calculated.
+
+        >**&#9432; Info:** This parameter is only available when time series persistence is enabled. For legacy persistence only `min` and `max` are calculated. If you want to calculate multiple functions at once, you must specify the parameter multiple times.
+
+        '
+      schema:
+        type: array
+        items:
           type: string
-          readOnly: true
-        self:
-          type: string
-          format: uri
-          readOnly: true
-        time:
-          type: string
-          format: date-time
-        type:
-          type: string
-        source:
-          type: object
-          properties:
-            id:
-              type: string
-            self:
-              type: string
-              format: uri
-      additionalProperties: true
-    MeasurementCollection:
-      type: object
-      properties:
-        self:
-          type: string
-          format: uri
-        measurements:
-          type: array
-          items:
-            $ref: '#/components/schemas/Measurement'
-  parameters:
-    PageSize:
+        enum:
+        - min
+        - max
+        - avg
+        - sum
+        - count
+        - stdDevPop
+        - stdDevSamp
+        example: min&aggregationFunction=max&aggregationFunction=count
+    queryParam_measurement_type:
+      name: type
+      in: query
+      description: The type of measurement to search for.
+      schema:
+        type: string
+        minLength: 1
+        example: c8y_Water
+    queryParam_measurement_source:
+      name: source
+      in: query
+      description: The managed object ID to which the measurement is associated.
+      schema:
+        type: string
+        minLength: 1
+        example: '251994'
+    queryParam_fragmentType:
+      name: fragmentType
+      in: query
+      description: A characteristic which identifies a managed object or event, for example, geolocation, electricity sensor, relay state.
+      schema:
+        type: string
+        minLength: 1
+        example: c8y_IsDevice
+    queryParam_measurement_dateTo:
+      name: dateTo
+      in: query
+      description: End date or date and time of the measurement.
+      schema:
+        type: string
+        format: date-time
+        minLength: 10
+        example: '2020-03-30'
+    queryParam_measurement_valueFragmentSeries:
+      name: valueFragmentSeries
+      in: query
+      description: The specific series to search for.
+      schema:
+        type: string
+        minLength: 1
+        example: Temperature
+    acceptHeader:
+      name: Accept
+      in: header
+      description: Advertises which content types, expressed as MIME types, the client is able to understand.
+      required: false
+      schema:
+        type: string
+        minLength: 1
+        example: application/json
+    queryParam_pageSize:
       name: pageSize
       in: query
+      description: Indicates how many entries of the collection shall be returned. The upper limit for one page is 2,000 objects.
       schema:
         type: integer
         minimum: 1
         maximum: 2000
         default: 5
-    CurrentPage:
-      name: currentPage
-      in: query
-      schema:
-        type: integer
-        minimum: 1
-        default: 1
+        example: 10
+  schemas:
+    desc_self:
+      title: SelfURL
+      description: A URL linking to this resource.
+      type: string
+      format: uri
+      readOnly: true
+    desc_nextPage:
+      title: NextPageURL
+      description: A URI reference [[RFC3986](https://tools.ietf.org/html/rfc3986)] to a potential next page of managed objects.
+      type: string
+      readOnly: true
+    MeasurementSeries:
+      type: object
+      properties:
+        values:
+          description: Each property contained here is a date taken from the measurement and it contains an array of objects specifying `min` and `max` pair of values. Each pair corresponds to a single series object in the `series` array. If there is no aggregation used, `min` is equal to `max` in every pair.
+          additionalProperties:
+            type: array
+            items:
+              $ref: '#/components/schemas/MeasurementSeriesValue'
+          example:
+            '2020-12-04T17:33:01.538+01:00':
+            - min: 13.37
+              max: 13.37
+        series:
+          description: An array containing the type of series and units.
+          type: array
+          items:
+            $ref: '#/components/schemas/measurementFragmentSeries'
+          example:
+          - unit: m/s2
+            name: acceleration
+            type: c8y_AccelerationMeasurement
+        truncated:
+          description: If there were more than 5000 values, the final result was truncated.
+          type: boolean
+          example: false
+    error:
+      type: object
+      properties:
+        error:
+          description: The type of error returned.
+          type: string
+        message:
+          description: A human-readable message providing more details about the error.
+          type: string
+        info:
+          description: A URI reference [[RFC3986](https://tools.ietf.org/html/rfc3986)] that identifies the error code reported.
+          type: string
+    MeasurementCollection:
+      type: object
+      required:
+      - measurements
+      properties:
+        measurements:
+          description: An array containing the measurements of the request.
+          type: array
+          items:
+            $ref: '#/components/schemas/measurement'
+        next:
+          $ref: '#/components/schemas/desc_nextPage'
+        prev:
+          $ref: '#/components/schemas/desc_prevPage'
+        self:
+          $ref: '#/components/schemas/desc_self'
+        statistics:
+          allOf:
+          - readOnly: true
+          - $ref: '#/components/schemas/pageStatistics'
+      example:
+        prev: https://<TENANT_DOMAIN>/measurement/measurements?pageSize=1&currentPage=1
+        self: https://<TENANT_DOMAIN>/measurement/measurements?pageSize=1&currentPage=2
+        next: https://<TENANT_DOMAIN>/measurement/measurements?pageSize=1&currentPage=3
+        measurements:
+        - id: '20200301'
+          self: https://<TENANT_DOMAIN>/measurement/measurements/20200301
+          source:
+            id: '251982'
+            self: https://<TENANT_DOMAIN>/inventory/managedObjects/251982
+          time: '2020-03-19T12:03:27.845Z'
+          type: c8y_TemperatureMeasurement
+          c8y_Steam:
+            Temperature:
+              unit: C
+              value: 100
+        statistics:
+          totalPages: 10
+          pageSize: 1
+          currentPage: 2
+    pageStatistics:
+      description: Information about paging statistics.
+      type: object
+      readOnly: true
+      properties:
+        currentPage:
+          description: The current page of the paginated results.
+          type: integer
+          minimum: 1
+          example: 2
+        pageSize:
+          description: Indicates the number of objects that the collection may contain per page. The upper limit for one page is 2,000 objects.
+          type: integer
+          minimum: 1
+          maximum: 2000
+          example: 5
+        totalElements:
+          description: The total number of results (elements).
+          type: integer
+          minimum: 0
+          example: 12
+        totalPages:
+          description: 'The total number of paginated results (pages).
+
+
+            > **&#9432; Info:** This property is returned by default except when an operation retrieves all records where values are between an upper and lower boundary, for example, querying ranges using `dateFrom`–`dateTo`. In such cases, the query parameter `withTotalPages=true` should be used to include the total number of pages (at the expense of slightly slower performance).
+
+            '
+          type: integer
+          minimum: 0
+          example: 3
+    measurementFragmentSeries:
+      type: object
+      properties:
+        unit:
+          description: The unit of the measurement.
+          type: string
+        name:
+          description: The name of the measurement.
+          type: string
+        type:
+          description: The type of measurement.
+          type: string
+    desc_objectId:
+      title: ObjectId
+      description: Unique identifier of the object.
+      type: string
+      minLength: 1
+    c8y_Steam:
+      description: A type of measurement fragment.
+      type: object
+      properties:
+        Temperature:
+          type: object
+          required:
+          - value
+          properties:
+            unit:
+              description: The unit of the measurement.
+              type: string
+              minLength: 1
+              example: C
+            value:
+              description: The value of the individual measurement.
+              type: number
+              example: 100
+    measurement:
+      type: object
+      required:
+      - source
+      - type
+      - time
+      properties:
+        id:
+          description: Unique identifier of the measurement.
+          type: string
+          readOnly: true
+        self:
+          $ref: '#/components/schemas/desc_self'
+        source:
+          description: The managed object to which the measurement is associated.
+          type: object
+          required:
+          - id
+          properties:
+            id:
+              $ref: '#/components/schemas/desc_objectId'
+            self:
+              $ref: '#/components/schemas/desc_self'
+        time:
+          description: The date and time when the measurement is created.
+          type: string
+          format: date-time
+        type:
+          description: Identifies the type of this measurement.
+          type: string
+        c8y_Steam:
+          $ref: '#/components/schemas/c8y_Steam'
+      additionalProperties:
+        description: 'It is possible to add an arbitrary number of additional properties as a list of key-value pairs, for example, `"property1": {}`, `"property2": "value"`. These properties are known as custom fragments and can be of any type, for example, object or string. Each custom fragment is identified by a unique name.
+
+
+          Review [Getting started > Technical concepts > Cumulocity''s domain model > Inventory > Fragments > Naming conventions of fragments](https://www.cumulocity.com/docs/concepts/domain-model/#naming-conventions-of-fragments) in the Cumulocity user documentation as there are characters that can not be used when naming custom fragments.
+
+          '
+        x-additionalPropertiesName: customFragments
+      example:
+        id: '20200301'
+        self: https://<TENANT_DOMAIN>/measurement/measurements/20200301
+        source:
+          id: '251982'
+          self: https://<TENANT_DOMAIN>/inventory/managedObjects/251982
+        time: '2020-03-19T12:03:27.845Z'
+        type: c8y_TemperatureMeasurement
+        c8y_Steam:
+          Temperature:
+            unit: C
+            value: 100
+    desc_prevPage:
+      title: PreviousPageURL
+      description: A URI reference [[RFC3986](https://tools.ietf.org/html/rfc3986)] to a potential previous page of managed objects.
+      type: string
+      readOnly: true
+    MeasurementSeriesValue:
+      type: object
+      properties:
+        min:
+          type: number
+        max:
+          type: number
+    bulkRequestError:
+      allOf:
+      - $ref: '#/components/schemas/error'
+      - type: object
+        properties:
+          bulkRequest:
+            description: 'Present when the error belongs to one element of the bulk request.
+
+              Absent when the error belongs to the whole request, for example, when the request has too many elements or none.
+
+              '
+            type: object
+            required:
+            - failedIndex
+            properties:
+              failedIndex:
+                description: 'The position of the element that the error belongs to, counted from 0 in the request.
+
+                  If several elements are invalid, the lowest position is reported.
+
+                  '
+                type: integer
+                minimum: 0
+                example: 17
+              fragmentType:
+                description: 'The batch marker fragment carried by the managed objects that the request created.
+
+                  Present only when part of the bulk create may have been created.
+
+                  Use it as the `fragmentType` query parameter to find the created managed objects.
+
+                  '
+                type: string
+                example: c8y_BatchId_7c8e1e0a-3b2f-4f6e-9a51-5d2c7e4b9f10
+  responses:
+    measurementFound:
+      description: The request has succeeded and the measurement is sent in the response.
+      content:
+        application/vnd.com.nsn.cumulocity.measurement+json:
+          schema:
+            $ref: '#/components/schemas/measurement'
+    invalidPayload:
+      description: Unprocessable Entity – invalid payload.
+    measurementCollectionFound:
+      description: The request has succeeded and all measurements are sent in the response.
+      content:
+        application/vnd.com.nsn.cumulocity.measurementcollection+json:
+          schema:
+            $ref: '#/components/schemas/MeasurementCollection'
+    measurementNotFound:
+      description: Measurement not found.
+      content:
+        application/vnd.com.nsn.cumulocity.error+json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            error: measurement/Not Found
+            message: Finding measurement from database failed
+            info: https://www.cumulocity.com/guides/reference-guide/#error_reporting
+    unauthorizedError:
+      description: Authentication information is missing or invalid.
+      content:
+        application/vnd.com.nsn.cumulocity.error+json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            error: security/Unauthorized
+            message: 'Invalid credentials! : Bad credentials'
+            info: https://www.cumulocity.com/guides/reference-guide/#error_reporting
+    operationNotAuthorized:
+      description: Not authorized to perform this operation.
+    invalidBulkPayload:
+      description: Unprocessable Entity – invalid payload.
+      content:
+        application/vnd.com.nsn.cumulocity.error+json:
+          schema:
+            $ref: '#/components/schemas/bulkRequestError'
+          example:
+            error: undefined/validationError
+            info: https://www.cumulocity.com/guides/reference-guide/#error_reporting
+            bulkRequest:
+              failedIndex: 2
   securitySchemes:
-    basicAuth:
+    Basic:
       type: http
       scheme: basic
-    bearerAuth:
+      description: 'The authorization header is formed as `Basic <Base64(<tenantID>/<c8yuser>:<password>)>`. For instance, if your tenantID, username and password are **t0071234**, **testuser** and **secret123** respectively, you can generate the Base64 string with the following command:
+
+
+        ```shell
+
+        $ echo -n t0071234/testuser:secret123 | base64
+
+        ```
+
+
+        and your authorization header would look like this:
+
+
+        ```
+
+        "Authorization": "Basic dDAwNzEyMzQvdGVzdHVzZXI6c2VjcmV0MTIz"
+
+        ```
+
+        '
+    OAI-Secure:
+      type: http
+      scheme: bearer
+      description: 'This is the recommended authorization method because it provides high security using authorization tokens to prove the identity of the user, and it is the default login mode on creating new tenants. This mode is an enhancement of the previous OAuth Internal authentication (available prior to 10.13.0).
+
+
+        For more details about OAI-Secure authentication, see [Platform administration > Authentication > Basic settings > Login settings](https://www.cumulocity.com/docs/authentication/basic-settings/#login-settings) in the Cumulocity user documentation.
+
+        '
+    SSO:
+      type: oauth2
+      description: "The login with SSO requires a correct configuration on the [Cumulocity side](https://www.cumulocity.com/docs/authentication/sso/). With the configuration, an additional button is available on the Login page. After clicking the button, the user is redirected to authenticate with the configured authorization server. On successful login, the user is redirected to Cumulocity.\n\nAuthentication details are exchanged using cookies. There are two parts to it, the first is the authentication cookie that is handled automatically by the Cumulocity platform. The second is the XSRF-TOKEN cookie. When a client receives the cookie, it should take the value and put it in the X-XSRF-TOKEN request header in all subsequent requests.\n\nThe flow of authenticating with authentication code grant is as follows:\n\n![Authentication flow](images/oauth-simple-flow.png)\n\nThe first request executed by the browser is:\n\n```http\nGET /tenant/loginOptions\nHost: https://<TENANT_DOMAIN>\nAccept: application/vnd.com.nsn.cumulocity.loginoptioncollection+json\n```\n\nResponse sample:\n\n```json\n{\n    \"loginOptions\": [\n        {\n            \"buttonName\": \"Login with oauth\",\n            \"grantType\": \"<AUTHORIZATION_CODE>\",\n            \"initRequest\": \"https://<TENANT_DOMAIN>/tenant/oauth?response_type=code&tenant_id=<TENANT_ID>\",\n            \"self\": \"https://<TENANT_DOMAIN>/tenant/loginOptions/oauth2\",\n            \"type\": \"oauth2\"\n        },\n        ...\n    ],\n    \"self\": \"http://<TENANT_DOMAIN>/tenant/loginOptions/\"\n}\n```\n\nThe browser must invoke the request provided in the initRequest parameter.\n\nThe initRequest initiates the redirect, in which the user is prompted for credentials. After successful login, the user is redirected back to the browser, where it must capture the code request parameter. Then the request to exchange the code for the token is as follows:\n\n```http\nPOST /tenant/oauth?grant_type=authorization_code&code=<CODE>\nHost: https://<TENANT_DOMAIN>\n```\n\nA successful response will have no body but the following response headers:\n\n```\nSet-Cookie: authorization=<TOKEN>;\nSet-Cookie: XSRF-TOKEN=<XSRF-TOKEN>;\n```\n\nThe authorization cookie is valid for two weeks.\n"
+      flows:
+        clientCredentials:
+          tokenUrl: /tenant/oauth?grant_type=authorization_code&code=<CODE>
+          scopes: {}
+    JWT-IAM:
       type: http
       scheme: bearer
       bearerFormat: JWT
+      description: 'This kind of authentication substitutes the JWT authentication with OAuth2 access tokens from your Identity and Access Management (IAM).
+
+        You can enable this in the [SSO configuration](https://www.cumulocity.com/docs/authentication/sso/).
+
+
+        The HTTP header must include:
+
+
+        ```
+
+        "Authorization": "Bearer <Access token>"
+
+        ```
+
+
+        When a request with a bearer token in the header is received, Cumulocity checks if the access token is from your IAM (that is, if authentication is enabled in your SSO configuration), and verifies the authenticity of
+
+        the token remotely against the IAM.
+
+        '
+x-tagGroups:
+- name: Platform
+  tags:
+  - Platform API
+- name: Alarms
+  tags:
+  - Alarm API
+  - Alarm notification API
+  - Alarms
+- name: Applications
+  tags:
+  - Application API
+  - Applications
+  - Application versions
+  - Application binaries
+  - Bootstrap user
+  - Current application
+- name: Audits
+  tags:
+  - Audit API
+  - Audits
+- name: Device control
+  tags:
+  - Device control API
+  - Device control notification API
+  - Operations
+  - Bulk operations
+  - Device credentials
+  - New device requests
+  - Device control via SMS
+- name: Events
+  tags:
+  - Event API
+  - Event notification API
+  - Events
+  - Attachments
+- name: Feature toggles
+  tags:
+  - Feature toggles API
+- name: Identity
+  tags:
+  - Identity API
+  - External IDs
+- name: Inventory
+  tags:
+  - Inventory API
+  - Inventory notification API
+  - Managed objects
+  - Binaries
+  - Child operations
+  - Query language
+- name: Measurements
+  tags:
+  - Measurement API
+  - Measurement notification API
+  - Measurements
+  - Measurements specifics
+- name: Notifications 2.0
+  tags:
+  - About notifications 2.0
+  - Notification 2.0 API
+  - Subscriptions
+  - Tokens
+- name: Real-time notifications
+  tags:
+  - Real-time notification API
+- name: Retentions
+  tags:
+  - Retention rules
+- name: Tenants
+  tags:
+  - Tenant API
+  - Tenants
+  - Tenant applications
+  - Trusted certificates
+  - Device statistics
+  - Usage statistics
+  - Options
+  - Login options
+  - Login tokens
+  - System options
+- name: Users
+  tags:
+  - User API
+  - Current User
+  - Users
+  - Groups
+  - Roles
+  - Inventory Roles
+  - Device Permissions
+- name: Certificate
+  tags:
+  - Certificate authority
+  - Device enrollment

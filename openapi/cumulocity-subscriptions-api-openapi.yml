@@ -1,170 +1,1046 @@
 openapi: 3.2.0
 info:
-  title: Cumulocity Notification 2.0 Subscriptions API
-  version: 10.20.0
-  description: 'High-throughput, persistent, ordered notification streaming for production microservices. Subscribers
+  version: Latest
+  title: Cumulocity Subscriptions API
+  x-logo:
+    url: https://www.cumulocity.com/docs/images/logo-platform.svg
+    backgroundColor: '#F8F8F8'
+    altText: Cumulocity
+    href: https://www.cumulocity.com/api
+  description: '# REST implementation
 
-    declare typed subscriptions (managed object, measurements, events, alarms, operations), exchange them
 
-    for short-lived JWT tokens, and consume via WebSocket. Survives subscriber outages by buffering messages
+    This section describes the aspects common to all REST-based interfaces of Cumulocity. The interfaces are based on the Hypertext Transfer Protocol 1.1 using HTTPS. ## HTTP usage
 
-    on the server.'
+
+    ### Application management
+
+
+    Cumulocity uses a so-called "application key" to distinguish requests coming from devices and traffic from applications. If you write an application, pass the following header as part of all requests:
+
+
+    ```markup
+
+    X-Cumulocity-Application-Key:
+
+    ```
+
+
+    For example, if you registered your application in the Cumulocity Administration application with the key "myapp", your requests should contain the header:
+
+
+    ```markup
+
+    X-Cumulocity-Application-Key: myapp
+
+    ```
+
+
+    This makes your application subscribable and billable. If you implement a device, do not pass the key. > **ⓘ Info:** Make sure that you pass the key in **all** requests coming from an application. If you leave out the key,
+
+    > the request will be considered as a device request, and the corresponding device will be marked as "available". ### Limited HTTP clients
+
+
+    If you use an HTTP client that can only perform GET and POST methods in HTTP, you can emulate the other methods through an additional "X-HTTP-METHOD" header. Simply issue a POST request and add the header, specifying the actual REST method to be executed. For example, to emulate the "PUT" (modify) method, you can use:
+
+
+    ```http
+
+    POST ... X-HTTP-METHOD: PUT
+
+    ```
+
+
+    ### Processing mode
+
+
+    Every update request (PUT, POST, DELETE) executes with a so-called *processing mode*. The processing modes are as follows:
+
+
+    |Processing mode|Description|
+
+    |---|---|
+
+    |PERSISTENT (default)|Stores data in the Cumulocity database and sends data to the Streaming Analytics engine. Afterwards, Cumulocity returns the result of the request. This is the default mode.|
+
+    |TRANSIENT|Sends data to the Streaming Analytics engine and immediately returns the results asynchronously but does not store data in Cumulocity’s database. This mode saves storage and processing costs and is useful for example when tracking devices in real time without requiring data to be stored.|
+
+    |QUIESCENT|Behaves similar to the persistent mode with the exception that no real-time notifications will be sent.|
+
+    |CEP|Behaves like the transient mode with the exception that no real-time notifications are sent.|
+
+
+    To explicitly control the processing mode of an update request, you can use the "X-Cumulocity-Processing-Mode" header with a value of either "PERSISTENT", "TRANSIENT", "QUIESCENT" or "CEP":
+
+
+    ```markup
+
+    X-Cumulocity-Processing-Mode: PERSISTENT
+
+    ```
+
+
+    > **ⓘ Info:** Events are always delivered to CEP/Apama for all processing modes. This is independent from real-time notifications. ### Authorization
+
+
+    All requests issued to Cumulocity are subject to authorization. To determine the required permissions, see the "Required role" entries for the individual requests. To learn more about the different permissions and the concept of ownership in Cumulocity, see Getting started > Technical concepts > Security aspects > Access control > Managing roles and assigning permissions in the Cumulocity user documentation. > **⚠️ Important:** In the Cumulocity API, each granular permission is identified by a unique “permission” string, which is prefixed with ROLE_ (for example, ROLE_ALARM_READ, ROLE_INVENTORY_ADMIN). Therefore, permissions are frequently referred to as “roles” throughout the API as well as in the configuration files. For example, the microservice manifest includes a requiredRoles field, which actually expects a permission string. See also the Glossary of the Cumulocity user documentation for the usage of the terms “permission” and “role” in the Cumulocity context. ### Media types
+
+
+    Each type of data is associated with an own media type. The general format of media types is:
+
+
+    ```markup
+
+    application/vnd.com.nsn.cumulocity.+json;ver=;charset=UTF-8
+
+    ```
+
+
+    Each media type contains a parameter `ver` indicating the version of the type.'
 servers:
-- url: https://{tenant}.cumulocity.com
-  variables:
-    tenant:
-      default: example
+- description: Cumulocity tenant
+  url: https://<TENANT_DOMAIN>
 security:
-- basicAuth: []
-- bearerAuth: []
+- Basic: []
+- OAI-Secure: []
+- SSO: []
+- JWT-IAM: []
 tags:
 - name: Subscriptions
+  description: Methods to create, retrieve and delete notification subscriptions.
 paths:
   /notification2/subscriptions:
-    get:
-      tags:
-      - Subscriptions
-      summary: List Notification 2.0 Subscriptions
-      operationId: listSubscriptions
-      parameters:
-      - name: source
-        in: query
-        schema:
-          type: string
-      - name: context
-        in: query
-        schema:
-          type: string
-          enum:
-          - tenant
-          - mo
-      - name: subscription
-        in: query
-        schema:
-          type: string
-      responses:
-        '200':
-          description: A collection of subscriptions.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SubscriptionCollection'
     post:
+      operationId: postNotificationSubscriptionResource
+      x-codegen-resource-name: createSubscription
+      parameters:
+      - $ref: '#/components/parameters/acceptHeader'
+      - $ref: '#/components/parameters/processingModeHeader'
       tags:
       - Subscriptions
-      summary: Create a Subscription
-      operationId: createSubscription
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Create a subscription
+      description: 'Create a new subscription, for example, a subscription that forwards measurements and events of a specific type for a given device.
+
+
+        In general, each subscription may consist of:
+
+
+        * The managed object to which the subscription is associated.
+
+        * The context under which the subscription is to be processed.
+
+        * The name of the subscription.
+
+        * The applicable filter criteria.
+
+        * The option to only include specific custom fragments in the forwarded data.
+
+        * The option to use persistent or non-persistent message storage.
+
+
+        Required roles
+
+
+        ROLE_NOTIFICATION_2_ADMIN'
       requestBody:
         required: true
         content:
-          application/json:
+          application/vnd.com.nsn.cumulocity.subscription+json:
+            example:
+              source:
+                id: '251982'
+              context: mo
+              subscription: testSubscription
+              subscriptionFilter:
+                apis:
+                - measurements
+                - events
+                typeFilter: '''c8y_Speed'' or ''c8y_LocationUpdate'''
+              fragmentsToCopy:
+              - c8y_MaxSpeedMeasurement
+              - c8y_Position
+              nonPersistent: false
             schema:
-              $ref: '#/components/schemas/Subscription'
+              $ref: '#/components/schemas/NotificationSubscription'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request POST "https://<TENANT_DOMAIN>/notification2/subscriptions" \
+
+          --header "Authorization: Basic <AUTHORIZATION>" \
+
+          --header "Accept: application/vnd.com.nsn.cumulocity.subscription+json" \
+
+          --header "Content-Type: application/json" \
+
+          --data-raw ''<Payload>''
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/notification2/subscriptions");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.POST);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+          request.AddHeader("Content-Type", "application/json");
+
+          request.AddHeader("Accept", "application/vnd.com.nsn.cumulocity.subscription+json");
+
+          request.AddParameter("application/json", "<Payload>",  ParameterType.RequestBody);
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.post(\"https://<TENANT_DOMAIN>/notification2/subscriptions\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\")\n    .header(\"Content-Type\", \"application/json\")\n    .header(\"Accept\", \"application/vnd.com.nsn.cumulocity.subscription+json\")\n    .body(\"<Payload>\")\n    .asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"POST\", \"https://<TENANT_DOMAIN>/notification2/subscriptions\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\",\n        \"Accept\": \"application/vnd.com.nsn.cumulocity.subscription+json\",\n        \"Content-Type\": \"application/json\"\n    })\n    .send(JSON.stringify( <Payload> ))\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\nimport json\n\nurl = \"https://<TENANT_DOMAIN>/notification2/subscriptions\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\",\n  \"Accept\": \"application/vnd.com.nsn.cumulocity.subscription+json\",\n  \"Content-Type\": \"application/json\"\n}\nresponse = requests.request(\"POST\", url, headers=headers, data = json.dumps(<Payload>))\nprint(response.text.encode(\"utf8\"))\n"
       responses:
         '201':
-          description: Subscription created.
+          description: A notification subscription was created.
           content:
-            application/json:
+            application/vnd.com.nsn.cumulocity.subscription+json:
               schema:
-                $ref: '#/components/schemas/Subscription'
-    delete:
+                $ref: '#/components/schemas/NotificationSubscription'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/accessDenied'
+        '404':
+          $ref: '#/components/responses/inventoryObjectNotFound'
+        '409':
+          $ref: '#/components/responses/notificationSubscriptionDuplicate'
+        '422':
+          $ref: '#/components/responses/invalidPayload'
+    get:
+      operationId: getNotificationSubscriptionCollectionResource
+      x-codegen-resource-name: getSubscriptions
+      parameters:
+      - $ref: '#/components/parameters/queryParam_notification_subscription_context'
+      - $ref: '#/components/parameters/queryParam_currentPage'
+      - $ref: '#/components/parameters/queryParam_pageSize'
+      - $ref: '#/components/parameters/queryParam_notification_subscription_source'
+      - $ref: '#/components/parameters/queryParam_notification_subscription_subscription'
+      - $ref: '#/components/parameters/queryParam_notification_subscription_typeFilter'
+      - $ref: '#/components/parameters/queryParam_withTotalElements'
+      - $ref: '#/components/parameters/queryParam_withTotalPages'
       tags:
       - Subscriptions
-      summary: Delete Subscriptions by Filter
-      operationId: deleteSubscriptions
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Retrieve all subscriptions
+      description: 'Retrieve all subscriptions on your tenant, or a specific subset based on queries.
+
+
+        Required roles
+
+
+        ROLE_NOTIFICATION_2_ADMIN'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request GET "https://<TENANT_DOMAIN>/notification2/subscriptions" \
+
+          --header "Authorization: Basic <AUTHORIZATION>"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/notification2/subscriptions");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.GET);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.get(\"https://<TENANT_DOMAIN>/notification2/subscriptions\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\").asString();\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"GET\", \"https://<TENANT_DOMAIN>/notification2/subscriptions\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\"\n    })\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://<TENANT_DOMAIN>/notification2/subscriptions\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\"\n}\nresponse = requests.request(\"GET\", url, headers=headers)\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '200':
+          $ref: '#/components/responses/notificationSubscriptionCollectionFound'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/accessDenied'
+    delete:
+      operationId: deleteNotificationSubscriptionBySourceResource
+      x-codegen-resource-name: deleteSubscriptions
+      parameters:
+      - $ref: '#/components/parameters/processingModeHeader'
+      - $ref: '#/components/parameters/queryParam_notification_subscription_context_for_delete'
+      - $ref: '#/components/parameters/queryParam_notification_subscription_source'
+      tags:
+      - Subscriptions
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Remove subscriptions by source
+      description: 'Remove subscriptions by source and context.
+
+
+        >**ⓘ Info:** The request will result in an error if there are no query parameters. The `source` parameter is optional only if the `context` parameter equals `tenant`.
+
+
+        Required roles
+
+
+        ROLE_NOTIFICATION_2_ADMIN'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request DELETE "https://<TENANT_DOMAIN>/notification2/subscriptions?source=<managedObjectId>" \
+
+          --header "Authorization: Basic <AUTHORIZATION>"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/notification2/subscriptions?source=<managedObjectId>");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.DELETE);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.delete(\"https://<TENANT_DOMAIN>/notification2/subscriptions?source=<managedObjectId>\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\").asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"DELETE\", \"https://<TENANT_DOMAIN>/notification2/subscriptions?source=<managedObjectId>\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\"\n    })\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://<TENANT_DOMAIN>/notification2/subscriptions?source=<managedObjectId>\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\"\n}\nresponse = requests.request(\"DELETE\", url, headers=headers)\nprint(response.text.encode(\"utf8\"))\n"
       responses:
         '204':
-          description: Subscriptions deleted.
+          description: A collection of subscriptions was removed.
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/accessDenied'
+        '422':
+          description: Unprocessable Entity – error in query parameters
   /notification2/subscriptions/{id}:
     parameters:
-    - name: id
+    - $ref: '#/components/parameters/notificationSubscriptionId'
+    get:
+      operationId: getNotificationSubscriptionResource
+      x-codegen-resource-name: getSubscription
+      tags:
+      - Subscriptions
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Retrieve a specific subscription
+      description: 'Retrieve a specific subscription by a given ID.
+
+
+        Required roles
+
+
+        ROLE_NOTIFICATION_2_ADMIN'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request GET "https://<TENANT_DOMAIN>/notification2/subscriptions/{id}" \
+
+          --header "Authorization: Basic <AUTHORIZATION>"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/notification2/subscriptions/{id}");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.GET);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.get(\"https://<TENANT_DOMAIN>/notification2/subscriptions/{id}\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\").asString();\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"GET\", \"https://<TENANT_DOMAIN>/notification2/subscriptions/{id}\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\"\n    })\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://<TENANT_DOMAIN>/notification2/subscriptions/{id}\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\"\n}\nresponse = requests.request(\"GET\", url, headers=headers)\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '200':
+          $ref: '#/components/responses/notificationSubscriptionFound'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/accessDenied'
+        '404':
+          $ref: '#/components/responses/notificationSubscriptionNotFound'
+    delete:
+      operationId: deleteNotificationSubscriptionResource
+      x-codegen-resource-name: deleteSubscription
+      parameters:
+      - $ref: '#/components/parameters/processingModeHeader'
+      tags:
+      - Subscriptions
+      security:
+      - Basic: []
+      - OAI-Secure: []
+      - SSO: []
+      summary: Remove a specific subscription
+      description: 'Remove a specific subscription by a given ID.
+
+
+        Required roles
+
+
+        ROLE_NOTIFICATION_2_ADMIN'
+      x-code-samples:
+      - lang: cURL
+        source: 'curl --location --request DELETE "https://<TENANT_DOMAIN>/notification2/subscriptions/{id}" \
+
+          --header "Authorization: Basic <AUTHORIZATION>"
+
+          '
+      - lang: C#
+        source: 'var client = new RestClient("https://<TENANT_DOMAIN>/notification2/subscriptions/{id}");
+
+          client.Timeout = -1;
+
+
+          var request = new RestRequest(Method.DELETE);
+
+          request.AddHeader("Authorization", "Basic <AUTHORIZATION>");
+
+
+          IRestResponse response = client.Execute(request);
+
+          Console.WriteLine(response.Content);
+
+          '
+      - lang: Java
+        source: "Unirest.setTimeouts(0, 0);\nHttpResponse<String> response = Unirest.delete(\"https://<TENANT_DOMAIN>/notification2/subscriptions/{id}\")\n    .header(\"Authorization\", \"Basic <AUTHORIZATION>\").asString();\nSystem.out.println(response);\n"
+      - lang: Node.js
+        source: "var unirest = require(\"unirest\");\nvar req = unirest(\"DELETE\", \"https://<TENANT_DOMAIN>/notification2/subscriptions/{id}\")\n    .headers({\n        \"Authorization\": \"Basic <AUTHORIZATION>\"\n    })\n    .end(function (res) {\n        if (res.error) throw new Error(res.error);\n        console.log(res.raw_body);\n    });\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://<TENANT_DOMAIN>/notification2/subscriptions/{id}\"\nheaders = {\n  \"Authorization\": \"Basic <AUTHORIZATION>\"\n}\nresponse = requests.request(\"DELETE\", url, headers=headers)\nprint(response.text.encode(\"utf8\"))\n"
+      responses:
+        '204':
+          description: A subscription was removed.
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/accessDenied'
+        '404':
+          $ref: '#/components/responses/notificationSubscriptionNotFound'
+components:
+  parameters:
+    processingModeHeader:
+      name: X-Cumulocity-Processing-Mode
+      in: header
+      description: Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+      required: false
+      schema:
+        type: string
+        default: PERSISTENT
+        enum:
+        - PERSISTENT
+        - TRANSIENT
+        - QUIESCENT
+        - CEP
+        example: PERSISTENT
+    queryParam_withTotalElements:
+      name: withTotalElements
+      in: query
+      description: 'When set to `true`, the returned result will contain in the statistics object the total number of elements. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
+
+        > **&#9432; Info:** To improve performance, the `totalElements` statistics are cached for 10 seconds.
+
+        '
+      schema:
+        type: boolean
+        default: false
+        example: true
+    queryParam_withTotalPages:
+      name: withTotalPages
+      in: query
+      description: 'When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
+
+        > **&#9432; Info:** To improve performance, the `totalPages` statistics are cached for 10 seconds.
+
+        '
+      schema:
+        type: boolean
+        default: false
+        example: true
+    queryParam_currentPage:
+      name: currentPage
+      in: query
+      description: The current page of the paginated results.
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+        example: 3
+    queryParam_notification_subscription_typeFilter:
+      name: typeFilter
+      in: query
+      description: 'The type used to filter subscriptions. This will check the subscription''s `subscriptionFilter.typeFilter` field.
+
+        > **&#9432; Info:** Filtering by `typeFilter` may affect paging. Additional post filtering may be performed if OData-like expressions are used in the subscriptions.
+
+        '
+      schema:
+        type: string
+        minLength: 1
+        example: '''c8y_Speed'' or ''c8y_LocationUpdate'''
+    queryParam_pageSize:
+      name: pageSize
+      in: query
+      description: Indicates how many entries of the collection shall be returned. The upper limit for one page is 2,000 objects.
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 2000
+        default: 5
+        example: 10
+    notificationSubscriptionId:
+      name: id
       in: path
+      description: Unique identifier of the notification subscription.
       required: true
       schema:
         type: string
-    get:
-      tags:
-      - Subscriptions
-      summary: Retrieve a Subscription
-      operationId: getSubscription
-      responses:
-        '200':
-          description: A single subscription.
-    delete:
-      tags:
-      - Subscriptions
-      summary: Delete a Subscription
-      operationId: deleteSubscription
-      responses:
-        '204':
-          description: Subscription deleted.
-components:
+        minLength: 1
+        example: '102700509'
+    queryParam_notification_subscription_context:
+      name: context
+      in: query
+      description: The context to which the subscription is associated.
+      schema:
+        type: string
+        minLength: 1
+        enum:
+        - mo
+        - tenant
+        example: mo
+    acceptHeader:
+      name: Accept
+      in: header
+      description: Advertises which content types, expressed as MIME types, the client is able to understand.
+      required: false
+      schema:
+        type: string
+        minLength: 1
+        example: application/json
+    queryParam_notification_subscription_context_for_delete:
+      name: context
+      in: query
+      description: 'The context to which the subscription is associated.
+
+        > **&#9432; Info:** If the value is `mo` (managed object), then `source` must also be provided in the query.
+
+        '
+      schema:
+        type: string
+        minLength: 1
+        enum:
+        - mo
+        - tenant
+        default: mo
+        example: tenant
+    queryParam_notification_subscription_subscription:
+      name: subscription
+      in: query
+      description: The subscription name by which filtering will be done.
+      schema:
+        type: string
+        minLength: 1
+        example: testSubscription
+    queryParam_notification_subscription_source:
+      name: source
+      in: query
+      description: The managed object ID to which the subscription is associated.
+      schema:
+        type: string
+        minLength: 1
+        example: '251982'
   schemas:
-    Subscription:
+    desc_self:
+      title: SelfURL
+      description: A URL linking to this resource.
+      type: string
+      format: uri
+      readOnly: true
+    desc_nextPage:
+      title: NextPageURL
+      description: A URI reference [[RFC3986](https://tools.ietf.org/html/rfc3986)] to a potential next page of managed objects.
+      type: string
+      readOnly: true
+    NotificationSubscriptionCollection:
+      type: object
+      properties:
+        next:
+          $ref: '#/components/schemas/desc_nextPage'
+        prev:
+          $ref: '#/components/schemas/desc_prevPage'
+        self:
+          $ref: '#/components/schemas/desc_self'
+        statistics:
+          $ref: '#/components/schemas/pageStatistics'
+        subscriptions:
+          description: An array containing the subscriptions of the request.
+          type: array
+          items:
+            $ref: '#/components/schemas/NotificationSubscription'
+      example:
+        self: https://<TENANT_DOMAIN>/notification2/subscriptions?pageSize=5&currentPage=1
+        subscriptions:
+        - id: '102700509'
+          self: http://<TENANT_DOMAIN>/notification2/subscriptions/102700509
+          source:
+            name: Test Device
+            self: http://<TENANT_DOMAIN>/inventory/managedObjects/251982
+            id: '251982'
+          context: mo
+          subscription: testSubscription
+          subscriptionFilter:
+            apis:
+            - measurements
+            - events
+            typeFilter: '''c8y_Speed'' or ''c8y_LocationUpdate'''
+          fragmentsToCopy:
+          - c8y_MaxSpeedMeasurement
+          - c8y_Position
+          nonPersistent: false
+        statistics:
+          totalPages: 1
+          currentPage: 1
+          pageSize: 5
+    error:
+      type: object
+      properties:
+        error:
+          description: The type of error returned.
+          type: string
+        message:
+          description: A human-readable message providing more details about the error.
+          type: string
+        info:
+          description: A URI reference [[RFC3986](https://tools.ietf.org/html/rfc3986)] that identifies the error code reported.
+          type: string
+    desc_objectName:
+      title: ObjectName
+      description: Human-readable name that is used for representing the object in user interfaces.
+      type: string
+    pageStatistics:
+      description: Information about paging statistics.
+      type: object
+      readOnly: true
+      properties:
+        currentPage:
+          description: The current page of the paginated results.
+          type: integer
+          minimum: 1
+          example: 2
+        pageSize:
+          description: Indicates the number of objects that the collection may contain per page. The upper limit for one page is 2,000 objects.
+          type: integer
+          minimum: 1
+          maximum: 2000
+          example: 5
+        totalElements:
+          description: The total number of results (elements).
+          type: integer
+          minimum: 0
+          example: 12
+        totalPages:
+          description: 'The total number of paginated results (pages).
+
+
+            > **&#9432; Info:** This property is returned by default except when an operation retrieves all records where values are between an upper and lower boundary, for example, querying ranges using `dateFrom`–`dateTo`. In such cases, the query parameter `withTotalPages=true` should be used to include the total number of pages (at the expense of slightly slower performance).
+
+            '
+          type: integer
+          minimum: 0
+          example: 3
+    desc_objectId:
+      title: ObjectId
+      description: Unique identifier of the object.
+      type: string
+      minLength: 1
+    desc_prevPage:
+      title: PreviousPageURL
+      description: A URI reference [[RFC3986](https://tools.ietf.org/html/rfc3986)] to a potential previous page of managed objects.
+      type: string
+      readOnly: true
+    NotificationSubscription:
       type: object
       required:
-      - subscription
       - context
+      - subscription
       properties:
-        id:
-          type: string
-          readOnly: true
-        self:
-          type: string
-          format: uri
-          readOnly: true
-        subscription:
-          type: string
         context:
+          description: 'The context within which the subscription is to be processed.
+
+            > **&#9432; Info:** If the value is `mo` (managed object), then `source` must also be provided in the request body.
+
+            '
           type: string
+          minLength: 1
           enum:
-          - tenant
           - mo
-        source:
-          type: object
-          properties:
-            id:
-              type: string
-            self:
-              type: string
-              format: uri
+          - tenant
         fragmentsToCopy:
+          description: Transforms the data to *only* include specified custom fragments. Each custom fragment is identified by a unique name. If nothing is specified here, the data is forwarded as-is.
           type: array
           items:
             type: string
+        id:
+          description: Unique identifier of the subscription.
+          type: string
+          readOnly: true
+        self:
+          $ref: '#/components/schemas/desc_self'
+        source:
+          description: The managed object to which the subscription is associated.
+          type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/desc_objectId'
+            name:
+              $ref: '#/components/schemas/desc_objectName'
+            self:
+              $ref: '#/components/schemas/desc_self'
+        subscription:
+          type: string
+          description: 'The subscription name.
+
+            The name identifies the Messaging Service topic that messages for this subscription will be published to.
+
+            Several subscriptions can share the same name, which means that the same topic will receive messages for all those subscriptions.
+
+            See [topics and subscriptions](#section/Overview/Topics-and-subscriptions) for more details.
+
+            '
+          pattern: ^[a-zA-Z0-9]+$
+          minLength: 1
         subscriptionFilter:
+          description: Applicable filters to the subscription.
           type: object
           properties:
             apis:
               type: array
+              description: 'For the `mo` (managed object) context, notifications from the `alarms`, `alarmsWithChildren`, `events`, `eventsWithChildren`, `managedobjects` (Inventory), `measurements` and `operations` (Device control) APIs can be subscribed to.
+
+                The `alarmsWithChildren` and `eventsWithChildren` APIs subscribe to alarms and events respectively from the managed object identified by the `source.id` field, and all of its descendant managed objects.
+
+
+                For the `tenant` context, notifications from the `measurements`, `alarms`, `events`, `managedobjects` (Inventory), and `operations` APIs can be subscribed to explicitly. The `measurements` API is not included when the `*` wildcard is used.
+
+                Note that `managedobjects` notifications in the `tenant` context currently only include notifications of new managed objects, not updates or deletions of existing ones.
+
+
+                For all contexts, the `*` (wildcard) value can be used to subscribe to notifications from all of the available APIs in that context, except that tenant wildcard subscriptions currently exclude the `measurements` API.
+
+
+                > **&#9432; Info:** The wildcard `*` cannot be used in conjunction with other values.
+
+                '
               items:
                 type: string
                 enum:
                 - alarms
+                - alarmsWithChildren
                 - events
                 - eventsWithChildren
                 - managedobjects
                 - measurements
                 - operations
+                - '*'
             typeFilter:
               type: string
+              description: 'Used to match the `type` property of the data. This must either be a string to match one specific type exactly, or be an `or` OData expression, allowing the filter to match any one of a number of types.
+
+
+                > **&#9432; Info:** The use of a `type` attribute is assumed, for example when using only a string literal `''c8y_Temperature''` (or using `c8y_Temperature`, as quotes can be omitted when matching a single type) it is equivalent to a `type eq ''c8y_Temperature''` OData expression.
+
+
+                > **&#9432; Info:** Currently only the `or` operator is allowed when using an OData expression. Example usage is `''c8y_Temperature'' or ''c8y_Pressure''` which will match all the data with types `c8y_Temperature` or `c8y_Pressure`.
+
+                '
         nonPersistent:
+          description: Indicates whether the messages for this subscription are persistent or non-persistent, meaning they can be lost if consumer is not connected.
           type: boolean
-    SubscriptionCollection:
-      type: object
-      properties:
-        self:
-          type: string
-          format: uri
-        subscriptions:
-          type: array
-          items:
-            $ref: '#/components/schemas/Subscription'
+          default: false
+      example:
+        id: '102700509'
+        self: http://<TENANT_DOMAIN>/notification2/subscriptions/102700509
+        source:
+          name: Test Device
+          self: http://<TENANT_DOMAIN>/inventory/managedObjects/251982
+          id: '251982'
+        context: mo
+        subscription: testSubscription
+        subscriptionFilter:
+          apis:
+          - measurements
+          - events
+          typeFilter: '''c8y_Speed'' or ''c8y_LocationUpdate'''
+        fragmentsToCopy:
+        - c8y_MaxSpeedMeasurement
+        - c8y_Position
+        nonPersistent: false
+  responses:
+    inventoryObjectNotFound:
+      description: Managed object not found.
+      content:
+        application/vnd.com.nsn.cumulocity.error+json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            error: inventory/Not Found
+            message: Finding device data from database failed
+            info: https://www.cumulocity.com/guides/reference-guide/#error_reporting
+    invalidPayload:
+      description: Unprocessable Entity – invalid payload.
+    notificationSubscriptionCollectionFound:
+      description: The request has succeeded and all subscriptions are sent in the response.
+      content:
+        application/vnd.com.nsn.cumulocity.subscriptioncollection+json:
+          schema:
+            $ref: '#/components/schemas/NotificationSubscriptionCollection'
+    notificationSubscriptionDuplicate:
+      description: Duplicated subscription.
+      content:
+        application/vnd.com.nsn.cumulocity.error+json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            error: reliable-notification/Duplicate
+            message: Subscription with source <'251982'>, context <'mo'> & subscription <'testSubscription'> already exists!
+            info: https://www.cumulocity.com/guides/reference-guide/#error_reporting
+    unauthorizedError:
+      description: Authentication information is missing or invalid.
+      content:
+        application/vnd.com.nsn.cumulocity.error+json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            error: security/Unauthorized
+            message: 'Invalid credentials! : Bad credentials'
+            info: https://www.cumulocity.com/guides/reference-guide/#error_reporting
+    notificationSubscriptionNotFound:
+      description: Subscription not found.
+      content:
+        application/vnd.com.nsn.cumulocity.error+json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            error: reliable-notification/Not Found
+            message: Finding subscription from database failed
+            info: https://www.cumulocity.com/guides/reference-guide/#error_reporting
+    notificationSubscriptionFound:
+      description: The request has succeeded and the subscription is sent in the response.
+      content:
+        application/vnd.com.nsn.cumulocity.subscription+json:
+          schema:
+            $ref: '#/components/schemas/NotificationSubscription'
+    accessDenied:
+      description: Not enough permissions/roles to perform this operation.
+      content:
+        application/vnd.com.nsn.cumulocity.error+json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            error: security/Forbidden
+            message: Access is denied.
+            info: https://www.cumulocity.com/guides/reference-guide/#error_reporting
   securitySchemes:
-    basicAuth:
+    Basic:
       type: http
       scheme: basic
-    bearerAuth:
+      description: 'The authorization header is formed as `Basic <Base64(<tenantID>/<c8yuser>:<password>)>`. For instance, if your tenantID, username and password are **t0071234**, **testuser** and **secret123** respectively, you can generate the Base64 string with the following command:
+
+
+        ```shell
+
+        $ echo -n t0071234/testuser:secret123 | base64
+
+        ```
+
+
+        and your authorization header would look like this:
+
+
+        ```
+
+        "Authorization": "Basic dDAwNzEyMzQvdGVzdHVzZXI6c2VjcmV0MTIz"
+
+        ```
+
+        '
+    OAI-Secure:
+      type: http
+      scheme: bearer
+      description: 'This is the recommended authorization method because it provides high security using authorization tokens to prove the identity of the user, and it is the default login mode on creating new tenants. This mode is an enhancement of the previous OAuth Internal authentication (available prior to 10.13.0).
+
+
+        For more details about OAI-Secure authentication, see [Platform administration > Authentication > Basic settings > Login settings](https://www.cumulocity.com/docs/authentication/basic-settings/#login-settings) in the Cumulocity user documentation.
+
+        '
+    SSO:
+      type: oauth2
+      description: "The login with SSO requires a correct configuration on the [Cumulocity side](https://www.cumulocity.com/docs/authentication/sso/). With the configuration, an additional button is available on the Login page. After clicking the button, the user is redirected to authenticate with the configured authorization server. On successful login, the user is redirected to Cumulocity.\n\nAuthentication details are exchanged using cookies. There are two parts to it, the first is the authentication cookie that is handled automatically by the Cumulocity platform. The second is the XSRF-TOKEN cookie. When a client receives the cookie, it should take the value and put it in the X-XSRF-TOKEN request header in all subsequent requests.\n\nThe flow of authenticating with authentication code grant is as follows:\n\n![Authentication flow](images/oauth-simple-flow.png)\n\nThe first request executed by the browser is:\n\n```http\nGET /tenant/loginOptions\nHost: https://<TENANT_DOMAIN>\nAccept: application/vnd.com.nsn.cumulocity.loginoptioncollection+json\n```\n\nResponse sample:\n\n```json\n{\n    \"loginOptions\": [\n        {\n            \"buttonName\": \"Login with oauth\",\n            \"grantType\": \"<AUTHORIZATION_CODE>\",\n            \"initRequest\": \"https://<TENANT_DOMAIN>/tenant/oauth?response_type=code&tenant_id=<TENANT_ID>\",\n            \"self\": \"https://<TENANT_DOMAIN>/tenant/loginOptions/oauth2\",\n            \"type\": \"oauth2\"\n        },\n        ...\n    ],\n    \"self\": \"http://<TENANT_DOMAIN>/tenant/loginOptions/\"\n}\n```\n\nThe browser must invoke the request provided in the initRequest parameter.\n\nThe initRequest initiates the redirect, in which the user is prompted for credentials. After successful login, the user is redirected back to the browser, where it must capture the code request parameter. Then the request to exchange the code for the token is as follows:\n\n```http\nPOST /tenant/oauth?grant_type=authorization_code&code=<CODE>\nHost: https://<TENANT_DOMAIN>\n```\n\nA successful response will have no body but the following response headers:\n\n```\nSet-Cookie: authorization=<TOKEN>;\nSet-Cookie: XSRF-TOKEN=<XSRF-TOKEN>;\n```\n\nThe authorization cookie is valid for two weeks.\n"
+      flows:
+        clientCredentials:
+          tokenUrl: /tenant/oauth?grant_type=authorization_code&code=<CODE>
+          scopes: {}
+    JWT-IAM:
       type: http
       scheme: bearer
       bearerFormat: JWT
+      description: 'This kind of authentication substitutes the JWT authentication with OAuth2 access tokens from your Identity and Access Management (IAM).
+
+        You can enable this in the [SSO configuration](https://www.cumulocity.com/docs/authentication/sso/).
+
+
+        The HTTP header must include:
+
+
+        ```
+
+        "Authorization": "Bearer <Access token>"
+
+        ```
+
+
+        When a request with a bearer token in the header is received, Cumulocity checks if the access token is from your IAM (that is, if authentication is enabled in your SSO configuration), and verifies the authenticity of
+
+        the token remotely against the IAM.
+
+        '
+x-tagGroups:
+- name: Platform
+  tags:
+  - Platform API
+- name: Alarms
+  tags:
+  - Alarm API
+  - Alarm notification API
+  - Alarms
+- name: Applications
+  tags:
+  - Application API
+  - Applications
+  - Application versions
+  - Application binaries
+  - Bootstrap user
+  - Current application
+- name: Audits
+  tags:
+  - Audit API
+  - Audits
+- name: Device control
+  tags:
+  - Device control API
+  - Device control notification API
+  - Operations
+  - Bulk operations
+  - Device credentials
+  - New device requests
+  - Device control via SMS
+- name: Events
+  tags:
+  - Event API
+  - Event notification API
+  - Events
+  - Attachments
+- name: Feature toggles
+  tags:
+  - Feature toggles API
+- name: Identity
+  tags:
+  - Identity API
+  - External IDs
+- name: Inventory
+  tags:
+  - Inventory API
+  - Inventory notification API
+  - Managed objects
+  - Binaries
+  - Child operations
+  - Query language
+- name: Measurements
+  tags:
+  - Measurement API
+  - Measurement notification API
+  - Measurements
+  - Measurements specifics
+- name: Notifications 2.0
+  tags:
+  - About notifications 2.0
+  - Notification 2.0 API
+  - Subscriptions
+  - Tokens
+- name: Real-time notifications
+  tags:
+  - Real-time notification API
+- name: Retentions
+  tags:
+  - Retention rules
+- name: Tenants
+  tags:
+  - Tenant API
+  - Tenants
+  - Tenant applications
+  - Trusted certificates
+  - Device statistics
+  - Usage statistics
+  - Options
+  - Login options
+  - Login tokens
+  - System options
+- name: Users
+  tags:
+  - User API
+  - Current User
+  - Users
+  - Groups
+  - Roles
+  - Inventory Roles
+  - Device Permissions
+- name: Certificate
+  tags:
+  - Certificate authority
+  - Device enrollment
